@@ -6,105 +6,104 @@ function changeJobSettings(jobId) {
     var i = 0
     var j = 0;;
     var objSelect = null;
-    with (document.calcForm) {
-        // 職業情報の初期化
-        InitJobInfo();
-        jobId = n_A_JOB;
-        // 計算機の初期化
-        Init();
-        // 武器属性付与手段の名称の設定
-        if (41 <= n_A_JOB && n_A_JOB <= 43) myInnerHtml("ID_A_HUYO_NAME", "暖かい風", 0);
-        else myInnerHtml("ID_A_HUYO_NAME", "武器属性付与", 0);
-        // ベースレベル選択セレクトボックスの設定
-        var lv = 0;
-        var lvMax = GetBaseLevelMax(jobId);
-        var lvMin = GetBaseLevelMin(jobId);
-        objSelect = document.getElementById("OBJID_SELECT_BASE_LEVEL");
-        HtmlRemoveOptionAll(objSelect);
-        for (lv = lvMin; lv <= lvMax; lv++) {
-            HtmlCreateElementOption(lv, lv, objSelect);
-        }
-        objSelect.value = lvMin;
-        // ジョブレベル選択セレクトボックスの設定
-        lv = 0;
-        lvMax = GetJobLevelMax(jobId);
-        lvMin = 1;
-        objSelect = document.getElementById("OBJID_SELECT_JOB_LEVEL");
-        HtmlRemoveOptionAll(objSelect);
-        for (lv = lvMin; lv <= lvMax; lv++) {
-            HtmlCreateElementOption(lv, lv, objSelect);
-        }
-        objSelect.value = lvMin;
-        // ステータス選択セレクトボックスの設定
-        RebuildStatusSelect(jobId);
-        // 速度ＰＯＴ選択セレクトボックスの設定
-        // スピードアップポーション
-        for (var i = 2; i <= 3; i++) {
-            A_SpeedPOT.options[2] = null;
-        }
-        // ハイスピードポーション
-        if (IsUsableHSPJob(n_A_JOB)) {
-            A_SpeedPOT.options[2] = new Option(SpeedPotName[2] + "(Lv40)", 2);
-        }
-        else {
-            A_SpeedPOT.options[2] = new Option("-", 0);
-        }
-        // バーサークポーション
-        if (IsUsableBSPJob(n_A_JOB)) {
-            A_SpeedPOT.options[3] = new Option(SpeedPotName[3] + "(Lv85)", 3);
-        }
-        else if (IsSameJobClass(JOB_ID_ASSASINCROSS) || IsSameJobClass(JOB_ID_GILOTINCROSS)) {
-            A_SpeedPOT.options[3] = new Option("■特殊(" + SkillObjNew[304][SKILL_DATA_INDEX_NAME] + "Lv85)/毒薬の瓶", 3);
-        }
-        else {
-            A_SpeedPOT.options[3] = new Option("■特殊(" + SkillObjNew[304][SKILL_DATA_INDEX_NAME] + ")(Lv85)", 3);
-        }
-        // スパノビの装備制限解除フラグを初期化
-        g_bSuperNoviceFullWeapon = undefined;
-        // 二刀流状態の解除
-        if (n_Nitou) {
-            n_Nitou = false;
-        }
-        OnChangeArmsTypeLeft(ITEM_KIND_NONE);
-        // 武器種類選択セレクトボックスの設定
-        var jobData = g_constDataManager.GetDataObject(CONST_DATA_KIND_JOB, jobId);
-        HtmlRemoveOptionAll(A_WeaponType);
-        j = 0;
-        for (i = 0; i <= 21; i++) {
-            // スパノビ系の両手斧は装備制限解除状態の時のみ可
-            if (GetHigherJobSeriesID(jobId) == JOB_SERIES_ID_SUPERNOVICE) {
-                if (i == ITEM_KIND_AXE_2HAND) {
-                    if (!g_bSuperNoviceFullWeapon) {
-                        continue;
-                    }
+
+    // 職業情報の初期化
+    InitJobInfo();
+    jobId = n_A_JOB;
+    // 計算機の初期化
+    Init();
+    // 武器属性付与手段の名称の設定
+    if (41 <= n_A_JOB && n_A_JOB <= 43) myInnerHtml("ID_A_HUYO_NAME", "暖かい風", 0);
+    else myInnerHtml("ID_A_HUYO_NAME", "武器属性付与", 0);
+    // ベースレベル選択セレクトボックスの設定
+    var lv = 0;
+    var lvMax = GetBaseLevelMax(jobId);
+    var lvMin = GetBaseLevelMin(jobId);
+    objSelect = document.getElementById("OBJID_SELECT_BASE_LEVEL");
+    HtmlRemoveOptionAll(objSelect);
+    for (lv = lvMin; lv <= lvMax; lv++) {
+        HtmlCreateElementOption(lv, lv, objSelect);
+    }
+    objSelect.value = lvMin;
+    // ジョブレベル選択セレクトボックスの設定
+    lv = 0;
+    lvMax = GetJobLevelMax(jobId);
+    lvMin = 1;
+    objSelect = document.getElementById("OBJID_SELECT_JOB_LEVEL");
+    HtmlRemoveOptionAll(objSelect);
+    for (lv = lvMin; lv <= lvMax; lv++) {
+        HtmlCreateElementOption(lv, lv, objSelect);
+    }
+    objSelect.value = lvMin;
+    // ステータス選択セレクトボックスの設定
+    RebuildStatusSelect(jobId);
+    // 速度ＰＯＴ選択セレクトボックスの設定
+    // スピードアップポーション
+    for (var i = 2; i <= 3; i++) {
+        document.calcForm.A_SpeedPOT.options[2] = null;
+    }
+    // ハイスピードポーション
+    if (IsUsableHSPJob(n_A_JOB)) {
+        document.calcForm.A_SpeedPOT.options[2] = new Option(SpeedPotName[2] + "(Lv40)", 2);
+    }
+    else {
+        document.calcForm.A_SpeedPOT.options[2] = new Option("-", 0);
+    }
+    // バーサークポーション
+    if (IsUsableBSPJob(n_A_JOB)) {
+        document.calcForm.A_SpeedPOT.options[3] = new Option(SpeedPotName[3] + "(Lv85)", 3);
+    }
+    else if (IsSameJobClass(JOB_ID_ASSASINCROSS) || IsSameJobClass(JOB_ID_GILOTINCROSS)) {
+        document.calcForm.A_SpeedPOT.options[3] = new Option("■特殊(" + SkillObjNew[304][SKILL_DATA_INDEX_NAME] + "Lv85)/毒薬の瓶", 3);
+    }
+    else {
+        document.calcForm.A_SpeedPOT.options[3] = new Option("■特殊(" + SkillObjNew[304][SKILL_DATA_INDEX_NAME] + ")(Lv85)", 3);
+    }
+    // スパノビの装備制限解除フラグを初期化
+    g_bSuperNoviceFullWeapon = undefined;
+    // 二刀流状態の解除
+    if (n_Nitou) {
+        n_Nitou = false;
+    }
+    OnChangeArmsTypeLeft(ITEM_KIND_NONE);
+    // 武器種類選択セレクトボックスの設定
+    var jobData = g_constDataManager.GetDataObject(CONST_DATA_KIND_JOB, jobId);
+    HtmlRemoveOptionAll(document.calcForm.A_WeaponType);
+    j = 0;
+    for (i = 0; i <= 21; i++) {
+        // スパノビ系の両手斧は装備制限解除状態の時のみ可
+        if (GetHigherJobSeriesID(jobId) == JOB_SERIES_ID_SUPERNOVICE) {
+            if (i == ITEM_KIND_AXE_2HAND) {
+                if (!g_bSuperNoviceFullWeapon) {
+                    continue;
                 }
             }
-            if (jobData.GetWeaponAspd(i) !== undefined) {
-                A_WeaponType.options[j] = new Option(GetItemKindNameText(i), i);
-                j++;
-            }
         }
-        // 武器選択セレクトボックスの設定
-        OnChangeArmsTypeRight(ITEM_KIND_NONE);
-        // 防具選択欄を再構築
-        RebuildArmorsSelect();
-        // シャドウ装備
-        if ((typeof g_shadowEquipController) !== "undefined") {
-            g_shadowEquipController.rebuildAll();
+        if (jobData.GetWeaponAspd(i) !== undefined) {
+            document.calcForm.A_WeaponType.options[j] = new Option(GetItemKindNameText(i), i);
+            j++;
         }
-        // 習得スキルの初期化
-        n_A_LearnedSkill = new Array();
-        for (var dmyidx = 0; dmyidx < LEARNED_SKILL_MAX_COUNT; dmyidx++) {
-            n_A_LearnedSkill[dmyidx] = 0;
-        }
-        OnClickSkillSWLearned();
-        // 攻撃手段欄の初期化
-        CAttackMethodAreaComponentManager.RebuildControls();
-        // 拡張表示の選択値記憶のリセット
-        CExtraInfoAreaComponentManager.ClearStoredValueAll(true);
-        // 拡張表示の再構築
-        CExtraInfoAreaComponentManager.RebuildDispAreaAll();
     }
+    // 武器選択セレクトボックスの設定
+    OnChangeArmsTypeRight(ITEM_KIND_NONE);
+    // 防具選択欄を再構築
+    RebuildArmorsSelect();
+    // シャドウ装備
+    if ((typeof g_shadowEquipController) !== "undefined") {
+        g_shadowEquipController.rebuildAll();
+    }
+    // 習得スキルの初期化
+    n_A_LearnedSkill = new Array();
+    for (var dmyidx = 0; dmyidx < LEARNED_SKILL_MAX_COUNT; dmyidx++) {
+        n_A_LearnedSkill[dmyidx] = 0;
+    }
+    OnClickSkillSWLearned();
+    // 攻撃手段欄の初期化
+    CAttackMethodAreaComponentManager.RebuildControls();
+    // 拡張表示の選択値記憶のリセット
+    CExtraInfoAreaComponentManager.ClearStoredValueAll(true);
+    // 拡張表示の再構築
+    CExtraInfoAreaComponentManager.RebuildDispAreaAll();
 }
 
 
@@ -224,75 +223,72 @@ function OnChangeArmsTypeRight(itemKind) {
     // 右手装備情報のクリア
     ClearEquip(EQUIP_REGION_ID_ARMS);
 
-    with (document.calcForm) {
+    // 右手装備欄の再構築
+    RebuildArmsRightSelect();
 
-        // 右手装備欄の再構築
-        RebuildArmsRightSelect();
-
-        if (GetHigherJobSeriesID(n_A_JOB) == 8 && itemKind != ITEM_KIND_KATAR) {
-            if (!n_Nitou) {
-                myInnerHtml("A_SobWeaponName", "　左手：" + '<select id="OBJID_ARMS_TYPE_LEFT" name="A_Weapon2Type" onChange = "OnChangeArmsTypeLeft(this[this.selectedIndex].value) | StAllCalc() | AutoCalc()"> <option value="0">素手or盾<option value="1">短剣<option value="2">片手剣<option value="6">片手斧</select>', 0);
-            }
-        }
-        else if ((IsSameJobClass(JOB_ID_KAGERO) || IsSameJobClass(JOB_ID_OBORO)) && (itemKind != ITEM_KIND_FUMA)) {
-            if (!n_Nitou) {
-                myInnerHtml("A_SobWeaponName", "　左手：" + '<select id="OBJID_ARMS_TYPE_LEFT" name="A_Weapon2Type" onChange = "OnChangeArmsTypeLeft(this[this.selectedIndex].value) | StAllCalc() | AutoCalc()"> <option value=0>素手or盾<option value=1>短剣</select>', 0);
-            }
-        }
-        else {
-
-            myInnerHtml("A_SobWeaponName", "", 0);
-
-            HtmlRemoveOptionAll(OBJID_ARMS_LEFT);
-            OBJID_ARMS_LEFT.options[0] = new Option(ItemObjNew[ITEM_ID_SUDE][ITEM_DATA_INDEX_NAME], ITEM_ID_SUDE);
-
-            // 二刀流が解除される場合は、左手装備をクリア
-            if (n_Nitou) {
-                OnChangeArmsTypeLeft(ITEM_KIND_NONE);
-            }
-
-            n_Nitou = false;
-
-            // 左手武器欄を無効化する
-            A_Weapon2_ATKplus.disabled = true;
-            A_Weapon2_ATKplus.style.visibility = "hidden";
-
-            OBJID_ARMS_LEFT.disabled = true;
-            OBJID_ARMS_LEFT.style.visibility = "hidden";
-
-            // 盾欄を有効化する
-            A_SHIELD_DEF_PLUS.disabled = false;
-            A_SHIELD_DEF_PLUS.style.visibility = "visible";
-
-            OBJID_SHIELD.disabled = false;
-            OBJID_SHIELD.style.visibility = "visible";
-
-        }
-
-        // 二刀流でない場合は、左右武器入れ替えボタンを削除
+    if (GetHigherJobSeriesID(n_A_JOB) == 8 && itemKind != ITEM_KIND_KATAR) {
         if (!n_Nitou) {
-            HtmlRemoveAllChild(document.getElementById("OBJID_SPAN_SWAP_ARMS"));
+            myInnerHtml("A_SobWeaponName", "　左手：" + '<select id="OBJID_ARMS_TYPE_LEFT" name="A_Weapon2Type" onChange = "OnChangeArmsTypeLeft(this[this.selectedIndex].value) | StAllCalc() | AutoCalc()"> <option value="0">素手or盾<option value="1">短剣<option value="2">片手剣<option value="6">片手斧</select>', 0);
         }
-
-        // 装備を更新（選択セレクトボックスの先頭要素）
-        OnChangeEquip(EQUIP_REGION_ID_ARMS, parseInt(eval(OBJID_ARMS_RIGHT.value)));
-
-        // 使用可否の更新
-        if (GetSlotMode() == SLOTPAGER_MODE_CARD) {
-            SetCardSlotEnability(EQUIP_REGION_ID_ARMS);
-            SetCardSlotEnability(EQUIP_REGION_ID_SHIELD);
-        }
-        else {
-            SetRndOptEnablityAll();
-            // SetEnchSlotsEnablity();
-        }
-
-        // 攻撃手段の更新
-        CAttackMethodAreaComponentManager.RebuildControls();
-
-        // アイテムデータ説明の更新
-        CItemInfoManager.OnChangeEquip(CONST_DATA_KIND_ITEM, n_A_Equip[EQUIP_REGION_ID_ARMS]);
     }
+    else if ((IsSameJobClass(JOB_ID_KAGERO) || IsSameJobClass(JOB_ID_OBORO)) && (itemKind != ITEM_KIND_FUMA)) {
+        if (!n_Nitou) {
+            myInnerHtml("A_SobWeaponName", "　左手：" + '<select id="OBJID_ARMS_TYPE_LEFT" name="A_Weapon2Type" onChange = "OnChangeArmsTypeLeft(this[this.selectedIndex].value) | StAllCalc() | AutoCalc()"> <option value=0>素手or盾<option value=1>短剣</select>', 0);
+        }
+    }
+    else {
+
+        myInnerHtml("A_SobWeaponName", "", 0);
+
+        HtmlRemoveOptionAll(OBJID_ARMS_LEFT);
+        OBJID_ARMS_LEFT.options[0] = new Option(ItemObjNew[ITEM_ID_SUDE][ITEM_DATA_INDEX_NAME], ITEM_ID_SUDE);
+
+        // 二刀流が解除される場合は、左手装備をクリア
+        if (n_Nitou) {
+            OnChangeArmsTypeLeft(ITEM_KIND_NONE);
+        }
+
+        n_Nitou = false;
+
+        // 左手武器欄を無効化する
+        document.calcForm.A_Weapon2_ATKplus.disabled = true;
+        document.calcForm.A_Weapon2_ATKplus.style.visibility = "hidden";
+
+        OBJID_ARMS_LEFT.disabled = true;
+        OBJID_ARMS_LEFT.style.visibility = "hidden";
+
+        // 盾欄を有効化する
+        document.calcForm.A_SHIELD_DEF_PLUS.disabled = false;
+        document.calcForm.A_SHIELD_DEF_PLUS.style.visibility = "visible";
+
+        OBJID_SHIELD.disabled = false;
+        OBJID_SHIELD.style.visibility = "visible";
+
+    }
+
+    // 二刀流でない場合は、左右武器入れ替えボタンを削除
+    if (!n_Nitou) {
+        HtmlRemoveAllChild(document.getElementById("OBJID_SPAN_SWAP_ARMS"));
+    }
+
+    // 装備を更新（選択セレクトボックスの先頭要素）
+    OnChangeEquip(EQUIP_REGION_ID_ARMS, parseInt(eval(OBJID_ARMS_RIGHT.value)));
+
+    // 使用可否の更新
+    if (GetSlotMode() == SLOTPAGER_MODE_CARD) {
+        SetCardSlotEnability(EQUIP_REGION_ID_ARMS);
+        SetCardSlotEnability(EQUIP_REGION_ID_SHIELD);
+    }
+    else {
+        SetRndOptEnablityAll();
+        // SetEnchSlotsEnablity();
+    }
+
+    // 攻撃手段の更新
+    CAttackMethodAreaComponentManager.RebuildControls();
+
+    // アイテムデータ説明の更新
+    CItemInfoManager.OnChangeEquip(CONST_DATA_KIND_ITEM, n_A_Equip[EQUIP_REGION_ID_ARMS]);
 }
 
 
@@ -1455,166 +1451,6 @@ function RebuildArmorsSelect() {
         }
     }
 }
-
-
-
-
-/**
- * もう使われていない可能性がある
- * @returns
- */
-function WeaponSet2() {
-    with (document.calcForm) {
-        InitJobInfo();
-
-        HtmlRemoveOptionAll(A_head1);
-        HtmlRemoveOptionAll(A_head2);
-        HtmlRemoveOptionAll(A_head3);
-        HtmlRemoveOptionAll(A_left);
-        HtmlRemoveOptionAll(A_body);
-        HtmlRemoveOptionAll(A_shoulder);
-        HtmlRemoveOptionAll(A_shoes);
-        HtmlRemoveOptionAll(A_acces1);
-        HtmlRemoveOptionAll(A_acces2);
-
-
-        if (first_check == 0) {
-            first_check = 1;
-            A_head1.options[0] = new Option(ItemObjNew[142][ITEM_DATA_INDEX_NAME], ItemObjNew[142][ITEM_DATA_INDEX_ID]);
-            A_head2.options[0] = new Option(ItemObjNew[243][ITEM_DATA_INDEX_NAME], ItemObjNew[243][ITEM_DATA_INDEX_ID]);
-            A_head3.options[0] = new Option(ItemObjNew[268][ITEM_DATA_INDEX_NAME], ItemObjNew[268][ITEM_DATA_INDEX_ID]);
-            A_left.options[0] = new Option(ItemObjNew[305][ITEM_DATA_INDEX_NAME], ItemObjNew[305][ITEM_DATA_INDEX_ID]);
-            A_body.options[0] = new Option(ItemObjNew[279][ITEM_DATA_INDEX_NAME], ItemObjNew[279][ITEM_DATA_INDEX_ID]);
-            A_shoulder.options[0] = new Option(ItemObjNew[311][ITEM_DATA_INDEX_NAME], ItemObjNew[311][ITEM_DATA_INDEX_ID]);
-            A_shoes.options[0] = new Option(ItemObjNew[317][ITEM_DATA_INDEX_NAME], ItemObjNew[317][ITEM_DATA_INDEX_ID]);
-            A_acces1.options[0] = new Option(ItemObjNew[326][ITEM_DATA_INDEX_NAME], ItemObjNew[326][ITEM_DATA_INDEX_ID]);
-            A_acces2.options[0] = new Option(ItemObjNew[326][ITEM_DATA_INDEX_NAME], ItemObjNew[326][ITEM_DATA_INDEX_ID]);
-            return;
-        }
-        first_check = 2;
-        var workB = new Array();
-        for (i = 0; i <= 8; i++) workB[i] = new Array();
-        var wsj = new Array();
-        for (i = 0; i <= 8; i++) wsj[i] = 0;
-        for (i = 0; i < ItemObjNew.length;
-            i++) {
-            if (ItemObjNew[i][ITEM_DATA_INDEX_KIND] == 50 && (IsMatchJobRestrict(i, n_A_JOB) == true || g_bSuperNoviceFullWeapon)) {
-                workB[0][wsj[0]] = i;
-                wsj[0]++;
-            }
-            else if (ItemObjNew[i][ITEM_DATA_INDEX_KIND] == 51 && (IsMatchJobRestrict(i, n_A_JOB) == true || g_bSuperNoviceFullWeapon)) {
-                workB[1][wsj[1]] = i;
-                wsj[1]++;
-            }
-            else if (ItemObjNew[i][ITEM_DATA_INDEX_KIND] == 52 && (IsMatchJobRestrict(i, n_A_JOB) == true || g_bSuperNoviceFullWeapon)) {
-                workB[2][wsj[2]] = i;
-                wsj[2]++;
-            }
-            else if (ItemObjNew[i][ITEM_DATA_INDEX_KIND] == 61 && IsMatchJobRestrict(i, n_A_JOB) == true) {
-                workB[3][wsj[3]] = i;
-                wsj[3]++;
-            }
-            else if (ItemObjNew[i][ITEM_DATA_INDEX_KIND] == 60 && IsMatchJobRestrict(i, n_A_JOB) == true) {
-                workB[4][wsj[4]] = i;
-                wsj[4]++;
-            }
-            else if (ItemObjNew[i][ITEM_DATA_INDEX_KIND] == 62 && IsMatchJobRestrict(i, n_A_JOB) == true) {
-                workB[5][wsj[5]] = i;
-                wsj[5]++;
-            }
-            else if (ItemObjNew[i][ITEM_DATA_INDEX_KIND] == 63 && IsMatchJobRestrict(i, n_A_JOB) == true) {
-                workB[6][wsj[6]] = i;
-                wsj[6]++;
-            }
-            else if (ItemObjNew[i][ITEM_DATA_INDEX_KIND] == 64 && IsMatchJobRestrict(i, n_A_JOB) == true) {
-                workB[7][wsj[7]] = i;
-                wsj[7]++;
-                workB[8][wsj[8]] = i;
-                wsj[8]++;
-            }
-            else if (ItemObjNew[i][ITEM_DATA_INDEX_KIND] == 65 && IsMatchJobRestrict(i, n_A_JOB) == true) {
-                workB[7][wsj[7]] = i;
-                wsj[7]++;
-            }
-            else if (ItemObjNew[i][ITEM_DATA_INDEX_KIND] == 66 && IsMatchJobRestrict(i, n_A_JOB) == true) {
-                workB[8][wsj[8]] = i;
-                wsj[8]++;
-            }
-        }
-        for (i = 0; i <= 8; i++) workB[i][wsj[i]] = "EOF";
-        for (var m = 0; m <= 8; m++) workB[m] = sort(workB[m]);
-        var z = 0;
-        var itemId = 0;
-        var itemName = "";
-
-        for (i = 0; i < wsj[0]; i++) {
-            z = workB[0][i];
-            itemId = ItemObjNew[z][ITEM_DATA_INDEX_ID];
-            itemName = GetFlagAppendedItemName(z);
-            HtmlCreateElementOption(itemId, itemName, A_head1);
-        }
-
-        for (i = 0; i < wsj[1]; i++) {
-            z = workB[1][i];
-            itemId = ItemObjNew[z][ITEM_DATA_INDEX_ID];
-            itemName = GetFlagAppendedItemName(z);
-            HtmlCreateElementOption(itemId, itemName, A_head2);
-        }
-
-        for (i = 0; i < wsj[2]; i++) {
-            z = workB[2][i];
-            itemId = ItemObjNew[z][ITEM_DATA_INDEX_ID];
-            itemName = GetFlagAppendedItemName(z);
-            HtmlCreateElementOption(itemId, itemName, A_head3);
-        }
-
-        for (i = 0; i < wsj[3]; i++) {
-            z = workB[3][i];
-            itemId = ItemObjNew[z][ITEM_DATA_INDEX_ID];
-            itemName = GetFlagAppendedItemName(z);
-            HtmlCreateElementOption(itemId, itemName, A_left);
-        }
-
-        for (i = 0; i < wsj[4]; i++) {
-            z = workB[4][i];
-            itemId = ItemObjNew[z][ITEM_DATA_INDEX_ID];
-            itemName = GetFlagAppendedItemName(z);
-            HtmlCreateElementOption(itemId, itemName, A_body);
-        }
-
-        for (i = 0; i < wsj[5]; i++) {
-            z = workB[5][i];
-            itemId = ItemObjNew[z][ITEM_DATA_INDEX_ID];
-            itemName = GetFlagAppendedItemName(z);
-            HtmlCreateElementOption(itemId, itemName, A_shoulder);
-        }
-
-        for (i = 0; i < wsj[6]; i++) {
-            z = workB[6][i];
-            itemId = ItemObjNew[z][ITEM_DATA_INDEX_ID];
-            itemName = GetFlagAppendedItemName(z);
-            HtmlCreateElementOption(itemId, itemName, A_shoes);
-        }
-
-        for (i = 0; i < wsj[7]; i++) {
-            z = workB[7][i];
-            itemId = ItemObjNew[z][ITEM_DATA_INDEX_ID];
-            itemName = GetFlagAppendedItemName(z);
-            HtmlCreateElementOption(itemId, itemName, A_acces1);
-        }
-
-        for (i = 0; i < wsj[8]; i++) {
-            z = workB[8][i];
-            itemId = ItemObjNew[z][ITEM_DATA_INDEX_ID];
-            itemName = GetFlagAppendedItemName(z);
-            HtmlCreateElementOption(itemId, itemName, A_acces2);
-        }
-    }
-}
-
-
-
-
 
 /************************************************************************************************
  *
