@@ -1182,7 +1182,7 @@ function StAllCalc() {
                             // 攻撃属性は中途半端な対応になっているので、状況を判別して細かく制御する
                             case ITEM_SP_ELEMENTAL:
                             case ITEM_SP_ARMS_ELEMENT:
-                
+
                                 // 移行済みデータでの定義を最初に選定
                                 n_tok[idx] = g_charaDataManager.GetCharaData(MIG_CHARA_MANAGER_ID_MAIN).GetEquipAttackElement();
                                 if (n_tok[idx] === undefined) {
