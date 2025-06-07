@@ -1,3 +1,5 @@
+"use strict";
+
 g_pureStatus = [];
 g_bonusStatus = [];
 
@@ -91,34 +93,32 @@ function RebuildStatusSelect(jobId) {
  */
 function CalcStatusPoint(bIgnoreAutoCalc) {
 
-    with (document.calcForm) {
-        // ベースレベルの自動計算チェックボックスの状態を取得
-        if (BLVauto.checked == 0) {
-            bIgnoreAutoCalc = true;
-        }
-
-        // 職業ＩＤを取得する
-        var jobId = eval(A_JOB.value);
-
-        // ベースレベルを取得する
-        var blvSelected = eval(A_BaseLV.value);
-
-        // ステータス値を取得する
-        var stValSTR = eval(A_STR.value);
-        var stValAGI = eval(A_AGI.value);
-        var stValVIT = eval(A_VIT.value);
-        var stValINT = eval(A_INT.value);
-        var stValDEX = eval(A_DEX.value);
-        var stValLUK = eval(A_LUK.value);
-
-        // 特性ステータス値を取得する
-        var stValPOW = eval(A_POW.value);
-        var stValSTA = eval(A_STA.value);
-        var stValWIS = eval(A_WIS.value);
-        var stValSPL = eval(A_SPL.value);
-        var stValCON = eval(A_CON.value);
-        var stValCRT = eval(A_CRT.value);
+    // ベースレベルの自動計算チェックボックスの状態を取得
+    if (BLVauto.checked == 0) {
+        bIgnoreAutoCalc = true;
     }
+
+    // 職業ＩＤを取得する
+    var jobId = eval(document.calcForm.A_JOB.value);
+
+    // ベースレベルを取得する
+    var blvSelected = eval(document.calcForm.A_BaseLV.value);
+
+    // ステータス値を取得する
+    var stValSTR = eval(document.calcForm.A_STR.value);
+    var stValAGI = eval(document.calcForm.A_AGI.value);
+    var stValVIT = eval(document.calcForm.A_VIT.value);
+    var stValINT = eval(document.calcForm.A_INT.value);
+    var stValDEX = eval(document.calcForm.A_DEX.value);
+    var stValLUK = eval(document.calcForm.A_LUK.value);
+
+    // 特性ステータス値を取得する
+    var stValPOW = eval(document.calcForm.A_POW.value);
+    var stValSTA = eval(document.calcForm.A_STA.value);
+    var stValWIS = eval(document.calcForm.A_WIS.value);
+    var stValSPL = eval(document.calcForm.A_SPL.value);
+    var stValCON = eval(document.calcForm.A_CON.value);
+    var stValCRT = eval(document.calcForm.A_CRT.value);
 
     // 消費ステータスポイントを計算する
     var stPointUsed = 0;
