@@ -1,7 +1,8 @@
 "use strict";
+import * as Foot from "./foot.js";
+import * as HmJob from "../../../ro4/m/js/hmjob.js";
 
-
-function UpdateMobDataHtml(monsterId, mobData) {
+export function UpdateMobDataHtml(monsterId, mobData) {
 
     var idx = 0;
     var val = 0;
@@ -139,7 +140,7 @@ function UpdateMobDataHtml(monsterId, mobData) {
                 if (mobData[MONSTER_DATA_INDEX_RES] === undefined) {
                     continue;
                 }
-                valCur = GetMobRes(mobData);
+                valCur = HmJob.GetMobRes(mobData);
                 valOrg = mobData[paramId];
                 break;
 
@@ -148,7 +149,7 @@ function UpdateMobDataHtml(monsterId, mobData) {
                 if (mobData[MONSTER_DATA_INDEX_MRES] === undefined) {
                     continue;
                 }
-                valCur = GetMobMres(mobData);
+                valCur = HmJob.GetMobMres(mobData);
                 valOrg = mobData[paramId];
                 break;
 
@@ -194,14 +195,14 @@ function UpdateMobDataHtml(monsterId, mobData) {
 
             case MONSTER_DATA_INDEX_DEF_DIV:
                 // 除算ＤＥＦの欄の場合、軽減率を追加表示
-                val = ROUNDDOWN(1000 - ((4000 + mobData[MONSTER_DATA_INDEX_DEF_DIV]) / (4000 + mobData[MONSTER_DATA_INDEX_DEF_DIV] * 10) * 1000)) / 10;
+                val = Foot.ROUNDDOWN(1000 - ((4000 + mobData[MONSTER_DATA_INDEX_DEF_DIV]) / (4000 + mobData[MONSTER_DATA_INDEX_DEF_DIV] * 10) * 1000)) / 10;
                 objText = document.createTextNode(" [" + val + "%]");
                 objSpan.appendChild(objText);
                 break;
 
             case MONSTER_DATA_INDEX_MDEF_DIV:
                 // 除算ＭＤＥＦの欄の場合、軽減率を追加表示
-                val = ROUNDDOWN(1000 - ((4000 + mobData[MONSTER_DATA_INDEX_MDEF_DIV] * 4) / (4000 + mobData[MONSTER_DATA_INDEX_MDEF_DIV] * 40) * 1000)) / 10;
+                val = Foot.ROUNDDOWN(1000 - ((4000 + mobData[MONSTER_DATA_INDEX_MDEF_DIV] * 4) / (4000 + mobData[MONSTER_DATA_INDEX_MDEF_DIV] * 40) * 1000)) / 10;
                 objText = document.createTextNode(" [" + val + "%]");
                 objSpan.appendChild(objText);
                 break;
@@ -209,16 +210,16 @@ function UpdateMobDataHtml(monsterId, mobData) {
             // 特性ステータス対応
             case MONSTER_DATA_INDEX_RES:
                 // 軽減率を追加表示
-                val = GetMobRes(mobData);
-                val = ROUNDDOWN(1000 - ((2000 + val) / (2000 + 5 * val) * 1000)) / 10;
+                val = HmJob.GetMobRes(mobData);
+                val = Foot.ROUNDDOWN(1000 - ((2000 + val) / (2000 + 5 * val) * 1000)) / 10;
                 objText = document.createTextNode(" [" + val + "%]");
                 objSpan.appendChild(objText);
                 break;
 
             case MONSTER_DATA_INDEX_MRES:
                 // 軽減率を追加表示
-                val = GetMobMres(mobData);
-                val = ROUNDDOWN(1000 - ((2000 + val) / (2000 + 5 * val) * 1000)) / 10;
+                val = HmJob.GetMobMres(mobData);
+                val = Foot.ROUNDDOWN(1000 - ((2000 + val) / (2000 + 5 * val) * 1000)) / 10;
                 objText = document.createTextNode(" [" + val + "%]");
                 objSpan.appendChild(objText);
                 break;

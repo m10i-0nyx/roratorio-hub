@@ -1,5 +1,7 @@
-
-
+"use strict";
+import * as Chara from "../../../roro/m/js/chara.js";
+import * as Foot from "../../../roro/m/js/foot.js";
+import * as Head from "./head.js";
 
 //----------------------------------------------------------------
 // オプションリストの種別
@@ -389,7 +391,7 @@ CAttackMethodData.GetSkillIdFromFullId = function (fullId) {
 /**
  * 攻撃手段エリアコンポーネントマネージャクラス.
  */
-function CAttackMethodAreaComponentManager() {
+export function CAttackMethodAreaComponentManager() {
 
 }
 
@@ -475,7 +477,7 @@ CAttackMethodAreaComponentManager.RebuildControls = function () {
     objInput.setAttribute("id", "OBJID_BUTTON_CALC");
     objInput.setAttribute("type", "button");
     objInput.setAttribute("value", "計算する");
-    objInput.addEventListener("click", calc);
+    objInput.addEventListener("click", Head.calc);
 
     //--------------------------------
     // 注意事項部分を生成
@@ -1192,7 +1194,6 @@ CAttackMethodAreaComponentManager.OnChangeCastSimInterval = function () {
     CSaveController.setSettingProp(CSaveDataConst.propNameCastSimInterval, value);
 
     // 再計算する
-    calc();
 };
 
 
@@ -1461,16 +1462,16 @@ CAttackMethodAreaComponentManager.GetEffectiveAttackMethodDataArray = function (
 
     // 使用可能スキル定義のリストを取得
     usableSkillIdArray = new Array().concat(
-        GetEquippedSPListEquip(ITEM_SP_LEARN_SKILL),
-        GetEquippedSPListEquip(ITEM_SP_LEARN_SKILL_LEVEL_UNSPECIFIED),
-        GetEquippedSPListEquip(ITEM_SP_LEARN_SKILL_HIDDEN_DETAIL),
-        GetEquippedSPListCardAndElse(ITEM_SP_LEARN_SKILL),
-        GetEquippedSPListCardAndElse(ITEM_SP_LEARN_SKILL_LEVEL_UNSPECIFIED),
-        GetEquippedSPListCardAndElse(ITEM_SP_LEARN_SKILL_HIDDEN_DETAIL)
+        Foot.GetEquippedSPListEquip(ITEM_SP_LEARN_SKILL),
+        Foot.GetEquippedSPListEquip(ITEM_SP_LEARN_SKILL_LEVEL_UNSPECIFIED),
+        Foot.GetEquippedSPListEquip(ITEM_SP_LEARN_SKILL_HIDDEN_DETAIL),
+        Foot.GetEquippedSPListCardAndElse(ITEM_SP_LEARN_SKILL),
+        Foot.GetEquippedSPListCardAndElse(ITEM_SP_LEARN_SKILL_LEVEL_UNSPECIFIED),
+        Foot.GetEquippedSPListCardAndElse(ITEM_SP_LEARN_SKILL_HIDDEN_DETAIL)
     );
 
     // 攻撃スクロールの追加
-    if (n_A_PassSkill7[15]) {
+    if (Array.isArray(n_A_PassSkill7) && n_A_PassSkill7[15]) {
         usableSkillIdArray = usableSkillIdArray.concat([
             USABEL_SKILL_ID_FIRE_BOLT_5,
             USABEL_SKILL_ID_FIRE_BALL_5,
@@ -1497,7 +1498,7 @@ CAttackMethodAreaComponentManager.GetEffectiveAttackMethodDataArray = function (
     // 四次職支援「攻撃装置有効化」による効果
     // オートスペルだと、遠距離攻撃でも加算されてしまうので、実情に合わなくなる
     // （自身中心に毎秒ダメージなので、遠距離から攻撃している場合、ダメージは入らない）
-    if ((bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_KOGEKI_SOCHI_YUKOKA]) > 0) {
+    if (g_confDataYozi && (bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_KOGEKI_SOCHI_YUKOKA]) > 0) {
         usableSkillIdArray.push(USABEL_SKILL_ID_KOGEKI_SOCHI_YUKOKA_5);
     }
 
@@ -1556,36 +1557,36 @@ CAttackMethodAreaComponentManager.GetEffectiveAttackMethodDataArray = function (
 
     // オートスペルスキル定義のリストを取得
     autoSpellIdArray = new Array().concat(
-        GetEquippedSPValueArrayEquip(ITEM_SP_AUTO_SPELL),
-        GetEquippedSPValueArrayEquip(ITEM_SP_AUTO_SPELL_LEVEL_UNSPECIFIED),
-        GetEquippedSPValueArrayEquip(ITEM_SP_AUTO_SPELL_HIDDEN_DETAIL),
-        GetEquippedSPValueArrayCardAndElse(ITEM_SP_AUTO_SPELL),
-        GetEquippedSPValueArrayCardAndElse(ITEM_SP_AUTO_SPELL_LEVEL_UNSPECIFIED),
-        GetEquippedSPValueArrayCardAndElse(ITEM_SP_AUTO_SPELL_HIDDEN_DETAIL)
+        Foot.GetEquippedSPValueArrayEquip(ITEM_SP_AUTO_SPELL),
+        Foot.GetEquippedSPValueArrayEquip(ITEM_SP_AUTO_SPELL_LEVEL_UNSPECIFIED),
+        Foot.GetEquippedSPValueArrayEquip(ITEM_SP_AUTO_SPELL_HIDDEN_DETAIL),
+        Foot.GetEquippedSPValueArrayCardAndElse(ITEM_SP_AUTO_SPELL),
+        Foot.GetEquippedSPValueArrayCardAndElse(ITEM_SP_AUTO_SPELL_LEVEL_UNSPECIFIED),
+        Foot.GetEquippedSPValueArrayCardAndElse(ITEM_SP_AUTO_SPELL_HIDDEN_DETAIL)
     );
 
     // 特殊条件で追加されるスキルの追加（移行後はおそらく削除可能）
-    if (CardNumSearch(164) && GetHigherJobSeriesID(n_A_JOB) == 9) {
+    if (Chara.CardNumSearch(164) && GetHigherJobSeriesID(n_A_JOB) == 9) {
         autoSpellIdArray.push(95);
     }
 
-    if (CardNumSearch(277) && GetLowerJobSeriesID(n_A_JOB) == 1) {
+    if (Chara.CardNumSearch(277) && GetLowerJobSeriesID(n_A_JOB) == 1) {
         autoSpellIdArray.push(96);
     }
 
-    if (CardNumSearch(707)) {
+    if (Chara.CardNumSearch(707)) {
         autoSpellIdArray.push(167);
     }
 
-    if (EquipNumSearch(1096)) {
+    if (Chara.EquipNumSearch(1096)) {
         autoSpellIdArray.push(108);
     }
 
-    if (EquipNumSearch(2124)) {
+    if (Chara.EquipNumSearch(2124)) {
         autoSpellIdArray.push(154);
     }
 
-    if (EquipNumSearch(2427)) {
+    if (Chara.EquipNumSearch(2427)) {
         autoSpellIdArray.push(163);
         autoSpellIdArray.push(164);
     }
@@ -3461,7 +3462,7 @@ CAttackMethodAreaComponentManager.GetEffectiveAttackMethodDataArraySubExtractOpt
 
 
             //----------------------------------------------------------------
-            // 星帝：紅焔脚
+            // 星帝：紅焰脚
             //----------------------------------------------------------------
             case SKILL_ID_KOEN_KYAKU:
 
@@ -3937,6 +3938,7 @@ CAttackMethodAreaComponentManager.GetEffectiveAttackMethodDataArraySubExtractOpt
             case SKILL_ID_SEKIEN_HOU:
             case SKILL_ID_REIKETSU_HOU:
             case SKILL_ID_RAIDEN_HOU:
+            case SKILL_ID_KINNRYUU_HOU:
             case SKILL_ID_KINNRYUU_HOU:
             case SKILL_ID_ANTEN_HOU:
                 attackMethodOptList = funcCreateOptionList(attackMethodOptList,

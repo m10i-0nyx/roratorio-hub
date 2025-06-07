@@ -1,10 +1,11 @@
 "use strict";
+import * as Chara from "./chara.js";
+import * as Head from "../../../ro4/m/js/head.js";
 
 
 
 
-
-function GetMobDataBasicAttribute(monsterId, mobData) {
+export function GetMobDataBasicAttribute(monsterId, mobData) {
 
     //================================================================================================
     // 基本情報の取得
@@ -183,7 +184,7 @@ function GetMobDataBasicAttribute(monsterId, mobData) {
 
 
 
-function GetMobDataParameters(monsterId, mobData) {
+export function GetMobDataParameters(monsterId, mobData) {
 
     var idx = 0;
 
@@ -318,7 +319,7 @@ function GetMobDataParameters(monsterId, mobData) {
     //----------------------------------------------------------------
     // 「二次職支援　カイト」の効果
     //----------------------------------------------------------------
-    if (g_confDataNizi[CCharaConfNizi.CONF_ID_KAITO]) {
+    if (g_confDataNizi && CCharaConfNizi && (g_confDataNizi[CCharaConfNizi.CONF_ID_KAITO])) {
         mobData[MONSTER_DATA_EXTRA_INDEX_ATK_MIN] = Math.floor(mobData[MONSTER_DATA_EXTRA_INDEX_ATK_MIN] * 500 / 100);
         mobData[MONSTER_DATA_EXTRA_INDEX_ATK_MAX] = Math.floor(mobData[MONSTER_DATA_EXTRA_INDEX_ATK_MAX] * 500 / 100);
     }
@@ -603,10 +604,10 @@ function GetMobDataParameters(monsterId, mobData) {
 
 
 
-    // TODO: これどうしよう
-    B_Original_DEF = mobData[MONSTER_DATA_INDEX_DEF_DIV];
-    B_Total_DEF = mobData[MONSTER_DATA_INDEX_DEF_DIV] + mobData[MONSTER_DATA_EXTRA_INDEX_DEF_MINUS_MIN];
-    B_Total_MDEF = mobData[MONSTER_DATA_INDEX_MDEF_DIV] + mobData[MONSTER_DATA_EXTRA_INDEX_MDEF_MINUS];
+    // TODO: これどうしよう -> 暫定でglobalThis化
+    globalThis.B_Original_DEF = mobData[MONSTER_DATA_INDEX_DEF_DIV];
+    globalThis.B_Total_DEF = mobData[MONSTER_DATA_INDEX_DEF_DIV] + mobData[MONSTER_DATA_EXTRA_INDEX_DEF_MINUS_MIN];
+    globalThis.B_Total_MDEF = mobData[MONSTER_DATA_INDEX_MDEF_DIV] + mobData[MONSTER_DATA_EXTRA_INDEX_MDEF_MINUS];
 
 
 
@@ -685,11 +686,11 @@ function GetMobDataParameters(monsterId, mobData) {
     // 「三次職支援　エクスピアティオ」の効果
     // 「パッシブ持続系　エクスピアティオ」の効果
     //----------------------------------------------------------------
-    if (g_confDataSanzi[CCharaConfSanzi.CONF_ID_EXPIATIO] > 0) {
+    if (g_confDataSanzi && CCharaConfSanzi && (g_confDataSanzi[CCharaConfSanzi.CONF_ID_EXPIATIO] > 0)) {
         wDEF -= 20 * g_confDataSanzi[CCharaConfSanzi.CONF_ID_EXPIATIO];
     }
-    else if (UsedSkillSearch(SKILL_ID_EXPIATIO)) {
-        wDEF -= 20 * UsedSkillSearch(SKILL_ID_EXPIATIO);
+    else if (Head.UsedSkillSearch(SKILL_ID_EXPIATIO)) {
+        wDEF -= 20 * Head.UsedSkillSearch(SKILL_ID_EXPIATIO);
     }
 
     //----------------------------------------------------------------
@@ -1209,7 +1210,7 @@ function GetMobDataParameters(monsterId, mobData) {
     //----------------------------------------------------------------
     // 「カトリーヌ＝ケイロン（ＭＶＰ）カード」の効果
     //----------------------------------------------------------------
-    if (CardNumSearch(CARD_ID_CATHERINE_KARON_MVP)) {
+    if (Chara.CardNumSearch(CARD_ID_CATHERINE_KARON_MVP)) {
         if (mobData[MONSTER_DATA_INDEX_BOSS_TYPE] == MONSTER_BOSSTYPE_NONE) {
             mobData[MONSTER_DATA_INDEX_MDEF_DIV] = 0;
         }
@@ -1218,7 +1219,7 @@ function GetMobDataParameters(monsterId, mobData) {
     //----------------------------------------------------------------
     // 「悪魔祓いの書」の追加発動効果
     //----------------------------------------------------------------
-    if (TimeItemNumSearch(69)) {
+    if (Chara.TimeItemNumSearch(69)) {
         mobData[MONSTER_DATA_INDEX_MDEF_DIV] = 0;
     }
 
@@ -1240,7 +1241,7 @@ function GetMobDataParameters(monsterId, mobData) {
     //----------------------------------------------------------------
     // 「カトリーヌ＝ケイロン（ＭＶＰ）カード」の効果
     //----------------------------------------------------------------
-    if (CardNumSearch(CARD_ID_CATHERINE_KARON_MVP)) {
+    if (Chara.CardNumSearch(CARD_ID_CATHERINE_KARON_MVP)) {
         if (mobData[MONSTER_DATA_INDEX_BOSS_TYPE] == MONSTER_BOSSTYPE_NONE) {
             mobData[MONSTER_DATA_EXTRA_INDEX_MDEF_MINUS] = 0;
         }
@@ -1249,7 +1250,7 @@ function GetMobDataParameters(monsterId, mobData) {
     //----------------------------------------------------------------
     // 「悪魔祓いの書」の追加発動効果
     //----------------------------------------------------------------
-    if (TimeItemNumSearch(69)) {
+    if (Chara.TimeItemNumSearch(69)) {
         mobData[MONSTER_DATA_EXTRA_INDEX_MDEF_MINUS] = 0;
     }
 
@@ -1508,7 +1509,7 @@ function GetMobDataParameters(monsterId, mobData) {
     //----------------------------------------------------------------
     // 「一次職支援　マーダラーボーナス」の効果
     //----------------------------------------------------------------
-    if (g_confDataIchizi[CCharaConfIchizi.CONF_ID_MARDERER_BONUS]) {
+    if (g_confDataIchizi && CCharaConfIchizi && (g_confDataIchizi[CCharaConfIchizi.CONF_ID_MARDERER_BONUS])) {
         wAllExp += 100;
     }
 
@@ -1517,8 +1518,9 @@ function GetMobDataParameters(monsterId, mobData) {
     // 「対プレイヤー設定　戦闘エリア」の「Urdr」における効果
     // 「一次職支援　マーダラーボーナス」の効果
     //----------------------------------------------------------------
-    if (n_B_TAISEI[MOB_CONF_PLAYER_ID_SENTO_AREA] == MOB_CONF_PLAYER_ID_SENTO_AREA_URDR
-        || g_confDataIchizi[CCharaConfIchizi.CONF_ID_MARDERER_BONUS]) {
+    if (g_confDataIchizi && CCharaConfIchizi
+        && (n_B_TAISEI[MOB_CONF_PLAYER_ID_SENTO_AREA] == MOB_CONF_PLAYER_ID_SENTO_AREA_URDR
+            || g_confDataIchizi[CCharaConfIchizi.CONF_ID_MARDERER_BONUS])) {
         wAllExp = wAllExp * 2;
         wJobExp = wJobExp * 2;
     }

@@ -1,7 +1,7 @@
+import { GetFlagAppendedCardName } from "./equip.js";
 
 
-
-CardShortObj = [
+globalThis.CardShortObj = [
     [
         "カードショートカット",
         0,
@@ -323,7 +323,7 @@ CardShortObj = [
  *-----------------------------------------------------------------------------------------------
  * @return なし
  ************************************************************************************************/
-function ClearCardSlotAll() {
+export function ClearCardSlotAll() {
 
     // 個別関数を全コール
     ClearCardSlot(EQUIP_REGION_ID_ARMS);
@@ -348,7 +348,7 @@ function ClearCardSlotAll() {
  *-----------------------------------------------------------------------------------------------
  * @return なし
  ************************************************************************************************/
-function ClearCardSlot(eqpRgnId) {
+export function ClearCardSlot(eqpRgnId) {
 
     var objidPrifix = "";
     var idxArrayToClear = new Array();
@@ -490,7 +490,7 @@ function __ClearCardSlot(objidPrifix, idxArrayToClear) {
  * @param itemId 変更後のアイテムＩＤ
  *-----------------------------------------------------------------------------------------------
  ************************************************************************************************/
-function RebuildCardSelect(eqpRgnId, itemId) {
+export function RebuildCardSelect(eqpRgnId, itemId) {
 
     var objidPrifix = "";
     var objSelect = null;
@@ -1348,7 +1348,7 @@ function BuildUpCardSlotsMIG(eqpRgnId, itemId, enchInfoArray, objArySlots) {
 /**
  * カードスロットの使用可否を設定する.
  */
-function SetCardSlotEnabilityAll() {
+export function SetCardSlotEnabilityAll() {
 
     // 個別関数を全コール
     SetCardSlotEnability(EQUIP_REGION_ID_ARMS);
@@ -1369,7 +1369,7 @@ function SetCardSlotEnabilityAll() {
  * @param {*} eqpRgnId
  * @returns
  */
-function SetCardSlotEnability(eqpRgnId) {
+export function SetCardSlotEnability(eqpRgnId) {
     var strObjIdPrifix = "";
     var idx = 0;
     var strObjId = "";

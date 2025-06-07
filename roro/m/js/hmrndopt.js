@@ -1,4 +1,5 @@
-
+"use strict";
+import * as Foot from "./foot.js";
 
 
 function GetObjectPrefixRndOpt(eqpRgnId) {
@@ -9,7 +10,7 @@ function GetObjectIdRndOptKindTD(eqpRgnId, slotIndex) {
     return GetObjectPrefixRndOpt(eqpRgnId) + "_RNDOPT_KIND_TD_" + slotIndex;
 }
 
-function GetObjectIdRndOptKind(eqpRgnId, slotIndex) {
+export function GetObjectIdRndOptKind(eqpRgnId, slotIndex) {
     return GetObjectPrefixRndOpt(eqpRgnId) + "_RNDOPT_KIND_" + slotIndex;
 }
 
@@ -17,7 +18,7 @@ function GetObjectIdRndOptValueTD(eqpRgnId, slotIndex) {
     return GetObjectPrefixRndOpt(eqpRgnId) + "_RNDOPT_VALUE_TD_" + slotIndex;
 }
 
-function GetObjectIdRndOptValue(eqpRgnId, slotIndex) {
+export function GetObjectIdRndOptValue(eqpRgnId, slotIndex) {
     return GetObjectPrefixRndOpt(eqpRgnId) + "_RNDOPT_VALUE_" + slotIndex;
 }
 
@@ -336,7 +337,7 @@ function OnChangeRndOptKind(eqpRgnId, slotIndex) {
  *-----------------------------------------------------------------------------------------------
  * @return なし
  ************************************************************************************************/
-function ClearRndOptSelectAll() {
+export function ClearRndOptSelectAll() {
 
     // 個別関数を全コール
     ClearRndOptSelect(EQUIP_REGION_ID_ARMS);
@@ -512,7 +513,7 @@ function SetObjectUsable(objTarget, enabled) {
 
 
 
-function GetRndOptTotalValue(spid, invalidItemIdArray, bListUp) {
+export function GetRndOptTotalValue(spid, invalidItemIdArray, bListUp) {
 
     var spVal = 0;
     var listUpArray = new Array();
@@ -610,6 +611,7 @@ function GetRndOptValue(eqpRgnId, spid, invalidItemIdArray, bListUp) {
 
     var spVal = 0;
     var listUpArray = new Array();
+    var spDefValue;
 
 
 
@@ -688,7 +690,7 @@ function GetRndOptValue(eqpRgnId, spid, invalidItemIdArray, bListUp) {
         spDefValue = rndOptValue;
 
         // ＳＰ定義ＩＤが一致しない場合は、次へ
-        if (!IsMatchSpDefId(spDefRemain, spid)) {
+        if (!Foot.IsMatchSpDefId(spDefRemain, spid)) {
             continue;
         }
 

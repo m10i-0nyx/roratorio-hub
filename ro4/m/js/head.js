@@ -1,4 +1,6 @@
 "use strict";
+import * as Chara from "../../../roro/m/js/chara.js";
+import * as Foot from "../../../roro/m/js/foot.js";
 
 // データ収集用
 // バトルデータインデックス
@@ -64,53 +66,53 @@ CGlobalConstManager.DefineEnum(
     1
 );
 /** セーブデータ配列. 既に使われていない可能性有り */
-let SaveDataAll = new Array();
+globalThis.SaveDataAll = new Array();
 for (var i = 0; i <= 19; i++) SaveDataAll[i] = "ZZZZ";
 /** セーブデータ名配列. 既に使われていない可能性有り */
-let SaveNameAll = new Array();
+globalThis.SaveNameAll = new Array();
 for (var i = 0; i <= 500; i++) SaveNameAll[i] = "ZZZZ";
 /** シーズモードフラグ */
-let n_SiegeMode = false;
+globalThis.n_SiegeMode = false;
 /** BaseLv */
-let n_A_BaseLV = 1;
+globalThis.n_A_BaseLV = 1;
 /** 遠距離フラグ. CSkillData.RANGE_SHORT | CSkillData.RANGE_LONG | CSkillData.RANGE_MAGIC | CSkillData.RANGE_SPECIAL */
-let n_Enekyori = false;
+globalThis.n_Enekyori = false;
 /** 天帝 天気の状態 正午 */
-let state_shougo = 0;
+globalThis.state_shougo = 0;
 /** 天帝 天気の状態 月出 */
-let state_tukidashi = 0;
+globalThis.state_tukidashi = 0;
 /** 天帝 天気の状態 日出 */
-let state_hinode = 0;
+globalThis.state_hinode = 0;
 /** 天帝 天気の状態 月星 */
-let state_tukibotsu = 0;
+globalThis.state_tukibotsu = 0;
 /** 天帝 天気の状態 日没 */
-let state_nichibotsu = 0;
+globalThis.state_nichibotsu = 0;
 /** 天帝 天気の状態 天気の身 */
-let state_tenki_no_mi = 0;
+globalThis.state_tenki_no_mi = 0;
 /** パッシブ持続系 ウィンドウ可視状態 */
-let n_Skill1SW = false;
+globalThis.n_Skill1SW = false;
 /** 演奏・踊り系スキル ウィンドウ可視状態 */
-let n_Skill3SW = false;
+globalThis.n_Skill3SW = false;
 /** ギルドスキル/ゴスペル/他 ウィンドウ可視状態 */
-let n_Skill4SW = false;
+globalThis.n_Skill4SW = false;
 /** アイテム・食品他 ウィンドウ可視状態 */
-let n_Skill7SW = false;
+globalThis.n_Skill7SW = false;
 /** その他の支援/設定 ウィンドウ可視状態 */
-let n_Skill8SW = false;
+globalThis.n_Skill8SW = false;
 /** 演奏・踊り系スキル スイッチ状態配列 */
-let SWs3sw = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+globalThis.SWs3sw = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 /** レックスエーテルナの計算に係るフラグ. 解析不足でロジックが追えてない. */
-let wLAch = false;
+globalThis.wLAch = false;
 /** 三段掌に遠距離ダメージUPを適用するフラグ */
-let TyouEnkakuSousa3dan = true;
+globalThis.TyouEnkakuSousa3dan = true;
 /** 計算結果の補足文字列. 既に使われていない可能性がある */
-let str_bSUBname = "";
+globalThis.str_bSUBname = "";
 /** 計算結果の補足文字列. 既に使われていない可能性がある */
-let str_bSUB = "";
+globalThis.str_bSUB = "";
 /** 詠唱短縮が無視されるフラグ */
-let cast_kotei = false;
+globalThis.cast_kotei = false;
 /** 必中ダメージ. 號砲 などの計算式に含まれるもの */
-let n_PerfectHIT_DMG = 0;
+globalThis.n_PerfectHIT_DMG = 0;
 /**
  * n_Delay[0]=攻撃間隔判定不能フラグ
  * n_Delay[1]=モーションディレイ
@@ -120,166 +122,166 @@ let n_PerfectHIT_DMG = 0;
  * n_Delay[5]=設置ダメージ発生間隔
  * n_Delay[6]=持続時間
  * n_Delay[7]=クールタイム */
-let n_Delay = [0, 0, 0, 0, 0, 0, 0, 0];
+globalThis.n_Delay = [0, 0, 0, 0, 0, 0, 0, 0];
 /** 最終的なディレイの値. n_Delay 配列の中で最も大きい値が格納される */
-let wDelay = 0;
+globalThis.wDelay = 0;
 /** 固定詠唱 */
-let n_KoteiCast = 0;
+globalThis.n_KoteiCast = 0;
 /** 変動詠唱 */
-let wCast = 0;
+globalThis.wCast = 0;
 /** スキル倍率％ */
-let wbairitu = 100;
+globalThis.wbairitu = 100;
 /** スキルID */
-let n_A_ActiveSkill = null;
+globalThis.n_A_ActiveSkill = null;
 /** スキルLv */
-let n_A_ActiveSkillLV = null;
+globalThis.n_A_ActiveSkillLV = null;
 /** アイテムSPの効果量を収める配列. ITEM_SP_XXX を添え字にして要素にアクセスする. */
-let n_tok = new Array();
+globalThis.n_tok = new Array();
 /** アイテムSPの効果量を収める配列. n_tok と違って耐性上限の 95 を超えて効果量を格納出来る. */
-let n_tok_no_limit = new Array();
+globalThis.n_tok_no_limit = new Array();
 for (var i = 0; i <= 450; i++) {
-    n_tok[i] = 0;
-    n_tok_no_limit[i] = 0;
+    globalThis.n_tok[i] = 0;
+    globalThis.n_tok_no_limit[i] = 0;
 }
 /** equip.js の古い関数内部で使われていた変数. 削除候補 */
-let first_check = 0;
+globalThis.first_check = 0;
 /** 必中ダメージ */
-let str_PerfectHIT_DMG = 0;
+globalThis.str_PerfectHIT_DMG = 0;
 /** ダメージ配列 */
-let w_DMG = [0, 0, 0];
+globalThis.w_DMG = [0, 0, 0];
 /** ダメージ配列 */
-let Last_DMG_A = [0, 0, 0];
+globalThis.Last_DMG_A = [0, 0, 0];
 /** ダメージ配列 */
-let Last_DMG_B = [0, 0, 0];
+globalThis.Last_DMG_B = [0, 0, 0];
 /** スキル使用条件判定フラグ 武器種 */
-let n_Buki_Muri = false;
+globalThis.n_Buki_Muri = false;
 /** ダメージ判定無しフラグ */
-let g_bSkillNoDamage = false;
+globalThis.g_bSkillNoDamage = false;
 /** ヒールを攻撃スキルとして使用する場合の MATK */
-let n_Heal_MATK = [0, 0, 0];
+globalThis.n_Heal_MATK = [0, 0, 0];
 /** MDEF計算モードフラグ. 一部の魔法では除算MDEFが除算として機能しない */
-let directSubtractionMdef = false;
+globalThis.directSubtractionMdef = false;
 /** オートスペルフラグ */
-let n_AS_MODE = false;
+globalThis.n_AS_MODE = false;
 /** 命中率. オートスペル計算用 */
-let n_AS_HIT = 0;
+globalThis.n_AS_HIT = 0;
 /** 武器属性 */
-let BK_Weapon_zokusei = 0;
+globalThis.BK_Weapon_zokusei = 0;
 /** 攻撃手段のオプション値 */
-let option_count = 0;
+globalThis.option_count = 0;
 /** 三段掌の使用フラグ. オートスペル計算用. true がセットされる場面が無いので削除候補 */
-let n_AS_check_3dan = false;
+globalThis.n_AS_check_3dan = false;
 /** 固定詠唱減少値 */
-let n_A_Kotei_Cast_Keigen = 0;
+globalThis.n_A_Kotei_Cast_Keigen = 0;
 /** ダメージ配列. デスバウンド用 */
-let n_DEATH_BOUND = [0, 0, 0, 0];
+globalThis.n_DEATH_BOUND = [0, 0, 0, 0];
 /** 計算機設定. index = 2 のセーブデータ数しか使われていない. 削除候補 */
-let n_CONFIG = [0, 33, 19];
+globalThis.n_CONFIG = [0, 33, 19];
 /** 対象の除算DEF */
-let B_Total_DEF = 0;
+globalThis.B_Total_DEF = 0;
 /** 対象の除算MDEF */
-let B_Total_MDEF = 0;
+globalThis.B_Total_MDEF = 0;
 /** オートスペルに関連して所要攻撃回数を計算するための中間変数. */
-let w_DMG_AS_OverHP = 0;
+globalThis.w_DMG_AS_OverHP = 0;
 /** ダメージ配列 */
-let n_A_DMG = [0, 0, 0];
+globalThis.n_A_DMG = [0, 0, 0];
 /** ダメージ配列. 変数名と裏腹にアースクエイク計算で使われている */
-let n_A_DMG_GX = [0, 0, 0];
+globalThis.n_A_DMG_GX = [0, 0, 0];
 /** ダメージ配列. アースクエイク専用 */
-let n_A_DMG_QUAKE = [0, 0, 0];
+globalThis.n_A_DMG_QUAKE = [0, 0, 0];
 /** ダメージ配列. ウォーグ専用 */
-let BK_n_A_DMG_Wolf = [0, 0, 0];
+globalThis.BK_n_A_DMG_Wolf = [0, 0, 0];
 /** ダメージ配列 オートスペル専用 */
-let BK_n_A_DMG2 = [0, 0, 0];
+globalThis.BK_n_A_DMG2 = [0, 0, 0];
 /** 錐効果の値 */
-let n_A_QUAKE_KIRI = 0;
+globalThis.n_A_QUAKE_KIRI = 0;
 /** グランドクロスの反動ダメージ計算フラグ */
-let n_A_GX_HANDO = false;
+globalThis.n_A_GX_HANDO = false;
 /** ヒット数 特殊計算用 */
-let SG_Special_HITnum = 0;
+globalThis.SG_Special_HITnum = 0;
 /** ヒット数 */
-let wHITsuu = 0;
+globalThis.wHITsuu = 0;
 /** 分割ヒット数 */
-let wActiveHitNum = 0;
+globalThis.wActiveHitNum = 0;
 /** 分割ヒットフラグ */
-let n_bunkatuHIT = 0;
+globalThis.n_bunkatuHIT = 0;
 /** ダメージ配列 特殊計算用 */
-let SG_Special_DMG = [0, 0, 0];
+globalThis.SG_Special_DMG = [0, 0, 0];
 /** セットされている矢の種類. 種類定数は arrow.dat.js で定義されている*/
-let n_A_Arrow = 0;
+globalThis.n_A_Arrow = 0;
 /** セットされているカードの数 */
-let cardCount = 0;
+globalThis.cardCount = 0;
 /** ディレイ減少値 */
-let delayDownForDisp = 0;
+globalThis.delayDownForDisp = 0;
 /** ASPD 小数点第ニ位を切り捨てる前の値 */
-let aspdRaw = 0;
+globalThis.aspdRaw = 0;
 /** ダメージ表示部のテキスト配列（最小、平均、最大）. 旧 InnStr での組み立てから、３桁区切り対応で部分改造 */
-let g_damageTextArray = [[], [], []];
+globalThis.g_damageTextArray = [[], [], []];
 /** ヒット数配列 */
-let g_wHITsuu_Array = null;
+globalThis.g_wHITsuu_Array = null;
 /** 必中効果の発動率 */
-let g_perfectHitRate = 0;
+globalThis.g_perfectHitRate = 0;
 /** 詠唱時間不明フラグ */
-let g_bUnknownCasts = false;
+globalThis.g_bUnknownCasts = false;
 /** 設置スキルフラグ */
-let g_bDefinedDamageIntervals = false;
+globalThis.g_bDefinedDamageIntervals = false;
 /** 命中率 */
-let w_HIT = 0;
+globalThis.w_HIT = 0;
 /** 命中率　表示文字列 */
-let w_HIT_HYOUJI = 0;
+globalThis.w_HIT_HYOUJI = 0;
 /** クリティカル率 */
-let w_Cri = 0;
+globalThis.w_Cri = 0;
 /** 回避率 */
-let w_FLEE = 0;
+globalThis.w_FLEE = 0;
 /** 装備しているアイテム数　右手 */
-let itemCountRight = 0;
+globalThis.itemCountRight = 0;
 /** 装備しているアイテム数　左手 */
-let itemCountLeft = 0;
+globalThis.itemCountLeft = 0;
 /** サイズ補正値 */
-let wCSize = 0;
+globalThis.wCSize = 0;
 /** 武器種に応じて参照されるステータス STR or DEX */
-let w_STRDEX = 0;
+globalThis.w_STRDEX = 0;
 /** クリティカル発生時のATK */
-let n_A_CriATK = 0;
+globalThis.n_A_CriATK = 0;
 /** 追加ダメージ計算フラグ */
-let g_appliedAppendDamage = false;
+globalThis.g_appliedAppendDamage = false;
 /** 変動詠唱 計算用一時変数 */
-let g_wCastTemp = null;
+globalThis.g_wCastTemp = null;
 /** 固定詠唱 計算用一時変数 */
-let g_wCastFixedTemp = null;
+globalThis.g_wCastFixedTemp = null;
 /** 攻撃間隔 計算用一時変数 */
-let g_attackIntervalTemp = null;
+globalThis.g_attackIntervalTemp = null;
 /** 攻撃回数 */
-let g_AttackCount = [0, 0, 0];
+globalThis.g_AttackCount = [0, 0, 0];
 /** DPS */
-let g_dps = 0;
+globalThis.g_dps = 0;
 /** 被ダメージ */
-let w_HiDam = [];
+globalThis.w_HiDam = [];
 /** 被ダメージ */
-let wRef1 = [];
+globalThis.wRef1 = [];
 /** 被ダメージ */
-let wRef2 = [];
+globalThis.wRef2 = [];
 /** 被ダメージ */
-let wRef3 = [];
+globalThis.wRef3 = [];
 /** 被ダメージ　平均値 */
-let g_receiveDamageAverage = 0;
+globalThis.g_receiveDamageAverage = 0;
 /** 被ダメージ　回避率などを考慮した値 */
-let g_receiveDamageAvoids = 0;
+globalThis.g_receiveDamageAvoids = 0;
 /** 属性耐性　上限95 */
-let resistValueArray = [];
+globalThis.resistValueArray = [];
 /** 属性耐性　上限95を超えて格納出来る配列 */
-let resistValueArrayOver = 0;
+globalThis.resistValueArrayOver = 0;
 /** 属性倍率 */
-let bodyElmRatioArray = 0;
+globalThis.bodyElmRatioArray = 0;
 /** 属性倍率　耐性を考慮した最終的な値 */
-let finalRatioArray = 0;
+globalThis.finalRatioArray = 0;
 
 /** 変動詠唱 0 を達成するために必要な DEX */
-const CAST_PARAM_BORDER = 265;
+export const CAST_PARAM_BORDER = 265;
 /** オートガードによるダメージ減衰率 */
-const w_AG = [100, 95, 90, 86, 82, 79, 76, 74, 72, 71, 70];
+export const w_AG = [100, 95, 90, 86, 82, 79, 76, 74, 72, 71, 70];
 /** 属性配列 */
-const mostEffectiveElmIdArray = [
+export const mostEffectiveElmIdArray = [
     ELM_ID_VANITY,
     ELM_ID_WIND,
     ELM_ID_FIRE,
@@ -292,47 +294,47 @@ const mostEffectiveElmIdArray = [
     ELM_ID_HOLY,
 ];
 /** 手裏剣の種類 */
-const SyurikenOBJ = [[10, 0, "手裏剣"], [30, 0, "雨雲の手裏剣"], [45, 0, "閃光の手裏剣"], [70, 0, "鋭刃の手裏剣"], [100, 0, "棘針の手裏剣"], [110, 0, "星ヒトデ"]];
+export const SyurikenOBJ = [[10, 0, "手裏剣"], [30, 0, "雨雲の手裏剣"], [45, 0, "閃光の手裏剣"], [70, 0, "鋭刃の手裏剣"], [100, 0, "棘針の手裏剣"], [110, 0, "星ヒトデ"]];
 /** 苦無の種類 */
-const KunaiOBJ = [[30, 3, "烈火の苦無"], [30, 1, "氷柱の苦無"], [30, 4, "狂風の苦無"], [30, 2, "黒土の苦無"], [30, 5, "猛毒の苦無"], [50, 0, "スルメイカ"], [50, 0, "トビウオ"]];
+export const KunaiOBJ = [[30, 3, "烈火の苦無"], [30, 1, "氷柱の苦無"], [30, 4, "狂風の苦無"], [30, 2, "黒土の苦無"], [30, 5, "猛毒の苦無"], [50, 0, "スルメイカ"], [50, 0, "トビウオ"]];
 /** キャノンボールの種類 */
-const CanonOBJ = [[100, 0, "キャノンボール"], [250, 0, "アイアンキャノンボール"], [120, 6, "ホーリーキャノンボール"], [120, 7, "ダークキャノンボール"], [120, 8, "ソウルキャノンボール"], [120, ELM_ID_WATER, "アイスキャノンボール"], [120, ELM_ID_EARTH, "ストーンキャノンボール"], [120, ELM_ID_FIRE, "フレアキャノンボール"], [120, ELM_ID_WIND, "ライトニングキャノンボール"]];
+export const CanonOBJ = [[100, 0, "キャノンボール"], [250, 0, "アイアンキャノンボール"], [120, 6, "ホーリーキャノンボール"], [120, 7, "ダークキャノンボール"], [120, 8, "ソウルキャノンボール"], [120, ELM_ID_WATER, "アイスキャノンボール"], [120, ELM_ID_EARTH, "ストーンキャノンボール"], [120, ELM_ID_FIRE, "フレアキャノンボール"], [120, ELM_ID_WIND, "ライトニングキャノンボール"]];
 /** 文字列定数 */
-const SubName = ["％", "秒", "ダメージ", "クリティカルダメージ", "クリティカル(発動率)", "10000回以上", "計測不能", "計算外", "×", "詠唱時間", "なし", "あり"];
+export const SubName = ["％", "秒", "ダメージ", "クリティカルダメージ", "クリティカル(発動率)", "10000回以上", "計測不能", "計算外", "×", "詠唱時間", "なし", "あり"];
 /** シールドスペル：ATK加算値 */
-const n_SieldSpDum = ["off", "on", 20, 35, 40, 50, 60, 75, 80, 85, 90, 95, 98, 100, 105, 110, 120, 130, 140, 150, 170];
+export const n_SieldSpDum = ["off", "on", 20, 35, 40, 50, 60, 75, 80, 85, 90, 95, 98, 100, 105, 110, 120, 130, 140, 150, 170];
 /** シールドスペル：ATK加算値（これは順序が違うので注意）*/
-const n_SieldSp = ["off", "on", 20, 35, 40, 50, 60, 75, 80, 85, 90, 95, 98, 105, 110, 120, 130, 150, 100, 140, 170];
+export const n_SieldSp = ["off", "on", 20, 35, 40, 50, 60, 75, 80, 85, 90, 95, 98, 105, 110, 120, 130, 150, 100, 140, 170];
 /** シールドスペル：順序が違う配列を並び替えるために使われる index 値 */
-const n_SieldSpNum = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 18, 13, 14, 15, 16, 19, 17, 20];
+export const n_SieldSpNum = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 18, 13, 14, 15, 16, 19, 17, 20];
 /** 修練が乗らないスキルID */
-const n_SP_SKILL = [66, 159, 162, 193, 197, 244, 248, 263, 321, 324, 328, 384, 394, 395, 405, 423, 432, 438, 554, 669, 723, 738, 768, 769, 810, SKILL_ID_ZYURYOKU_CHOSE];
+export const n_SP_SKILL = [66, 159, 162, 193, 197, 244, 248, 263, 321, 324, 328, 384, 394, 395, 405, 423, 432, 438, 554, 669, 723, 738, 768, 769, 810, SKILL_ID_ZYURYOKU_CHOSE];
 /** 回復スキル種類：ヒール */
-const HEALTYPE_HEAL = 0;
+export const HEALTYPE_HEAL = 0;
 /** 回復スキル種類：ハイネスヒール */
-const HEALTYPE_HIGHNESS = 1;
+export const HEALTYPE_HIGHNESS = 1;
 /** 回復スキル種類：サンクチュアリ */
-const HEALTYPE_SANCTUARY = 2;
+export const HEALTYPE_SANCTUARY = 2;
 /** 回復スキル種類：新鮮なエビ */
-const HEALTYPE_SHINSENNA_EBI = 3;
+export const HEALTYPE_SHINSENNA_EBI = 3;
 /** 回復スキル種類：エビ三昧 */
-const HEALTYPE_EBI_ZANMAI = 4;
+export const HEALTYPE_EBI_ZANMAI = 4;
 /** 回復スキル種類：コルセオヒール */
-const HEALTYPE_COLUCEO_HEAL = 5;
+export const HEALTYPE_COLUCEO_HEAL = 5;
 /** 回復スキル種類：ディレクティオヒール */
-const HEALTYPE_DILECTIO_HEAL = 6;
+export const HEALTYPE_DILECTIO_HEAL = 6;
 /** 回復スキル種類：タートルスプリンクラー */
-const HEALTYPE_TURTLE_SPRINKLER = 7;
+export const HEALTYPE_TURTLE_SPRINKLER = 7;
 /** 回復スキル種類：守護符 */
-const HEALTYPE_SHUGO_FU = 8;
+export const HEALTYPE_SHUGO_FU = 8;
 /** 回復スキル種類：城隍堂 */
-const HEALTYPE_ZYOKODO = 9;
+export const HEALTYPE_ZYOKODO = 9;
 /** 回復スキル対象：自分 */
-const HEAL_TARGETTYPE_SELF = 0;
+export const HEAL_TARGETTYPE_SELF = 0;
 /** 回復スキル対象：他人 */
-const HEAL_TARGETTYPE_PLAYER = 1;
+export const HEAL_TARGETTYPE_PLAYER = 1;
 /** 回復スキル対象：モンスター */
-const HEAL_TARGETTYPE_ENEMY = 2;
+export const HEAL_TARGETTYPE_ENEMY = 2;
 
 /**
  * ダメージ計算本体　エントリ関数.
@@ -1117,13 +1119,13 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
             case SKILL_ID_SONIC_BLOW_TAMASHI:
                 wActiveHitNum = 8;
                 wbairitu = 400 + 40 * n_A_ActiveSkillLV;
-                if (UsedSkillSearch(SKILL_ID_ENCHANT_DEADLY_POISON)) wbairitu = ROUNDDOWN(wbairitu / 2);
+                if (UsedSkillSearch(SKILL_ID_ENCHANT_DEADLY_POISON)) wbairitu = Foot.ROUNDDOWN(wbairitu / 2);
                 n_Delay[3] = 2;
                 if (n_A_ActiveSkill == SKILL_ID_SONIC_BLOW_TAMASHI) {
                     if (n_SiegeMode) {
-                        wbairitu = ROUNDDOWN(wbairitu * 1.25);
+                        wbairitu = Foot.ROUNDDOWN(wbairitu * 1.25);
                     } else {
-                        wbairitu = ROUNDDOWN(wbairitu * 2);
+                        wbairitu = Foot.ROUNDDOWN(wbairitu * 2);
                         n_Delay[3] = 1;
                     }
                 }
@@ -1211,7 +1213,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 break;
 
             case SKILL_ID_RENCHUHOGEKI:
-                wActiveHitNum = ROUNDDOWN((n_A_ActiveSkillLV + 1) / 2);
+                wActiveHitNum = Foot.ROUNDDOWN((n_A_ActiveSkillLV + 1) / 2);
                 n_Delay[0] = 1;
                 wbairitu += (300 + 100 * n_A_ActiveSkillLV);
                 if (n_A_ActiveSkillLV >= 6) n_Delay[2] = 1000;
@@ -1422,13 +1424,13 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 n_Delay[2] = 500;
                 n_Delay[7] = 2500 - 500 * n_A_ActiveSkillLV;
                 wbairitu = 100 + 50 * n_A_ActiveSkillLV;
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
                 break;
 
             case SKILL_ID_PHANTOM_SLAST:	// ファントムスラスト
                 n_Enekyori = 1;
                 wbairitu = 50 * n_A_ActiveSkillLV + 10 * Math.max(LearnedSkillSearch(SKILL_ID_YARI_SHUREN), UsedSkillSearch(SKILL_ID_YARI_SHUREN));
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 150);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 150);
                 break;
 
             case SKILL_ID_IGNITION_BREAK:
@@ -1437,7 +1439,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 if (w == 0) wbairitu = 300 * n_A_ActiveSkillLV;
                 if (w == 1) wbairitu = 250 * n_A_ActiveSkillLV;
                 if (w == 2) wbairitu = 200 * n_A_ActiveSkillLV;
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
                 if (attackMethodConfArray[0].GetOptionValue(1) == 1) wbairitu -= 1;
                 if (BK_Weapon_zokusei == 3) wbairitu += 100 * n_A_ActiveSkillLV;
                 break;
@@ -1448,7 +1450,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 n_KoteiCast = 1000;
                 n_Delay[7] = 8000;
                 const rune_mastery = Math.max(LearnedSkillSearch(SKILL_ID_RUNE_MASTERY), UsedSkillSearch(SKILL_ID_RUNE_MASTERY));
-                wbairitu = 100 * rune_mastery + ROUNDDOWN(n_A_INT / 8) * 100;
+                wbairitu = 100 * rune_mastery + Foot.ROUNDDOWN(n_A_INT / 8) * 100;
                 break;
             }
             case SKILL_ID_CROSS_IMPACT:
@@ -1456,8 +1458,8 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 n_Delay[0] = 2;
                 n_Delay[2] = 3000 - 500 * n_A_ActiveSkillLV;
                 wbairitu = 1000 + 100 * n_A_ActiveSkillLV;
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 120);
-                if (UsedSkillSearch(SKILL_ID_ENCHANT_DEADLY_POISON)) wbairitu = ROUNDDOWN(wbairitu / 2);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 120);
+                if (UsedSkillSearch(SKILL_ID_ENCHANT_DEADLY_POISON)) wbairitu = Foot.ROUNDDOWN(wbairitu / 2);
                 break;
 
             case SKILL_ID_DARK_ILLUSION:
@@ -1475,10 +1477,10 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
             case SKILL_ID_COUNTER_SLASH:
                 n_Delay[2] = 2000;
                 wbairitu = 300 + 150 * n_A_ActiveSkillLV;
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 120);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 120);
                 ampWork = (n_A_JOB == MIG_JOB_ID_SHADOW_CROSS) ? GetJobLevelMax(JOB_ID_GILOTINCROSS) : n_A_JobLV;
                 wbairitu += n_A_AGI * 2 + ampWork * 4;
-                if (UsedSkillSearch(SKILL_ID_ENCHANT_DEADLY_POISON)) wbairitu = ROUNDDOWN(wbairitu / 2);
+                if (UsedSkillSearch(SKILL_ID_ENCHANT_DEADLY_POISON)) wbairitu = Foot.ROUNDDOWN(wbairitu / 2);
                 break;
 
             case SKILL_ID_PHANTOM_MENUS:
@@ -1490,8 +1492,8 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
             case SKILL_ID_ROLLING_CUTTER:
                 n_Delay[7] = 200;
                 wbairitu = 50 + 50 * n_A_ActiveSkillLV;
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
-                if (UsedSkillSearch(SKILL_ID_ENCHANT_DEADLY_POISON)) wbairitu = ROUNDDOWN(wbairitu / 2);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
+                if (UsedSkillSearch(SKILL_ID_ENCHANT_DEADLY_POISON)) wbairitu = Foot.ROUNDDOWN(wbairitu / 2);
                 break;
 
             case SKILL_ID_CROSS_RIPPER_SLASHER:
@@ -1499,9 +1501,9 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 n_Delay[0] = 1;
                 n_Delay[2] = 1000;
                 wbairitu = 400 + 80 * n_A_ActiveSkillLV;
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
                 wbairitu += attackMethodConfArray[0].GetOptionValue(0) * n_A_AGI;
-                if (UsedSkillSearch(SKILL_ID_ENCHANT_DEADLY_POISON)) wbairitu = ROUNDDOWN(wbairitu / 2);
+                if (UsedSkillSearch(SKILL_ID_ENCHANT_DEADLY_POISON)) wbairitu = Foot.ROUNDDOWN(wbairitu / 2);
                 break;
 
             case SKILL_ID_ARROW_STORM:
@@ -1511,7 +1513,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 wActiveHitNum = 3;
                 n_Enekyori = 1;
                 wbairitu = 1000 + 80 * n_A_ActiveSkillLV;
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
                 break;
 
             case SKILL_ID_CLUSTER_BOMB:
@@ -1600,7 +1602,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                     if (BK_Weapon_zokusei == 4) wbairitu = wbairitu * 125 / 100;
                 }
                 // 最終倍率
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
                 break;
 
             case SKILL_ID_AXE_BOOMERANG:
@@ -1608,7 +1610,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 var w_Weight = ItemObjNew[n_A_Equip[EQUIP_REGION_ID_ARMS]][ITEM_DATA_INDEX_WEIGHT];
                 wCast = 5500 - 500 * n_A_ActiveSkillLV;
                 wbairitu = 250 + 50 * n_A_ActiveSkillLV + w_Weight;
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
                 break;
 
             // 「メカニック」スキル「パワースイング」
@@ -1623,7 +1625,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                     // 通常時
                     wbairitu = 300 + 100 * n_A_ActiveSkillLV;
                 }
-                wbairitu += ROUNDDOWN((n_A_STR + n_A_DEX) * n_A_BaseLV / 100);
+                wbairitu += Foot.ROUNDDOWN((n_A_STR + n_A_DEX) * n_A_BaseLV / 100);
                 break;
 
             // 「メカニック」スキル「ブーストナックル」
@@ -1633,14 +1635,14 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 n_Delay[1] = n_Delay[1] / 2;
                 if (UsedSkillSearch(SKILL_ID_ABR_DUAL_CANNON)) wHITsuu = 2;
                 wbairitu = 200 + 100 * n_A_ActiveSkillLV + n_A_DEX;
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 120);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 120);
                 break;
 
             case SKILL_ID_PILE_BUNKER:
                 n_Delay[2] = 3000 - 1000 * n_A_ActiveSkillLV;
                 n_Delay[7] = 7500 - 2500 * n_A_ActiveSkillLV;
                 wbairitu = 300 + 100 * n_A_ActiveSkillLV + n_A_STR;
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
                 break;
 
             // 「メカニック」スキル「バルカンアーム」
@@ -1649,7 +1651,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 wCast = 1000 * n_A_ActiveSkillLV - 1000;
                 if (UsedSkillSearch(SKILL_ID_ABR_DUAL_CANNON)) wHITsuu = 2;
                 wbairitu = 70 * n_A_ActiveSkillLV + n_A_DEX;
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 120);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 120);
                 break;
 
             case SKILL_ID_FLAME_THROWER:
@@ -1665,7 +1667,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 n_Delay[2] = 2000 - 500 * n_A_ActiveSkillLV;
                 n_Enekyori = 1;
                 wbairitu = 300 + 300 * n_A_ActiveSkillLV;
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 150);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 150);
                 break;
 
             // 「ロイヤルガード」スキル「キャノンスピア」
@@ -1722,7 +1724,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 if (attackMethodConfArray[0].GetOptionValue(1) > 0) {
                     wbairitu += (charaData[CHARA_DATA_INDEX_MAXHP] - attackMethodConfArray[0].GetOptionValue(1)) / 100;
                 }
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
                 break;
 
             case SKILL_ID_MOON_SLUSHER:
@@ -1731,7 +1733,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 wCast = 2000;
                 n_Delay[7] = 5500 - 500 * n_A_ActiveSkillLV;
                 wbairitu = 120 * n_A_ActiveSkillLV + w_OB;
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
                 break;
 
             case SKILL_ID_EARTH_DRIVE:
@@ -1753,13 +1755,13 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                     wbairitu = 300 + 100 * n_A_ActiveSkillLV;
                 }
 
-                wbairitu = ROUNDDOWN(wbairitu * ItemObjNew[n_A_Equip[EQUIP_REGION_ID_SHIELD]][ITEM_DATA_INDEX_WEIGHT] / 100);
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * ItemObjNew[n_A_Equip[EQUIP_REGION_ID_SHIELD]][ITEM_DATA_INDEX_WEIGHT] / 100);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
                 break;
 
             case SKILL_ID_FAINT_BOMB:
                 var ratio = 1 + (n_A_ActiveSkillLV == 1 ? 2 : 3) + Math.floor((n_A_ActiveSkillLV - 1) / 3);
-                wbairitu = ROUNDDOWN(ratio * (n_A_DEX / 2) * n_A_JobLV / 10 * n_A_BaseLV / 120);
+                wbairitu = Foot.ROUNDDOWN(ratio * (n_A_DEX / 2) * n_A_JobLV / 10 * n_A_BaseLV / 120);
                 wCast = Math.max(0, 1000 * Math.floor((n_A_ActiveSkillLV - 4) / 3));
 
                 // 特定の戦闘エリアでの補正
@@ -1797,7 +1799,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
             case SKILL_ID_TRIANGLE_SHOT:
                 wActiveHitNum = 3;
                 wbairitu = (n_A_ActiveSkillLV - 1) * (n_A_AGI / 2) + 300;
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 120);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 120);
                 n_A_Weapon_zokusei = GetEquippedTotalSPArrow(ITEM_SP_ELEMENTAL);
                 if (eval(document.calcForm.A_Weapon_zokusei.value) != 0) n_A_Weapon_zokusei = eval(document.calcForm.A_Weapon_zokusei.value);
                 n_Enekyori = 1;
@@ -1821,7 +1823,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
 
                 }
 
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
 
                 var w = attackMethodConfArray[0].GetOptionValue(0);
 
@@ -1852,7 +1854,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                         wbairitu = 100 * n_A_ActiveSkillLV + n_A_AGI + 150;
                     }
                 }
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
                 break;
 
             case SKILL_ID_ZIRAISHIN:
@@ -1867,17 +1869,17 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 n_Delay[2] = 1000;
                 n_Delay[7] = 10000;
                 var w = attackMethodConfArray[0].GetOptionValue(0);
-                if (UsedSkillSearch(SKILL_ID_SENRYU_SHOTEN) || UsedSkillSearch(SKILL_ID_BAKURETSU_HADO) || TimeItemNumSearch(34)) {
-                    wbairitu = ROUNDDOWN((125 + 25 * n_A_ActiveSkillLV) * n_A_BaseLV / 150 * w);
+                if (UsedSkillSearch(SKILL_ID_SENRYU_SHOTEN) || UsedSkillSearch(SKILL_ID_BAKURETSU_HADO) || Chara.TimeItemNumSearch(34)) {
+                    wbairitu = Foot.ROUNDDOWN((125 + 25 * n_A_ActiveSkillLV) * n_A_BaseLV / 150 * w);
                 }
-                else wbairitu = ROUNDDOWN(20 * n_A_ActiveSkillLV * n_A_BaseLV / 150 * w);
+                else wbairitu = Foot.ROUNDDOWN(20 * n_A_ActiveSkillLV * n_A_BaseLV / 150 * w);
                 break;
 
             case SKILL_ID_DAITENHOSUI:
                 n_Delay[0] = 1;
                 wActiveHitNum = 2;
                 wbairitu = 100 + 250 * n_A_ActiveSkillLV;
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 150);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 150);
                 break;
 
             case SKILL_ID_RASETSU_HAOGEKI_MAX:
@@ -1894,14 +1896,14 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 else {
                     wbairitu = 800 * n_A_ActiveSkillLV;
                 }
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
                 break;
 
             case SKILL_ID_GOHO:
                 n_Delay[2] = 1000;
                 n_Delay[7] = 2000;
-                var w1 = ROUNDDOWN(charaData[CHARA_DATA_INDEX_MAXHP] * (10 + 2 * n_A_ActiveSkillLV) / 100);
-                var w2 = ROUNDDOWN(charaData[CHARA_DATA_INDEX_MAXSP] * (5 + n_A_ActiveSkillLV) / 100);
+                var w1 = Foot.ROUNDDOWN(charaData[CHARA_DATA_INDEX_MAXHP] * (10 + 2 * n_A_ActiveSkillLV) / 100);
+                var w2 = Foot.ROUNDDOWN(charaData[CHARA_DATA_INDEX_MAXSP] * (5 + n_A_ActiveSkillLV) / 100);
                 wbairitu = (w1 + w2) / 4;
                 if (!n_AS_MODE) {
                     if (attackMethodConfArray[0].GetOptionValue(0) == 0) {
@@ -1917,13 +1919,13 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                         wbairitu = wbairitu * 2;
                     }
                 }
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
                 break;
 
             case SKILL_ID_SENPUTAI:
                 n_Delay[7] = 5000;
                 wbairitu = n_A_BaseLV + n_A_DEX;
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
                 break;
 
             case SKILL_ID_SISIKO:
@@ -1931,20 +1933,20 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 n_KoteiCast = 500;
                 n_Delay[7] = 10000;
                 wbairitu = 300 * n_A_ActiveSkillLV;
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 150);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 150);
                 break;
 
             case SKILL_ID_RAIKODAN:
                 n_Enekyori = 1;
                 wCast = 1000 * n_A_ActiveSkillLV;
                 wbairitu = 200 * n_A_ActiveSkillLV;
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
-                if (BK_Weapon_zokusei == 4) wbairitu = ROUNDDOWN(wbairitu * 125 / 100);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
+                if (BK_Weapon_zokusei == 4) wbairitu = Foot.ROUNDDOWN(wbairitu * 125 / 100);
                 break;
 
             case SKILL_ID_TENKETSU_MOKU:
                 wbairitu = 100 * n_A_ActiveSkillLV + n_A_DEX;
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
                 w_HIT = Math.floor(w_HIT * (5 * n_A_ActiveSkillLV + (n_A_DEX + n_A_BaseLV) / 10) / 100);
                 w_HIT_HYOUJI = w_HIT;
                 break;
@@ -1955,7 +1957,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 n_Delay[2] = 1000;
                 n_Delay[7] = 10000;
                 wbairitu = 200 * n_A_ActiveSkillLV + 400;
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
                 if (attackMethodConfArray[0].GetOptionValue(0) > 2) {
                     var ge = [0, 0, 0, 100, 200, 400, 800, 1600];
                     wbairitu += ge[attackMethodConfArray[0].GetOptionValue(0)];
@@ -1999,7 +2001,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 }
 
                 var kihon_bairitu = [300, 800, 800, 500, 877];
-                wbairitu = ROUNDDOWN((kihon_bairitu[attackMethodConfArray[0].GetOptionValue(0)] + n_A_STR + n_A_DEX) * n_A_BaseLV / 100);
+                wbairitu = Foot.ROUNDDOWN((kihon_bairitu[attackMethodConfArray[0].GetOptionValue(0)] + n_A_STR + n_A_DEX) * n_A_BaseLV / 100);
                 break;
 
             // 「ジェネティック」スキル「スポアエクスプロージョン」
@@ -2051,7 +2053,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 n_Enekyori = 1;
                 n_Delay[7] = 3500 - 500 * n_A_ActiveSkillLV;
                 wbairitu = (100 + 20 * attackMethodConfArray[0].GetOptionValue(0)) * n_A_ActiveSkillLV;
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
                 break;
 
             case SKILL_ID_FUMASHURIKEN_RANKA:
@@ -2061,7 +2063,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 n_KoteiCast = Math.min(1800, 800 + 200 * n_A_ActiveSkillLV);
                 n_Delay[7] = 500;
                 wbairitu = 150 * n_A_ActiveSkillLV + n_A_STR + 100 * attackMethodConfArray[0].GetOptionValue(0);
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
                 if (!n_AS_MODE && n_A_WeaponType != 16) n_Buki_Muri = true;
                 break;
 
@@ -2110,7 +2112,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 // デスペラード習得Lv補正
                 let deathperad_lv = Math.max(LearnedSkillSearch(SKILL_ID_DEATHPERAD), attackMethodConfArray[0].GetOptionValue(0));
                 wbairitu += 20 * deathperad_lv;
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
                 n_Enekyori = 1;
                 wCast = 0;
                 n_Delay[2] = 1000;
@@ -2119,7 +2121,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
             }
             case SKILL_ID_BUNISHING_BASTER:
                 wbairitu = 200 * n_A_ActiveSkillLV;
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
                 n_Enekyori = 1;
                 wCast = 3500 - 500 * n_A_ActiveSkillLV;
                 n_KoteiCast = 1000;
@@ -2140,7 +2142,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 // TODO: 暫定。ここにはいらない。
                 //			n_A_Weapon_zokusei = 0;		// 強制無属性
                 wbairitu = 500 + 200 * n_A_ActiveSkillLV;
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
                 // 烙印状態ならば、攻撃力２倍
                 if (n_B_IJYOU[MOB_CONF_DEBUF_ID_RAKUIN_ZYOTAI]) {
                     wbairitu *= 2;
@@ -2179,7 +2181,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                     wbairitu += coincount * 50;
                 }
 
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
 
                 n_Enekyori = 1;
                 wCast = 0;
@@ -2197,7 +2199,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
             case SKILL_ID_KAMITSUKU:
                 wbairitu = 1000;
                 if (attackMethodConfArray[0].GetOptionValue(0) == 1) {
-                    wbairitu = ROUNDDOWN(wbairitu * 1.5);
+                    wbairitu = Foot.ROUNDDOWN(wbairitu * 1.5);
                 }
                 wCast = 500;
                 n_Delay[2] = 500;
@@ -2223,16 +2225,16 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 if (Math.max(LearnedSkillSearch(SKILL_ID_SEIMEINO_TAMASHI), UsedSkillSearch(SKILL_ID_SEIMEINO_TAMASHI)) > 0) {
                     switch (UsedSkillSearch(SKILL_ID_SEIMEINO_TAMASHI_KOKA_NOKORI_HP)) {
                         case SKILL_LEVEL_VALUE_SEIMEINO_TAMASHI_KOKA_NOKORI_HP_OVER_100:
-                            wbairitu = ROUNDDOWN(wbairitu * 2);
+                            wbairitu = Foot.ROUNDDOWN(wbairitu * 2);
                             break;
                         case SKILL_LEVEL_VALUE_SEIMEINO_TAMASHI_KOKA_NOKORI_HP_OVER_81:
-                            wbairitu = ROUNDDOWN(wbairitu * 1.5);
+                            wbairitu = Foot.ROUNDDOWN(wbairitu * 1.5);
                             break;
                         case SKILL_LEVEL_VALUE_SEIMEINO_TAMASHI_KOKA_NOKORI_HP_OVER_51:
-                            wbairitu = ROUNDDOWN(wbairitu * 1.3);
+                            wbairitu = Foot.ROUNDDOWN(wbairitu * 1.3);
                             break;
                         case SKILL_LEVEL_VALUE_SEIMEINO_TAMASHI_KOKA_NOKORI_HP_OVER_10:
-                            wbairitu = ROUNDDOWN(wbairitu * 1.1);
+                            wbairitu = Foot.ROUNDDOWN(wbairitu * 1.1);
                             break;
                     }
                 }
@@ -2244,7 +2246,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                     || (n_A_ActiveSkillLV == 3 && resthp < 50)
                     || (n_A_ActiveSkillLV == 4 && resthp < 60)
                     || (n_A_ActiveSkillLV == 5 && resthp < 70)) {
-                    wbairitu = ROUNDDOWN(wbairitu * 2);
+                    wbairitu = Foot.ROUNDDOWN(wbairitu * 2);
                 }
 
                 wCast = 500 * n_A_ActiveSkillLV - 500;
@@ -2263,16 +2265,16 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 if (Math.max(LearnedSkillSearch(SKILL_ID_SEIMEINO_TAMASHI), UsedSkillSearch(SKILL_ID_SEIMEINO_TAMASHI)) > 0) {
                     switch (UsedSkillSearch(SKILL_ID_SEIMEINO_TAMASHI_KOKA_NOKORI_HP)) {
                         case SKILL_LEVEL_VALUE_SEIMEINO_TAMASHI_KOKA_NOKORI_HP_OVER_100:
-                            wbairitu = ROUNDDOWN(wbairitu * 2);
+                            wbairitu = Foot.ROUNDDOWN(wbairitu * 2);
                             break;
                         case SKILL_LEVEL_VALUE_SEIMEINO_TAMASHI_KOKA_NOKORI_HP_OVER_81:
-                            wbairitu = ROUNDDOWN(wbairitu * 1.5);
+                            wbairitu = Foot.ROUNDDOWN(wbairitu * 1.5);
                             break;
                         case SKILL_LEVEL_VALUE_SEIMEINO_TAMASHI_KOKA_NOKORI_HP_OVER_51:
-                            wbairitu = ROUNDDOWN(wbairitu * 1.3);
+                            wbairitu = Foot.ROUNDDOWN(wbairitu * 1.3);
                             break;
                         case SKILL_LEVEL_VALUE_SEIMEINO_TAMASHI_KOKA_NOKORI_HP_OVER_10:
-                            wbairitu = ROUNDDOWN(wbairitu * 1.1);
+                            wbairitu = Foot.ROUNDDOWN(wbairitu * 1.1);
                             break;
                     }
                 }
@@ -2308,7 +2310,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
 
                 // Lv補正
                 if (n_A_BaseLV >= 100) {
-                    wbairitu = ROUNDDOWN(wbairitu * (n_A_BaseLV / 100));
+                    wbairitu = Foot.ROUNDDOWN(wbairitu * (n_A_BaseLV / 100));
                 }
 
                 //----------------------------------------------------------------
@@ -2317,16 +2319,16 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 if (Math.max(LearnedSkillSearch(SKILL_ID_SEIMEINO_TAMASHI), UsedSkillSearch(SKILL_ID_SEIMEINO_TAMASHI)) > 0) {
                     switch (UsedSkillSearch(SKILL_ID_SEIMEINO_TAMASHI_KOKA_NOKORI_HP)) {
                         case SKILL_LEVEL_VALUE_SEIMEINO_TAMASHI_KOKA_NOKORI_HP_OVER_100:
-                            wbairitu = ROUNDDOWN(wbairitu * 2);
+                            wbairitu = Foot.ROUNDDOWN(wbairitu * 2);
                             break;
                         case SKILL_LEVEL_VALUE_SEIMEINO_TAMASHI_KOKA_NOKORI_HP_OVER_81:
-                            wbairitu = ROUNDDOWN(wbairitu * 1.5);
+                            wbairitu = Foot.ROUNDDOWN(wbairitu * 1.5);
                             break;
                         case SKILL_LEVEL_VALUE_SEIMEINO_TAMASHI_KOKA_NOKORI_HP_OVER_51:
-                            wbairitu = ROUNDDOWN(wbairitu * 1.3);
+                            wbairitu = Foot.ROUNDDOWN(wbairitu * 1.3);
                             break;
                         case SKILL_LEVEL_VALUE_SEIMEINO_TAMASHI_KOKA_NOKORI_HP_OVER_10:
-                            wbairitu = ROUNDDOWN(wbairitu * 1.1);
+                            wbairitu = Foot.ROUNDDOWN(wbairitu * 1.1);
                             break;
                     }
                 }
@@ -2351,16 +2353,16 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 if (Math.max(LearnedSkillSearch(SKILL_ID_SEIMEINO_TAMASHI), UsedSkillSearch(SKILL_ID_SEIMEINO_TAMASHI)) > 0) {
                     switch (UsedSkillSearch(SKILL_ID_SEIMEINO_TAMASHI_KOKA_NOKORI_HP)) {
                         case SKILL_LEVEL_VALUE_SEIMEINO_TAMASHI_KOKA_NOKORI_HP_OVER_100:
-                            wbairitu = ROUNDDOWN(wbairitu * 2);
+                            wbairitu = Foot.ROUNDDOWN(wbairitu * 2);
                             break;
                         case SKILL_LEVEL_VALUE_SEIMEINO_TAMASHI_KOKA_NOKORI_HP_OVER_81:
-                            wbairitu = ROUNDDOWN(wbairitu * 1.5);
+                            wbairitu = Foot.ROUNDDOWN(wbairitu * 1.5);
                             break;
                         case SKILL_LEVEL_VALUE_SEIMEINO_TAMASHI_KOKA_NOKORI_HP_OVER_51:
-                            wbairitu = ROUNDDOWN(wbairitu * 1.3);
+                            wbairitu = Foot.ROUNDDOWN(wbairitu * 1.3);
                             break;
                         case SKILL_LEVEL_VALUE_SEIMEINO_TAMASHI_KOKA_NOKORI_HP_OVER_10:
-                            wbairitu = ROUNDDOWN(wbairitu * 1.1);
+                            wbairitu = Foot.ROUNDDOWN(wbairitu * 1.1);
                             break;
                     }
                 }
@@ -2378,7 +2380,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 var hikariBairitsu = 0;
                 /*
                             hikariLv = UsedSkillSearch(SKILL_ID_TAIYONO_HIKARI);
-            
+
                             if (hikariLv > 0) {
                                 hikariBairitsu = 25 + 5 * hikariLv;
                             }
@@ -2407,7 +2409,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 var hikariBairitsu = 0;
                 /*
                             hikariLv = UsedSkillSearch(SKILL_ID_TSUKINO_HIKARI);
-            
+
                             if (hikariLv > 0) {
                                 hikariBairitsu = 25 + 5 * hikariLv;
                             }
@@ -4716,26 +4718,26 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                             wbairitu = 0;
                             break;
                         }
-        
+
                         n_Enekyori = 1;	// 遠距離フラグ
                         wHITsuu = 3;	// 多段ヒット数
-        
+
                         // CSkillManager.js で定義された詠唱時間などを取得する
                         g_bUnknownCasts = true;	// 詠唱時間など未計測フラグ
                         wCast = g_skillManager.GetCastTimeVary(battleCalcInfo.skillId, battleCalcInfo.skillLv, charaData);
                         n_KoteiCast = g_skillManager.GetCastTimeFixed(battleCalcInfo.skillId, battleCalcInfo.skillLv, charaData);
                         n_Delay[2] = g_skillManager.GetDelayTimeCommon(battleCalcInfo.skillId, battleCalcInfo.skillLv, charaData);
                         n_Delay[7] = g_skillManager.GetCoolTime(battleCalcInfo.skillId, battleCalcInfo.skillLv, charaData);
-        
+
                         // 設置型の場合
                         g_bDefinedDamageIntervals = true;
                         n_Delay[5] = 500;	// ダメージ間隔
                         n_Delay[6] = 5000;	// オブジェクト存続時間
-        
+
                         // CAttackMethodAreaComponentManager.js で定義されたオプションを取得する
                         option_count = attackMethodConfArray[0].GetOptionValue(0);
                         wbairitu += option_count * (950 + (150 * n_A_ActiveSkillLV));
-        
+
                         // 習得済みスキル条件
                         if (UsedSkillSearch(SKILL_ID_SANREI_ITTAI) > 0) {
                             wbairitu = 650 + (150 * n_A_ActiveSkillLV);
@@ -4744,13 +4746,13 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                             bCri = false;										// クリティカルしない場合
                         }
                         wbairitu += 5 * GetTotalSpecStatus(MIG_PARAM_ID_POW);	// 特性ステータス補正
-        
+
                         // 種族特攻
                         switch (parseInt(mobData[MONSTER_DATA_INDEX_RACE], 10)) {
                             case RACE_ID_DEMON:
                                 wHITsuu = 3;
                         }
-        
+
                         wbairitu *= n_A_BaseLV / 100;							// BaseLv補正
                         break;
             */
@@ -4830,7 +4832,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
             ★		→AS_PLUS() の中で参照されていないか？
             ★
             ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
-        
+
         */
 
         /*
@@ -4838,17 +4840,17 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 // 平均ダメージに命中率を適用する
                 //--------------------------------
                 w_DMG[1] = (w_DMG[1] * w_HIT + n_PerfectHIT_DMG * (100 - w_HIT)) / 100;
-        
+
                 // ↑おそらく、別の場所で処理可能
-        
-        
-        
+
+
+
                 //--------------------------------
                 // オートスペルの発動を適用
                 //--------------------------------
                 AS_PLUS();
-        
-        
+
+
                 // ↑の AS_PLUS() は、単純にオートスペルのダメージを足しているだけ。
                 // 特殊な処理もなく、グローバル空間にダメージデータの変数を持っているので、別の場所で処理可能
         */
@@ -4988,7 +4990,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
 
                 for (var i = 0; i <= 2; i++) {
                     w_DMG[i] = n_A_DMG[i];
-                    w_DMG[i] += ROUNDDOWN(w_MATK[i] / 5);
+                    w_DMG[i] += Foot.ROUNDDOWN(w_MATK[i] / 5);
                     w_DMG[i] -= B_Total_DEF;
                     if (w_DMG[i] < 1) w_DMG[i] = 1;
                     w_DMG[i] += n_A_WeaponLV_seirenATK;
@@ -5087,9 +5089,9 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                     var w = 1 + UsedSkillSearch(SKILL_ID_COUNT_OF_RG_FOR_BANDING);
                     if (
                         UsedSkillSearch(SKILL_ID_INSPIRATION)
-                        || TimeItemNumSearch(TIME_ITEM_ID_ZETSUBONO_KAMI_MOROCC_CARD)
-                        || TimeItemNumSearch(TIME_ITEM_ID_DEMI_FREYA)
-                        || TimeItemNumSearch(TIME_ITEM_ID_MAKENSHI_SAKRAY_CARD)
+                        || Chara.TimeItemNumSearch(TIME_ITEM_ID_ZETSUBONO_KAMI_MOROCC_CARD)
+                        || Chara.TimeItemNumSearch(TIME_ITEM_ID_DEMI_FREYA)
+                        || Chara.TimeItemNumSearch(TIME_ITEM_ID_MAKENSHI_SAKRAY_CARD)
                     ) {
                         if (UsedSkillSearch(SKILL_ID_COUNT_OF_RG_FOR_BANDING) == 0) w = 3;
                     }
@@ -5118,7 +5120,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                     wCast = 0;
                     n_Delay[2] = 0;
                     n_Delay[7] = 0;
-                    wHITsuu = ROUNDDOWN(n_A_JobLV / 20) + 1;
+                    wHITsuu = Foot.ROUNDDOWN(n_A_JobLV / 20) + 1;
                 }
 
                 wbairitu += GetBattlerAtkPercentUp(charaData, specData, mobData, attackMethodConfArray);
@@ -5297,7 +5299,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                     w_DMG[i] = charaData[CHARA_DATA_INDEX_STATUS_ATK] + ItemObjNew[n_A_Equip[EQUIP_REGION_ID_SHIELD]][ITEM_DATA_INDEX_WEIGHT] + wSBr;
                     w_DMG[i] = ApplyPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, mobData, w_DMG[i]);
                     w_DMG[i] -= B_Total_DEF;
-                    w_DMG[i] = ROUNDDOWN(w_DMG[i] * wbairitu2 / 100);
+                    w_DMG[i] = Foot.ROUNDDOWN(w_DMG[i] * wbairitu2 / 100);
                     if (w_DMG[i] < 0) w_DMG[i] = 0;
                     if (n_B_KYOUKA[10]) {
                         if (n_B_KYOUKA[10] == 6) w_DMG[i] = Math.floor(w_DMG[i] * 12.5 / 100);
@@ -5330,7 +5332,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 var SdCBAI = [0, 130, 160, 190, 220, 250];
                 /*
                 実測確認出来るまでコメントアウト
-    
+
                 if (UsedSkillSearch(SKILL_ID_SHIELD_SHOOTING_STATE) > 0) {
                     SdCBAI = [0,360,420,480,540,600];
                 }
@@ -5338,7 +5340,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 for (var i = 0; i <= 2; i++) {
                     w_DMG[i] = n_A_DMG[i] + w_Weight + n_A_SHIELD_DEF_PLUS * 4;
                     w_DMG[i] = ApplyPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, mobData, w_DMG[i]);
-                    w_DMG[i] = ROUNDDOWN(w_DMG[i] * SdCBAI[n_A_ActiveSkillLV] / 100);
+                    w_DMG[i] = Foot.ROUNDDOWN(w_DMG[i] * SdCBAI[n_A_ActiveSkillLV] / 100);
                     w_DMG[i] -= B_Total_DEF;
                     w_DMG[i] = ApplyPhysicalDamageRatio(battleCalcInfo, charaData, specData, mobData, w_DMG[i]);
                     if (n_B_KYOUKA[10]) {
@@ -5374,9 +5376,9 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 var wSYUUREN = TYPE_SYUUREN(mobData, attackMethodConfArray, false);
                 for (var i = 0; i <= 2; i++) {
                     var wSPP;
-                    wSPP = ROUNDDOWN((n_A_DMG[i] - wSYUUREN) * 70 / 100) + ROUNDDOWN(ItemObjNew[n_A_Equip[EQUIP_REGION_ID_ARMS]][ITEM_DATA_INDEX_WEIGHT] * 70 / 100);
-                    if (mobData[17] == 0) wSPP = ROUNDDOWN(wSPP * 115 / 100);
-                    if (mobData[17] == 2) wSPP = ROUNDDOWN(wSPP * 85 / 100);
+                    wSPP = Foot.ROUNDDOWN((n_A_DMG[i] - wSYUUREN) * 70 / 100) + Foot.ROUNDDOWN(ItemObjNew[n_A_Equip[EQUIP_REGION_ID_ARMS]][ITEM_DATA_INDEX_WEIGHT] * 70 / 100);
+                    if (mobData[17] == 0) wSPP = Foot.ROUNDDOWN(wSPP * 115 / 100);
+                    if (mobData[17] == 2) wSPP = Foot.ROUNDDOWN(wSPP * 85 / 100);
                     wSPP += wSYUUREN;
                     wSPP = Math.floor(wSPP * wbairitu / 100);
                     wSPP = ApplyPhysicalDamageRatio(battleCalcInfo, charaData, specData, mobData, wSPP);
@@ -5412,7 +5414,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 var VSbai = 500 + 75 * n_A_ActiveSkillLV;
                 VSbai = ATKbaiJYOUSAN(VSbai);
                 for (var i = 0; i <= 2; i++) {
-                    w_DMG[i] = ROUNDDOWN((n_A_DMG[i]) * VSbai / 100);
+                    w_DMG[i] = Foot.ROUNDDOWN((n_A_DMG[i]) * VSbai / 100);
                     w_DMG[i] = ApplyMonsterDefence(mobData, w_DMG[i], 0);
                     w_DMG[i] = ApplyPhysicalDamageRatio(battleCalcInfo, charaData, specData, mobData, w_DMG[i]);
                     w_DMG[i] += GetFixedAppendAtk(n_A_ActiveSkill, charaData, specData, mobData, w_DMG[i], i, -1);
@@ -5439,7 +5441,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 wCast = 500;
                 n_Delay[2] = 800 + 200 * n_A_ActiveSkillLV;
                 var wbai = (300 + 50 * n_A_ActiveSkillLV);
-                if (UsedSkillSearch(SKILL_ID_ENCHANT_DEADLY_POISON)) wbai = ROUNDDOWN(wbai / 2);
+                if (UsedSkillSearch(SKILL_ID_ENCHANT_DEADLY_POISON)) wbai = Foot.ROUNDDOWN(wbai / 2);
                 for (var i = 0; i <= 2; i++) {
                     w_MATK[i] = n_A_MATK[i];
                     w_MATK[i] = ApplyMagicalSpecializeMonster(charaData, specData, mobData, w_MATK[i]);
@@ -5450,8 +5452,8 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                     w_MATK[i] = BaiTaisei_C(mobData, w_MATK[i]);
                 }
                 for (var i = 0; i <= 2; i++) {
-                    w_DMG[i] = ROUNDDOWN(n_A_DMG[i] * wbai / 100);
-                    w_DMG[i] += ROUNDDOWN(w_MATK[i] * wbai / 100);
+                    w_DMG[i] = Foot.ROUNDDOWN(n_A_DMG[i] * wbai / 100);
+                    w_DMG[i] += Foot.ROUNDDOWN(w_MATK[i] * wbai / 100);
                     w_DMG[i] -= (mobData[13] + mobData[14] + n_B_MDEF2 + n_B_DEF2[0]);
                     w_DMG[i] = ApplyPhysicalDamageRatio(battleCalcInfo, charaData, specData, mobData, w_DMG[i]);
                     w_DMG[i] = ApplyPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, mobData, w_DMG[i]);
@@ -5491,17 +5493,17 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 }
                 for (var i = 0; i <= 2; i++) {
                     w_DMG[i] = n_A_DMG_GX[i] + w_MATK[i];
-                    w_DMG[i] = ROUNDDOWN(w_DMG[i] / 2);
-                    w_DMG[i] = ROUNDDOWN(w_DMG[i] * (100 + 40 * n_A_ActiveSkillLV) / 100);
+                    w_DMG[i] = Foot.ROUNDDOWN(w_DMG[i] / 2);
+                    w_DMG[i] = Foot.ROUNDDOWN(w_DMG[i] * (100 + 40 * n_A_ActiveSkillLV) / 100);
                     w_DMG[i] -= (charaData[CHARA_DATA_INDEX_DEF_DIV] + charaData[CHARA_DATA_INDEX_DEF_MINUS] + charaData[CHARA_DATA_INDEX_MDEF_DIV] + charaData[CHARA_DATA_INDEX_MDEF_MINUS]);
-                    w_DMG[i] += ROUNDDOWN(w_DMG[i] * zokusei[n_A_BodyZokusei * 10 + 1][6] / 100);
+                    w_DMG[i] += Foot.ROUNDDOWN(w_DMG[i] * zokusei[n_A_BodyZokusei * 10 + 1][6] / 100);
                     w_DMG[i] = Math.floor(w_DMG[i] / 2);
                     n_A_GX_HANDO = true;
                     w_DMG[i] = ApplyPhysicalDamageRatio(battleCalcInfo, charaData, specData, mobData, w_DMG[i]);
                     n_A_GX_HANDO = false;
                     var wGXbai3 = 0;
-                    if (EquipNumSearch(2495)) wGXbai3 += n_A_BaseLV;
-                    w_DMG[i] = ROUNDDOWN(w_DMG[i] * (100 + GetEquippedTotalSPEquip(5000 + n_A_ActiveSkill) + GetEquippedTotalSPCardAndElse(5000 + n_A_ActiveSkill) + wGXbai3) / 100);
+                    if (Chara.EquipNumSearch(2495)) wGXbai3 += n_A_BaseLV;
+                    w_DMG[i] = Foot.ROUNDDOWN(w_DMG[i] * (100 + GetEquippedTotalSPEquip(5000 + n_A_ActiveSkill) + GetEquippedTotalSPCardAndElse(5000 + n_A_ActiveSkill) + wGXbai3) / 100);
                 }
                 if (!n_AS_MODE) myInnerHtml("CRInum", '<Font color="#FF0000">' + __DIG3(w_DMG[0]) + "×3hit～" + __DIG3(w_DMG[2]) + "×3hit</Font>", 0);
                 wCast = 3000;
@@ -5519,8 +5521,8 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 }
                 for (var i = 0; i <= 2; i++) {
                     w_DMG[i] = n_A_DMG[i] + w_MATK[i];
-                    w_DMG[i] = ROUNDDOWN(w_DMG[i] / 2);
-                    w_DMG[i] = ROUNDDOWN(w_DMG[i] * (100 + 40 * n_A_ActiveSkillLV) / 100);
+                    w_DMG[i] = Foot.ROUNDDOWN(w_DMG[i] / 2);
+                    w_DMG[i] = Foot.ROUNDDOWN(w_DMG[i] * (100 + 40 * n_A_ActiveSkillLV) / 100);
                     w_DMG[i] -= (mobData[13] + n_B_DEF2[i] + mobData[14] + n_B_MDEF2);
                     n_Enekyori = 1;
                     w_DMG[i] = BaiTaisei_E(mobData, w_DMG[i]);
@@ -5560,8 +5562,8 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 const CRbai = attackMethodConfArray[0].GetOptionValue(0) / (8000 + 500 * cart_kaizo_lv) * 100;
 
                 for (var i = 0; i <= 2; i++) {
-                    w_DMG[i] = ROUNDDOWN(n_A_DMG[i] * 150 / 100);
-                    w_DMG[i] += ROUNDDOWN(n_A_DMG[i] * CRbai / 100);
+                    w_DMG[i] = Foot.ROUNDDOWN(n_A_DMG[i] * 150 / 100);
+                    w_DMG[i] += Foot.ROUNDDOWN(n_A_DMG[i] * CRbai / 100);
                     w_DMG[i] -= B_Total_DEF;
                     w_DMG[i] = ApplyPhysicalDamageRatio(battleCalcInfo, charaData, specData, mobData, w_DMG[i]);
                     w_DMG[i] += GetFixedAppendAtk(n_A_ActiveSkill, charaData, specData, mobData, w_DMG[i], i, -1);
@@ -5707,7 +5709,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 wbairitu = 100 + 5 * n_A_ActiveSkillLV;
                 for (var i = 0; i <= 2; i++) {
                     w_DMG[i] = n_A_DMG[i] + SyurikenOBJ[attackMethodConfArray[0].GetOptionValue(0)][0] + 3 * UsedSkillSearch(SKILL_ID_TOKAKU_SHUREN) + 4 * n_A_ActiveSkillLV;
-                    w_DMG[i] = ROUNDDOWN(w_DMG[i] * wbairitu / 100);
+                    w_DMG[i] = Foot.ROUNDDOWN(w_DMG[i] * wbairitu / 100);
                     w_DMG[i] -= B_Total_DEF;
                     if (w_DMG[i] < 0) w_DMG[i] = 0;
                     w_DMG[i] = ApplyPhysicalDamageRatio(battleCalcInfo, charaData, specData, mobData, w_DMG[i]);
@@ -5747,7 +5749,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                     w_DMG[i] = ApplyPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, mobData, w_DMG[i]);
                     w_DMG[i] = ApplyElementRatio(mobData, w_DMG[i], KunaiOBJ[attackMethodConfArray[0].GetOptionValue(0)][1]);
                     if (n_A_ActiveSkill == 395) {
-                        Last_DMG_B[i] = ROUNDDOWN(w_DMG[i] / 3);
+                        Last_DMG_B[i] = Foot.ROUNDDOWN(w_DMG[i] / 3);
                         Last_DMG_A[i] = Last_DMG_B[i] * 3;
                         g_damageTextArray[i].push(Last_DMG_A[i], "(", Last_DMG_B[i], SubName[8], "3hit)");
                     } else {
@@ -5851,7 +5853,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                     var dm = [5000, 7500, 10000];
                     w_DMG[i] = Math.floor(dm[i] * n_A_ActiveSkillLV);
                     var wBunsan = attackMethodConfArray[0].GetOptionValue(0);
-                    if (wBunsan >= 2) w_DMG[i] = ROUNDDOWN(w_DMG[i] / wBunsan);
+                    if (wBunsan >= 2) w_DMG[i] = Foot.ROUNDDOWN(w_DMG[i] / wBunsan);
                     if (mobData[20] == 1) w_DMG[i] = w_DMG[i] / 2;
                     w_DMG[i] = ApplyElementRatio(mobData, w_DMG[i], 0);
                     w_DMG[i] = Math.floor(w_DMG[i] / 10);
@@ -5926,7 +5928,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 }
                 for (var i = 0; i <= 2; i++) {
                     w_DMG[i] = n_A_DMG[i] + w_MATK[i];
-                    w_DMG[i] = ROUNDDOWN(w_DMG[i] * wbairitu / 100);
+                    w_DMG[i] = Foot.ROUNDDOWN(w_DMG[i] * wbairitu / 100);
                     w_DMG[i] -= (B_Total_DEF + B_Total_MDEF);
                     if (w_DMG[i] < 0) w_DMG[i] = 0;
                     if (mobData[20] == 1) w_DMG[i] = Math.floor(w_DMG[i] / 2);
@@ -5984,15 +5986,15 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                     // TODO: ダメージ表示方式変更対応
                     // 後続でヒット数で割る処理があるので、問題なし？
                     if (mobData[6] <= 120) {
-                        w_DMG[i] = ROUNDDOWN((w1[i] + w_MATK[i]) * 1400 * wHITsuu / 100 * mobData[6] / 100);
+                        w_DMG[i] = Foot.ROUNDDOWN((w1[i] + w_MATK[i]) * 1400 * wHITsuu / 100 * mobData[6] / 100);
                     } else {
-                        w_DMG[i] = ROUNDDOWN((w1[i] + w_MATK[i]) * 1400 * wHITsuu / 100 * 120 / 100);
-                        if (mobData[0] == 679) w_DMG[i] = ROUNDDOWN((w1[i] + w_MATK[i]) * 1400 * wHITsuu / 100 * 125 / 100);
-                        if (mobData[0] == 715) w_DMG[i] = ROUNDDOWN((w1[i] + w_MATK[i]) * 1400 * wHITsuu / 100 * 127 / 100);
+                        w_DMG[i] = Foot.ROUNDDOWN((w1[i] + w_MATK[i]) * 1400 * wHITsuu / 100 * 120 / 100);
+                        if (mobData[0] == 679) w_DMG[i] = Foot.ROUNDDOWN((w1[i] + w_MATK[i]) * 1400 * wHITsuu / 100 * 125 / 100);
+                        if (mobData[0] == 715) w_DMG[i] = Foot.ROUNDDOWN((w1[i] + w_MATK[i]) * 1400 * wHITsuu / 100 * 127 / 100);
                     }
                     w_DMG[i] -= (B_Total_DEF + B_Total_MDEF);
                     w_DMG[i] = Math.floor(w_DMG[i] / 2);
-                    w_DMG[i] = ROUNDDOWN(w_DMG[i] / wHITsuu);
+                    w_DMG[i] = Foot.ROUNDDOWN(w_DMG[i] / wHITsuu);
                     if (mobData[0] == 787) w_DMG[i] = Math.floor(w_DMG[i] / 2);
                     if (w_DMG[i] < 0) w_DMG[i] = 0;
                     w_DMG[i] = ApplyPhysicalDamageRatio(battleCalcInfo, charaData, specData, mobData, w_DMG[i]);
@@ -6051,7 +6053,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 if (n_A_ActiveSkill == 489) {
                     wCast = 400 * n_A_ActiveSkillLV;
                     n_Delay[7] = 1000;
-                    if (CardNumSearch(611)) n_Delay[7] -= 1000;
+                    if (Chara.CardNumSearch(611)) n_Delay[7] -= 1000;
                 }
                 for (var i = 0; i <= 2; i++) {
                     if (n_A_ActiveSkill == 25) w_DMG[i] = HealCalc(n_A_ActiveSkillLV, 0, i, 2, 0);
@@ -6284,7 +6286,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 // --------- 減衰計算開始 ---------
                 w = ApplyResistElement(mobData, w);
                 var wX = GetSpiderWebDamageRatio();
-                if (wX != 0) w = ROUNDDOWN(w * (100 + wX) / 100);
+                if (wX != 0) w = Foot.ROUNDDOWN(w * (100 + wX) / 100);
                 w -= B_Total_DEF;
                 if (w < 0) w = 0;
                 w = ApplyPhysicalDamageRatio(battleCalcInfo, charaData, specData, mobData, w);
@@ -6427,7 +6429,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 var T_check = -1;
                 for (var i = 0; i <= (wHITsuu - 1); i++) {
                     wbairitu = 100 * n_A_ActiveSkillLV + 500;
-                    wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
+                    wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
                     wbairitu += (300 + 100 * n_A_ActiveSkillLV - i * 100);
                     wbairitu += GetBattlerMatkPercentUp();
 
@@ -6599,7 +6601,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                         wbairitu = 300 + 300 * n_A_ActiveSkillLV;
                         break;
                 }
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 120);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 120);
                 wMADO += 2 * Math.max(LearnedSkillSearch(SKILL_ID_BUKI_KENKYU), UsedSkillSearch(SKILL_ID_BUKI_KENKYU));
                 if (n_A_WeaponType == 6 || n_A_WeaponType == 7) {
                     wMADO += 5 * Math.max(LearnedSkillSearch(SKILL_ID_ONO_SHUREN_MECHANIC), UsedSkillSearch(SKILL_ID_ONO_SHUREN_MECHANIC));
@@ -6746,7 +6748,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 n_Delay[7] = 5000;
                 var wBAI = 100 * n_A_ActiveSkillLV;
                 wBAI += n_A_AGI * 5;
-                wBAI = ROUNDDOWN(wBAI * n_A_BaseLV / 120);
+                wBAI = Foot.ROUNDDOWN(wBAI * n_A_BaseLV / 120);
                 wBAI += GetBattlerAtkPercentUp(charaData, specData, mobData, attackMethodConfArray);
                 wBAI = ATKbaiJYOUSAN(wBAI);
                 for (var i = 0; i <= 2; i++) {
@@ -6835,7 +6837,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 n_Enekyori = 1;
                 n_Delay[7] = Math.max(200, 1200 - 200 * n_A_ActiveSkillLV);
                 wbairitu = 500 + 100 * n_A_ActiveSkillLV;
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
                 wbairitu += GetBattlerAtkPercentUp(charaData, specData, mobData, attackMethodConfArray);
                 wbairitu = ATKbaiJYOUSAN(wbairitu);
                 for (var i = 0; i <= 2; i++) {
@@ -6851,8 +6853,8 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                     if (attackMethodConfArray[0].GetOptionValue(0) == 1 && mobData[20] != 1) {
                         var w = GetBattlerAtkPercentUp(charaData, specData, mobData, attackMethodConfArray);
                         w += 150 * n_A_ActiveSkillLV;
-                        w += ROUNDDOWN(mobData[2] * 5 * n_A_BaseLV / 150);
-                        if (mobData[0] == 787 && n_B_TAISEI[37] != 0) w += ROUNDDOWN(1000 * n_B_TAISEI[36] / n_B_TAISEI[37]);
+                        w += Foot.ROUNDDOWN(mobData[2] * 5 * n_A_BaseLV / 150);
+                        if (mobData[0] == 787 && n_B_TAISEI[37] != 0) w += Foot.ROUNDDOWN(1000 * n_B_TAISEI[36] / n_B_TAISEI[37]);
                         w = ATKbaiJYOUSAN(w);
                         w = Math.floor(n_A_DMG[i] * w / 100);
                         w = ApplyPhysicalDamageRatio(battleCalcInfo, charaData, specData, mobData, w);
@@ -6983,9 +6985,9 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 wCast = 1000 + 100 * n_A_ActiveSkillLV;
                 n_Delay[7] = 200;
                 wbairitu = 300 + 100 * n_A_ActiveSkillLV;
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
                 var wBunsan = attackMethodConfArray[0].GetOptionValue(0);
-                if (wBunsan >= 2) wbairitu = ROUNDDOWN(wbairitu / wBunsan);
+                if (wBunsan >= 2) wbairitu = Foot.ROUNDDOWN(wbairitu / wBunsan);
                 for (var i = 0; i <= 2; i++) {
                     w_DMG[i] = n_A_DMG[i];
                     w_DMG[i] = ApplyPhysicalDamageRatio(battleCalcInfo, charaData, specData, mobData, w_DMG[i]);
@@ -6999,8 +7001,8 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 n_A_Weapon_zokusei = 0;
                 n_Enekyori = 2;
                 var w = 100 + 100 * n_A_ActiveSkillLV;
-                w = ROUNDDOWN(w * n_A_BaseLV / 100);
-                if (wBunsan >= 2) w = ROUNDDOWN(w / wBunsan);
+                w = Foot.ROUNDDOWN(w * n_A_BaseLV / 100);
+                if (wBunsan >= 2) w = Foot.ROUNDDOWN(w / wBunsan);
                 for (var i = 0; i <= 2; i++) {
                     w_MATK[i] = n_A_MATK[i];
                     w_MATK[i] = ApplyMagicalSpecializeMonster(charaData, specData, mobData, w_MATK[i]);
@@ -7124,7 +7126,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 wActiveHitNum = 2;
                 n_Delay[7] = Math.max(600, 6100 - 1100 * n_A_ActiveSkillLV);
                 wbairitu = 200 * n_A_ActiveSkillLV;
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 120);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 120);
                 wbairitu += GetBattlerAtkPercentUp(charaData, specData, mobData, attackMethodConfArray);
                 wbairitu = ATKbaiJYOUSAN(wbairitu);
 
@@ -7148,7 +7150,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                     var wjyuu = [0, 0, 0];
                     for (var i = 0; i <= 2; i++) wjyuu[i] = w_DMG[i];
                     wbairitu = 150 * n_A_ActiveSkillLV;
-                    wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 120);
+                    wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 120);
                     wbairitu += n_A_BaseLV * n_A_ActiveSkillLV;
                     wbairitu += GetBattlerAtkPercentUp(charaData, specData, mobData, attackMethodConfArray);
                     wbairitu = ATKbaiJYOUSAN(wbairitu);
@@ -7227,9 +7229,9 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                     }
                 } else {
                     for (var i = 0; i <= 2; i++) Last_DMG_A[i] = Last_DMG_B[i] = w_DMG[i];
-                    if (Last_DMG_A[0] >= 1) g_damageTextArray[0].push(ROUNDDOWN(Last_DMG_A[0]));
+                    if (Last_DMG_A[0] >= 1) g_damageTextArray[0].push(Foot.ROUNDDOWN(Last_DMG_A[0]));
                     else g_damageTextArray[0].push("Miss<BR><Font size=2>(命中100未満なので)</Font>");
-                    g_damageTextArray[1].push(ROUNDDOWN(Last_DMG_A[1]), "<BR><Font size=2>※コンボ系のこの欄は特別仕様で、<BR>※Miss込みの平均与ダメージです。<BR>※Missを消すにはフリオニCなどで。</Font>");
+                    g_damageTextArray[1].push(Foot.ROUNDDOWN(Last_DMG_A[1]), "<BR><Font size=2>※コンボ系のこの欄は特別仕様で、<BR>※Miss込みの平均与ダメージです。<BR>※Missを消すにはフリオニCなどで。</Font>");
                     g_damageTextArray[2].push(Last_DMG_A[2]);
                 }
                 w_DMG[1] = (w_DMG[1] * w_HIT + n_PerfectHIT_DMG * (100 - w_HIT)) / 100;
@@ -7249,7 +7251,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 w_HIT_HYOUJI = 100;
                 if (!n_AS_MODE) {
                     var wBunsan = attackMethodConfArray[0].GetOptionValue(0);
-                    if (wBunsan >= 2) wbairitu = ROUNDDOWN(wbairitu / wBunsan);
+                    if (wBunsan >= 2) wbairitu = Foot.ROUNDDOWN(wbairitu / wBunsan);
                 }
                 for (var i = 0; i <= 2; i++) {
                     // 基礎攻撃力 n_A_DMG_GX[i] にサイズ補正 wCSize をかける
@@ -7388,7 +7390,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 var wBunsan = 1;
                 if (!n_AS_MODE) wBunsan = attackMethodConfArray[0].GetOptionValue(0);
                 if (wBunsan >= 2) {
-                    for (var i = 0; i <= 2; i++) w_MATK[i] = ROUNDDOWN(w_MATK[i] / wBunsan);
+                    for (var i = 0; i <= 2; i++) w_MATK[i] = Foot.ROUNDDOWN(w_MATK[i] / wBunsan);
                 }
                 for (var b = 0; b <= 2; b++) {
                     w_DMG[b] = ApplyMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, mobData, attackMethodConfArray, w_MATK[b] * wbairitu / 100);
@@ -7432,7 +7434,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 var wBunsan = 1;
                 if (!n_AS_MODE) wBunsan = attackMethodConfArray[0].GetOptionValue(0);
                 if (wBunsan >= 2) {
-                    for (var i = 0; i <= 2; i++) w_MATK[i] = ROUNDDOWN(w_MATK[i] / wBunsan);
+                    for (var i = 0; i <= 2; i++) w_MATK[i] = Foot.ROUNDDOWN(w_MATK[i] / wBunsan);
                 }
                 for (var b = 0; b <= 2; b++) {
                     w_DMG[b] = ApplyMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, mobData, attackMethodConfArray, w_MATK[b] * wbairitu / 100);
@@ -7538,7 +7540,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 n_Delay[7] = Math.max(200, 1200 - 200 * n_A_ActiveSkillLV);
 
                 var basePower = 100 + 40 * n_A_ActiveSkillLV;
-                basePower = ROUNDDOWN(basePower * n_A_BaseLV / 100);
+                basePower = Foot.ROUNDDOWN(basePower * n_A_BaseLV / 100);
 
                 wbairitu = basePower;
                 wbairitu += GetBattlerAtkPercentUp(charaData, specData, mobData, attackMethodConfArray);
@@ -7559,7 +7561,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                         var w = basePower;
                         w += GetBattlerAtkPercentUp(charaData, specData, mobData, attackMethodConfArray);
 
-                        if (mobData[0] == 787 && n_B_TAISEI[37] != 0) w += ROUNDDOWN(1000 * n_B_TAISEI[36] / n_B_TAISEI[37]);
+                        if (mobData[0] == 787 && n_B_TAISEI[37] != 0) w += Foot.ROUNDDOWN(1000 * n_B_TAISEI[36] / n_B_TAISEI[37]);
                         w = ATKbaiJYOUSAN(w);
                         w = Math.floor(n_A_DMG[i] * w / 100);
                         w = ApplyPhysicalDamageRatio(battleCalcInfo, charaData, specData, mobData, w);
@@ -7749,17 +7751,17 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                             w_DMG[i] = GetPerfectHitDamage(charaData, specData, mobData, attackMethodConfArray);
                             w_DMG[i] = ApplyHitJudgeElementRatio(n_A_ActiveSkill, w_DMG[i], mobData);
                             w_DMG[i] = ApplyPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, mobData, w_DMG[i]);
-            
+
                             if(wActiveHitNum > 1) {
                                 w_DMG[i] = Math.floor(w_DMG[i] / wActiveHitNum) * wActiveHitNum;
                             }
                         }
                         if(n_AS_MODE) return w_DMG;
                         for(var i=0;i<=2;i++){
-            
+
                             // TODO: ダメージ表示方式変更対応
                             //Last_DMG_A[i] = Last_DMG_B[i] = w_DMG[i] * wHITsuu;
-            
+
                             g_damageTextArray[i].push(Last_DMG_A[i]);
                             if(wHITsuu > 1) g_damageTextArray[i].push("(", w_DMG[i], "×", wHITsuu, "hit)");
                         }
@@ -7836,7 +7838,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 }
                 switch (UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL)) {
                     case SERE_SUPPORT_SKILL_ID_PYRO_TECHNIC:
-                        wbairitu += ROUNDDOWN(n_A_JobLV / 3);
+                        wbairitu += Foot.ROUNDDOWN(n_A_JobLV / 3);
                         break;
                     case SERE_SUPPORT_SKILL_ID_FLAME_TECHNIQUE:
                         wbairitu += 75;
@@ -7865,7 +7867,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 }
                 switch (UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL)) {
                     case SERE_SUPPORT_SKILL_ID_AQUA_PLAY:
-                        wbairitu += ROUNDDOWN(n_A_JobLV / 3);
+                        wbairitu += Foot.ROUNDDOWN(n_A_JobLV / 3);
                         break;
                     case SERE_SUPPORT_SKILL_ID_COLD_FORCE:
                         wbairitu += 75;
@@ -7894,7 +7896,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 }
                 switch (UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL)) {
                     case SERE_SUPPORT_SKILL_ID_GUST:
-                        wbairitu += ROUNDDOWN(n_A_JobLV / 3);
+                        wbairitu += Foot.ROUNDDOWN(n_A_JobLV / 3);
                         break;
                     case SERE_SUPPORT_SKILL_ID_GRACE_BREEZE:
                         wbairitu += 75;
@@ -7920,7 +7922,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 wCast = 2150 - (n_A_ActiveSkillLV * 150);
                 n_Delay[2] = 100;
                 wbairitu = 50;
-                if (UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL) == 1) wbairitu += ROUNDDOWN(n_A_JobLV / 3);
+                if (UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL) == 1) wbairitu += Foot.ROUNDDOWN(n_A_JobLV / 3);
                 break;
 
             case SKILL_ID_FROST_DIVER:
@@ -7928,7 +7930,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 wCast = 800;
                 n_Delay[2] = 1500;
                 wbairitu = 100 + 10 * n_A_ActiveSkillLV;
-                if (UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL) == 10) wbairitu += ROUNDDOWN(n_A_JobLV / 3);
+                if (UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL) == 10) wbairitu += Foot.ROUNDDOWN(n_A_JobLV / 3);
                 break;
 
             case SKILL_ID_THUNDER_STORM:
@@ -7937,7 +7939,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 wCast = 800 * n_A_ActiveSkillLV;
                 n_Delay[2] = 2000;
                 wbairitu = 100;
-                if (UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL) == 19) wbairitu += ROUNDDOWN(n_A_JobLV / 3);
+                if (UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL) == 19) wbairitu += Foot.ROUNDDOWN(n_A_JobLV / 3);
                 break;
 
             case SKILL_ID_SOUL_STRIKE:
@@ -8037,7 +8039,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 n_Delay[2] = 800 + 200 * n_A_ActiveSkillLV;
                 switch (UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL)) {
                     case SERE_SUPPORT_SKILL_ID_PETROLOGY:
-                        wbairitu += ROUNDDOWN(n_A_JobLV / 3);
+                        wbairitu += Foot.ROUNDDOWN(n_A_JobLV / 3);
                         break;
                     case SERE_SUPPORT_SKILL_ID_EARTH_CARE:
                         wbairitu += 75;
@@ -8054,7 +8056,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 wCast = 1000 * n_A_ActiveSkillLV;
                 n_Delay[2] = 1000;
                 if (UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL) == SERE_SUPPORT_SKILL_ID_PETROLOGY) {
-                    wbairitu += ROUNDDOWN(n_A_JobLV / 3);
+                    wbairitu += Foot.ROUNDDOWN(n_A_JobLV / 3);
                 }
                 break;
 
@@ -8241,7 +8243,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 wCast = 2000;
                 n_Delay[2] = 500;
                 wbairitu = 400 + 100 * n_A_ActiveSkillLV + n_A_INT;
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
                 break;
 
             case SKILL_ID_FROST_MISTY:
@@ -8253,7 +8255,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 n_Delay[2] = 500;
                 n_Delay[7] = 200;
                 wbairitu = 200 + 100 * n_A_ActiveSkillLV;
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
                 break;
 
             case SKILL_ID_JACK_FROST:
@@ -8266,10 +8268,10 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 n_Delay[7] = 200;
                 if (attackMethodConfArray[0].GetOptionValue(0) == 1) {
                     wbairitu = 1000 + 300 * n_A_ActiveSkillLV;
-                    wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
+                    wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
                 } else {
                     wbairitu = 500 + 100 * n_A_ActiveSkillLV;
-                    wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 150);
+                    wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 150);
                 }
                 break;
 
@@ -8281,7 +8283,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 n_Delay[2] = 0;
                 n_Delay[7] = 2000;
                 wbairitu = 200 * n_A_ActiveSkillLV + n_A_INT;
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
                 break;
 
             case SKILL_ID_CRYMSON_ROCK:
@@ -8293,7 +8295,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 n_Delay[2] = 500;
                 n_Delay[7] = 2000;
                 wbairitu = 300 * n_A_ActiveSkillLV;
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
                 wbairitu += 1300;
                 break;
 
@@ -8341,7 +8343,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 n_Delay[2] = 500;
                 n_Delay[7] = 600 * n_A_ActiveSkillLV;
                 wbairitu = 2000 + 100 * n_A_ActiveSkillLV;
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
                 break;
 
             case SKILL_ID_SUMMON_FIRE_BALL:
@@ -8356,7 +8358,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 wCast = 6000 - 1000 * n_A_ActiveSkillLV;
 
                 wbairitu = (n_A_BaseLV + n_A_JobLV) * Math.round(n_A_ActiveSkillLV / 2);
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
                 break;
 
             // メタリックサウンド
@@ -8378,11 +8380,11 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 wbairitu += 60 * UsedSkillSearch(SKILL_ID_LESSON);
 
                 // BaseLv補正
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
 
                 // 睡眠補正
                 if (n_B_IJYOU[MOB_CONF_DEBUF_ID_SUIMIN]) {
-                    wbairitu = ROUNDDOWN(wbairitu * 150 / 100);
+                    wbairitu = Foot.ROUNDDOWN(wbairitu * 150 / 100);
                 }
 
                 break;
@@ -8396,12 +8398,12 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 n_Delay[0] = 1;
                 n_Delay[2] = 1000;
                 wbairitu = 60 * n_A_ActiveSkillLV;
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
                 if (n_A_ActiveSkill == SKILL_ID_FIRE_WALK && UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL) == 4) {
-                    wbairitu += ROUNDDOWN(n_A_JobLV / 2);
+                    wbairitu += Foot.ROUNDDOWN(n_A_JobLV / 2);
                 }
                 if (n_A_ActiveSkill == SKILL_ID_ELECTRIC_WALK && UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL) == 22) {
-                    wbairitu += ROUNDDOWN(n_A_JobLV / 2);
+                    wbairitu += Foot.ROUNDDOWN(n_A_JobLV / 2);
                 }
                 break;
 
@@ -8431,7 +8433,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
 
                 // ベースレベル補正
                 wbairitu *= n_A_BaseLV / 100;
-                wbairitu = ROUNDDOWN(wbairitu);
+                wbairitu = Foot.ROUNDDOWN(wbairitu);
                 break;
 
             //「ソーサラー」スキル「クラウドキル」
@@ -8450,7 +8452,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 n_A_Weapon_zokusei = g_skillManager.GetElement(battleCalcInfo.skillId);
                 // ダメージ倍率
                 wbairitu = 40 * n_A_ActiveSkillLV;
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
                 // 精霊補正
                 switch (UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL)) {
                     case SERE_SUPPORT_SKILL_ID_CURSED_SOIL:
@@ -8469,8 +8471,8 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 n_Delay[2] = 1000;
                 n_Delay[7] = 2000;
                 wbairitu = 1000 + 300 * n_A_ActiveSkillLV;
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 120);
-                if (UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL) == 31) wbairitu += ROUNDDOWN(n_A_JobLV * 5);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 120);
+                if (UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL) == 31) wbairitu += Foot.ROUNDDOWN(n_A_JobLV * 5);
                 break;
 
             case SKILL_ID_EARTH_GRAVE:
@@ -8483,8 +8485,8 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 n_Delay[7] = 5000;
                 var subnumvalue = attackMethodConfArray[0].GetOptionValue(0);
                 wbairitu = 200 * subnumvalue + n_A_INT * n_A_ActiveSkillLV;
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
-                if (UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL) == 31) wbairitu += ROUNDDOWN(n_A_JobLV * 5);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
+                if (UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL) == 31) wbairitu += Foot.ROUNDDOWN(n_A_JobLV * 5);
                 break;
 
             case SKILL_ID_DIAMOND_DUST:
@@ -8496,8 +8498,8 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 n_Delay[2] = 1000;
                 n_Delay[7] = 5000;
                 wbairitu = 200 * attackMethodConfArray[0].GetOptionValue(0) + n_A_INT * n_A_ActiveSkillLV;
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
-                if (UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL) == 13) wbairitu += ROUNDDOWN(n_A_JobLV * 5);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
+                if (UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL) == 13) wbairitu += Foot.ROUNDDOWN(n_A_JobLV * 5);
                 break;
 
             // 「ジェネティック」スキル「デモニックファイアー」
@@ -8538,7 +8540,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
             case SKILL_ID_ZYUTSUSHIKI_KAIHO:
                 n_A_Weapon_zokusei = UsedSkillSearch(SKILL_ID_FU_ELEMENT_OF_FU);
                 wbairitu = 200 * UsedSkillSearch(SKILL_ID_FU_COUNT_OF_FU);
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
                 break;
 
             // 「サモナー」スキル「マタタビランス」
@@ -8604,9 +8606,9 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
 
                 var subnumvalue = attackMethodConfArray[0].GetOptionValue(0);
                 var subnumvalue2 = attackMethodConfArray[0].GetOptionValue(1);
-                wbairitu = ROUNDDOWN((120 * (subnumvalue + subnumvalue2) + n_A_INT * (n_A_ActiveSkillLV / 2)) * n_A_BaseLV / 100);
+                wbairitu = Foot.ROUNDDOWN((120 * (subnumvalue + subnumvalue2) + n_A_INT * (n_A_ActiveSkillLV / 2)) * n_A_BaseLV / 100);
 
-                if (UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL) == 22) wbairitu += ROUNDDOWN(n_A_JobLV * 5);
+                if (UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL) == 22) wbairitu += Foot.ROUNDDOWN(n_A_JobLV * 5);
 
                 break;
 
@@ -8614,7 +8616,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 wCast = 2000;
                 n_Delay[2] = 1000;
                 wbairitu = 200 * n_A_ActiveSkillLV;
-                wbairitu = ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
+                wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
 
                 n_bunkatuHIT = 1;
                 wHITsuu = 7;
@@ -9976,26 +9978,26 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                             wbairitu = 0;
                             break;
                         }
-            
+
                         n_Enekyori = 1;	// 遠距離フラグ
                         wHITsuu = 3;	// 多段ヒット数
-            
+
                         // CSkillManager.js で定義された詠唱時間などを取得する
                         g_bUnknownCasts = true;	// 詠唱時間など未計測フラグ
                         wCast = g_skillManager.GetCastTimeVary(battleCalcInfo.skillId, battleCalcInfo.skillLv, charaData);
                         n_KoteiCast = g_skillManager.GetCastTimeFixed(battleCalcInfo.skillId, battleCalcInfo.skillLv, charaData);
                         n_Delay[2] = g_skillManager.GetDelayTimeCommon(battleCalcInfo.skillId, battleCalcInfo.skillLv, charaData);
                         n_Delay[7] = g_skillManager.GetCoolTime(battleCalcInfo.skillId, battleCalcInfo.skillLv, charaData);
-            
+
                         // 設置型の場合
                         g_bDefinedDamageIntervals = true;
                         n_Delay[5] = 500;	// ダメージ間隔
                         n_Delay[6] = 5000;	// オブジェクト存続時間
-            
+
                         // CAttackMethodAreaComponentManager.js で定義されたオプションを取得する
                         option_count = attackMethodConfArray[0].GetOptionValue(0);
                         wbairitu += option_count * (950 + (150 * n_A_ActiveSkillLV));
-            
+
                         // 習得済みスキル条件
                         if (UsedSkillSearch(SKILL_ID_SANREI_ITTAI) > 0) {
                             wbairitu = 650 + (150 * n_A_ActiveSkillLV);
@@ -10004,13 +10006,13 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                             bCri = false;										// クリティカルしない場合
                         }
                         wbairitu += 5 * GetTotalSpecStatus(MIG_PARAM_ID_POW);	// 特性ステータス補正
-            
+
                         // 種族特攻
                         switch (parseInt(mobData[MONSTER_DATA_INDEX_RACE], 10)) {
                             case RACE_ID_DEMON:
                                 wHITsuu = 3;
                         }
-            
+
                         wbairitu *= n_A_BaseLV / 100;							// BaseLv補正
                         break;
             */
@@ -10055,7 +10057,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                     if (b == 1) wHITsuu = 2 * attackMethodConfArray[0].GetOptionValue(0);
                     if (b == 2) wHITsuu = 3 * attackMethodConfArray[0].GetOptionValue(0);
                 }
-                Last_DMG_A[b] = ROUNDDOWN(w_DMG[b] * wHITsuu);
+                Last_DMG_A[b] = Foot.ROUNDDOWN(w_DMG[b] * wHITsuu);
                 if (!n_AS_MODE) g_damageTextArray[b].push(Last_DMG_A[b], "(", Last_DMG_B[b], SubName[8], wHITsuu, "hit)");
                 // TODO: 四次データ形式変更対応
                 // w_DMG[b] = Last_DMG_A[b];
@@ -10069,7 +10071,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 for (var b = 0; b <= 2; b++) {
                     w_DMG[b] = Math.floor(ApplyMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, mobData, attackMethodConfArray, w_MATK[b] * wbairitu / 100) / wHITsuu);
                     var KoteiDMG = 400 * subnumvalue;
-                    KoteiDMG = KoteiDMG * ROUNDDOWN((100 + 40 * UsedSkillSearch(SKILL_ID_TELECHINESIS_INSTENCE)) / 100);
+                    KoteiDMG = KoteiDMG * Foot.ROUNDDOWN((100 + 40 * UsedSkillSearch(SKILL_ID_TELECHINESIS_INSTENCE)) / 100);
                     Last_DMG_A[b] = Last_DMG_B[b] = w_DMG[b] * wHITsuu + KoteiDMG;
                     if (!n_AS_MODE) g_damageTextArray[b].push(Last_DMG_A[b], "(", w_DMG[b], SubName[8], wHITsuu, "hit + ", KoteiDMG, ")");
                     // TODO: 四次データ形式変更対応
@@ -10094,9 +10096,9 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
         if (n_A_ActiveSkill == 783 && (UsedSkillSearch(SKILL_ID_FU_ELEMENT_OF_FU) == 0 || UsedSkillSearch(SKILL_ID_FU_COUNT_OF_FU) == 0)) g_damageTextArray[0] = ["<Font color=Red><B>術式解放の計算をするにはパッシブ欄で<BR>符の属性と数を設定して下さい</B></Font>"];
         if (n_A_ActiveSkill == 526) {
             str_bSUBname += "<FONT color='#0000FF'><B>吸収量</B></FONT><BR>";
-            var w = ROUNDDOWN((8 * n_A_ActiveSkillLV) * n_A_BaseLV / 100);
-            var w0 = ROUNDDOWN(w_DMG[0] * w / 100);
-            var w2 = ROUNDDOWN(w_DMG[2] * w / 100);
+            var w = Foot.ROUNDDOWN((8 * n_A_ActiveSkillLV) * n_A_BaseLV / 100);
+            var w0 = Foot.ROUNDDOWN(w_DMG[0] * w / 100);
+            var w2 = Foot.ROUNDDOWN(w_DMG[2] * w / 100);
             str_bSUB += "<FONT color='#0000FF'><B>" + __DIG3(w0) + "～" + __DIG3(w2) + "</B></FONT><BR>";
         }
         w_HIT_HYOUJI = 100;
@@ -10241,7 +10243,7 @@ function GetBattlerAtkPercentUp(charaData, specData, mobData, attackMethodConfAr
         w += sklLv * 2;
     }
     // 「レーザーオブイーグル」の、トゥルーサイトＬｖ２
-    else if (TimeItemNumSearch(91)) {
+    else if (Chara.TimeItemNumSearch(91)) {
         w += 2 * 2;
     }
 
@@ -10282,7 +10284,7 @@ function GetBattlerAtkPercentUp(charaData, specData, mobData, attackMethodConfAr
     }
 
     // ＋９鬼丸の、バーサーク時オーバートラストマックス
-    if (n_A_Weapon_ATKplus >= 9 && EquipNumSearch(2426) && UsedSkillSearch(SKILL_ID_BERSERK)) w += 100;
+    if (n_A_Weapon_ATKplus >= 9 && Chara.EquipNumSearch(2426) && UsedSkillSearch(SKILL_ID_BERSERK)) w += 100;
 
     // バーサーク
     if (UsedSkillSearch(SKILL_ID_BERSERK)) w += 200;
@@ -10606,7 +10608,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     // ニブルヘイム特化
     //--------------------------------
     if (324 <= mobData[0] && mobData[0] <= 332) {
-        if (EquipNumSearch(2399)) {
+        if (Chara.EquipNumSearch(2399)) {
             wX += 5;
             if (n_A_HEAD_DEF_PLUS >= 5) wX += 5;
             if (n_A_HEAD_DEF_PLUS >= 7) wX += 10;
@@ -10666,7 +10668,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
         case 755:
         case 756:
         case 757:
-            if (EquipNumSearch(2490)) {
+            if (Chara.EquipNumSearch(2490)) {
                 wX += 5;
                 if (n_A_HEAD_DEF_PLUS >= 5) wX += 10;
                 if (n_A_HEAD_DEF_PLUS >= 7) wX += 15;
@@ -10679,7 +10681,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     // 英雄エンチャント特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_EIYUENCHANT]) == 1) {
-        if (CardNumSearch(CARD_ID_ENCHANT_MANPASHIKUZYOKUNO_GENZYU)) {
+        if (Chara.CardNumSearch(CARD_ID_ENCHANT_MANPASHIKUZYOKUNO_GENZYU)) {
             wX += 20;
         }
     }
@@ -10734,7 +10736,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     // タナトス特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_THANATOS]) == 1) {
-        if (EquipNumSearch(ITEM_ID_USUDUKIYONO_BOSHI)) {
+        if (Chara.EquipNumSearch(ITEM_ID_USUDUKIYONO_BOSHI)) {
             wX += 5;
             if (n_A_HEAD_DEF_PLUS >= 5) wX += 10;
             if (n_A_HEAD_DEF_PLUS >= 7) wX += 15;
@@ -10746,14 +10748,14 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     // 地下排水路特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_CHIKA_HAISUIRO]) == 1) {
-        if (EquipNumSearch(ITEM_ID_NEKORYOTEKEN_TACHIUO)) wX += 50;
-        if (EquipNumSearch(ITEM_ID_NEKOKATAR_TSUNA)) wX += 50;
-        if (EquipNumSearch(ITEM_ID_NEKORYOTETSUE_KAZIKI)) wX += 50;
-        if (EquipNumSearch(ITEM_ID_NEKORYOTEONO_KUROMAGURO)) wX += 50;
-        if (EquipNumSearch(ITEM_ID_NEKOYUMI_KANI)) wX += 50;
-        if (EquipNumSearch(ITEM_ID_NEKOTANKEN_AZI)) wX += 25 * EquipNumSearch(ITEM_ID_NEKOTANKEN_AZI);
+        if (Chara.EquipNumSearch(ITEM_ID_NEKORYOTEKEN_TACHIUO)) wX += 50;
+        if (Chara.EquipNumSearch(ITEM_ID_NEKOKATAR_TSUNA)) wX += 50;
+        if (Chara.EquipNumSearch(ITEM_ID_NEKORYOTETSUE_KAZIKI)) wX += 50;
+        if (Chara.EquipNumSearch(ITEM_ID_NEKORYOTEONO_KUROMAGURO)) wX += 50;
+        if (Chara.EquipNumSearch(ITEM_ID_NEKOYUMI_KANI)) wX += 50;
+        if (Chara.EquipNumSearch(ITEM_ID_NEKOTANKEN_AZI)) wX += 25 * Chara.EquipNumSearch(ITEM_ID_NEKOTANKEN_AZI);
 
-        if (EquipNumSearch(ITEM_ID_MARAN_KAIZOKUDANBO) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_MARAN_KAIZOKUDANBO) > 0) {
             wX += 15;
             if (n_A_HEAD_DEF_PLUS >= 7) wX += 15;
             if (n_A_HEAD_DEF_PLUS >= 9) wX += 20;
@@ -10764,14 +10766,14 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     // 暴屈折王の洞窟特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_BOKUTSUONO_DOKUTSU]) == 1) {
-        if (EquipNumSearch(ITEM_ID_NEKORYOTEKEN_TACHIUO)) wX += 50;
-        if (EquipNumSearch(ITEM_ID_NEKOKATAR_TSUNA)) wX += 50;
-        if (EquipNumSearch(ITEM_ID_NEKORYOTETSUE_KAZIKI)) wX += 50;
-        if (EquipNumSearch(ITEM_ID_NEKORYOTEONO_KUROMAGURO)) wX += 50;
-        if (EquipNumSearch(ITEM_ID_NEKOYUMI_KANI)) wX += 50;
-        if (EquipNumSearch(ITEM_ID_NEKOTANKEN_AZI)) wX += 25 * EquipNumSearch(ITEM_ID_NEKOTANKEN_AZI);
+        if (Chara.EquipNumSearch(ITEM_ID_NEKORYOTEKEN_TACHIUO)) wX += 50;
+        if (Chara.EquipNumSearch(ITEM_ID_NEKOKATAR_TSUNA)) wX += 50;
+        if (Chara.EquipNumSearch(ITEM_ID_NEKORYOTETSUE_KAZIKI)) wX += 50;
+        if (Chara.EquipNumSearch(ITEM_ID_NEKORYOTEONO_KUROMAGURO)) wX += 50;
+        if (Chara.EquipNumSearch(ITEM_ID_NEKOYUMI_KANI)) wX += 50;
+        if (Chara.EquipNumSearch(ITEM_ID_NEKOTANKEN_AZI)) wX += 25 * Chara.EquipNumSearch(ITEM_ID_NEKOTANKEN_AZI);
 
-        if (EquipNumSearch(ITEM_ID_MARAN_KAIZOKUDANBO) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_MARAN_KAIZOKUDANBO) > 0) {
             wX += 15;
             if (n_A_HEAD_DEF_PLUS >= 7) wX += 15;
             if (n_A_HEAD_DEF_PLUS >= 9) wX += 20;
@@ -10782,7 +10784,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     // 時計塔特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_TOKEITO]) == 1) {
-        if (EquipNumSearch(ITEM_ID_NIZIIRONO_TSUBASA) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_NIZIIRONO_TSUBASA) > 0) {
             wX += 15;
             if (n_A_HEAD_DEF_PLUS >= 7) wX += 15;
             if (n_A_HEAD_DEF_PLUS >= 9) wX += 20;
@@ -10793,7 +10795,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     // ハートハンター軍事基地特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_HEARTHUNTER]) == 1) {
-        if (EquipNumSearch(ITEM_ID_GOOGLE_HAT) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_GOOGLE_HAT) > 0) {
             wX += 15;
             if (n_A_HEAD_DEF_PLUS >= 7) wX += 15;
             if (n_A_HEAD_DEF_PLUS >= 9) wX += 20;
@@ -10804,7 +10806,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     // ロックリッジ特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_ROCKRIDGE]) == 1) {
-        if (EquipNumSearch(ITEM_ID_TAURUS_HAT) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_TAURUS_HAT) > 0) {
             wX += 15;
             if (n_A_HEAD_DEF_PLUS >= 7) wX += 15;
             if (n_A_HEAD_DEF_PLUS >= 9) wX += 20;
@@ -10815,7 +10817,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     // ヴェルナー研究所特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_VERNAR]) == 1) {
-        if (EquipNumSearch(ITEM_ID_ZIKKEN_SEITAI_GOATGATA_CAP) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_ZIKKEN_SEITAI_GOATGATA_CAP) > 0) {
             wX += 15;
             if (n_A_HEAD_DEF_PLUS >= 7) wX += 15;
             if (n_A_HEAD_DEF_PLUS >= 9) wX += 20;
@@ -10826,7 +10828,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     // メロリン特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MELORIN]) == 1) {
-        if (EquipNumSearch(ITEM_ID_OKYU_MINI_MELON) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_OKYU_MINI_MELON) > 0) {
             wX += 20 * n_A_HEAD_DEF_PLUS;
         }
     }
@@ -10835,7 +10837,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     // ２５０ページ特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_PAGE250]) == 1) {
-        if (EquipNumSearch(ITEM_ID_BLACK_VEIL) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_BLACK_VEIL) > 0) {
             wX += 15;
             if (n_A_HEAD_DEF_PLUS >= 7) wX += 15;
             if (n_A_HEAD_DEF_PLUS >= 9) wX += 20;
@@ -10846,22 +10848,22 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     // 魔神殿特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MAZINDEN]) == 1) {
-        if (EquipNumSearch(ITEM_ID_DIAVOLOS_WING) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_DIAVOLOS_WING) > 0) {
             wX += 30;
         }
-        if (EquipNumSearch(ITEM_SET_ID_DIAVOLOS_WING_DIAVOLOS_ARMOR) > 0) {
+        if (Chara.EquipNumSearch(ITEM_SET_ID_DIAVOLOS_WING_DIAVOLOS_ARMOR) > 0) {
             wX += 20;
         }
-        if (EquipNumSearch(ITEM_SET_ID_DIAVOLOS_WING_DIAVOLOS_ROBE) > 0) {
+        if (Chara.EquipNumSearch(ITEM_SET_ID_DIAVOLOS_WING_DIAVOLOS_ROBE) > 0) {
             wX += 20;
         }
-        if (EquipNumSearch(ITEM_SET_ID_DIAVOLOS_WING_DIAVOLOS_MANT) > 0) {
+        if (Chara.EquipNumSearch(ITEM_SET_ID_DIAVOLOS_WING_DIAVOLOS_MANT) > 0) {
             wX += 20;
         }
-        if (EquipNumSearch(ITEM_SET_ID_DIAVOLOS_WING_DIAVOLOS_BOOTS) > 0) {
+        if (Chara.EquipNumSearch(ITEM_SET_ID_DIAVOLOS_WING_DIAVOLOS_BOOTS) > 0) {
             wX += 20;
         }
-        if (EquipNumSearch(ITEM_SET_ID_DIAVOLOS_WING_DIAVOLOS_RING) > 0) {
+        if (Chara.EquipNumSearch(ITEM_SET_ID_DIAVOLOS_WING_DIAVOLOS_RING) > 0) {
             wX += 20;
         }
     }
@@ -10870,7 +10872,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     // スクロールストール特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SCROLL_STOLE]) == 1) {
-        if (EquipNumSearch(ITEM_ID_SCROLL_STOLE) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_SCROLL_STOLE) > 0) {
             wX += 30;
         }
     }
@@ -10879,7 +10881,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     // オース二次捜索特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_OS_NIZI_SOSAKU]) == 1) {
-        if (EquipNumSearch(ITEM_ID_KETTONO_RYU_BOSHI) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_KETTONO_RYU_BOSHI) > 0) {
             wX += 15;
             if (n_A_HEAD_DEF_PLUS >= 7) wX += 15;
             if (n_A_HEAD_DEF_PLUS >= 9) wX += 20;
@@ -10890,7 +10892,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     // ミグエル特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MIGEL]) == 1) {
-        if (EquipNumSearch(ITEM_ID_KETTONO_RYU_BOSHI) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_KETTONO_RYU_BOSHI) > 0) {
             if (n_A_HEAD_DEF_PLUS >= 10) {
                 wX += 100;
             }
@@ -10901,7 +10903,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     // ノーグロード３層特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_NOGUE_ROAD_03]) == 1) {
-        if ((cardCount = CardNumSearch(CARD_ID_KOKA_RAVA_GOLEM)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_KOKA_RAVA_GOLEM)) > 0) {
             wX += 30 * cardCount;
         }
     }
@@ -10910,7 +10912,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     // フローズンメモリー特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_FROZEN_MEMORY]) == 1) {
-        if (EquipNumSearch(ITEM_ID_FROZEN_SCALE_SHAWL) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_FROZEN_SCALE_SHAWL) > 0) {
             wX += 30;
         }
     }
@@ -10921,11 +10923,11 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     if ((NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MURASAKI_IRONO_SHINKAI_DOKUTSU_ZYOSO]) == 1)
         || (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MURASAKI_IRONO_SHINKAI_DOKUTSU_KASO]) == 1)) {
 
-        if ((cardCount = CardNumSearch(CARD_ID_SHINKAINO_HANGYOZIN)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_SHINKAINO_HANGYOZIN)) > 0) {
             wX += 30 * cardCount;
         }
 
-        if (EquipNumSearch(ITEM_ID_SHINKAI_SEIBUTSUNO_MANT) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_SHINKAI_SEIBUTSUNO_MANT) > 0) {
             wX += 30;
         }
     }
@@ -10934,7 +10936,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     // ネジリアン帝国特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_NEZIRIAN_TEKOKU]) == 1) {
-        if (EquipNumSearch(ITEM_ID_KIGURUMI_BEARDOLL) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_KIGURUMI_BEARDOLL) > 0) {
             wX += 30;
         }
     }
@@ -10943,7 +10945,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     // 幻想の北洞窟ルワンダ特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_GENSONO_KITA_DOKUTSU_RUWANDA]) == 1) {
-        if (EquipNumSearch(ITEM_ID_ANCIENT_MEGALIS_MANT) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_ANCIENT_MEGALIS_MANT) > 0) {
             wX += 30;
         }
     }
@@ -10952,7 +10954,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     // 歪んだ迷宮の森特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_YUGANDA_MEIKYUNO_MORI]) == 1) {
-        if (EquipNumSearch(ITEM_ID_YAGIGENO_MUFFLER) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_YAGIGENO_MUFFLER) > 0) {
             wX += 30;
         }
     }
@@ -10961,7 +10963,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     // 認識の庭特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_NINSHIKINO_NIWA]) == 1) {
-        if ((cardCount = CardNumSearch(CARD_ID_MAZIMENA_HETAI_ANDRE)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_MAZIMENA_HETAI_ANDRE)) > 0) {
             wX += 30 * cardCount;
         }
     }
@@ -10970,7 +10972,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     // 鉱山ダンジョン03特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_KOZAN_DUNGEON_03]) == 1) {
-        if ((cardCount = CardNumSearch(CARD_ID_NEO_MINERAL)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_NEO_MINERAL)) > 0) {
             wX += 30 * cardCount;
         }
     }
@@ -10979,10 +10981,10 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     // アビスレイク地下洞窟04特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_ABYSS_LAKE_CHIKA_DOKUTSU_04]) == 1) {
-        if (EquipNumSearch(ITEM_ID_DRAGON_SCALE_SHAWL) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_DRAGON_SCALE_SHAWL) > 0) {
             wX += 30;
         }
-        if ((cardCount = CardNumSearch(CARD_ID_BONE_PHEROS)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_BONE_PHEROS)) > 0) {
             wX += 30 * cardCount;
         }
     }
@@ -10991,10 +10993,10 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     // 廃棄実験体遊技場ルドゥス4階特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_HAIKI_ZIKKENTAI_YUGIZYO_RUDUS_4F]) == 1) {
-        if (EquipNumSearch(ITEM_ID_DISCARDED_CAPE) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_DISCARDED_CAPE) > 0) {
             wX += 30;
         }
-        if ((cardCount = CardNumSearch(CARD_ID_VENEDI)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_VENEDI)) > 0) {
             wX += 30 * cardCount;
         }
     }
@@ -11003,7 +11005,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     // 崩れたオペラハウス特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_NIFLHEIM_DUNGEON_KUZURETA_OPERA_HOUSE]) == 1) {
-        if ((cardCount = CardNumSearch(CARD_ID_PIERROT_ZOIST)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_PIERROT_ZOIST)) > 0) {
             wX += 30 * cardCount;
         }
     }
@@ -11012,7 +11014,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     // 大浴場メディタティオ特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_BALMUNT_TE_DAIYOKUZYO_MEDITATIO]) == 1) {
-        if ((cardCount = CardNumSearch(CARD_ID_NETTO_PHEN)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_NETTO_PHEN)) > 0) {
             wX += 30 * cardCount;
         }
     }
@@ -11021,7 +11023,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     // 貯蔵庫タルタロス特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_BALMUNT_TE_CHOZOKO_TARUTAROS]) == 1) {
-        if ((cardCount = CardNumSearch(CARD_ID_KOSHOSHITA_KEBIGATA_BETA)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_KOSHOSHITA_KEBIGATA_BETA)) > 0) {
             wX += 30 * cardCount;
         }
     }
@@ -11030,7 +11032,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     // 第2魔力発電所特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_BALMUNT_TE_DAI2_MARYOKU_HATSUDENSHO]) == 1) {
-        if ((cardCount = CardNumSearch(CARD_ID_KYORYOKUNA_MARYOKU)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_KYORYOKUNA_MARYOKU)) > 0) {
             wX += 30 * cardCount;
         }
     }
@@ -11039,7 +11041,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     // 灰色狼の森特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_HAIIRO_OKAMINO_MORI]) == 1) {
-        if ((cardCount = CardNumSearch(CARD_ID_GRAY_WOLF)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_GRAY_WOLF)) > 0) {
             wX += 30 * cardCount;
         }
     }
@@ -11048,7 +11050,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     // オズの迷路特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_OZNO_MEIRO]) == 1) {
-        if ((cardCount = CardNumSearch(CARD_ID_VALTY)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_VALTY)) > 0) {
             wX += 30 * cardCount;
         }
     }
@@ -11057,7 +11059,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     // 廃棄実験所アミシティア特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_HAIKI_ZIKKENZYO_AMISITIA]) == 1) {
-        if ((cardCount = CardNumSearch(CARD_ID_HENI_CHIMERA_VANILAQUS)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_HENI_CHIMERA_VANILAQUS)) > 0) {
             wX += 30 * cardCount;
         }
     }
@@ -11066,7 +11068,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     // 捨てられた穴01特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SUTERARETA_ANA_01]) == 1) {
-        if ((cardCount = CardNumSearch(CARD_ID_DOKUTSU_CALMARING)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_DOKUTSU_CALMARING)) > 0) {
             wX += 30 * cardCount;
         }
     }
@@ -11075,7 +11077,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     // 捨てられた穴02特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SUTERARETA_ANA_02]) == 1) {
-        if ((cardCount = CardNumSearch(CARD_ID_TANGAN_DOLLOCARIS)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_TANGAN_DOLLOCARIS)) > 0) {
             wX += 30 * cardCount;
         }
     }
@@ -11084,7 +11086,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     // 蛇神の温もり特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_HEBIGAMINO_NUKUMORI]) == 1) {
-        if ((cardCount = CardNumSearch(CARD_ID_SAIKAKYU_RGAN)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_SAIKAKYU_RGAN)) > 0) {
             wX += 30 * cardCount;
         }
     }
@@ -11093,7 +11095,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     // アルデバラン時計塔地下 未知の空間特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_TOKEITO_MICHI_NO_KUUKAN]) == 1) {
-        if ((cardCount = CardNumSearch(CARD_ID_GENERAL_ORK)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_GENERAL_ORK)) > 0) {
             wX += 30 * cardCount;
         }
     }
@@ -11102,10 +11104,10 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     // 魔力が歪んだ平原 特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_PLAINS_DISTORTED_BY_MAGIC]) == 1) {
-        if ((cardCount = CardNumSearch(CARD_ID_HARD_ROCK_TITAN)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_HARD_ROCK_TITAN)) > 0) {
             wX += 30 * cardCount;
         }
-        if (EquipNumSearch(ITEM_ID_DISTORTED_MAGIC_HOOD) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_DISTORTED_MAGIC_HOOD) > 0) {
             wX += 30;
         }
     }
@@ -11114,7 +11116,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     // ミョルニール地下洞窟 特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MIOLNIR_UNDERGROUND_CAVE]) == 1) {
-        if ((cardCount = CardNumSearch(CARD_ID_PUNCH_BUG)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_PUNCH_BUG)) > 0) {
             wX += 30 * cardCount;
         }
     }
@@ -11123,7 +11125,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     // イスガルド北部（凍て付いた鱗の海辺、古代の氷の峡谷 東部、古代の氷の峡谷 西部） 特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_ISGARD_NORTH_FIELD]) == 1) {
-        if ((cardCount = CardNumSearch(CARD_ID_FAKE_IWIN_SOLDIERS)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_FAKE_IWIN_SOLDIERS)) > 0) {
             wX += 30 * cardCount;
         }
     }
@@ -11132,7 +11134,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     // 蛇神の根源 特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_JOR_ROOT]) == 1) {
-        if ((cardCount = CardNumSearch(CARD_ID_JOR_MUNGANDR_GUARDIAN)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_JOR_MUNGANDR_GUARDIAN)) > 0) {
             wX += 30 * cardCount;
         }
     }
@@ -11140,7 +11142,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     // 英雄の痕跡支援
     //--------------------------------
-    if (TimeItemNumSearch(72)) {
+    if (Chara.TimeItemNumSearch(72)) {
         if (743 <= mobData[0] && mobData[0] <= 757) wX += 20;
         if (769 <= mobData[0] && mobData[0] <= 786) wX += 20;
     }
@@ -11148,7 +11150,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     // 12thアニバ星座支援
     //--------------------------------
-    if (TimeItemNumSearch(80)) wX += 30;
+    if (Chara.TimeItemNumSearch(80)) wX += 30;
 
     //--------------------------------
     // 「性能カスタマイズ」の、地域特化効果
@@ -11189,7 +11191,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
         // グラストヘイムアビス特化
         //--------------------------------
         if (NumSearch(mobData[MONSTER_DATA_INDEX_ID], MonsterGroupObj[MONSTER_GROUP_ID_GLASTHEIM_ABYSS]) == 1) {
-            if (EquipNumSearch(ITEM_ID_SHIROKISHINO_MANT) > 0) {
+            if (Chara.EquipNumSearch(ITEM_ID_SHIROKISHINO_MANT) > 0) {
                 wX += 10;
                 if (n_A_SHOULDER_DEF_PLUS >= 5) {
                     wX += 15;
@@ -11334,7 +11336,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeBossType(charaData
     if (mobData[MONSTER_DATA_INDEX_BOSS_TYPE] == 1) {
         wX = n_tok[ITEM_SP_MAGICAL_DAMAGE_UP_BOSS];
         // マジカルブースター＆サザンクロスセットによるＢＯＳＳ特化
-        if (EquipNumSearch(1627)) {
+        if (Chara.EquipNumSearch(1627)) {
             wX += 2;
             if (n_A_HEAD_DEF_PLUS >= 5) wX += 3;
             if (n_A_HEAD_DEF_PLUS >= 7) wX += 4;
@@ -11368,14 +11370,14 @@ function ApplyResistElement(mobData, dmg) {
             wX += n_B_TAISEI[MOB_CONF_PLAYER_ID_CHUGATA_TAISEI];
         }
     }
-    dmg -= ROUNDDOWN(dmg * wX / 100);
+    dmg -= Foot.ROUNDDOWN(dmg * wX / 100);
 
     wX = 0;
     // 敵が対プレイヤーの場合、対プレイヤー設定欄の一般モンスター耐性を適用
     if (mobData[0] == MONSTER_ID_PLAYER) {
         wX += n_B_TAISEI[MOB_CONF_PLAYER_ID_IPPAN_MONSTER_TAISEI];
     }
-    dmg -= ROUNDDOWN(dmg * wX / 100);
+    dmg -= Foot.ROUNDDOWN(dmg * wX / 100);
 
     wX = 0;
     // 毒属性武器、かつ、べナムインプレス状態の場合（判定順序は意図的に変えてある）
@@ -11437,14 +11439,14 @@ function ApplyResistElement(mobData, dmg) {
             wX += n_B_TAISEI[MOB_CONF_PLAYER_ID_BUTSURI_TAISEI];
         }
     }
-    dmg -= ROUNDDOWN(dmg * wX / 100);
+    dmg -= Foot.ROUNDDOWN(dmg * wX / 100);
 
     wX = 0;
     // 敵が対プレイヤーの場合、対プレイヤー設定欄の属性モンスター耐性を適用
     if (mobData[0] == MONSTER_ID_PLAYER) {
         wX += n_B_TAISEI[MOB_CONF_PLAYER_ID_ZOKUSEI_MONSTER_TAISEI];
     }
-    dmg -= ROUNDDOWN(dmg * wX / 100);
+    dmg -= Foot.ROUNDDOWN(dmg * wX / 100);
 
     return dmg;
 }
@@ -11457,13 +11459,13 @@ function ApplyResistElement(mobData, dmg) {
 function BaiTaisei_A_SP(w_Tai_DMG) {
     var wX = n_tok[ITEM_SP_RESIST_SIZE_MEDIUM];
     if (n_A_PassSkill8[13] == 1) wX = n_tok[ITEM_SP_RESIST_SIZE_SMALL];
-    w_Tai_DMG -= ROUNDDOWN(w_Tai_DMG * wX / 100);
+    w_Tai_DMG -= Foot.ROUNDDOWN(w_Tai_DMG * wX / 100);
     wX = n_tok[ITEM_SP_RESIST_NOTBOSS];
-    w_Tai_DMG -= ROUNDDOWN(w_Tai_DMG * wX / 100);
+    w_Tai_DMG -= Foot.ROUNDDOWN(w_Tai_DMG * wX / 100);
     wX = n_tok[ITEM_SP_RESIST_ELM_VANITY + n_A_Weapon_zokusei];
-    w_Tai_DMG -= ROUNDDOWN(w_Tai_DMG * wX / 100);
+    w_Tai_DMG -= Foot.ROUNDDOWN(w_Tai_DMG * wX / 100);
     wX = n_tok[ITEM_SP_RESIST_MONSTER_ELM_VANITY + n_A_BodyZokusei];
-    w_Tai_DMG -= ROUNDDOWN(w_Tai_DMG * wX / 100);
+    w_Tai_DMG -= Foot.ROUNDDOWN(w_Tai_DMG * wX / 100);
     return w_Tai_DMG;
 }
 
@@ -11482,11 +11484,11 @@ function ApplyRegistPVPNormal(mobData, dmg) {
         else {
             wX = n_B_TAISEI[MOB_CONF_PLAYER_ID_NINGEN_KEI_TAISEI];
         }
-        dmg -= ROUNDDOWN(dmg * wX / 100);
+        dmg -= Foot.ROUNDDOWN(dmg * wX / 100);
         // 遠距離攻撃の場合、遠距離耐性も適用
         if (n_Enekyori == 1) {
             wX = n_B_TAISEI[MOB_CONF_PLAYER_ID_ENKYORI_BUTSURI_TAISEI];
-            dmg -= ROUNDDOWN(dmg * wX / 100);
+            dmg -= Foot.ROUNDDOWN(dmg * wX / 100);
         }
     }
     return dmg;
@@ -11501,7 +11503,7 @@ function ApplyRegistPVPNormal(mobData, dmg) {
 function BaiTaisei_C(mobData, w_Tai_DMG) {
     var wX = 0;
     if (mobData[0] == MONSTER_ID_PLAYER) wX += n_B_TAISEI[MOB_CONF_PLAYER_ID_NINGEN_KEI_TAISEI];
-    w_Tai_DMG -= ROUNDDOWN(w_Tai_DMG * wX / 100);
+    w_Tai_DMG -= Foot.ROUNDDOWN(w_Tai_DMG * wX / 100);
     return w_Tai_DMG;
 }
 
@@ -11515,7 +11517,7 @@ function ApplyRegistPVPEnergyCoat(mobData, dmg) {
     // 敵が対プレイヤーの場合、対プレイヤー設定欄のエナジーコート効果を適用
     if (mobData[0] == MONSTER_ID_PLAYER) {
         wX += 6 * n_B_TAISEI[MOB_CONF_PLAYER_ID_ENERGY_COAT];
-        dmg -= ROUNDDOWN(dmg * wX / 100);
+        dmg -= Foot.ROUNDDOWN(dmg * wX / 100);
     }
     return dmg;
 }
@@ -11531,7 +11533,7 @@ function BaiTaisei_E(mobData, w_Tai_DMG) {
     if (n_Enekyori == 1) {
         wX = 0;
         if (mobData[0] == MONSTER_ID_PLAYER) wX += n_B_TAISEI[MOB_CONF_PLAYER_ID_ENKYORI_BUTSURI_TAISEI];
-        w_Tai_DMG -= ROUNDDOWN(w_Tai_DMG * wX / 100);
+        w_Tai_DMG -= Foot.ROUNDDOWN(w_Tai_DMG * wX / 100);
     }
     return w_Tai_DMG;
 }
@@ -11713,7 +11715,7 @@ function BuildBattleResultHtml(charaData, specData, mobData, attackMethodConfArr
         str_bSUBname += "<Font size=2>Miss時の必中ダメージ</Font>";
         if (str_PerfectHIT_DMG == 0) {
             if (wActiveHitNum > 1) {
-                var w = ROUNDDOWN(n_PerfectHIT_DMG / wActiveHitNum);
+                var w = Foot.ROUNDDOWN(n_PerfectHIT_DMG / wActiveHitNum);
                 str_bSUB += __DIG3(w * wActiveHitNum) + "(" + __DIG3(w) + "×" + wActiveHitNum + "Hit)";
             }
             else str_bSUB += __DIG3(n_PerfectHIT_DMG);
@@ -11957,7 +11959,7 @@ function BuildBattleResultHtml(charaData, specData, mobData, attackMethodConfArr
         0,
         UsedSkillSearch(SKILL_ID_AUTO_GUARD),
         g_confDataNizi[CCharaConfNizi.CONF_ID_AUTO_GUARD],
-        TimeItemNumSearch(70)
+        Chara.TimeItemNumSearch(70)
     );
     if (agLv > 0) {
         w = Math.round(w * w_AG[agLv]) / 100;
@@ -13417,7 +13419,7 @@ function BuildBattleResultHtmlMIG(charaData, specData, mobData, attackMethodConf
         str_bSUBname += "<Font size=2>Miss時の必中ダメージ</Font>";
         if (str_PerfectHIT_DMG == 0) {
             if (wActiveHitNum > 1) {
-                var w = ROUNDDOWN(n_PerfectHIT_DMG / wActiveHitNum);
+                var w = Foot.ROUNDDOWN(n_PerfectHIT_DMG / wActiveHitNum);
                 str_bSUB += __DIG3(w * wActiveHitNum) + "(" + __DIG3(w) + "×" + wActiveHitNum + "Hit)";
             }
             else str_bSUB += __DIG3(n_PerfectHIT_DMG);
@@ -13695,7 +13697,7 @@ function BuildBattleResultHtmlMIG(charaData, specData, mobData, attackMethodConf
         0,
         UsedSkillSearch(SKILL_ID_AUTO_GUARD),
         g_confDataNizi[CCharaConfNizi.CONF_ID_AUTO_GUARD],
-        TimeItemNumSearch(70)
+        Chara.TimeItemNumSearch(70)
     );
 
     if (agLv > 0) {
@@ -13832,7 +13834,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
         case 755:
         case 756:
         case 757:
-            if (EquipNumSearch(2490)) {
+            if (Chara.EquipNumSearch(2490)) {
                 wBHD += 5;
                 if (n_A_HEAD_DEF_PLUS >= 5) wBHD += 10;
                 if (n_A_HEAD_DEF_PLUS >= 7) wBHD += 15;
@@ -13863,7 +13865,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     // 英雄エンチャント耐性
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_EIYUENCHANT]) == 1) {
-        if (CardNumSearch(CARD_ID_ENCHANT_UCHUKONGEN_GENZYU)) {
+        if (Chara.CardNumSearch(CARD_ID_ENCHANT_UCHUKONGEN_GENZYU)) {
             wBHD += 20;
         }
     }
@@ -13872,7 +13874,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     // 生体耐性　防具
     //--------------------------------
     // レクイエムスーツ、または、レクイエムローブ
-    if (EquipNumSearch(ITEM_ID_REQUIEM_SUIT) || EquipNumSearch(ITEM_ID_REQUIEM_ROBE)) {
+    if (Chara.EquipNumSearch(ITEM_ID_REQUIEM_SUIT) || Chara.EquipNumSearch(ITEM_ID_REQUIEM_ROBE)) {
         if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SEITAI]) == 1) {
             wBHD += 3;
             if (n_A_BODY_DEF_PLUS >= 6) wBHD += 2;
@@ -13880,7 +13882,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
         }
     }
     // レクイエムシールド
-    if (EquipNumSearch(ITEM_ID_REQUIEM_SHIELD)) {
+    if (Chara.EquipNumSearch(ITEM_ID_REQUIEM_SHIELD)) {
         if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SEITAI]) == 1) {
             wBHD += 10;
             if (n_A_SHIELD_DEF_PLUS >= 6) wBHD += 7;
@@ -13888,7 +13890,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
         }
     }
     // レクイエムマント
-    if (EquipNumSearch(ITEM_ID_REQUIEM_MANT)) {
+    if (Chara.EquipNumSearch(ITEM_ID_REQUIEM_MANT)) {
         if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SEITAI]) == 1) {
             wBHD += 3;
             if (n_A_SHOULDER_DEF_PLUS >= 6) wBHD += 1;
@@ -13896,7 +13898,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
         }
     }
     // レクイエムブーツ
-    if (EquipNumSearch(ITEM_ID_REQUIEM_BOOTS)) {
+    if (Chara.EquipNumSearch(ITEM_ID_REQUIEM_BOOTS)) {
         if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SEITAI]) == 1) {
             wBHD += 3;
             if (n_A_SHOES_DEF_PLUS >= 6) wBHD += 1;
@@ -13908,7 +13910,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     // タナトス耐性
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_THANATOS]) == 1) {
-        if (EquipNumSearch(ITEM_ID_USUDUKIYONO_BOSHI)) {
+        if (Chara.EquipNumSearch(ITEM_ID_USUDUKIYONO_BOSHI)) {
             wBHD += 5;
             if (n_A_HEAD_DEF_PLUS >= 5) wBHD += 10;
             if (n_A_HEAD_DEF_PLUS >= 7) wBHD += 15;
@@ -13920,14 +13922,14 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     // 地下排水路耐性
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_CHIKA_HAISUIRO]) == 1) {
-        if (EquipNumSearch(ITEM_ID_NEKORYOTEKEN_TACHIUO)) wBHD += 30;
-        if (EquipNumSearch(ITEM_ID_NEKOKATAR_TSUNA)) wBHD += 30;
-        if (EquipNumSearch(ITEM_ID_NEKORYOTETSUE_KAZIKI)) wBHD += 30;
-        if (EquipNumSearch(ITEM_ID_NEKORYOTEONO_KUROMAGURO)) wBHD += 30;
-        if (EquipNumSearch(ITEM_ID_NEKOYUMI_KANI)) wBHD += 30;
-        if (EquipNumSearch(ITEM_ID_NEKOTANKEN_AZI)) wBHD += 15 * EquipNumSearch(ITEM_ID_NEKOTANKEN_AZI);
+        if (Chara.EquipNumSearch(ITEM_ID_NEKORYOTEKEN_TACHIUO)) wBHD += 30;
+        if (Chara.EquipNumSearch(ITEM_ID_NEKOKATAR_TSUNA)) wBHD += 30;
+        if (Chara.EquipNumSearch(ITEM_ID_NEKORYOTETSUE_KAZIKI)) wBHD += 30;
+        if (Chara.EquipNumSearch(ITEM_ID_NEKORYOTEONO_KUROMAGURO)) wBHD += 30;
+        if (Chara.EquipNumSearch(ITEM_ID_NEKOYUMI_KANI)) wBHD += 30;
+        if (Chara.EquipNumSearch(ITEM_ID_NEKOTANKEN_AZI)) wBHD += 15 * Chara.EquipNumSearch(ITEM_ID_NEKOTANKEN_AZI);
 
-        if (EquipNumSearch(ITEM_ID_MARAN_KAIZOKUDANBO) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_MARAN_KAIZOKUDANBO) > 0) {
             wBHD += 15;
             if (n_A_HEAD_DEF_PLUS >= 7) wBHD += 15;
             if (n_A_HEAD_DEF_PLUS >= 9) wBHD += 20;
@@ -13938,14 +13940,14 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     // 暴屈折王の洞窟耐性
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_BOKUTSUONO_DOKUTSU]) == 1) {
-        if (EquipNumSearch(ITEM_ID_NEKORYOTEKEN_TACHIUO)) wBHD += 30;
-        if (EquipNumSearch(ITEM_ID_NEKOKATAR_TSUNA)) wBHD += 30;
-        if (EquipNumSearch(ITEM_ID_NEKORYOTETSUE_KAZIKI)) wBHD += 30;
-        if (EquipNumSearch(ITEM_ID_NEKORYOTEONO_KUROMAGURO)) wBHD += 30;
-        if (EquipNumSearch(ITEM_ID_NEKOYUMI_KANI)) wBHD += 30;
-        if (EquipNumSearch(ITEM_ID_NEKOTANKEN_AZI)) wBHD += 15 * EquipNumSearch(ITEM_ID_NEKOTANKEN_AZI);
+        if (Chara.EquipNumSearch(ITEM_ID_NEKORYOTEKEN_TACHIUO)) wBHD += 30;
+        if (Chara.EquipNumSearch(ITEM_ID_NEKOKATAR_TSUNA)) wBHD += 30;
+        if (Chara.EquipNumSearch(ITEM_ID_NEKORYOTETSUE_KAZIKI)) wBHD += 30;
+        if (Chara.EquipNumSearch(ITEM_ID_NEKORYOTEONO_KUROMAGURO)) wBHD += 30;
+        if (Chara.EquipNumSearch(ITEM_ID_NEKOYUMI_KANI)) wBHD += 30;
+        if (Chara.EquipNumSearch(ITEM_ID_NEKOTANKEN_AZI)) wBHD += 15 * Chara.EquipNumSearch(ITEM_ID_NEKOTANKEN_AZI);
 
-        if (EquipNumSearch(ITEM_ID_MARAN_KAIZOKUDANBO) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_MARAN_KAIZOKUDANBO) > 0) {
             wBHD += 15;
             if (n_A_HEAD_DEF_PLUS >= 7) wBHD += 15;
             if (n_A_HEAD_DEF_PLUS >= 9) wBHD += 20;
@@ -13956,7 +13958,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     // 時計塔耐性
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_TOKEITO]) == 1) {
-        if (EquipNumSearch(ITEM_ID_NIZIIRONO_TSUBASA) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_NIZIIRONO_TSUBASA) > 0) {
             wBHD += 15;
             if (n_A_HEAD_DEF_PLUS >= 7) wBHD += 15;
             if (n_A_HEAD_DEF_PLUS >= 9) wBHD += 20;
@@ -13967,7 +13969,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     // ハートハンター軍事基地耐性
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_HEARTHUNTER]) == 1) {
-        if (EquipNumSearch(ITEM_ID_GOOGLE_HAT) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_GOOGLE_HAT) > 0) {
             wBHD += 15;
             if (n_A_HEAD_DEF_PLUS >= 7) wBHD += 15;
             if (n_A_HEAD_DEF_PLUS >= 9) wBHD += 20;
@@ -13978,7 +13980,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     // ロックリッジ耐性
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_ROCKRIDGE]) == 1) {
-        if (EquipNumSearch(ITEM_ID_TAURUS_HAT) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_TAURUS_HAT) > 0) {
             wBHD += 15;
             if (n_A_HEAD_DEF_PLUS >= 7) wBHD += 15;
             if (n_A_HEAD_DEF_PLUS >= 9) wBHD += 20;
@@ -13989,7 +13991,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     // ヴェルナー耐性
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_VERNAR]) == 1) {
-        if (EquipNumSearch(ITEM_ID_ZIKKEN_SEITAI_GOATGATA_CAP) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_ZIKKEN_SEITAI_GOATGATA_CAP) > 0) {
             wBHD += 15;
             if (n_A_HEAD_DEF_PLUS >= 7) wBHD += 15;
             if (n_A_HEAD_DEF_PLUS >= 9) wBHD += 20;
@@ -14000,7 +14002,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     // ２５０ページ耐性
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_PAGE250]) == 1) {
-        if (EquipNumSearch(ITEM_ID_BLACK_VEIL) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_BLACK_VEIL) > 0) {
             wBHD += 15;
             if (n_A_HEAD_DEF_PLUS >= 7) wBHD += 15;
             if (n_A_HEAD_DEF_PLUS >= 9) wBHD += 20;
@@ -14011,19 +14013,19 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     // 魔神殿耐性
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MAZINDEN]) == 1) {
-        if (EquipNumSearch(ITEM_SET_ID_DIAVOLOS_WING_DIAVOLOS_ARMOR) > 0) {
+        if (Chara.EquipNumSearch(ITEM_SET_ID_DIAVOLOS_WING_DIAVOLOS_ARMOR) > 0) {
             wBHD += 5;
         }
-        if (EquipNumSearch(ITEM_SET_ID_DIAVOLOS_WING_DIAVOLOS_ROBE) > 0) {
+        if (Chara.EquipNumSearch(ITEM_SET_ID_DIAVOLOS_WING_DIAVOLOS_ROBE) > 0) {
             wBHD += 5;
         }
-        if (EquipNumSearch(ITEM_SET_ID_DIAVOLOS_WING_DIAVOLOS_MANT) > 0) {
+        if (Chara.EquipNumSearch(ITEM_SET_ID_DIAVOLOS_WING_DIAVOLOS_MANT) > 0) {
             wBHD += 5;
         }
-        if (EquipNumSearch(ITEM_SET_ID_DIAVOLOS_WING_DIAVOLOS_BOOTS) > 0) {
+        if (Chara.EquipNumSearch(ITEM_SET_ID_DIAVOLOS_WING_DIAVOLOS_BOOTS) > 0) {
             wBHD += 5;
         }
-        if (EquipNumSearch(ITEM_SET_ID_DIAVOLOS_WING_DIAVOLOS_RING) > 0) {
+        if (Chara.EquipNumSearch(ITEM_SET_ID_DIAVOLOS_WING_DIAVOLOS_RING) > 0) {
             wBHD += 5;
         }
     }
@@ -14032,7 +14034,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     // オース二次捜索耐性
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_OS_NIZI_SOSAKU]) == 1) {
-        if (EquipNumSearch(ITEM_ID_KETTONO_RYU_BOSHI) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_KETTONO_RYU_BOSHI) > 0) {
             wBHD += 15;
             if (n_A_HEAD_DEF_PLUS >= 7) wBHD += 15;
             if (n_A_HEAD_DEF_PLUS >= 9) wBHD += 20;
@@ -14043,7 +14045,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     // フローズンメモリー耐性
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_FROZEN_MEMORY]) == 1) {
-        if (EquipNumSearch(ITEM_ID_FROZEN_SCALE_SHAWL) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_FROZEN_SCALE_SHAWL) > 0) {
             wBHD += 60;
         }
     }
@@ -14052,7 +14054,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     // ネジリアン帝国耐性
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_NEZIRIAN_TEKOKU]) == 1) {
-        if (EquipNumSearch(ITEM_ID_KIGURUMI_BEARDOLL) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_KIGURUMI_BEARDOLL) > 0) {
             wBHD += 60;
         }
     }
@@ -14061,7 +14063,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     // 幻想の北洞窟ルワンダ耐性
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_GENSONO_KITA_DOKUTSU_RUWANDA]) == 1) {
-        if (EquipNumSearch(ITEM_ID_ANCIENT_MEGALIS_MANT) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_ANCIENT_MEGALIS_MANT) > 0) {
             wBHD += 60;
         }
     }
@@ -14070,7 +14072,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     // 歪んだ迷宮の森耐性
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_YUGANDA_MEIKYUNO_MORI]) == 1) {
-        if (EquipNumSearch(ITEM_ID_YAGIGENO_MUFFLER) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_YAGIGENO_MUFFLER) > 0) {
             wBHD += 60;
         }
     }
@@ -14081,7 +14083,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     if ((NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MURASAKI_IRONO_SHINKAI_DOKUTSU_ZYOSO]) == 1)
         || (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MURASAKI_IRONO_SHINKAI_DOKUTSU_KASO]) == 1)) {
 
-        if (EquipNumSearch(ITEM_ID_SHINKAI_SEIBUTSUNO_MANT) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_SHINKAI_SEIBUTSUNO_MANT) > 0) {
             wBHD += 60;
         }
     }
@@ -14090,7 +14092,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     // アビスレイク地下洞窟04耐性
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_ABYSS_LAKE_CHIKA_DOKUTSU_04]) == 1) {
-        if (EquipNumSearch(ITEM_ID_DRAGON_SCALE_SHAWL) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_DRAGON_SCALE_SHAWL) > 0) {
             wBHD += 60;
         }
     }
@@ -14099,7 +14101,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     // 廃棄実験体遊技場ルドゥス4階耐性
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_HAIKI_ZIKKENTAI_YUGIZYO_RUDUS_4F]) == 1) {
-        if (EquipNumSearch(ITEM_ID_DISCARDED_CAPE) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_DISCARDED_CAPE) > 0) {
             wBHD += 60;
         }
     }
@@ -14108,7 +14110,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     // 魔力が歪んだ平原 耐性
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_PLAINS_DISTORTED_BY_MAGIC]) == 1) {
-        if (EquipNumSearch(ITEM_ID_DISTORTED_MAGIC_HOOD) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_DISTORTED_MAGIC_HOOD) > 0) {
             wBHD += 60;
         }
     }
@@ -14116,7 +14118,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     //--------------------------------
     // 英雄の痕跡支援
     //--------------------------------
-    if (TimeItemNumSearch(72)) {
+    if (Chara.TimeItemNumSearch(72)) {
         if (743 <= mobData[0] && mobData[0] <= 757) wBHD += 20;
         if (769 <= mobData[0] && mobData[0] <= 786) wBHD += 20;
     }
@@ -14124,7 +14126,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     //--------------------------------
     // 12thアニバ星座支援
     //--------------------------------
-    if (TimeItemNumSearch(80)) wBHD += 40;
+    if (Chara.TimeItemNumSearch(80)) wBHD += 40;
 
     //----------------------------------------------------------------
     // 「性能カスタマイズ欄」の、地域耐性効果
@@ -14417,7 +14419,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     //--------------------------------
     // ストーンスキンのダメージ軽減効果
     //--------------------------------
-    if (TimeItemNumSearch(TIME_ITEM_ID_WOLF_HEZIN)) {
+    if (Chara.TimeItemNumSearch(TIME_ITEM_ID_WOLF_HEZIN)) {
         for (i = 0; i <= 6; i++) {
             w_HiDam[i] -= Math.floor(w_HiDam[i] * 20 / 100);
         }
@@ -14667,7 +14669,7 @@ function BattleHiDamMaxPain(charaData, specData, mobData, attackMethodConfArray,
     //--------------------------------
     // ストーンスキンのダメージ軽減効果
     //--------------------------------
-    if (TimeItemNumSearch(TIME_ITEM_ID_WOLF_HEZIN)) {
+    if (Chara.TimeItemNumSearch(TIME_ITEM_ID_WOLF_HEZIN)) {
         for (i = 0; i <= 6; i++) {
             w_HiDam[i] -= Math.floor(w_HiDam[i] * 20 / 100);
         }
@@ -14787,21 +14789,21 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「バンシーカード」の、「ナパームビート」「ソウルストライク」「ナパームバルカン」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 46 || n_A_ActiveSkill == 47 || n_A_ActiveSkill == 277) {
-        if (GetLowerJobSeriesID(n_A_JOB) == 5) wX += 20 * CardNumSearch(474);
+        if (GetLowerJobSeriesID(n_A_JOB) == 5) wX += 20 * Chara.CardNumSearch(474);
     }
 
     //----------------------------------------------------------------
     // 「花のカチューシャ」の、「アーススパイク」「ヘヴンズドライブ」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 132 || n_A_ActiveSkill == 133) {
-        if (EquipNumSearch(1146)) wX += n_A_HEAD_DEF_PLUS;
+        if (Chara.EquipNumSearch(1146)) wX += n_A_HEAD_DEF_PLUS;
     }
 
     //----------------------------------------------------------------
     // 「ラクリマスティック」の、「ストームガスト」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 131) {
-        if (EquipNumSearch(1169)) wX += n_A_Weapon_ATKplus;
+        if (Chara.EquipNumSearch(1169)) wX += n_A_Weapon_ATKplus;
     }
 
     //----------------------------------------------------------------
@@ -14810,12 +14812,12 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 37 || n_A_ActiveSkill == 387) {
 
-        if (GetLowerJobSeriesID(n_A_JOB) == 3 && EquipNumSearch(1247)) {
+        if (GetLowerJobSeriesID(n_A_JOB) == 3 && Chara.EquipNumSearch(1247)) {
             wX += 5;
             if (n_A_HEAD_DEF_PLUS >= 7) wX += 5;
         }
 
-        if (EquipNumSearch(2394)) {
+        if (Chara.EquipNumSearch(2394)) {
             wX += 80 * LearnedSkillSearch(SKILL_ID_IMPOSITIO_MANUS);
         }
     }
@@ -14824,7 +14826,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「メンタルスティック」の、「サイキックウェーブ」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 662) {
-        if (EquipNumSearch(1475)) {
+        if (Chara.EquipNumSearch(1475)) {
             if (n_A_Weapon_ATKplus >= 6) wX += (n_A_Weapon_ATKplus - 5) * 2;
         }
     }
@@ -14835,8 +14837,8 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 478) {
         if (n_A_Weapon_ATKplus >= 7 && n_A_BODY_DEF_PLUS >= 7 && n_A_SHOULDER_DEF_PLUS >= 7 && n_A_SHOES_DEF_PLUS >= 7) {
-            if (EquipNumSearch(1570)) wX += 100;
-            if (EquipNumSearch(1572)) wX += 50;
+            if (Chara.EquipNumSearch(1570)) wX += 100;
+            if (Chara.EquipNumSearch(1572)) wX += 50;
         }
     }
 
@@ -14844,63 +14846,63 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「冷気の魔法書」の、「コールドボルト」「ダイヤモンドダスト」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 54 || n_A_ActiveSkill == 667) {
-        if (EquipNumSearch(1697)) wX += 3 * n_A_Weapon_ATKplus;
+        if (Chara.EquipNumSearch(1697)) wX += 3 * n_A_Weapon_ATKplus;
     }
 
     //----------------------------------------------------------------
     // 「炎神の系譜」の、「ファイアーボルト」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 51) {
-        if (EquipNumSearch(1803)) wX += n_A_Weapon_ATKplus;
+        if (Chara.EquipNumSearch(1803)) wX += n_A_Weapon_ATKplus;
     }
 
     //----------------------------------------------------------------
     // 「氷神の系譜」の、「コールドボルト」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 54) {
-        if (EquipNumSearch(1784)) wX += n_A_Weapon_ATKplus;
+        if (Chara.EquipNumSearch(1784)) wX += n_A_Weapon_ATKplus;
     }
 
     //----------------------------------------------------------------
     // 「雷神の系譜」の、「ライトニングボルト」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 56) {
-        if (EquipNumSearch(1744)) wX += n_A_Weapon_ATKplus;
+        if (Chara.EquipNumSearch(1744)) wX += n_A_Weapon_ATKplus;
     }
 
     //----------------------------------------------------------------
     // 「地神の系譜」の、「アーススパイク」「ヘヴンズドライブ」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 132 || n_A_ActiveSkill == 133) {
-        if (EquipNumSearch(1900)) wX += n_A_Weapon_ATKplus;
+        if (Chara.EquipNumSearch(1900)) wX += n_A_Weapon_ATKplus;
     }
 
     //----------------------------------------------------------------
     // 「エレメンタルブーツ」の、「ファイアーボルト」「コールドボルト」「ライトニングボルト」「アーススパイク」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 51 || n_A_ActiveSkill == 54 || n_A_ActiveSkill == 56 || n_A_ActiveSkill == 132) {
-        if (n_A_SHOES_DEF_PLUS >= 6 && EquipNumSearch(1894)) wX += n_A_SHOES_DEF_PLUS - 5;
+        if (n_A_SHOES_DEF_PLUS >= 6 && Chara.EquipNumSearch(1894)) wX += n_A_SHOES_DEF_PLUS - 5;
     }
 
     //----------------------------------------------------------------
     // 「天体サークル」の、「メテオストーム」「クリムゾンロック」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 125 || n_A_ActiveSkill == 527) {
-        if (EquipNumSearch(2092)) wX += 5 * ROUNDDOWN(n_A_HEAD_DEF_PLUS / 3);
+        if (Chara.EquipNumSearch(2092)) wX += 5 * Foot.ROUNDDOWN(n_A_HEAD_DEF_PLUS / 3);
     }
 
     //----------------------------------------------------------------
     // 「まねき餅花」の、「ファイアーウォール」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 53) {
-        if (n_A_HEAD_DEF_PLUS >= 1 && EquipNumSearch(2166)) wX += 5 * n_A_HEAD_DEF_PLUS;
+        if (n_A_HEAD_DEF_PLUS >= 1 && Chara.EquipNumSearch(2166)) wX += 5 * n_A_HEAD_DEF_PLUS;
     }
 
     //----------------------------------------------------------------
     // 「悪魔祓いの書」の、「マグヌスエクソシズム」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 104) {
-        if (EquipNumSearch(2178)) {
+        if (Chara.EquipNumSearch(2178)) {
             var w9 = SU_INT;
             if (w9 > 120) w9 = 120;
             wX += w9;
@@ -14911,14 +14913,14 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「酸素ボンベ」の、「ファイアーウォール」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 53) {
-        if (EquipNumSearch(2299)) wX += ROUNDDOWN(n_A_BaseLV / 2);
+        if (Chara.EquipNumSearch(2299)) wX += Foot.ROUNDDOWN(n_A_BaseLV / 2);
     }
 
     //----------------------------------------------------------------
     // 「シャドウスタッフ」の、スキル習得による「ヘルインフェルノ」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 528) {
-        if (EquipNumSearch(ITEM_ID_SHADOW_STUFF)) {
+        if (Chara.EquipNumSearch(ITEM_ID_SHADOW_STUFF)) {
             if (LearnedSkillSearch(SKILL_ID_HELL_INFERNO) >= 5) {
                 wX += 100;
                 wX += 10 * n_A_Weapon_ATKplus;
@@ -14929,7 +14931,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     //----------------------------------------------------------------
     // 「法螺貝」の、「振動残響」強化
     //----------------------------------------------------------------
-    if (n_A_ActiveSkill == 639 && EquipNumSearch(2430)) {
+    if (n_A_ActiveSkill == 639 && Chara.EquipNumSearch(2430)) {
         if (n_A_Weapon_ATKplus >= 5) wX += 10;
         if (n_A_Weapon_ATKplus >= 7) wX += 20;
         if (n_A_Weapon_ATKplus >= 9) wX += 40;
@@ -14938,28 +14940,28 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     //----------------------------------------------------------------
     // 「アルティメット　クリムゾンセット」の、「サモンファイアーボール」強化
     //----------------------------------------------------------------
-    if (n_A_ActiveSkill == 533 && EquipNumSearch(2546)) {
+    if (n_A_ActiveSkill == 533 && Chara.EquipNumSearch(2546)) {
         wX += 2 * n_A_BODY_DEF_PLUS;
     }
 
     //----------------------------------------------------------------
     // 「アルティメット　アクアセット」の、「サモンウォーターボール」強化
     //----------------------------------------------------------------
-    if (n_A_ActiveSkill == 534 && EquipNumSearch(2551)) {
+    if (n_A_ActiveSkill == 534 && Chara.EquipNumSearch(2551)) {
         wX += 2 * n_A_BODY_DEF_PLUS;
     }
 
     //----------------------------------------------------------------
     // 「アルティメット　ゴールデンロッドセット」の、「サモンボールライトニング」強化
     //----------------------------------------------------------------
-    if (n_A_ActiveSkill == 535 && EquipNumSearch(2556)) {
+    if (n_A_ActiveSkill == 535 && Chara.EquipNumSearch(2556)) {
         wX += 2 * n_A_BODY_DEF_PLUS;
     }
 
     //----------------------------------------------------------------
     // 「アルティメット　フォレストセット」の、「サモンストーン」強化
     //----------------------------------------------------------------
-    if (n_A_ActiveSkill == 536 && EquipNumSearch(2561)) {
+    if (n_A_ActiveSkill == 536 && Chara.EquipNumSearch(2561)) {
         wX += 2 * n_A_BODY_DEF_PLUS;
     }
 
@@ -14968,10 +14970,10 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「メテオストーム」、「ストームガスト」、「ロードオブヴァーミリオン」、「ヘヴンズドライブ」強化
     //----------------------------------------------------------------
     if (UsedSkillSearch(SKILL_ID_MAHORYOKU_ZOFUKU)) {
-        if (n_A_ActiveSkill == 125 && EquipNumSearch(2549)) wX += 1 * n_A_BaseLV;
-        if (n_A_ActiveSkill == 131 && EquipNumSearch(2554)) wX += ROUNDDOWN(1.5 * n_A_BaseLV);
-        if (n_A_ActiveSkill == 127 && EquipNumSearch(2559)) wX += 2 * n_A_BaseLV;
-        if (n_A_ActiveSkill == 133 && EquipNumSearch(2564)) wX += ROUNDDOWN(2.5 * n_A_BaseLV);
+        if (n_A_ActiveSkill == 125 && Chara.EquipNumSearch(2549)) wX += 1 * n_A_BaseLV;
+        if (n_A_ActiveSkill == 131 && Chara.EquipNumSearch(2554)) wX += Foot.ROUNDDOWN(1.5 * n_A_BaseLV);
+        if (n_A_ActiveSkill == 127 && Chara.EquipNumSearch(2559)) wX += 2 * n_A_BaseLV;
+        if (n_A_ActiveSkill == 133 && Chara.EquipNumSearch(2564)) wX += Foot.ROUNDDOWN(2.5 * n_A_BaseLV);
     }
 
 
@@ -14983,8 +14985,8 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「古びたバレリーナの髪飾り」の、「振動残響」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 639) {
-        if (EquipNumSearch(ITEM_ID_FURUBITA_BALLERINA)
-            || EquipNumSearch(ITEM_ID_FURUBITA_MINSTRELSONG)) {
+        if (Chara.EquipNumSearch(ITEM_ID_FURUBITA_BALLERINA)
+            || Chara.EquipNumSearch(ITEM_ID_FURUBITA_MINSTRELSONG)) {
             if (n_A_HEAD_DEF_PLUS >= 7) wX += 30;
             if (n_A_HEAD_DEF_PLUS >= 9) wX += 20;
         }
@@ -14994,7 +14996,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「古びた魔力石の帽子」の、「クリムゾンロック」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 527) {
-        if (EquipNumSearch(ITEM_ID_FURUBITA_MARYOKUSEKI)) {
+        if (Chara.EquipNumSearch(ITEM_ID_FURUBITA_MARYOKUSEKI)) {
             if (n_A_HEAD_DEF_PLUS >= 7) wX += 30;
             if (n_A_HEAD_DEF_PLUS >= 9) wX += 20;
         }
@@ -15004,7 +15006,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「古びた魔力石の帽子」の、「コメット」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 529) {
-        if (EquipNumSearch(ITEM_ID_FURUBITA_MARYOKUSEKI)) {
+        if (Chara.EquipNumSearch(ITEM_ID_FURUBITA_MARYOKUSEKI)) {
             if (n_A_HEAD_DEF_PLUS >= 7) wX += 15;
             if (n_A_HEAD_DEF_PLUS >= 9) wX += 10;
         }
@@ -15016,7 +15018,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「精霊王の指輪」の、「アースグレイヴ」「ダイヤモンドダスト」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 666 || n_A_ActiveSkill == 667) {
-        wX += ROUNDDOWN(n_A_BaseLV / 8) * 1 * EquipNumSearch(ITEM_ID_SEIREIONO_YUBIWA);
+        wX += Foot.ROUNDDOWN(n_A_BaseLV / 8) * 1 * Chara.EquipNumSearch(ITEM_ID_SEIREIONO_YUBIWA);
     }
 
 
@@ -15025,7 +15027,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「エメラルドイヤリング」の、「メタリックサウンド」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 641) {
-        wX += ROUNDDOWN(n_A_BaseLV / 5) * 2 * EquipNumSearch(ITEM_ID_EMERALDEARRING);
+        wX += Foot.ROUNDDOWN(n_A_BaseLV / 5) * 2 * Chara.EquipNumSearch(ITEM_ID_EMERALDEARRING);
     }
 
 
@@ -15034,7 +15036,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「ポロロッカシューズ　ラクリマセット」の、「ウォーターボール」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_WATER_BALL) {
-        if (EquipNumSearch(ITEM_SET_ID_POROROCA_SHOES_LACRYMA_STICK)) {
+        if (Chara.EquipNumSearch(ITEM_SET_ID_POROROCA_SHOES_LACRYMA_STICK)) {
 
             // ウォーターボール習得レベルによる強化
             wX += 30 * LearnedSkillSearch(SKILL_ID_WATER_BALL);
@@ -15050,7 +15052,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「アヴェンジャーウィザードスタッフ」の、「コメット」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_COMMET) {
-        if (EquipNumSearch(ITEM_ID_AVENGER_WIZARDSTUFF)) {
+        if (Chara.EquipNumSearch(ITEM_ID_AVENGER_WIZARDSTUFF)) {
             if (n_A_Weapon_ATKplus >= 9) {
                 wX += 20;
             }
@@ -15066,8 +15068,8 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     if (n_A_ActiveSkill == SKILL_ID_EARTH_STRAIN
         || n_A_ActiveSkill == SKILL_ID_CHAIN_LIGHTNING) {
 
-        if (EquipNumSearch(ITEM_SET_ID_SURVIVAL_ORB_SURVIVAL_ROD_DEX)
-            || EquipNumSearch(ITEM_SET_ID_SURVIVAL_ORB_SURVIVAL_ROD_INT)) {
+        if (Chara.EquipNumSearch(ITEM_SET_ID_SURVIVAL_ORB_SURVIVAL_ROD_DEX)
+            || Chara.EquipNumSearch(ITEM_SET_ID_SURVIVAL_ORB_SURVIVAL_ROD_INT)) {
             if (n_A_Weapon_ATKplus >= 10) {
                 if (n_A_BaseLV <= 99) {
                     wX += 15;
@@ -15085,8 +15087,8 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     if (n_A_ActiveSkill == SKILL_ID_HEAVENS_DRIVE
         || n_A_ActiveSkill == SKILL_ID_JUPITER_THUNDER) {
 
-        if (EquipNumSearch(ITEM_SET_ID_SURVIVAL_ORB_SURVIVAL_ROD_DEX)
-            || EquipNumSearch(ITEM_SET_ID_SURVIVAL_ORB_SURVIVAL_ROD_INT)) {
+        if (Chara.EquipNumSearch(ITEM_SET_ID_SURVIVAL_ORB_SURVIVAL_ROD_DEX)
+            || Chara.EquipNumSearch(ITEM_SET_ID_SURVIVAL_ORB_SURVIVAL_ROD_INT)) {
             if (n_A_Weapon_ATKplus >= 10) {
                 if (n_A_BaseLV <= 99) {
                     wX += 70;
@@ -15111,8 +15113,8 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
         || n_A_ActiveSkill == SKILL_ID_LIGHTNING_BOLT
         || n_A_ActiveSkill == SKILL_ID_EARTH_SPIKE) {
 
-        if (EquipNumSearch(ITEM_ID_MAGICAL_RING)) {
-            wX += 1 * ROUNDDOWN(n_A_BaseLV / 5) * EquipNumSearch(ITEM_ID_MAGICAL_RING);
+        if (Chara.EquipNumSearch(ITEM_ID_MAGICAL_RING)) {
+            wX += 1 * Foot.ROUNDDOWN(n_A_BaseLV / 5) * Chara.EquipNumSearch(ITEM_ID_MAGICAL_RING);
         }
     }
 
@@ -15123,7 +15125,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「裁きの靴　ホーリーステッキセット」の、「アドラムス」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_ADORAMUS) {
-        if (EquipNumSearch(ITEM_SET_ID_SABAKINO_KUTSU_HOLY_STICK)) {
+        if (Chara.EquipNumSearch(ITEM_SET_ID_SABAKINO_KUTSU_HOLY_STICK)) {
 
             // ラウダアグヌス等の習得レベルによる強化
             var sklLv = 0;
@@ -15146,7 +15148,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「上忍の腰帯」の、「龍炎陣」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_RYUENZIN) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_ZYONINNO_KOSHIOBI)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_ZYONINNO_KOSHIOBI)) > 0) {
             wX += 10 * LearnedSkillSearch(SKILL_ID_KOUENKA) * itemCount;
         }
     }
@@ -15155,7 +15157,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「上忍の腰帯」の、「氷柱落とし」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_TSURARAOTOSHI) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_ZYONINNO_KOSHIOBI)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_ZYONINNO_KOSHIOBI)) > 0) {
             wX += 20 * LearnedSkillSearch(SKILL_ID_HYOSENSO) * itemCount;
         }
     }
@@ -15164,7 +15166,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「上忍の腰帯」の、「龍炎陣」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_SAKUFU) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_ZYONINNO_KOSHIOBI)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_ZYONINNO_KOSHIOBI)) > 0) {
             wX += 10 * LearnedSkillSearch(SKILL_ID_FUZIN) * itemCount;
         }
     }
@@ -15175,7 +15177,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「神魔バフォメットの角」の、「デュプレライト（魔法）」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_MIRIAM_LIGHT) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_SHINMA_BAPHOMETNO_TSUNO)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_SHINMA_BAPHOMETNO_TSUNO)) > 0) {
             wX += 10 * n_A_HEAD_DEF_PLUS * itemCount;
         }
     }
@@ -15186,7 +15188,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「悪魔崇拝者の靴　堕天司祭の闇光外套　古代樹の杖セット」の、「ヘルインフェルノ」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_HELL_INFERNO) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_AKUMASUHAISHANO_KUTSU_DATENSHISAINO_ANKOGAITO_KODAIZYUNO_TSUE)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_AKUMASUHAISHANO_KUTSU_DATENSHISAINO_ANKOGAITO_KODAIZYUNO_TSUE)) > 0) {
             let vartmp = 0;
 
             if (n_A_Weapon_ATKplus >= 7) vartmp += 100;
@@ -15202,7 +15204,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「炎雷魔女の大杖」の、「ファイアーウォーク」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_FIRE_WALK) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_ENRAIMAZYONO_OTSUE)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_ENRAIMAZYONO_OTSUE)) > 0) {
             wX += 30 * n_A_Weapon_ATKplus;
 
             if (n_A_Weapon_ATKplus >= 9) {
@@ -15215,7 +15217,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「炎雷魔女の大杖」の、「エレクトリックーウォーク」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_ELECTRIC_WALK) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_ENRAIMAZYONO_OTSUE)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_ENRAIMAZYONO_OTSUE)) > 0) {
             wX += 30 * n_A_Weapon_ATKplus;
 
             if (n_A_Weapon_ATKplus >= 9) {
@@ -15228,7 +15230,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「太極の護符　灼熱の剣　デイヴィッドシールドセット」の、精錬による効果
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_CRYMSON_ROCK) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_TAIKYOKUNO_GOFU_SHAKUNETSUNO_KEN_DIVID_SHIELD)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_TAIKYOKUNO_GOFU_SHAKUNETSUNO_KEN_DIVID_SHIELD)) > 0) {
             wX += 1 * n_A_Weapon_ATKplus * itemCount;
         }
     }
@@ -15237,7 +15239,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「太極の護符　浄化の剣　デイヴィッドシールドセット」の、精錬による効果
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_JUDEX) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_TAIKYOKUNO_GOFU_ZYOKANO_KEN_DIVID_SHIELD)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_TAIKYOKUNO_GOFU_ZYOKANO_KEN_DIVID_SHIELD)) > 0) {
             wX += 5 * n_A_Weapon_ATKplus * itemCount;
         }
     }
@@ -15246,7 +15248,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「太極の護符　奈落の剣　デイヴィッドシールドセット」の、精錬による効果
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_HELL_INFERNO) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_TAIKYOKUNO_GOFU_NARAKUNO_KEN_DIVID_SHIELD)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_TAIKYOKUNO_GOFU_NARAKUNO_KEN_DIVID_SHIELD)) > 0) {
             wX += 10 * n_A_Weapon_ATKplus * itemCount;
         }
     }
@@ -15286,7 +15288,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
         || n_A_ActiveSkill == SKILL_ID_LIGHTNING_BOLT
         || n_A_ActiveSkill == SKILL_ID_COLD_BOLT
         || n_A_ActiveSkill == SKILL_ID_EARTH_SPIKE) {
-        if ((cardCount = CardNumSearch(CARD_ID_MATTER_CHEMERA)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_MATTER_CHEMERA)) > 0) {
             wX += 7 * n_A_SHOES_DEF_PLUS * cardCount;
         }
     }
@@ -15297,8 +15299,8 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「戦乙女の雫」の、「マグヌスエクソシズム」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_MAGNUS_EXORCISMUS) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_IKUSAOTOMENO_SHIZUKU)) > 0) {
-            wX += 3 * ROUNDDOWN(n_A_BaseLV / 2) * itemCount;
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_IKUSAOTOMENO_SHIZUKU)) > 0) {
+            wX += 3 * Foot.ROUNDDOWN(n_A_BaseLV / 2) * itemCount;
         }
     }
 
@@ -15308,7 +15310,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「精霊のローブ」の、「サイキックウェーブ」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_PSYCHIC_WAVE) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_SEIREINO_ROBE)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_SEIREINO_ROBE)) > 0) {
             if (n_A_BODY_DEF_PLUS >= 9) {
                 wX += 10 * itemCount;
             }
@@ -15321,7 +15323,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「精霊のマント」の、「サイキックウェーブ」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_PSYCHIC_WAVE) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_SEIREINO_MANT)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_SEIREINO_MANT)) > 0) {
             wX += 3 * n_A_SHOULDER_DEF_PLUS * itemCount;
         }
     }
@@ -15332,7 +15334,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「古代龍の宝冠」の、「サイキックウェーブ」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_PSYCHIC_WAVE) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_KODAIRYUNO_HOKAN)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_KODAIRYUNO_HOKAN)) > 0) {
             if (n_A_HEAD_DEF_PLUS >= 7) {
                 wX += 10 * itemCount;
             }
@@ -15348,8 +15350,8 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「特選葉のお守り」の、「イヌハッカメテオ」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_INUHAKKA_METEOR) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_TOKUSEN_HANO_OMAMORI)) > 0) {
-            wX += 1 * ROUNDDOWN(n_A_BaseLV / 10) * itemCount;
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_TOKUSEN_HANO_OMAMORI)) > 0) {
+            wX += 1 * Foot.ROUNDDOWN(n_A_BaseLV / 10) * itemCount;
         }
     }
 
@@ -15359,13 +15361,13 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「用心棒のスカーフ」の、「術式-解放-」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_ZYUTSUSHIKI_KAIHO) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_YOZINBONO_SCARF)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_YOZINBONO_SCARF)) > 0) {
             if (LearnedSkillSearch(SKILL_ID_ZYUTSUSHIKI_KAIHO) >= 1) {
                 wX += 40 * itemCount;
             }
 
             if (n_A_SHOULDER_DEF_PLUS >= 7) {
-                wX += 3 * ROUNDDOWN(n_A_BaseLV / 2) * itemCount;
+                wX += 3 * Foot.ROUNDDOWN(n_A_BaseLV / 2) * itemCount;
             }
         }
     }
@@ -15376,7 +15378,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「サラの幻影カード」の、「ヘルインフェルノ」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_HELL_INFERNO) {
-        let cardCountHeadTop = CardNumSearch(CARD_ID_SARANO_GENEI, CARD_REGION_ID_HEAD_TOP_ANY);
+        let cardCountHeadTop = Chara.CardNumSearch(CARD_ID_SARANO_GENEI, CARD_REGION_ID_HEAD_TOP_ANY);
         if (cardCountHeadTop > 0) {
             wX += 10 * n_A_HEAD_DEF_PLUS * cardCountHeadTop;
         }
@@ -15388,7 +15390,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「不死の軍団認識票　ひまわり少年セット」の、「クリムゾンロック」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_CRYMSON_ROCK) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_FUSHINO_GUNDAN_NINSHIKIHYO_HIMAWARI_SHONEN)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_FUSHINO_GUNDAN_NINSHIKIHYO_HIMAWARI_SHONEN)) > 0) {
             wX += 1 * n_A_Weapon_ATKplus * itemCount;
         }
     }
@@ -15399,7 +15401,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「トラベラーシューズ」の、「メタリックサウンド」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_METALIC_SOUND) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_TRAVELER_SHOES)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_TRAVELER_SHOES)) > 0) {
             wX += 10 * LearnedSkillSearch(SKILL_ID_MELANCHOLY) * itemCount;
         }
     }
@@ -15417,7 +15419,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
         || n_A_ActiveSkill == SKILL_ID_LIGHTNING_BOLT
         || n_A_ActiveSkill == SKILL_ID_EARTH_SPIKE) {
 
-        if ((itemCount = EquipNumSearch(ITEM_ID_STUFF_OF_PUFFY)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_STUFF_OF_PUFFY)) > 0) {
             if (LearnedSkillSearch(SKILL_ID_SPELL_FIST) >= 5) {
                 wX += 3 * n_A_Weapon_ATKplus * itemCount;
             }
@@ -15430,7 +15432,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「イリュージョン黙示録」の、「ヘルインフェルノ」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_HELL_INFERNO) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_ILLUSION_MOKUSHIROKU)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_ILLUSION_MOKUSHIROKU)) > 0) {
             if (n_A_BaseLV >= 170) {
                 wX += 20 * n_A_Weapon_ATKplus * itemCount;
             }
@@ -15443,7 +15445,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「勇者のブローチ　勇者のジャッジメントローブセット」の、「アドラムス」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_ADORAMUS) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_YUSHANO_BROACH_YUSHANO_JUDGEMENT_ROBE)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_YUSHANO_BROACH_YUSHANO_JUDGEMENT_ROBE)) > 0) {
             wX += 5 * n_A_BODY_DEF_PLUS * itemCount;
         }
     }
@@ -15454,7 +15456,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「勇者のブローチ　勇者のジャッジメントローブセット」の、「ジュデックス」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_JUDEX) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_YUSHANO_BROACH_YUSHANO_JUDGEMENT_ROBE)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_YUSHANO_BROACH_YUSHANO_JUDGEMENT_ROBE)) > 0) {
             wX += 5 * n_A_BODY_DEF_PLUS * itemCount;
         }
     }
@@ -15465,7 +15467,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「降霊術士のドレス　炎雷魔女の大杖セット」の、「エレクトリックウォーク」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_ELECTRIC_WALK) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_KORE_ZYUTSUSHINO_DRESS_ENRAI_MAZYONO_OTSUE)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_KORE_ZYUTSUSHINO_DRESS_ENRAI_MAZYONO_OTSUE)) > 0) {
             wX += 30 * n_A_Weapon_ATKplus * itemCount;
         }
     }
@@ -15474,7 +15476,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「降霊術士のドレス　炎雷魔女の大杖セット」の、「ファイアウォーク」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_FIRE_WALK) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_KORE_ZYUTSUSHINO_DRESS_ENRAI_MAZYONO_OTSUE)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_KORE_ZYUTSUSHINO_DRESS_ENRAI_MAZYONO_OTSUE)) > 0) {
             wX += 30 * n_A_Weapon_ATKplus * itemCount;
         }
     }
@@ -15485,7 +15487,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「エルヴィラブーツ」の、「ライトニングボルト」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_LIGHTNING_BOLT) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_ELVIRA_BOOTS)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_ELVIRA_BOOTS)) > 0) {
             wX += 3 * n_A_SHOES_DEF_PLUS * itemCount;
         }
     }
@@ -15496,7 +15498,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「虹色のマフラー」の、「メタリックサウンド」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_METALIC_SOUND) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_NIZIIRONO_MUFFLER)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_NIZIIRONO_MUFFLER)) > 0) {
             wX += 4 * LearnedSkillSearch(SKILL_ID_MELANCHOLY) * itemCount;
         }
     }
@@ -15507,7 +15509,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「虹色のねこじゃらし　ブラッディナイトカードセット」の、「ヘルインフェルノ」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_HELL_INFERNO) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_NIZIIRONO_NEKOZYARASHI_BLOODY_KNIGHT_CARD)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_NIZIIRONO_NEKOZYARASHI_BLOODY_KNIGHT_CARD)) > 0) {
             wX += 10 * n_A_Weapon_ATKplus * itemCount;
         }
     }
@@ -15518,7 +15520,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「虹色のねこじゃらし　ストームナイトカードセット」の、「ダイヤモンドダスト」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_DIAMOND_DUST) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_NIZIIRONO_NEKOZYARASHI_STORM_KNIGHT_CARD)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_NIZIIRONO_NEKOZYARASHI_STORM_KNIGHT_CARD)) > 0) {
             if (LearnedSkillSearch(SKILL_ID_NYAN_TAMASHI) >= 1) {
                 wX += 10 * n_A_Weapon_ATKplus * itemCount;
             }
@@ -15531,7 +15533,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「イリュージョンタブレット」の、「ジュデックス」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_JUDEX) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_ILLUSION_TABLET)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_ILLUSION_TABLET)) > 0) {
             if (n_A_BaseLV >= 170) {
                 wX += 10 * n_A_Weapon_ATKplus * itemCount;
             }
@@ -15544,7 +15546,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「ふわふわタンポポシューズ」の、「マタタビランス」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_MATATABI_LANCE) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_FUWAFUWA_TANPOPO_SHOES)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_FUWAFUWA_TANPOPO_SHOES)) > 0) {
             if (LearnedSkillSearch(SKILL_ID_DAICHINO_TAMASHI) >= 1) {
                 if (LearnedSkillSearch(SKILL_ID_INUHAKKA_METEOR) >= 5) {
                     wX += 20 * itemCount;
@@ -15559,7 +15561,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「ふわふわタンポポシューズ」の、「イヌハッカメテオ」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_INUHAKKA_METEOR) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_FUWAFUWA_TANPOPO_SHOES)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_FUWAFUWA_TANPOPO_SHOES)) > 0) {
             wX += 15 * LearnedSkillSearch(SKILL_ID_MYAUMYAU) * itemCount;
         }
     }
@@ -15570,8 +15572,8 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「ゲフェニア氷の魔道具」の、「ストームガスト」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_STORM_GUST) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_GEFFENIA_KORINO_MADOGU)) > 0) {
-            wX += 2 * ROUNDDOWN(n_A_BaseLV / 3) * itemCount;
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_GEFFENIA_KORINO_MADOGU)) > 0) {
+            wX += 2 * Foot.ROUNDDOWN(n_A_BaseLV / 3) * itemCount;
         }
     }
 
@@ -15581,7 +15583,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「ゲフェニア氷の魔道具」の、「コメット」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_COMMET) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_GEFFENIA_KORINO_MADOGU)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_GEFFENIA_KORINO_MADOGU)) > 0) {
             if (LearnedSkillSearch(SKILL_ID_JACK_FROST) >= 5) {
                 wX += 50 * itemCount;
             }
@@ -15594,7 +15596,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「ゲフェニア氷の魔道具」の、「フロストミスティ」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_FROST_MISTY) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_GEFFENIA_KORINO_MADOGU)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_GEFFENIA_KORINO_MADOGU)) > 0) {
             if (LearnedSkillSearch(SKILL_ID_STASIS) >= 5) {
                 wX += 50 * itemCount;
             }
@@ -15607,7 +15609,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「ゲフェニア氷の魔道具」の、「ジャックフロスト」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_JACK_FROST) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_GEFFENIA_KORINO_MADOGU)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_GEFFENIA_KORINO_MADOGU)) > 0) {
             if (LearnedSkillSearch(SKILL_ID_STASIS) >= 5) {
                 wX += 50 * itemCount;
             }
@@ -15620,8 +15622,8 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「ルティルススティック-OS」の、ベースレベルによる効果
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_HELL_INFERNO) {
-        itemCountRight = EquipNumSearch(ITEM_ID_RUTIS_STICK_OS, EQUIP_REGION_ID_ARMS);
-        itemCountLeft = EquipNumSearch(ITEM_ID_RUTIS_STICK_OS, EQUIP_REGION_ID_ARMS_LEFT);
+        itemCountRight = Chara.EquipNumSearch(ITEM_ID_RUTIS_STICK_OS, EQUIP_REGION_ID_ARMS);
+        itemCountLeft = Chara.EquipNumSearch(ITEM_ID_RUTIS_STICK_OS, EQUIP_REGION_ID_ARMS_LEFT);
         if ((itemCountRight > 0) || (itemCountLeft > 0)) {
             wX += 1 * n_A_BaseLV * itemCountRight;
             wX += 1 * n_A_BaseLV * itemCountLeft;
@@ -15634,8 +15636,8 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「ウルティオ-OS」の、「デュプレライト（魔法）」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_MIRIAM_LIGHT) {
-        itemCountRight = EquipNumSearch(ITEM_ID_ULTIO_OS, EQUIP_REGION_ID_ARMS);
-        itemCountLeft = EquipNumSearch(ITEM_ID_ULTIO_OS, EQUIP_REGION_ID_ARMS_LEFT);
+        itemCountRight = Chara.EquipNumSearch(ITEM_ID_ULTIO_OS, EQUIP_REGION_ID_ARMS);
+        itemCountLeft = Chara.EquipNumSearch(ITEM_ID_ULTIO_OS, EQUIP_REGION_ID_ARMS_LEFT);
         if ((itemCountRight > 0) || (itemCountLeft > 0)) {
             wX += 7 * n_A_BaseLV * itemCountRight;
             wX += 7 * n_A_BaseLV * itemCountLeft;
@@ -15648,8 +15650,8 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「MH-P89-OS」の、「振動残響」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_SHINDOZANKYO) {
-        itemCountRight = EquipNumSearch(ITEM_ID_MH_P89_OS, EQUIP_REGION_ID_ARMS);
-        itemCountLeft = EquipNumSearch(ITEM_ID_MH_P89_OS, EQUIP_REGION_ID_ARMS_LEFT);
+        itemCountRight = Chara.EquipNumSearch(ITEM_ID_MH_P89_OS, EQUIP_REGION_ID_ARMS);
+        itemCountLeft = Chara.EquipNumSearch(ITEM_ID_MH_P89_OS, EQUIP_REGION_ID_ARMS_LEFT);
         if ((itemCountRight > 0) || (itemCountLeft > 0)) {
             wX += 1 * Math.floor(n_A_BaseLV / 2) * itemCountRight;
             wX += 1 * Math.floor(n_A_BaseLV / 2) * itemCountLeft;
@@ -15669,8 +15671,8 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
         || n_A_ActiveSkill == SKILL_ID_LIGHTNING_BOLT
         || n_A_ActiveSkill == SKILL_ID_EARTH_SPIKE) {
 
-        itemCountRight = EquipNumSearch(ITEM_ID_CIRCUIT_BOARD_OS, EQUIP_REGION_ID_ARMS);
-        itemCountLeft = EquipNumSearch(ITEM_ID_CIRCUIT_BOARD_OS, EQUIP_REGION_ID_ARMS_LEFT);
+        itemCountRight = Chara.EquipNumSearch(ITEM_ID_CIRCUIT_BOARD_OS, EQUIP_REGION_ID_ARMS);
+        itemCountLeft = Chara.EquipNumSearch(ITEM_ID_CIRCUIT_BOARD_OS, EQUIP_REGION_ID_ARMS_LEFT);
         if ((itemCountRight > 0) || (itemCountLeft > 0)) {
             wX += 1 * n_A_BaseLV * itemCountRight;
             wX += 1 * n_A_BaseLV * itemCountLeft;
@@ -15683,7 +15685,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「ディオ・アネモスカード」の、「サンダーストーム」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_THUNDER_STORM) {
-        cardCount = CardNumSearch(CARD_ID_DIO_ANEMOS);
+        cardCount = Chara.CardNumSearch(CARD_ID_DIO_ANEMOS);
         if (cardCount > 0) {
             wX += 2 * Math.floor(n_A_BaseLV / 3) * cardCount;
         }
@@ -15695,7 +15697,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「半龍王女の指輪」の、「テトラボルテックス」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_TETRA_BOLTEX) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_HANRYU_OZYONO_YUBIWA)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_HANRYU_OZYONO_YUBIWA)) > 0) {
             wX += 1 * n_A_BaseLV * itemCount;
         }
     }
@@ -15706,7 +15708,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「不死鳥のねこじゃらし　ミュータントドラゴンカードセット」の、「メテオストーム」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_METEOR_STORM) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_FUSHICHONO_NEKOZYARASHI_MUTANT_DRAGON_CARD)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_FUSHICHONO_NEKOZYARASHI_MUTANT_DRAGON_CARD)) > 0) {
             wX += 10 * n_A_Weapon_ATKplus * itemCount;
         }
     }
@@ -15717,7 +15719,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「不死鳥のねこじゃらし　ボイタタカードセット」の、「クリムゾンロック」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_CRYMSON_ROCK) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_FUSHICHONO_NEKOZYARASHI_BOITATA_CARD)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_FUSHICHONO_NEKOZYARASHI_BOITATA_CARD)) > 0) {
             if (LearnedSkillSearch(SKILL_ID_NYAN_TAMASHI) >= 1) {
                 wX += 10 * n_A_Weapon_ATKplus * itemCount;
             }
@@ -15730,7 +15732,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「あざといケロケロカッパ」の、「イヌハッカメテオ」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_INUHAKKA_METEOR) {
-        if ((itemCount = EquipNumSearchMIG(ITEM_ID_AZATOI_KEROKERO_KAPPA)) > 0) {
+        if ((itemCount = Chara.EquipNumSearchMIG(ITEM_ID_AZATOI_KEROKERO_KAPPA)) > 0) {
             wX += 10 * LearnedSkillSearch(SKILL_ID_MYAUMYAU) * itemCount;
         }
     }
@@ -15741,7 +15743,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「きらきらニャンニャンチョーカー」の、「マタタビランス」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_MATATABI_LANCE) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_KIRAKIRA_NYANNYAN_CHOKER)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_KIRAKIRA_NYANNYAN_CHOKER)) > 0) {
             if (LearnedSkillSearch(SKILL_ID_DAICHINO_TAMASHI) >= 1) {
 
                 // アイテム効果なので、「習得スキル」欄で設定しても、「パッシブ持続系」で設定してもＯＫとする
@@ -15770,7 +15772,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「インペリアルパニッシュメントローブ」の、「クリムゾンロック」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_CRYMSON_ROCK) {
-        itemCount = EquipNumSearch(ITEM_ID_IMPERIAL_PUNISHMENT_ROBE);
+        itemCount = Chara.EquipNumSearch(ITEM_ID_IMPERIAL_PUNISHMENT_ROBE);
         if (itemCount > 0) {
             if (LearnedSkillSearch(SKILL_ID_DRAIN_LIFE) >= 5) {
                 wX += 1 * Math.floor(n_A_BaseLV / 6) * itemCount;
@@ -15784,7 +15786,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「グレースパニッシュメントローブ」の、「クリムゾンロック」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_CRYMSON_ROCK) {
-        itemCount = EquipNumSearch(ITEM_ID_GRACE_PUNISHMENT_ROBE);
+        itemCount = Chara.EquipNumSearch(ITEM_ID_GRACE_PUNISHMENT_ROBE);
         if (itemCount > 0) {
             if (LearnedSkillSearch(SKILL_ID_DRAIN_LIFE) >= 5) {
                 wX += 1 * Math.floor(n_A_BaseLV / 2) * itemCount;
@@ -15798,7 +15800,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「ぽかぽかタンポポケープ」の、スキル習得による効果
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_MATATABI_LANCE) {
-        itemCount = EquipNumSearch(ITEM_ID_POKAPOKA_TANPOPO_CAPE);
+        itemCount = Chara.EquipNumSearch(ITEM_ID_POKAPOKA_TANPOPO_CAPE);
         if (itemCount > 0) {
             if (LearnedSkillSearch(SKILL_ID_DAICHINO_TAMASHI) >= 1) {
                 let vartmp = 0;
@@ -15819,7 +15821,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「ぽかぽかタンポポケープ」の、スキル習得による効果
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_INUHAKKA_METEOR) {
-        itemCount = EquipNumSearch(ITEM_ID_POKAPOKA_TANPOPO_CAPE);
+        itemCount = Chara.EquipNumSearch(ITEM_ID_POKAPOKA_TANPOPO_CAPE);
         if (itemCount > 0) {
             wX += 10 * LearnedSkillSearch(SKILL_ID_NYAN_GRASS) * itemCount;
         }
@@ -15831,7 +15833,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「ゾディアック　処女宮のダイアデム」セットの、職業による効果
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_JUDEX) {
-        if (CardNumSearch(CARD_SET_ID_ENCHANT_ZODIAC_SHOZYOKYUNO_DIADEM)) {
+        if (Chara.CardNumSearch(CARD_SET_ID_ENCHANT_ZODIAC_SHOZYOKYUNO_DIADEM)) {
             if (IsSameJobClass(JOB_ID_ARCBISHOP)) {
                 wX += 10 * n_A_HEAD_DEF_PLUS;
             }
@@ -15842,7 +15844,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「ゾディアック　処女宮のシューズ」セットの、職業による効果
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_JUDEX) {
-        if (CardNumSearch(CARD_SET_ID_ENCHANT_ZODIAC_SHOZYOKYUNO_SHOES)) {
+        if (Chara.CardNumSearch(CARD_SET_ID_ENCHANT_ZODIAC_SHOZYOKYUNO_SHOES)) {
             if (IsSameJobClass(JOB_ID_ARCBISHOP)) {
                 wX += 10 * n_A_SHOES_DEF_PLUS;
             }
@@ -15858,7 +15860,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
         || (n_A_ActiveSkill == SKILL_ID_LIGHTNING_BOLT)
         || (n_A_ActiveSkill == SKILL_ID_EARTH_SPIKE)
     ) {
-        if (CardNumSearch(CARD_SET_ID_ENCHANT_ZODIAC_SOGYOKYUNO_SHOES)) {
+        if (Chara.CardNumSearch(CARD_SET_ID_ENCHANT_ZODIAC_SOGYOKYUNO_SHOES)) {
             if (IsSameJobClass(JOB_ID_SORCERER)) {
                 wX += 10 * n_A_SHOES_DEF_PLUS;
             }
@@ -15871,7 +15873,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「虹色のねこじゃらし　封印されたストームナイトカードセット」の、「ダイヤモンドダスト」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_DIAMOND_DUST) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_NIZIIRONO_NEKOZYARASHI_FUINSARETA_STORM_KNIGHT)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_NIZIIRONO_NEKOZYARASHI_FUINSARETA_STORM_KNIGHT)) > 0) {
             if (LearnedSkillSearch(SKILL_ID_NYAN_TAMASHI) >= 1) {
                 wX += 3 * n_A_Weapon_ATKplus * itemCount;
             }
@@ -15884,7 +15886,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「不死鳥のねこじゃらし　封印されたボイタタカードセット」の、「クリムゾンロック」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_CRYMSON_ROCK) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_FUSHICHONO_NEKOZYARASHI_FUINSARETA_BOITATA)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_FUSHICHONO_NEKOZYARASHI_FUINSARETA_BOITATA)) > 0) {
             if (LearnedSkillSearch(SKILL_ID_NYAN_TAMASHI) >= 1) {
                 wX += 3 * n_A_Weapon_ATKplus * itemCount;
             }
@@ -15897,7 +15899,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「ディア・デ・ムエルトス」の、「エスパ」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_ESPA) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_DIA_DE_MUERTOS)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_DIA_DE_MUERTOS)) > 0) {
             wX += 5 * LearnedSkillSearch(SKILL_ID_TAMASHINO_SHUKAKU) * itemCount;
         }
     }
@@ -15906,7 +15908,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // 「ディア・デ・ムエルトス」の、「エスフ」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_ESFU) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_DIA_DE_MUERTOS)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_DIA_DE_MUERTOS)) > 0) {
             wX += 25 * LearnedSkillSearch(SKILL_ID_TAMASHINO_SHUKAKU) * itemCount;
         }
     }
@@ -15919,7 +15921,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     if ((n_A_ActiveSkill == SKILL_ID_MATATABI_LANCE)
         || (n_A_ActiveSkill == SKILL_ID_INUHAKKA_METEOR)
     ) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_ENCHANT_ZODIAC_TOKUSEN_DORAM_CAPE)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_ENCHANT_ZODIAC_TOKUSEN_DORAM_CAPE)) > 0) {
             if (IsSameJobClass(JOB_ID_SUMMONER)) {
                 wX += 5 * n_A_SHOULDER_DEF_PLUS * itemCount;
             }
@@ -15935,7 +15937,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
         || (n_A_ActiveSkill == SKILL_ID_COLD_BOLT)
         || (n_A_ActiveSkill == SKILL_ID_LIGHTNING_BOLT)
         || (n_A_ActiveSkill == SKILL_ID_EARTH_SPIKE)) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_MAGIC_COMPRESSION)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_MAGIC_COMPRESSION)) > 0) {
             wX += 20 * LearnedSkillSearch(SKILL_ID_STRIKING) * itemCount;
         }
     }
@@ -16031,7 +16033,7 @@ function ApplyMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData,
     var wX = 0;
     // 属性場のダメージ追加倍率を適用
     wX = GetElementFieldDamageRatio();
-    wBMC2 = ROUNDDOWN(wBMC2 * (100 + wX) / 100);
+    wBMC2 = Foot.ROUNDDOWN(wBMC2 * (100 + wX) / 100);
     // 特性ステータス対応
     // MRES減衰の適用
     wBMC2 = ApplyMresResist(mobData, wBMC2);
@@ -16086,7 +16088,7 @@ function ApplyMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData,
 
 
 
-    wBMC2 = ROUNDDOWN(wBMC2 * (100 + wX) / 100);
+    wBMC2 = Foot.ROUNDDOWN(wBMC2 * (100 + wX) / 100);
 
 
 
@@ -16103,7 +16105,7 @@ function ApplyMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData,
             case SKILL_ID_NAPALM_VULKAN: // ナパームバルカン
             case SKILL_ID_SOUL_EXPANSION: // ソウルエクスパンション
             case SKILL_ID_SOUL_VULKUN_STRIKE: // ソウルバルカンストライク
-                wBMC2 = ROUNDDOWN(wBMC2 * (100 + 40 * UsedSkillSearch(SKILL_ID_TELECHINESIS_INSTENCE)) / 100);
+                wBMC2 = Foot.ROUNDDOWN(wBMC2 * (100 + 40 * UsedSkillSearch(SKILL_ID_TELECHINESIS_INSTENCE)) / 100);
                 break;
         }
     }
@@ -16111,7 +16113,7 @@ function ApplyMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData,
     // ホワイトインプリズン状態での、ソウルエクスパンションのダメージ増加の適用
     if (n_A_ActiveSkill == 518) {
         var subnumvalue = attackMethodConfArray[0].GetOptionValue(0);
-        if (mobData[20] == 0 && subnumvalue >= 1) wBMC2 = ROUNDDOWN(wBMC2 * 2);
+        if (mobData[20] == 0 && subnumvalue >= 1) wBMC2 = Foot.ROUNDDOWN(wBMC2 * 2);
     }
 
 
@@ -16164,16 +16166,16 @@ function ApplyMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData,
 function ApplyMagicalSkillDamageRatioChangeSubArcanaCard(cardid) {
     let vartmp = 0;
 
-    let cardCountArmsRight = CardNumSearch(cardid, CARD_REGION_ID_ARMS_RIGHT_ANY);
-    let cardCountArmsLeft = CardNumSearch(cardid, CARD_REGION_ID_ARMS_LEFT_ANY);
-    let cardCountHeadTop = CardNumSearch(cardid, CARD_REGION_ID_HEAD_TOP_ANY);
-    let cardCountHeadMid = CardNumSearch(cardid, CARD_REGION_ID_HEAD_MID_ANY);
-    let cardCountShield = CardNumSearch(cardid, CARD_REGION_ID_SHIELD_ANY);
-    let cardCountBody = CardNumSearch(cardid, CARD_REGION_ID_BODY_ANY);
-    let cardCountShoulder = CardNumSearch(cardid, CARD_REGION_ID_SHOULDER_ANY);
-    let cardCountShoes = CardNumSearch(cardid, CARD_REGION_ID_SHOES_ANY);
-    let cardCountAccessary1 = CardNumSearch(cardid, CARD_REGION_ID_ACCESSARY_1_ANY);
-    let cardCountAccessary2 = CardNumSearch(cardid, CARD_REGION_ID_ACCESSARY_2_ANY);
+    let cardCountArmsRight = Chara.CardNumSearch(cardid, CARD_REGION_ID_ARMS_RIGHT_ANY);
+    let cardCountArmsLeft = Chara.CardNumSearch(cardid, CARD_REGION_ID_ARMS_LEFT_ANY);
+    let cardCountHeadTop = Chara.CardNumSearch(cardid, CARD_REGION_ID_HEAD_TOP_ANY);
+    let cardCountHeadMid = Chara.CardNumSearch(cardid, CARD_REGION_ID_HEAD_MID_ANY);
+    let cardCountShield = Chara.CardNumSearch(cardid, CARD_REGION_ID_SHIELD_ANY);
+    let cardCountBody = Chara.CardNumSearch(cardid, CARD_REGION_ID_BODY_ANY);
+    let cardCountShoulder = Chara.CardNumSearch(cardid, CARD_REGION_ID_SHOULDER_ANY);
+    let cardCountShoes = Chara.CardNumSearch(cardid, CARD_REGION_ID_SHOES_ANY);
+    let cardCountAccessary1 = Chara.CardNumSearch(cardid, CARD_REGION_ID_ACCESSARY_1_ANY);
+    let cardCountAccessary2 = Chara.CardNumSearch(cardid, CARD_REGION_ID_ACCESSARY_2_ANY);
 
     vartmp += 1 * n_A_Weapon_ATKplus * cardCountArmsRight;
     vartmp += 1 * n_A_Weapon2_ATKplus * cardCountArmsLeft;
@@ -16258,7 +16260,7 @@ function RebuildSizeModifyRatioInfo(battleCalcInfo, charaData, specData, mobData
 /**
  * パッシブ持続系 チェックボックス生成
  */
-function Click_PassSkillSW() {
+export function Click_PassSkillSW() {
 
     let idx = 0;
     let passiveSkillIdArray = g_constDataManager.GetDataObject(CONST_DATA_KIND_JOB, n_A_JOB).GetPassiveSkillIdArray();
@@ -16798,7 +16800,7 @@ function Click_A1(n) {
 /**
  * 演奏・踊り系スキル を構築する
  */
-function Click_Skill3SW() {
+export function Click_Skill3SW() {
     n_Skill3SW = document.calcForm.A3_SKILLSW.checked;
     if (n_Skill3SW) {
         let str;
@@ -17208,7 +17210,7 @@ function Click_A3(n) {
 /**
  * ギルドスキル/ゴスペル/他　を構築する
  */
-function Click_Skill4SW() {
+export function Click_Skill4SW() {
     n_Skill4SW = document.calcForm.A4_SKILLSW.checked;
     if (n_Skill4SW) {
         let str;
@@ -17336,7 +17338,7 @@ function Click_A4(n) {
  * アイテム・食品他 を構築する
  * @returns
  */
-function Click_Skill7SW() {
+export function Click_Skill7SW() {
 
     var idxRow = 0;
     var idxColumn = 0;
@@ -17766,7 +17768,7 @@ function Click_A7(n) {
  * その他の支援/設定 > ペット の変更イベント.
  * 内部で Click_A8() を呼び出す
  */
-function OnChangePetSelect() {
+export function OnChangePetSelect() {
     // ペット説明更新
     RefreshPetExplain();
     // 攻撃方法更新
@@ -17801,7 +17803,7 @@ function RefreshPetExplain() {
 /**
  * その他の支援/設定 を構築する
  */
-function Click_Skill8SW() {
+export function Click_Skill8SW() {
     let idx = 0;
     let petId = 0;
     let petDataArrayWork = null;
@@ -18032,161 +18034,161 @@ function GetSizeModify(mobData, wSC_Size) {
         || CardObjNew[n_A_card[CARD_REGION_ID_ARMS_LEFT_4]][0] == 32) wSC_Size = 1;
 
     // 大型オークヒーローの兜装備時の、全型１００％補正
-    if (EquipNumSearch(1177)) wSC_Size = 1;
+    if (Chara.EquipNumSearch(1177)) wSC_Size = 1;
 
     // ＋１０スパルタカス装備時の、全型１００％補正
-    if (EquipNumSearch(1802) && n_A_Weapon_ATKplus >= 10) wSC_Size = 1;
+    if (Chara.EquipNumSearch(1802) && n_A_Weapon_ATKplus >= 10) wSC_Size = 1;
 
     // ＋９クイーン・アンズ・リベンジ装備時の、全型１００％補正
-    if (n_A_HEAD_DEF_PLUS >= 9 && EquipNumSearch(2512)) wSC_Size = 1;
+    if (n_A_HEAD_DEF_PLUS >= 9 && Chara.EquipNumSearch(2512)) wSC_Size = 1;
 
     // 騎兵修練【未習得】時の、セイヴザキング装備時による、全型１００％補正
     if (Math.max(LearnedSkillSearch(SKILL_ID_KIHE_SHUREN), UsedSkillSearch(SKILL_ID_KIHE_SHUREN)) == 0) {
-        if (EquipNumSearch(ITEM_ID_SAVE_THE_KING)) wSC_Size = 1;
+        if (Chara.EquipNumSearch(ITEM_ID_SAVE_THE_KING)) wSC_Size = 1;
     }
 
     // ＋１０リンディーホップ装備時の、全型１００％補正
-    if (n_A_Weapon_ATKplus >= 10 && EquipNumSearch(ITEM_ID_LINDY_HOP, EQUIP_REGION_ID_ARMS)) wSC_Size = 1;
+    if (n_A_Weapon_ATKplus >= 10 && Chara.EquipNumSearch(ITEM_ID_LINDY_HOP, EQUIP_REGION_ID_ARMS)) wSC_Size = 1;
 
     // ＋９ドレイクコート装備時の、全型１００％補正
-    if (n_A_BODY_DEF_PLUS >= 9 && EquipNumSearch(ITEM_ID_DRAKE_COAT)) wSC_Size = 1;
+    if (n_A_BODY_DEF_PLUS >= 9 && Chara.EquipNumSearch(ITEM_ID_DRAKE_COAT)) wSC_Size = 1;
 
     // 天秤宮セット装備時の、全型１００％補正
-    if (EquipNumSearch(ITEM_SET_ID_TENBINKYU_SET)) wSC_Size = 1;
+    if (Chara.EquipNumSearch(ITEM_SET_ID_TENBINKYU_SET)) wSC_Size = 1;
 
     // 「スナイピングシューズ」の、スキル習得による、全型１００％補正
-    if ((itemCount = EquipNumSearch(ITEM_ID_SNIPING_SHOES)) > 0) {
+    if ((itemCount = Chara.EquipNumSearch(ITEM_ID_SNIPING_SHOES)) > 0) {
         if (LearnedSkillSearch(SKILL_ID_AIMED_BOLT) >= 10) {
             wSC_Size = 1;
         }
     }
 
     // 「黒色-OS」の、精錬による、全型１００％補正
-    itemCountRight = EquipNumSearch(ITEM_ID_KOKUSHOKU_OS, EQUIP_REGION_ID_ARMS);
+    itemCountRight = Chara.EquipNumSearch(ITEM_ID_KOKUSHOKU_OS, EQUIP_REGION_ID_ARMS);
     if (itemCountRight > 0 && n_A_Weapon_ATKplus >= 10) {
         wSC_Size = 1;
     }
-    itemCountLeft = EquipNumSearch(ITEM_ID_KOKUSHOKU_OS, EQUIP_REGION_ID_ARMS_LEFT);
+    itemCountLeft = Chara.EquipNumSearch(ITEM_ID_KOKUSHOKU_OS, EQUIP_REGION_ID_ARMS_LEFT);
     if (itemCountLeft > 0 && n_A_Weapon2_ATKplus >= 10) {
         wSC_Size = 1;
     }
 
     // 「バーニングナックル-OS」の、精錬による、全型１００％補正
-    itemCountRight = EquipNumSearch(ITEM_ID_BURNING_KNUCKLE_OS, EQUIP_REGION_ID_ARMS);
+    itemCountRight = Chara.EquipNumSearch(ITEM_ID_BURNING_KNUCKLE_OS, EQUIP_REGION_ID_ARMS);
     if (itemCountRight > 0 && n_A_Weapon_ATKplus >= 10) {
         wSC_Size = 1;
     }
-    itemCountLeft = EquipNumSearch(ITEM_ID_BURNING_KNUCKLE_OS, EQUIP_REGION_ID_ARMS_LEFT);
+    itemCountLeft = Chara.EquipNumSearch(ITEM_ID_BURNING_KNUCKLE_OS, EQUIP_REGION_ID_ARMS_LEFT);
     if (itemCountLeft > 0 && n_A_Weapon2_ATKplus >= 10) {
         wSC_Size = 1;
     }
 
     // ＋８デモニッシュソード装備時の、全型１００％補正
-    if (n_A_Weapon_ATKplus >= 8 && EquipNumSearch(ITEM_ID_DEMONISH_SWORD, EQUIP_REGION_ID_ARMS)) {
+    if (n_A_Weapon_ATKplus >= 8 && Chara.EquipNumSearch(ITEM_ID_DEMONISH_SWORD, EQUIP_REGION_ID_ARMS)) {
         wSC_Size = 1;
     }
-    if (n_A_Weapon2_ATKplus >= 8 && EquipNumSearch(ITEM_ID_DEMONISH_SWORD, EQUIP_REGION_ID_ARMS_LEFT)) {
+    if (n_A_Weapon2_ATKplus >= 8 && Chara.EquipNumSearch(ITEM_ID_DEMONISH_SWORD, EQUIP_REGION_ID_ARMS_LEFT)) {
         wSC_Size = 1;
     }
 
     // ラーヴァレザースーツセット装備時の、全型１００％補正
-    if (EquipNumSearch(ITEM_SET_ID_RAVA_LEATHER_SUIT_SET)) wSC_Size = 1;
+    if (Chara.EquipNumSearch(ITEM_SET_ID_RAVA_LEATHER_SUIT_SET)) wSC_Size = 1;
 
     // 森羅万象の指輪＋死の欲動セット装備時の、全型１００％補正
-    if (EquipNumSearch(ITEM_SET_ID_SHINRA_BANSHONO_YUBIWA_SHINO_YOKUDO)) wSC_Size = 1;
+    if (Chara.EquipNumSearch(ITEM_SET_ID_SHINRA_BANSHONO_YUBIWA_SHINO_YOKUDO)) wSC_Size = 1;
 
     // 「氷炎悪神の刃鎌」の、精錬による、全型１００％補正
-    itemCountRight = EquipNumSearch(ITEM_ID_HYOEN_AKUSHINNO_HAGAMA, EQUIP_REGION_ID_ARMS);
+    itemCountRight = Chara.EquipNumSearch(ITEM_ID_HYOEN_AKUSHINNO_HAGAMA, EQUIP_REGION_ID_ARMS);
     if (itemCountRight > 0 && n_A_Weapon_ATKplus >= 10) {
         wSC_Size = 1;
     }
-    itemCountLeft = EquipNumSearch(ITEM_ID_HYOEN_AKUSHINNO_HAGAMA, EQUIP_REGION_ID_ARMS_LEFT);
+    itemCountLeft = Chara.EquipNumSearch(ITEM_ID_HYOEN_AKUSHINNO_HAGAMA, EQUIP_REGION_ID_ARMS_LEFT);
     if (itemCountLeft > 0 && n_A_Weapon2_ATKplus >= 10) {
         wSC_Size = 1;
     }
 
     // 「追撃者のシューズ」の、スキル習得による、全型１００％補正
-    if ((itemCount = EquipNumSearch(ITEM_ID_TSUIGEKISHANO_SHOES)) > 0) {
+    if ((itemCount = Chara.EquipNumSearch(ITEM_ID_TSUIGEKISHANO_SHOES)) > 0) {
         if (LearnedSkillSearch(SKILL_ID_FAINT_BOMB) >= 10) {
             wSC_Size = 1;
         }
     }
 
     // 剛勇無双の甲胄＋剛勇無双の貫セット装備時の、全型１００％補正
-    if (EquipNumSearch(ITEM_SET_ID_GOYUMUSONO_KACCHU_TSURANUKI)) wSC_Size = 1;
+    if (Chara.EquipNumSearch(ITEM_SET_ID_GOYUMUSONO_KACCHU_TSURANUKI)) wSC_Size = 1;
 
     // 再生の思念体シューズ＋熊の力セット装備時の、全型１００％補正
-    if (EquipNumSearch(ITEM_SET_ID_SAISENO_SHINENTAI_SHOES_KUMANO_CHIKARA)) wSC_Size = 1;
+    if (Chara.EquipNumSearch(ITEM_SET_ID_SAISENO_SHINENTAI_SHOES_KUMANO_CHIKARA)) wSC_Size = 1;
 
     // ポルックスセット装備時の、全型１００％補正
-    if (EquipNumSearch(ITEM_SET_ID_POLLUX_SET)) wSC_Size = 1;
+    if (Chara.EquipNumSearch(ITEM_SET_ID_POLLUX_SET)) wSC_Size = 1;
 
     // 「アワリティアメタル」の、精錬による、全型１００％補正
-    itemCountRight = EquipNumSearch(ITEM_ID_AVARITIA_METAL, EQUIP_REGION_ID_ARMS);
+    itemCountRight = Chara.EquipNumSearch(ITEM_ID_AVARITIA_METAL, EQUIP_REGION_ID_ARMS);
     if (itemCountRight > 0 && n_A_Weapon_ATKplus >= 10) {
         wSC_Size = 1;
     }
-    itemCountLeft = EquipNumSearch(ITEM_ID_AVARITIA_METAL, EQUIP_REGION_ID_ARMS_LEFT);
+    itemCountLeft = Chara.EquipNumSearch(ITEM_ID_AVARITIA_METAL, EQUIP_REGION_ID_ARMS_LEFT);
     if (itemCountLeft > 0 && n_A_Weapon2_ATKplus >= 10) {
         wSC_Size = 1;
     }
 
     // 「ワースホイール」の、精錬による、全型１００％補正
-    itemCountRight = EquipNumSearch(ITEM_ID_WRATH_WHEEL, EQUIP_REGION_ID_ARMS);
+    itemCountRight = Chara.EquipNumSearch(ITEM_ID_WRATH_WHEEL, EQUIP_REGION_ID_ARMS);
     if (itemCountRight > 0 && n_A_Weapon_ATKplus >= 10) {
         wSC_Size = 1;
     }
-    itemCountLeft = EquipNumSearch(ITEM_ID_WRATH_WHEEL, EQUIP_REGION_ID_ARMS_LEFT);
+    itemCountLeft = Chara.EquipNumSearch(ITEM_ID_WRATH_WHEEL, EQUIP_REGION_ID_ARMS_LEFT);
     if (itemCountLeft > 0 && n_A_Weapon2_ATKplus >= 10) {
         wSC_Size = 1;
     }
 
     // 「ラースレック」の、精錬による、全型１００％補正
-    itemCountRight = EquipNumSearch(ITEM_ID_WRATH_LECK, EQUIP_REGION_ID_ARMS);
+    itemCountRight = Chara.EquipNumSearch(ITEM_ID_WRATH_LECK, EQUIP_REGION_ID_ARMS);
     if (itemCountRight > 0 && n_A_Weapon_ATKplus >= 10) {
         wSC_Size = 1;
     }
-    itemCountLeft = EquipNumSearch(ITEM_ID_WRATH_LECK, EQUIP_REGION_ID_ARMS_LEFT);
+    itemCountLeft = Chara.EquipNumSearch(ITEM_ID_WRATH_LECK, EQUIP_REGION_ID_ARMS_LEFT);
     if (itemCountLeft > 0 && n_A_Weapon2_ATKplus >= 10) {
         wSC_Size = 1;
     }
 
     // 「イラフィースト」の、精錬による、全型１００％補正
-    itemCountRight = EquipNumSearch(ITEM_ID_IRA_FIST, EQUIP_REGION_ID_ARMS);
+    itemCountRight = Chara.EquipNumSearch(ITEM_ID_IRA_FIST, EQUIP_REGION_ID_ARMS);
     if (itemCountRight > 0 && n_A_Weapon_ATKplus >= 10) {
         wSC_Size = 1;
     }
-    itemCountLeft = EquipNumSearch(ITEM_ID_IRA_FIST, EQUIP_REGION_ID_ARMS_LEFT);
+    itemCountLeft = Chara.EquipNumSearch(ITEM_ID_IRA_FIST, EQUIP_REGION_ID_ARMS_LEFT);
     if (itemCountLeft > 0 && n_A_Weapon2_ATKplus >= 10) {
         wSC_Size = 1;
     }
 
     // 「インペリアルクルシフォームスーツ」の、スキル習得による、全型１００％補正
-    if ((itemCount = EquipNumSearchMIG(ITEM_ID_IMPERIAL_CRUCIFORM_SUIT)) > 0) {
+    if ((itemCount = Chara.EquipNumSearchMIG(ITEM_ID_IMPERIAL_CRUCIFORM_SUIT)) > 0) {
         if (LearnedSkillSearch(SKILL_ID_MUCHANAGE) >= 10) {
             wSC_Size = 1;
         }
     }
 
     // 「グレースクルシフォームスーツ」の、スキル習得による、全型１００％補正
-    if ((itemCount = EquipNumSearchMIG(ITEM_ID_GRACE_CRUCIFORM_SUIT)) > 0) {
+    if ((itemCount = Chara.EquipNumSearchMIG(ITEM_ID_GRACE_CRUCIFORM_SUIT)) > 0) {
         if (LearnedSkillSearch(SKILL_ID_MUCHANAGE) >= 10) {
             wSC_Size = 1;
         }
     }
 
     // 「覚醒栄光を讃えし王剣」の、精錬による、全型１００％補正
-    itemCountRight = EquipNumSearch(ITEM_ID_KAKUSE_EIKOWO_TATAESHI_OKEN, EQUIP_REGION_ID_ARMS);
+    itemCountRight = Chara.EquipNumSearch(ITEM_ID_KAKUSE_EIKOWO_TATAESHI_OKEN, EQUIP_REGION_ID_ARMS);
     if (itemCountRight > 0 && n_A_Weapon_ATKplus >= 9) {
         wSC_Size = 1;
     }
-    itemCountLeft = EquipNumSearch(ITEM_ID_KAKUSE_EIKOWO_TATAESHI_OKEN, EQUIP_REGION_ID_ARMS_LEFT);
+    itemCountLeft = Chara.EquipNumSearch(ITEM_ID_KAKUSE_EIKOWO_TATAESHI_OKEN, EQUIP_REGION_ID_ARMS_LEFT);
     if (itemCountLeft > 0 && n_A_Weapon2_ATKplus >= 9) {
         wSC_Size = 1;
     }
 
     // 「鬼神の盟友」の、スキル習得による、全型１００％補正
-    if ((itemCount = EquipNumSearchMIG(ITEM_ID_KISHINNO_MEIYU)) > 0) {
+    if ((itemCount = Chara.EquipNumSearchMIG(ITEM_ID_KISHINNO_MEIYU)) > 0) {
         if (LearnedSkillSearch(SKILL_ID_TENKETSU_HAN) >= 5) {
             wSC_Size = 1;
         }
@@ -18629,7 +18631,7 @@ function AutoCalc(callFrom) {
  * ダメージ計算　命中・クリティカル・耐性などを計算して最終ダメージを算出する
  * @returns
  */
-function calc() {
+export function calc() {
     var w_EnkyoriSkill = [40, 41, 44, 71, 84, 72, 118, 159, 192, 199, 207, 244, 259, 260, 261, 263, 271, 272, 275, 292, 302, 306, 307, 324, 328, 384, 394, 395, 391, 396, 405, 418, 419, 423, 428, 430, 431, 432, 435, 436, 437, 438, 440, 447, 497, 498, 513, 542, 549, 551, 552, 553, 569, 570, 574, 612, 613, 623, 642, 723, 738, 741, 769, 794];
     var w_MagicSkill = [37, 46, 47, 51, 52, 53, 54, 55, 56, 57, 122, 124, 125, 126, 127, 128, 130, 131, 132, 133, 407, 408, 409, 410, 411, 412, 413, 414, 415, 476, 478, 518, 519, 520, 527, 528, 529, 530, 531, 532, 662, 663, 666, 667, 658, 659];
     var idx = 0;
@@ -19138,7 +19140,7 @@ function calc() {
             n_A_DMG_QUAKE[i] += charaData[CHARA_DATA_INDEX_REFINE_ATK];
             if (UsedSkillSearch(SKILL_ID_FU_ELEMENT_OF_FU) == 2 && UsedSkillSearch(SKILL_ID_FU_COUNT_OF_FU) >= 1) {
                 var wX = 10 * UsedSkillSearch(SKILL_ID_FU_COUNT_OF_FU);
-                n_A_DMG_QUAKE[i] += ROUNDDOWN(n_A_DMG_QUAKE[i] * wX / 100);
+                n_A_DMG_QUAKE[i] += Foot.ROUNDDOWN(n_A_DMG_QUAKE[i] * wX / 100);
             }
         }
         if (n_A_ActiveSkill == 810 || wCH_AS_QUAKE == 1) {
@@ -19147,7 +19149,7 @@ function calc() {
             n_A_DMG_GX[2] = n_A_DMG_QUAKE[2];
         }
         var GXsize = GetSizeModify(mobData, weaponsize[n_A_WeaponType][mobData[17]]);
-        for (var i = 0; i <= 2; i++) n_A_DMG_GX[i] = ROUNDDOWN(n_A_DMG_GX[i] * GXsize);
+        for (var i = 0; i <= 2; i++) n_A_DMG_GX[i] = Foot.ROUNDDOWN(n_A_DMG_GX[i] * GXsize);
         if (n_A_WeaponType == 0 && charaData[CHARA_DATA_INDEX_REFINE_ATK] != 0) {
             for (var i = 0; i <= 2; i++) n_A_DMG_GX[i] += charaData[CHARA_DATA_INDEX_REFINE_ATK];
         }
@@ -19155,7 +19157,7 @@ function calc() {
             if (mobData[18] != 33 && mobData[18] != 34) {
                 for (var i = 0; i <= 2; i++) {
                     var w = ApplyElementRatio(mobData, n_A_DMG_GX[i], 3);
-                    w = ROUNDDOWN(w / 5);
+                    w = Foot.ROUNDDOWN(w / 5);
                     n_A_DMG_GX[i] += w;
                 }
             }
@@ -19164,7 +19166,7 @@ function calc() {
             if (n_A_ActiveSkill == 810) {
                 for (var i = 0; i <= 2; i++) {
                     var w = ApplyElementRatio(mobData, n_A_DMG_GX[i], 5);
-                    w = ROUNDDOWN(w / 4);
+                    w = Foot.ROUNDDOWN(w / 4);
                     n_A_DMG_GX[i] += w;
                 }
             }
@@ -19191,7 +19193,7 @@ function calc() {
 
         for (var i = 0; i <= 2; i++) {
             n_A_DMG_GX[i] = ApplyElementRatio(mobData, n_A_DMG_GX[i], n_A_Weapon_zokusei);
-            if (wBaiB != 0) n_A_DMG_GX[i] = ROUNDDOWN(n_A_DMG_GX[i] * (100 + wBaiB) / 100);
+            if (wBaiB != 0) n_A_DMG_GX[i] = Foot.ROUNDDOWN(n_A_DMG_GX[i] * (100 + wBaiB) / 100);
         }
 
         for (var i = 0; i <= 2; i++) {
@@ -19586,7 +19588,7 @@ function GetWeaponAtk(strdex, strBonus, armsType, armsLv, armsAtk, sizeModify,
     //----------------------------------------------------------------
     // 「執行者のシューズ」の、スキル習得による効果
     //----------------------------------------------------------------
-    if ((itemCount = EquipNumSearch(ITEM_ID_SHIKKOUSHANO_SHOES)) > 0) {
+    if ((itemCount = Chara.EquipNumSearch(ITEM_ID_SHIKKOUSHANO_SHOES)) > 0) {
         for (idx = 0; idx < wpnAtkArray.length; idx++) {
             effectValue = 4 * LearnedSkillSearch(SKILL_ID_WEAPON_CRUSH) * itemCount;
             wpnAtkArray[idx] = Math.floor((wpnAtkArray[idx] * (100 + effectValue)) / 100);
@@ -19630,7 +19632,7 @@ function GetWeaponAtk(strdex, strBonus, armsType, armsLv, armsAtk, sizeModify,
                 // ＥＤＰは特殊扱いで、最後に判定するものとする
 
                 // 時限効果「ボルケリン」カード（地、20%）
-                if (TimeItemNumSearch(TIME_ITEM_ID_VOLCARING) > 0) {
+                if (Chara.TimeItemNumSearch(TIME_ITEM_ID_VOLCARING) > 0) {
                     funcSelectAppendDamage(ELM_ID_EARTH, 20);
                 }
                 // マグナムブレイク状態（火、20%）
@@ -19638,48 +19640,48 @@ function GetWeaponAtk(strdex, strBonus, armsType, armsLv, armsAtk, sizeModify,
                     funcSelectAppendDamage(ELM_ID_FIRE, 20);
                 }
                 // 時限効果「異境の統括者＋タートルジェネラル」セット（火、20%）
-                if (TimeItemNumSearch(TIME_ITEM_ID_IKYONO_TOKATSUSHA_TURTLE_GENERAL) > 0) {
+                if (Chara.TimeItemNumSearch(TIME_ITEM_ID_IKYONO_TOKATSUSHA_TURTLE_GENERAL) > 0) {
                     funcSelectAppendDamage(ELM_ID_FIRE, 20);
                 }
                 // 時限効果「プラガリオン」カード（風、20%）
-                if (TimeItemNumSearch(TIME_ITEM_ID_PLAGARION) > 0) {
+                if (Chara.TimeItemNumSearch(TIME_ITEM_ID_PLAGARION) > 0) {
                     funcSelectAppendDamage(ELM_ID_WIND, 20);
                 }
                 // 時限効果「洞窟不凍花」カード（水、20%）
-                if (TimeItemNumSearch(TIME_ITEM_ID_DOKUTSU_FUTOKA) > 0) {
+                if (Chara.TimeItemNumSearch(TIME_ITEM_ID_DOKUTSU_FUTOKA) > 0) {
                     funcSelectAppendDamage(ELM_ID_WATER, 20);
                 }
 
                 // 時限効果「共感する者」カード（水、10%）
-                if (TimeItemNumSearch(TIME_ITEM_ID_KYOKANSURU_MONO) > 0) {
+                if (Chara.TimeItemNumSearch(TIME_ITEM_ID_KYOKANSURU_MONO) > 0) {
                     funcSelectAppendDamage(ELM_ID_WATER, 10);
                 }
                 // 時限効果「幸福を与える者」カード（地、10%）
-                if (TimeItemNumSearch(TIME_ITEM_ID_KOFUKUWO_ATAERU_MONO) > 0) {
+                if (Chara.TimeItemNumSearch(TIME_ITEM_ID_KOFUKUWO_ATAERU_MONO) > 0) {
                     funcSelectAppendDamage(ELM_ID_EARTH, 10);
                 }
                 // 時限効果「祈る者」カード（火、10%）
-                if (TimeItemNumSearch(TIME_ITEM_ID_INORU_MONO) > 0) {
+                if (Chara.TimeItemNumSearch(TIME_ITEM_ID_INORU_MONO) > 0) {
                     funcSelectAppendDamage(ELM_ID_FIRE, 10);
                 }
                 // 時限効果「異境の統括者＋封印されたタートルジェネラル」セット（火、10%）
-                if (TimeItemNumSearch(TIME_ITEM_ID_IKYONO_TOKATSUSHA_FUINSARETA_TURTLE_GENERAL) > 0) {
+                if (Chara.TimeItemNumSearch(TIME_ITEM_ID_IKYONO_TOKATSUSHA_FUINSARETA_TURTLE_GENERAL) > 0) {
                     funcSelectAppendDamage(ELM_ID_FIRE, 10);
                 }
                 // 時限効果「微笑む者」カード（風、10%）
-                if (TimeItemNumSearch(TIME_ITEM_ID_HOHOEMU_MONO) > 0) {
+                if (Chara.TimeItemNumSearch(TIME_ITEM_ID_HOHOEMU_MONO) > 0) {
                     funcSelectAppendDamage(ELM_ID_WIND, 10);
                 }
                 // 時限効果「ラーヴァトード」カード（毒、10%）
-                if (TimeItemNumSearch(TIME_ITEM_ID_LAVA_TODO) > 0) {
+                if (Chara.TimeItemNumSearch(TIME_ITEM_ID_LAVA_TODO) > 0) {
                     funcSelectAppendDamage(ELM_ID_POISON, 10);
                 }
                 // 時限効果「変異キメラフルゴル」カード（聖、10%）
-                if (TimeItemNumSearch(TIME_ITEM_ID_HENI_CHIMERA_FULGOR) > 0) {
+                if (Chara.TimeItemNumSearch(TIME_ITEM_ID_HENI_CHIMERA_FULGOR) > 0) {
                     funcSelectAppendDamage(ELM_ID_HOLY, 10);
                 }
                 // 時限効果「下級ルガン」カード（闇、10%）
-                if (TimeItemNumSearch(TIME_ITEM_ID_KAKYU_RGAN) > 0) {
+                if (Chara.TimeItemNumSearch(TIME_ITEM_ID_KAKYU_RGAN) > 0) {
                     funcSelectAppendDamage(ELM_ID_DARK, 10);
                 }
 
@@ -19722,7 +19724,7 @@ function GetWeaponAtk(strdex, strBonus, armsType, armsLv, armsAtk, sizeModify,
                 if (appendDamageRate > 0) {
                     for (idx = 0; idx < wpnAtkArray.length; idx++) {
                         atkWork = ApplyElementRatio(mobData, wpnAtkArray[idx], appendDamageElement);
-                        atkWork = ROUNDDOWN(atkWork * appendDamageRate / 100);
+                        atkWork = Foot.ROUNDDOWN(atkWork * appendDamageRate / 100);
                         wpnAtkArray[idx] += atkWork;
                     }
                 }
@@ -19799,7 +19801,7 @@ function _SUB_ApplyMonsterDefence(mobData, dmg) {
     }
 
     // ＋１０ギロチンブレードの人間種族防御無視
-    if (n_A_Weapon_ATKplus >= 10 && mobData[MONSTER_DATA_INDEX_RACE] == RACE_ID_HUMAN && EquipNumSearch(2457)) {
+    if (n_A_Weapon_ATKplus >= 10 && mobData[MONSTER_DATA_INDEX_RACE] == RACE_ID_HUMAN && Chara.EquipNumSearch(2457)) {
         bPenetrate = true;
     }
 
@@ -20089,7 +20091,7 @@ function TYPE_SYUUREN(mobData, attackMethodConfArray, bArmsLeft) {
 
             switch (attackMethodConfArray[1].GetSkillId()) {
                 case 799:
-                    w -= 3 * (6 - ROUNDDOWN((attackMethodConfArray[1].GetSkillLv() + 1) / 2));
+                    w -= 3 * (6 - Foot.ROUNDDOWN((attackMethodConfArray[1].GetSkillLv() + 1) / 2));
                     break;
                 default:
                     if (n_A_ActiveSkill == 614) w -= 6;
@@ -20197,7 +20199,7 @@ function GetArmsElementBySPData(itemRegionIdArray, cardRegionIdArray, elmIdDefau
  * @param {*} mobData
  * @param {*} attackMethodConfArray
  */
-function SET_ZOKUSEI(mobData, attackMethodConfArray) {
+export function SET_ZOKUSEI(mobData, attackMethodConfArray) {
     var itemRegionIdArray = null;
     var cardRegionIdArray = null;
     var bApplyArrowElement = false;
@@ -20463,9 +20465,9 @@ function SET_ZOKUSEI(mobData, attackMethodConfArray) {
         else if (UsedSkillSearch(SKILL_ID_COUNT_OF_RG_FOR_BANDING) == 0) {
             if (
                 UsedSkillSearch(SKILL_ID_INSPIRATION)
-                || TimeItemNumSearch(TIME_ITEM_ID_ZETSUBONO_KAMI_MOROCC_CARD)
-                || TimeItemNumSearch(TIME_ITEM_ID_DEMI_FREYA)
-                || TimeItemNumSearch(TIME_ITEM_ID_MAKENSHI_SAKRAY_CARD)
+                || Chara.TimeItemNumSearch(TIME_ITEM_ID_ZETSUBONO_KAMI_MOROCC_CARD)
+                || Chara.TimeItemNumSearch(TIME_ITEM_ID_DEMI_FREYA)
+                || Chara.TimeItemNumSearch(TIME_ITEM_ID_MAKENSHI_SAKRAY_CARD)
             ) {
                 n_A_Weapon_zokusei = ELM_ID_HOLY;
             }
@@ -20480,12 +20482,12 @@ function SET_ZOKUSEI(mobData, attackMethodConfArray) {
  * @param {*} elmId 属性ＩＤ
  * @returns
  */
-function ApplyElementRatio(mobData, wpnAtk, elmId) {
+export function ApplyElementRatio(mobData, wpnAtk, elmId) {
 
     var elmRatio = zokusei[mobData[18]][elmId];
 
     // 属性場の適用
-    if (g_confDataNizi[CCharaConfNizi.CONF_ID_ZOKUSEIBA_LEVEL] >= 1) {
+    if (g_confDataNizi && CCharaConfNizi && (g_confDataNizi[CCharaConfNizi.CONF_ID_ZOKUSEIBA_LEVEL] >= 1)) {
 
         var baizok = [0, 10, 14, 17, 19, 20];
 
@@ -20509,7 +20511,7 @@ function ApplyElementRatio(mobData, wpnAtk, elmId) {
     }
 
     var w = wpnAtk;
-    w += ROUNDDOWN(w * elmRatio / 100);
+    w += Foot.ROUNDDOWN(w * elmRatio / 100);
 
     return w;
 }
@@ -20629,11 +20631,11 @@ function GetPerfectHitDamage(charaData, specData, mobData, attackMethodConfArray
 
             // 対プレイヤーの場合
             if (mobData[0] == MONSTER_ID_PLAYER) {
-                w999 += ROUNDDOWN(n_B_TAISEI[MOB_CONF_PLAYER_ID_SHOZIZYURYO_GENZAI] * n_A_DEX / 120);
+                w999 += Foot.ROUNDDOWN(n_B_TAISEI[MOB_CONF_PLAYER_ID_SHOZIZYURYO_GENZAI] * n_A_DEX / 120);
             }
             // 対モンスターの場合
             else {
-                w999 += ROUNDDOWN(mobData[2] * 50 * n_A_DEX / 120);
+                w999 += Foot.ROUNDDOWN(mobData[2] * 50 * n_A_DEX / 120);
             }
             break;
         // 號砲
@@ -20687,7 +20689,7 @@ function GetPerfectHitDamage(charaData, specData, mobData, attackMethodConfArray
             if ((!n_AS_MODE) && (attackMethodConfArray[0].GetOptionValue(0) == 0)) {
 
                 // 消費SPあり
-                syouhiSP = ROUNDDOWN(charaData[CHARA_DATA_INDEX_MAXSP] * (10 + n_A_ActiveSkillLV) / 100);
+                syouhiSP = Foot.ROUNDDOWN(charaData[CHARA_DATA_INDEX_MAXSP] * (10 + n_A_ActiveSkillLV) / 100);
 
                 // ベースレベルダメージ低め
                 baseLvDmg = 10 * n_A_BaseLV;
@@ -20939,7 +20941,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
         case 330:
         case 331:
         case 332:
-            if (EquipNumSearch(2399)) {
+            if (Chara.EquipNumSearch(2399)) {
                 w += 5;
                 if (n_A_HEAD_DEF_PLUS >= 5) w += 5;
                 if (n_A_HEAD_DEF_PLUS >= 7) w += 10;
@@ -21000,7 +21002,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
         case 755:
         case 756:
         case 757:
-            if (EquipNumSearch(2490)) {
+            if (Chara.EquipNumSearch(2490)) {
                 w += 5;
                 if (n_A_HEAD_DEF_PLUS >= 5) w += 10;
                 if (n_A_HEAD_DEF_PLUS >= 7) w += 15;
@@ -21013,7 +21015,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     // 英雄エンチャント特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_EIYUENCHANT]) == 1) {
-        if (CardNumSearch(CARD_ID_ENCHANT_RYUBIRYUNO_GENZYU)) {
+        if (Chara.CardNumSearch(CARD_ID_ENCHANT_RYUBIRYUNO_GENZYU)) {
             w += 20;
         }
     }
@@ -21088,7 +21090,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     // タナトス特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_THANATOS]) == 1) {
-        if (EquipNumSearch(ITEM_ID_USUDUKIYONO_BOSHI)) {
+        if (Chara.EquipNumSearch(ITEM_ID_USUDUKIYONO_BOSHI)) {
             w += 5;
             if (n_A_HEAD_DEF_PLUS >= 5) w += 10;
             if (n_A_HEAD_DEF_PLUS >= 7) w += 15;
@@ -21100,14 +21102,14 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     // 地下排水路特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_CHIKA_HAISUIRO]) == 1) {
-        if (EquipNumSearch(ITEM_ID_NEKORYOTEKEN_TACHIUO)) w += 50;
-        if (EquipNumSearch(ITEM_ID_NEKOKATAR_TSUNA)) w += 50;
-        if (EquipNumSearch(ITEM_ID_NEKORYOTETSUE_KAZIKI)) w += 50;
-        if (EquipNumSearch(ITEM_ID_NEKORYOTEONO_KUROMAGURO)) w += 50;
-        if (EquipNumSearch(ITEM_ID_NEKOYUMI_KANI)) w += 50;
-        if (EquipNumSearch(ITEM_ID_NEKOTANKEN_AZI)) w += 25 * EquipNumSearch(ITEM_ID_NEKOTANKEN_AZI);
+        if (Chara.EquipNumSearch(ITEM_ID_NEKORYOTEKEN_TACHIUO)) w += 50;
+        if (Chara.EquipNumSearch(ITEM_ID_NEKOKATAR_TSUNA)) w += 50;
+        if (Chara.EquipNumSearch(ITEM_ID_NEKORYOTETSUE_KAZIKI)) w += 50;
+        if (Chara.EquipNumSearch(ITEM_ID_NEKORYOTEONO_KUROMAGURO)) w += 50;
+        if (Chara.EquipNumSearch(ITEM_ID_NEKOYUMI_KANI)) w += 50;
+        if (Chara.EquipNumSearch(ITEM_ID_NEKOTANKEN_AZI)) w += 25 * Chara.EquipNumSearch(ITEM_ID_NEKOTANKEN_AZI);
 
-        if (EquipNumSearch(ITEM_ID_MARAN_KAIZOKUDANBO) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_MARAN_KAIZOKUDANBO) > 0) {
             w += 15;
             if (n_A_HEAD_DEF_PLUS >= 7) w += 15;
             if (n_A_HEAD_DEF_PLUS >= 9) w += 20;
@@ -21118,14 +21120,14 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     // 暴屈王の洞窟特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_BOKUTSUONO_DOKUTSU]) == 1) {
-        if (EquipNumSearch(ITEM_ID_NEKORYOTEKEN_TACHIUO)) w += 50;
-        if (EquipNumSearch(ITEM_ID_NEKOKATAR_TSUNA)) w += 50;
-        if (EquipNumSearch(ITEM_ID_NEKORYOTETSUE_KAZIKI)) w += 50;
-        if (EquipNumSearch(ITEM_ID_NEKORYOTEONO_KUROMAGURO)) w += 50;
-        if (EquipNumSearch(ITEM_ID_NEKOYUMI_KANI)) w += 50;
-        if (EquipNumSearch(ITEM_ID_NEKOTANKEN_AZI)) w += 25 * EquipNumSearch(ITEM_ID_NEKOTANKEN_AZI);
+        if (Chara.EquipNumSearch(ITEM_ID_NEKORYOTEKEN_TACHIUO)) w += 50;
+        if (Chara.EquipNumSearch(ITEM_ID_NEKOKATAR_TSUNA)) w += 50;
+        if (Chara.EquipNumSearch(ITEM_ID_NEKORYOTETSUE_KAZIKI)) w += 50;
+        if (Chara.EquipNumSearch(ITEM_ID_NEKORYOTEONO_KUROMAGURO)) w += 50;
+        if (Chara.EquipNumSearch(ITEM_ID_NEKOYUMI_KANI)) w += 50;
+        if (Chara.EquipNumSearch(ITEM_ID_NEKOTANKEN_AZI)) w += 25 * Chara.EquipNumSearch(ITEM_ID_NEKOTANKEN_AZI);
 
-        if (EquipNumSearch(ITEM_ID_MARAN_KAIZOKUDANBO) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_MARAN_KAIZOKUDANBO) > 0) {
             w += 15;
             if (n_A_HEAD_DEF_PLUS >= 7) w += 15;
             if (n_A_HEAD_DEF_PLUS >= 9) w += 20;
@@ -21136,7 +21138,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     // 時計塔特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_TOKEITO]) == 1) {
-        if (EquipNumSearch(ITEM_ID_NIZIIRONO_TSUBASA) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_NIZIIRONO_TSUBASA) > 0) {
             w += 15;
             if (n_A_HEAD_DEF_PLUS >= 7) w += 15;
             if (n_A_HEAD_DEF_PLUS >= 9) w += 20;
@@ -21147,7 +21149,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     // ハートハンター軍事基地特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_HEARTHUNTER]) == 1) {
-        if (EquipNumSearch(ITEM_ID_GOOGLE_HAT) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_GOOGLE_HAT) > 0) {
             w += 15;
             if (n_A_HEAD_DEF_PLUS >= 7) w += 15;
             if (n_A_HEAD_DEF_PLUS >= 9) w += 20;
@@ -21158,7 +21160,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     // ロックリッジ特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_ROCKRIDGE]) == 1) {
-        if (EquipNumSearch(ITEM_ID_TAURUS_HAT) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_TAURUS_HAT) > 0) {
             w += 15;
             if (n_A_HEAD_DEF_PLUS >= 7) w += 15;
             if (n_A_HEAD_DEF_PLUS >= 9) w += 20;
@@ -21169,7 +21171,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     // ヴェルナー研究所特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_VERNAR]) == 1) {
-        if (EquipNumSearch(ITEM_ID_ZIKKEN_SEITAI_GOATGATA_CAP) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_ZIKKEN_SEITAI_GOATGATA_CAP) > 0) {
             w += 15;
             if (n_A_HEAD_DEF_PLUS >= 7) w += 15;
             if (n_A_HEAD_DEF_PLUS >= 9) w += 20;
@@ -21180,7 +21182,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     // メロリン特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MELORIN]) == 1) {
-        if (EquipNumSearch(ITEM_ID_OKYU_MINI_MELON) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_OKYU_MINI_MELON) > 0) {
             w += 20 * n_A_HEAD_DEF_PLUS;
         }
     }
@@ -21189,7 +21191,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     // ２５０ページ特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_PAGE250]) == 1) {
-        if (EquipNumSearch(ITEM_ID_BLACK_VEIL) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_BLACK_VEIL) > 0) {
             w += 15;
             if (n_A_HEAD_DEF_PLUS >= 7) w += 15;
             if (n_A_HEAD_DEF_PLUS >= 9) w += 20;
@@ -21200,22 +21202,22 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     // 魔神殿特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MAZINDEN]) == 1) {
-        if (EquipNumSearch(ITEM_ID_DIAVOLOS_WING) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_DIAVOLOS_WING) > 0) {
             w += 30;
         }
-        if (EquipNumSearch(ITEM_SET_ID_DIAVOLOS_WING_DIAVOLOS_ARMOR) > 0) {
+        if (Chara.EquipNumSearch(ITEM_SET_ID_DIAVOLOS_WING_DIAVOLOS_ARMOR) > 0) {
             w += 20;
         }
-        if (EquipNumSearch(ITEM_SET_ID_DIAVOLOS_WING_DIAVOLOS_ROBE) > 0) {
+        if (Chara.EquipNumSearch(ITEM_SET_ID_DIAVOLOS_WING_DIAVOLOS_ROBE) > 0) {
             w += 20;
         }
-        if (EquipNumSearch(ITEM_SET_ID_DIAVOLOS_WING_DIAVOLOS_MANT) > 0) {
+        if (Chara.EquipNumSearch(ITEM_SET_ID_DIAVOLOS_WING_DIAVOLOS_MANT) > 0) {
             w += 20;
         }
-        if (EquipNumSearch(ITEM_SET_ID_DIAVOLOS_WING_DIAVOLOS_BOOTS) > 0) {
+        if (Chara.EquipNumSearch(ITEM_SET_ID_DIAVOLOS_WING_DIAVOLOS_BOOTS) > 0) {
             w += 20;
         }
-        if (EquipNumSearch(ITEM_SET_ID_DIAVOLOS_WING_DIAVOLOS_RING) > 0) {
+        if (Chara.EquipNumSearch(ITEM_SET_ID_DIAVOLOS_WING_DIAVOLOS_RING) > 0) {
             w += 20;
         }
     }
@@ -21224,7 +21226,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     // スクロールストール特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SCROLL_STOLE]) == 1) {
-        if (EquipNumSearch(ITEM_ID_SCROLL_STOLE) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_SCROLL_STOLE) > 0) {
             w += 30;
         }
     }
@@ -21233,7 +21235,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     // オース二次捜索特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_OS_NIZI_SOSAKU]) == 1) {
-        if (EquipNumSearch(ITEM_ID_KETTONO_RYU_BOSHI) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_KETTONO_RYU_BOSHI) > 0) {
             w += 15;
             if (n_A_HEAD_DEF_PLUS >= 7) w += 15;
             if (n_A_HEAD_DEF_PLUS >= 9) w += 20;
@@ -21244,7 +21246,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     // ミグエル特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MIGEL]) == 1) {
-        if (EquipNumSearch(ITEM_ID_KETTONO_RYU_BOSHI) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_KETTONO_RYU_BOSHI) > 0) {
             if (n_A_HEAD_DEF_PLUS >= 10) {
                 w += 100;
             }
@@ -21255,7 +21257,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     // ノーグロード３層特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_NOGUE_ROAD_03]) == 1) {
-        if ((cardCount = CardNumSearch(CARD_ID_KOKA_RAVA_GOLEM)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_KOKA_RAVA_GOLEM)) > 0) {
             w += 30 * cardCount;
         }
     }
@@ -21264,7 +21266,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     // フローズンメモリー特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_FROZEN_MEMORY]) == 1) {
-        if (EquipNumSearch(ITEM_ID_FROZEN_SCALE_SHAWL) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_FROZEN_SCALE_SHAWL) > 0) {
             w += 30;
         }
     }
@@ -21275,11 +21277,11 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     if ((NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MURASAKI_IRONO_SHINKAI_DOKUTSU_ZYOSO]) == 1)
         || (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MURASAKI_IRONO_SHINKAI_DOKUTSU_KASO]) == 1)) {
 
-        if ((cardCount = CardNumSearch(CARD_ID_SHINKAINO_HANGYOZIN)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_SHINKAINO_HANGYOZIN)) > 0) {
             w += 30 * cardCount;
         }
 
-        if (EquipNumSearch(ITEM_ID_SHINKAI_SEIBUTSUNO_MANT) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_SHINKAI_SEIBUTSUNO_MANT) > 0) {
             w += 30;
         }
     }
@@ -21288,7 +21290,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     // ネジリアン帝国特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_NEZIRIAN_TEKOKU]) == 1) {
-        if (EquipNumSearch(ITEM_ID_KIGURUMI_BEARDOLL) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_KIGURUMI_BEARDOLL) > 0) {
             w += 30;
         }
     }
@@ -21297,7 +21299,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     // 幻想の北洞窟ルワンダ特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_GENSONO_KITA_DOKUTSU_RUWANDA]) == 1) {
-        if (EquipNumSearch(ITEM_ID_ANCIENT_MEGALIS_MANT) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_ANCIENT_MEGALIS_MANT) > 0) {
             w += 30;
         }
     }
@@ -21306,7 +21308,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     // 歪んだ迷宮の森耐性
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_YUGANDA_MEIKYUNO_MORI]) == 1) {
-        if (EquipNumSearch(ITEM_ID_YAGIGENO_MUFFLER) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_YAGIGENO_MUFFLER) > 0) {
             w += 30;
         }
     }
@@ -21315,7 +21317,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     // 認識の庭特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_NINSHIKINO_NIWA]) == 1) {
-        if ((cardCount = CardNumSearch(CARD_ID_MAZIMENA_HETAI_ANDRE)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_MAZIMENA_HETAI_ANDRE)) > 0) {
             w += 30 * cardCount;
         }
     }
@@ -21324,7 +21326,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     // 鉱山ダンジョン03特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_KOZAN_DUNGEON_03]) == 1) {
-        if ((cardCount = CardNumSearch(CARD_ID_NEO_MINERAL)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_NEO_MINERAL)) > 0) {
             w += 30 * cardCount;
         }
     }
@@ -21333,10 +21335,10 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     // アビスレイク地下洞窟04特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_ABYSS_LAKE_CHIKA_DOKUTSU_04]) == 1) {
-        if (EquipNumSearch(ITEM_ID_DRAGON_SCALE_SHAWL) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_DRAGON_SCALE_SHAWL) > 0) {
             w += 30;
         }
-        if ((cardCount = CardNumSearch(CARD_ID_BONE_PHEROS)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_BONE_PHEROS)) > 0) {
             w += 30 * cardCount;
         }
     }
@@ -21345,10 +21347,10 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     // 廃棄実験体遊技場ルドゥス4階特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_HAIKI_ZIKKENTAI_YUGIZYO_RUDUS_4F]) == 1) {
-        if (EquipNumSearch(ITEM_ID_DISCARDED_CAPE) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_DISCARDED_CAPE) > 0) {
             w += 30;
         }
-        if ((cardCount = CardNumSearch(CARD_ID_VENEDI)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_VENEDI)) > 0) {
             w += 30 * cardCount;
         }
     }
@@ -21357,7 +21359,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     // 崩れたオペラハウス特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_NIFLHEIM_DUNGEON_KUZURETA_OPERA_HOUSE]) == 1) {
-        if ((cardCount = CardNumSearch(CARD_ID_PIERROT_ZOIST)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_PIERROT_ZOIST)) > 0) {
             w += 30 * cardCount;
         }
     }
@@ -21366,7 +21368,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     // 大浴場メディタティオ特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_BALMUNT_TE_DAIYOKUZYO_MEDITATIO]) == 1) {
-        if ((cardCount = CardNumSearch(CARD_ID_NETTO_PHEN)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_NETTO_PHEN)) > 0) {
             w += 30 * cardCount;
         }
     }
@@ -21375,7 +21377,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     // 貯蔵庫タルタロス特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_BALMUNT_TE_CHOZOKO_TARUTAROS]) == 1) {
-        if ((cardCount = CardNumSearch(CARD_ID_KOSHOSHITA_KEBIGATA_BETA)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_KOSHOSHITA_KEBIGATA_BETA)) > 0) {
             w += 30 * cardCount;
         }
     }
@@ -21384,7 +21386,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     // 第2魔力発電所特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_BALMUNT_TE_DAI2_MARYOKU_HATSUDENSHO]) == 1) {
-        if ((cardCount = CardNumSearch(CARD_ID_KYORYOKUNA_MARYOKU)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_KYORYOKUNA_MARYOKU)) > 0) {
             w += 30 * cardCount;
         }
     }
@@ -21393,7 +21395,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     // 灰色狼の森特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_HAIIRO_OKAMINO_MORI]) == 1) {
-        if ((cardCount = CardNumSearch(CARD_ID_GRAY_WOLF)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_GRAY_WOLF)) > 0) {
             w += 30 * cardCount;
         }
     }
@@ -21402,7 +21404,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     // オズの迷路特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_OZNO_MEIRO]) == 1) {
-        if ((cardCount = CardNumSearch(CARD_ID_VALTY)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_VALTY)) > 0) {
             w += 30 * cardCount;
         }
     }
@@ -21411,7 +21413,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     // 廃棄実験所アミシティア特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_HAIKI_ZIKKENZYO_AMISITIA]) == 1) {
-        if ((cardCount = CardNumSearch(CARD_ID_HENI_CHIMERA_VANILAQUS)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_HENI_CHIMERA_VANILAQUS)) > 0) {
             w += 30 * cardCount;
         }
     }
@@ -21420,7 +21422,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     // 捨てられた穴01特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SUTERARETA_ANA_01]) == 1) {
-        if ((cardCount = CardNumSearch(CARD_ID_DOKUTSU_CALMARING)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_DOKUTSU_CALMARING)) > 0) {
             w += 30 * cardCount;
         }
     }
@@ -21429,7 +21431,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     // 捨てられた穴02特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SUTERARETA_ANA_02]) == 1) {
-        if ((cardCount = CardNumSearch(CARD_ID_TANGAN_DOLLOCARIS)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_TANGAN_DOLLOCARIS)) > 0) {
             w += 30 * cardCount;
         }
     }
@@ -21438,7 +21440,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     // 蛇神の温もり特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_HEBIGAMINO_NUKUMORI]) == 1) {
-        if ((cardCount = CardNumSearch(CARD_ID_SAIKAKYU_RGAN)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_SAIKAKYU_RGAN)) > 0) {
             w += 30 * cardCount;
         }
     }
@@ -21447,7 +21449,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     // アルデバラン時計塔地下 未知の空間特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_TOKEITO_MICHI_NO_KUUKAN]) == 1) {
-        if ((cardCount = CardNumSearch(CARD_ID_GENERAL_ORK)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_GENERAL_ORK)) > 0) {
             w += 30 * cardCount;
         }
     }
@@ -21456,10 +21458,10 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     // 魔力が歪んだ平原 特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_PLAINS_DISTORTED_BY_MAGIC]) == 1) {
-        if ((cardCount = CardNumSearch(CARD_ID_HARD_ROCK_TITAN)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_HARD_ROCK_TITAN)) > 0) {
             w += 30 * cardCount;
         }
-        if (EquipNumSearch(ITEM_ID_DISTORTED_MAGIC_HOOD) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_DISTORTED_MAGIC_HOOD) > 0) {
             w += 30;
         }
     }
@@ -21468,7 +21470,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     // ミョルニール地下洞窟 特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MIOLNIR_UNDERGROUND_CAVE]) == 1) {
-        if ((cardCount = CardNumSearch(CARD_ID_PUNCH_BUG)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_PUNCH_BUG)) > 0) {
             w += 30 * cardCount;
         }
     }
@@ -21477,7 +21479,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     // イスガルド北部（凍て付いた鱗の海辺、古代の氷の峡谷 東部、古代の氷の峡谷 西部） 特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_ISGARD_NORTH_FIELD]) == 1) {
-        if ((cardCount = CardNumSearch(CARD_ID_FAKE_IWIN_SOLDIERS)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_FAKE_IWIN_SOLDIERS)) > 0) {
             w += 30 * cardCount;
         }
     }
@@ -21486,7 +21488,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     // 蛇神の根源 特化
     //--------------------------------
     if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_JOR_ROOT]) == 1) {
-        if ((cardCount = CardNumSearch(CARD_ID_JOR_MUNGANDR_GUARDIAN)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_JOR_MUNGANDR_GUARDIAN)) > 0) {
             w += 30 * cardCount;
         }
     }
@@ -21506,7 +21508,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     // 英雄の痕跡支援
     //--------------------------------
-    if (TimeItemNumSearch(72)) {
+    if (Chara.TimeItemNumSearch(72)) {
         if (743 <= mobData[0] && mobData[0] <= 757) w += 20;
         if (769 <= mobData[0] && mobData[0] <= 786) w += 20;
     }
@@ -21514,7 +21516,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     // 12thアニバ星座支援
     //--------------------------------
-    if (TimeItemNumSearch(80)) w += 30;
+    if (Chara.TimeItemNumSearch(80)) w += 30;
 
 
 
@@ -21577,7 +21579,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
         // グラストヘイムアビス特化
         //--------------------------------
         if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_GLASTHEIM_ABYSS]) == 1) {
-            if (EquipNumSearch(ITEM_ID_SHIROKISHINO_MANT) > 0) {
+            if (Chara.EquipNumSearch(ITEM_ID_SHIROKISHINO_MANT) > 0) {
                 w += 10;
                 if (n_A_SHOULDER_DEF_PLUS >= 5) {
                     w += 15;
@@ -21664,15 +21666,15 @@ function GetElementFieldDamageRatio() {
     // いつかのパッチで仕様変更。ApplyElementRatio()内へ移動。
     /*
         if(g_confDataNizi[1] >= 1){
-    
+
             var baizok = [0,10,14,17,19,20];
-    
+
             // 火属性武器、かつ、ボルケーノ
             if(n_A_Weapon_zokusei == 3 && g_confDataNizi[0] == 0) w += baizok[g_confDataNizi[1]];
-    
+
             // 水属性武器、かつ、デリュージ
             if(n_A_Weapon_zokusei == 1 && g_confDataNizi[0] == 1) w += baizok[g_confDataNizi[1]];
-    
+
             // 風属性武器、かつ、バイオレントゲイル
             if(n_A_Weapon_zokusei == 4 && g_confDataNizi[0] == 2) w += baizok[g_confDataNizi[1]];
         }
@@ -21776,63 +21778,63 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「フリーズタートルカード」の、「バッシュ」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 6) {
-        if (n_A_SHOES_DEF_PLUS >= 9 && CardNumSearch(362)) w1 += 10;
+        if (n_A_SHOES_DEF_PLUS >= 9 && Chara.CardNumSearch(362)) w1 += 10;
     }
 
     //----------------------------------------------------------------
     // 「ソードガーディアンカード」の、「ボウリングバッシュ」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 76) {
-        if (n_A_WeaponType == 2 || n_A_WeaponType == 3) w1 += 25 * CardNumSearch(464);
+        if (n_A_WeaponType == 2 || n_A_WeaponType == 3) w1 += 25 * Chara.CardNumSearch(464);
     }
 
     //----------------------------------------------------------------
     // 「ボウガーディアンカード」の、「アローシャワー」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 41) {
-        if (n_A_WeaponType == 10) w1 += 50 * CardNumSearch(465);
+        if (n_A_WeaponType == 10) w1 += 50 * Chara.CardNumSearch(465);
     }
 
     //----------------------------------------------------------------
     // 「グロリアスハンターボウ」の、「ダブルストレイフィング」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 40) {
-        if (n_A_Weapon_ATKplus >= 9 && EquipNumSearch(1089)) w1 += 20;
+        if (n_A_Weapon_ATKplus >= 9 && Chara.EquipNumSearch(1089)) w1 += 20;
     }
 
     //----------------------------------------------------------------
     // 「インペリアルリング」の、「グランドクロス」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 162) {
-        if (EquipNumSearch(2495)) w1 += n_A_BaseLV;
+        if (Chara.EquipNumSearch(2495)) w1 += n_A_BaseLV;
     }
 
     //----------------------------------------------------------------
     // 「グロリアスハンドガン」の、「ラピッドシャワー」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 428) {
-        if (n_A_Weapon_ATKplus >= 9 && EquipNumSearch(1099)) w1 += 2 * n_A_Weapon_ATKplus;
+        if (n_A_Weapon_ATKplus >= 9 && Chara.EquipNumSearch(1099)) w1 += 2 * n_A_Weapon_ATKplus;
     }
 
     //----------------------------------------------------------------
     // 「グロリアスライフル」の、「トラッキング」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 430) {
-        if (n_A_Weapon_ATKplus >= 9 && EquipNumSearch(1100)) w1 += 3 * n_A_Weapon_ATKplus;
+        if (n_A_Weapon_ATKplus >= 9 && Chara.EquipNumSearch(1100)) w1 += 3 * n_A_Weapon_ATKplus;
     }
 
     //----------------------------------------------------------------
     // 「グロリアスショットガン」の、「スプレッドアタック」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 436) {
-        if (n_A_Weapon_ATKplus >= 9 && EquipNumSearch(1102)) w1 += 2 * n_A_Weapon_ATKplus;
+        if (n_A_Weapon_ATKplus >= 9 && Chara.EquipNumSearch(1102)) w1 += 2 * n_A_Weapon_ATKplus;
     }
 
     //----------------------------------------------------------------
     // 「グロリアスグレネードガン」の、「グラウンドドリフト」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 437) {
-        if (n_A_Weapon_ATKplus >= 9 && EquipNumSearch(1103)) w1 += 2 * n_A_Weapon_ATKplus;
+        if (n_A_Weapon_ATKplus >= 9 && Chara.EquipNumSearch(1103)) w1 += 2 * n_A_Weapon_ATKplus;
     }
 
     //----------------------------------------------------------------
@@ -21840,7 +21842,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 418) {
         if (n_A_Weapon_ATKplus >= 7) {
-            if (EquipNumSearch(1100) || EquipNumSearch(1101) || EquipNumSearch(1102) || EquipNumSearch(1103)) w1 += 30;
+            if (Chara.EquipNumSearch(1100) || Chara.EquipNumSearch(1101) || Chara.EquipNumSearch(1102) || Chara.EquipNumSearch(1103)) w1 += 30;
         }
     }
 
@@ -21848,28 +21850,28 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「達人の剣」の、「バッシュ」「ボウリングバッシュ」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 6 || n_A_ActiveSkill == 76) {
-        if (n_A_ActiveSkillLV == 10 && EquipNumSearch(1159)) w1 += 50;
+        if (n_A_ActiveSkillLV == 10 && Chara.EquipNumSearch(1159)) w1 += 50;
     }
 
     //----------------------------------------------------------------
     // 「ベチェルアックス」の、「メナーナイト」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 65) {
-        if (SU_LUK >= 90 && SU_DEX >= 90 && EquipNumSearch(1164)) w1 += 15;
+        if (SU_LUK >= 90 && SU_DEX >= 90 && Chara.EquipNumSearch(1164)) w1 += 15;
     }
 
     //----------------------------------------------------------------
     // 「チャクラム」の、「メテオアサルト」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 264) {
-        if (EquipNumSearch(1176) && LearnedSkillSearch(SKILL_ID_KATAR_SHUREN) == 10) w1 += 20;
+        if (Chara.EquipNumSearch(1176) && LearnedSkillSearch(SKILL_ID_KATAR_SHUREN) == 10) w1 += 20;
     }
 
     //----------------------------------------------------------------
     // 「ブラックウィング」の、「フェイタルメナス」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 606) {
-        if (n_A_Weapon_ATKplus >= 6 && EquipNumSearch(1337)) w1 += 2 * (n_A_Weapon_ATKplus - 5);
+        if (n_A_Weapon_ATKplus >= 6 && Chara.EquipNumSearch(1337)) w1 += 2 * (n_A_Weapon_ATKplus - 5);
     }
 
     //----------------------------------------------------------------
@@ -21877,15 +21879,15 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「インペリアルセット」の、「キャノンスピア」「バニシングポイント」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 569 || n_A_ActiveSkill == 570) {
-        if (EquipNumSearch(1341)) w1 += 3 * ROUNDDOWN(n_A_Weapon_ATKplus / 2);
-        if (EquipNumSearch(2493)) w1 += 7 * ROUNDDOWN(n_A_Weapon_ATKplus / 2);
+        if (Chara.EquipNumSearch(1341)) w1 += 3 * Foot.ROUNDDOWN(n_A_Weapon_ATKplus / 2);
+        if (Chara.EquipNumSearch(2493)) w1 += 7 * Foot.ROUNDDOWN(n_A_Weapon_ATKplus / 2);
     }
 
     //----------------------------------------------------------------
     // 「赤いエーテルバッグ」の、「クレイジーウィード」「デモニックファイアー」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 732 || n_A_ActiveSkill == 737) {
-        if (n_A_Weapon_ATKplus >= 6 && EquipNumSearch(1343)) w1 += 2 * (n_A_Weapon_ATKplus - 5);
+        if (n_A_Weapon_ATKplus >= 6 && Chara.EquipNumSearch(1343)) w1 += 2 * (n_A_Weapon_ATKplus - 5);
     }
 
     //----------------------------------------------------------------
@@ -21893,57 +21895,57 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「インペリアルセット」の、「シールドプレス」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 572) {
-        if (n_A_SHIELD_DEF_PLUS >= 6 && EquipNumSearch(1348)) w1 += 2 * (n_A_SHIELD_DEF_PLUS - 5);
-        if (n_A_SHIELD_DEF_PLUS >= 6 && EquipNumSearch(2494)) w1 += 8 * (n_A_SHIELD_DEF_PLUS - 5);
+        if (n_A_SHIELD_DEF_PLUS >= 6 && Chara.EquipNumSearch(1348)) w1 += 2 * (n_A_SHIELD_DEF_PLUS - 5);
+        if (n_A_SHIELD_DEF_PLUS >= 6 && Chara.EquipNumSearch(2494)) w1 += 8 * (n_A_SHIELD_DEF_PLUS - 5);
     }
 
     //----------------------------------------------------------------
     // 「ウルズセット」の、「ハンドレッドスピア」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 442) {
-        if (n_A_BODY_DEF_PLUS >= 7 && n_A_SHOULDER_DEF_PLUS >= 7 && n_A_SHOES_DEF_PLUS >= 7 && EquipNumSearch(1581)) w1 += 50;
+        if (n_A_BODY_DEF_PLUS >= 7 && n_A_SHOULDER_DEF_PLUS >= 7 && n_A_SHOES_DEF_PLUS >= 7 && Chara.EquipNumSearch(1581)) w1 += 50;
     }
 
     //----------------------------------------------------------------
     // 「白羽セット」の、「アローストーム」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 498) {
-        if (n_A_BODY_DEF_PLUS >= 7 && n_A_SHOULDER_DEF_PLUS >= 7 && n_A_SHOES_DEF_PLUS >= 7 && EquipNumSearch(1601)) w1 += 10;
+        if (n_A_BODY_DEF_PLUS >= 7 && n_A_SHOULDER_DEF_PLUS >= 7 && n_A_SHOES_DEF_PLUS >= 7 && Chara.EquipNumSearch(1601)) w1 += 10;
     }
 
     //----------------------------------------------------------------
     // 「黒羽セット」の、「クラスターボム」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 505) {
-        if (n_A_BODY_DEF_PLUS >= 7 && n_A_SHOULDER_DEF_PLUS >= 7 && n_A_SHOES_DEF_PLUS >= 7 && EquipNumSearch(1606)) w1 += 10;
+        if (n_A_BODY_DEF_PLUS >= 7 && n_A_SHOULDER_DEF_PLUS >= 7 && n_A_SHOES_DEF_PLUS >= 7 && Chara.EquipNumSearch(1606)) w1 += 10;
     }
 
     //----------------------------------------------------------------
     // 「キャノンスピア」の、「キャノンスピア」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 569) {
-        if (EquipNumSearch(1696)) w1 += 3 * n_A_Weapon_ATKplus;
+        if (Chara.EquipNumSearch(1696)) w1 += 3 * n_A_Weapon_ATKplus;
     }
 
     //----------------------------------------------------------------
     // 「カタパルト」の、「トライアングルショット」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 608) {
-        if (EquipNumSearch(1707)) w1 += 2 * n_A_Weapon_ATKplus;
+        if (Chara.EquipNumSearch(1707)) w1 += 2 * n_A_Weapon_ATKplus;
     }
 
     //----------------------------------------------------------------
     // 「大型クロスボウ」の、「アローストーム」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 498) {
-        if (EquipNumSearch(1708)) w1 += 5 * n_A_Weapon_ATKplus;
+        if (Chara.EquipNumSearch(1708)) w1 += 5 * n_A_Weapon_ATKplus;
     }
 
     //----------------------------------------------------------------
     // 「機械植物帽」の、「スポアエクスプロージョン」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 736) {
-        if (EquipNumSearch(2082)) w1 += 5 * ROUNDDOWN(n_A_HEAD_DEF_PLUS / 2);
+        if (Chara.EquipNumSearch(2082)) w1 += 5 * Foot.ROUNDDOWN(n_A_HEAD_DEF_PLUS / 2);
     }
 
     //----------------------------------------------------------------
@@ -21953,38 +21955,38 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「楽園の鳥かごセット」の、「ブリッツビート」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 118) {
-        if (EquipNumSearch(2187)) w1 += 10 * LearnedSkillSearch(SKILL_ID_STEEL_CROW) * EquipNumSearch(2187);
-        if (EquipNumSearch(2513)) w1 += 40 * LearnedSkillSearch(SKILL_ID_STEEL_CROW);
-        if (IsSameJobClass(JOB_ID_RANGER) && EquipNumSearch(2396)) w1 += 5 * n_A_HEAD_DEF_PLUS;
-        if (IsSameJobClass(JOB_ID_RANGER) && EquipNumSearch(2398)) w1 += 5 * n_A_Weapon_ATKplus;
-        if (IsSameJobClass(JOB_ID_RANGER) && EquipNumSearch(ITEM_ID_RAKUENNO_TORIKAGO_EXSIONNO_HANE_S2)) w1 += 5 * n_A_Weapon_ATKplus;
+        if (Chara.EquipNumSearch(2187)) w1 += 10 * LearnedSkillSearch(SKILL_ID_STEEL_CROW) * Chara.EquipNumSearch(2187);
+        if (Chara.EquipNumSearch(2513)) w1 += 40 * LearnedSkillSearch(SKILL_ID_STEEL_CROW);
+        if (IsSameJobClass(JOB_ID_RANGER) && Chara.EquipNumSearch(2396)) w1 += 5 * n_A_HEAD_DEF_PLUS;
+        if (IsSameJobClass(JOB_ID_RANGER) && Chara.EquipNumSearch(2398)) w1 += 5 * n_A_Weapon_ATKplus;
+        if (IsSameJobClass(JOB_ID_RANGER) && Chara.EquipNumSearch(ITEM_ID_RAKUENNO_TORIKAGO_EXSIONNO_HANE_S2)) w1 += 5 * n_A_Weapon_ATKplus;
     }
 
     //----------------------------------------------------------------
     // 「古びた楯無の鎧」の、「シールドチェーン」「サクリファイス」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 284 || n_A_ActiveSkill == 324) {
-        if (EquipNumSearch(2236)) w1 += 5 * ROUNDDOWN(n_A_BODY_DEF_PLUS / 2);
+        if (Chara.EquipNumSearch(2236)) w1 += 5 * Foot.ROUNDDOWN(n_A_BODY_DEF_PLUS / 2);
     }
 
     //----------------------------------------------------------------
     // 「ギガントアックス」の、「カートターミネーション」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 326) {
-        if (EquipNumSearch(2335)) w1 += 5 * n_A_Weapon_ATKplus;
+        if (Chara.EquipNumSearch(2335)) w1 += 5 * n_A_Weapon_ATKplus;
     }
 
     //----------------------------------------------------------------
     // 「ギガントヘルムセット」の、「スパイラルピアース」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 259) {
-        if (EquipNumSearch(2337)) w1 += 5 * n_A_Weapon_ATKplus;
+        if (Chara.EquipNumSearch(2337)) w1 += 5 * n_A_Weapon_ATKplus;
     }
 
     //----------------------------------------------------------------
     // 「法螺貝」の、「振動残響」強化
     //----------------------------------------------------------------
-    if (n_A_ActiveSkill == 639 && EquipNumSearch(2430)) {
+    if (n_A_ActiveSkill == 639 && Chara.EquipNumSearch(2430)) {
         if (n_A_Weapon_ATKplus >= 5) w1 += 10;
         if (n_A_Weapon_ATKplus >= 7) w1 += 20;
         if (n_A_Weapon_ATKplus >= 9) w1 += 40;
@@ -21994,24 +21996,24 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「ルーンヘルム」の、「ストームブラスト」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 452) {
-        if (EquipNumSearch(ITEM_ID_RUNE_HELM) > 0) {
+        if (Chara.EquipNumSearch(ITEM_ID_RUNE_HELM) > 0) {
             w1 += 30;
             if (n_A_HEAD_DEF_PLUS >= 6) w1 += 20;
             if (n_A_HEAD_DEF_PLUS >= 8) w1 += 20;
         }
-        else if (EquipNumSearch(ITEM_ID_ZYASPER_CIRCLET) > 0) {
+        else if (Chara.EquipNumSearch(ITEM_ID_ZYASPER_CIRCLET) > 0) {
             w1 += 30;
             if (n_A_HEAD_DEF_PLUS >= 6) w1 += 20;
             if (n_A_HEAD_DEF_PLUS >= 8) w1 += 20;
         }
-        else if (EquipNumSearch(ITEM_ID_TENBINKYUNO_DIADEM) > 0) {
+        else if (Chara.EquipNumSearch(ITEM_ID_TENBINKYUNO_DIADEM) > 0) {
             if (IsSameJobClass(JOB_ID_RUNEKNIGHT)) {
                 w1 += 30;
                 if (n_A_HEAD_DEF_PLUS >= 6) w1 += 20;
                 if (n_A_HEAD_DEF_PLUS >= 8) w1 += 20;
             }
         }
-        else if (EquipNumSearch(ITEM_ID_FAFNIR_HELM) > 0) {
+        else if (Chara.EquipNumSearch(ITEM_ID_FAFNIR_HELM) > 0) {
             w1 += 30;
             if (n_A_HEAD_DEF_PLUS >= 6) w1 += 20;
             if (n_A_HEAD_DEF_PLUS >= 8) w1 += 20;
@@ -22023,38 +22025,38 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「破戒僧の数珠」の、「双龍脚」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 609) {
-        if (n_A_Equip[EQUIP_REGION_ID_ACCESSARY_1] == 2525) w1 += ROUNDDOWN(n_A_BaseLV / 15) * 2;
-        if (n_A_Equip[EQUIP_REGION_ID_ACCESSARY_2] == 2525) w1 += ROUNDDOWN(n_A_BaseLV / 15) * 2;
+        if (n_A_Equip[EQUIP_REGION_ID_ACCESSARY_1] == 2525) w1 += Foot.ROUNDDOWN(n_A_BaseLV / 15) * 2;
+        if (n_A_Equip[EQUIP_REGION_ID_ACCESSARY_2] == 2525) w1 += Foot.ROUNDDOWN(n_A_BaseLV / 15) * 2;
     }
 
     //----------------------------------------------------------------
     // 「破戒僧の数珠」の、「天羅地網」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 610) {
-        if (n_A_Equip[EQUIP_REGION_ID_ACCESSARY_1] == 2525) w1 += ROUNDDOWN(n_A_BaseLV / 30) * 2;
-        if (n_A_Equip[EQUIP_REGION_ID_ACCESSARY_2] == 2525) w1 += ROUNDDOWN(n_A_BaseLV / 30) * 2;
+        if (n_A_Equip[EQUIP_REGION_ID_ACCESSARY_1] == 2525) w1 += Foot.ROUNDDOWN(n_A_BaseLV / 30) * 2;
+        if (n_A_Equip[EQUIP_REGION_ID_ACCESSARY_2] == 2525) w1 += Foot.ROUNDDOWN(n_A_BaseLV / 30) * 2;
     }
 
     //----------------------------------------------------------------
     // 「破戒僧の数珠」の、「修羅身弾」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 613) {
-        if (n_A_Equip[EQUIP_REGION_ID_ACCESSARY_1] == 2525) w1 += ROUNDDOWN(n_A_BaseLV / 20) * 2;
-        if (n_A_Equip[EQUIP_REGION_ID_ACCESSARY_2] == 2525) w1 += ROUNDDOWN(n_A_BaseLV / 20) * 2;
+        if (n_A_Equip[EQUIP_REGION_ID_ACCESSARY_1] == 2525) w1 += Foot.ROUNDDOWN(n_A_BaseLV / 20) * 2;
+        if (n_A_Equip[EQUIP_REGION_ID_ACCESSARY_2] == 2525) w1 += Foot.ROUNDDOWN(n_A_BaseLV / 20) * 2;
     }
 
     //----------------------------------------------------------------
     // 「アルティメットモードチェンジャー　ペオースセット」の、「ウィンドカッター」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 443) {
-        if (EquipNumSearch(2537)) w1 += 50 * ROUNDDOWN(n_A_SHOULDER_DEF_PLUS / 2);
-        if (n_A_BODY_DEF_PLUS >= 7 && n_A_SHOULDER_DEF_PLUS >= 7 && n_A_SHOES_DEF_PLUS >= 7 && EquipNumSearch(2539)) w1 += 100;
+        if (Chara.EquipNumSearch(2537)) w1 += 50 * Foot.ROUNDDOWN(n_A_SHOULDER_DEF_PLUS / 2);
+        if (n_A_BODY_DEF_PLUS >= 7 && n_A_SHOULDER_DEF_PLUS >= 7 && n_A_SHOES_DEF_PLUS >= 7 && Chara.EquipNumSearch(2539)) w1 += 100;
     }
 
     //----------------------------------------------------------------
     // 「アルティメットモードチェンジャー　黒羽セット」の、「クラスターボム」強化
     //----------------------------------------------------------------
-    if (n_A_ActiveSkill == 505 && EquipNumSearch(2544)) {
+    if (n_A_ActiveSkill == 505 && Chara.EquipNumSearch(2544)) {
         w1 += SU_INT * 2;
         if (n_A_BODY_DEF_PLUS >= 7 && n_A_SHOULDER_DEF_PLUS >= 7 && n_A_SHOES_DEF_PLUS >= 7) w1 += SU_INT * 2;
     }
@@ -22062,7 +22064,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     //----------------------------------------------------------------
     // 「アルティメットモードチェンジャー　ナブセット」の、「カウンタースラッシュ」強化
     //----------------------------------------------------------------
-    if (n_A_ActiveSkill == 469 && EquipNumSearch(2569)) {
+    if (n_A_ActiveSkill == 469 && Chara.EquipNumSearch(2569)) {
         w1 += n_A_BaseLV;
         if (n_A_BODY_DEF_PLUS >= 7 && n_A_SHOULDER_DEF_PLUS >= 7 && n_A_SHOES_DEF_PLUS >= 7) w1 += n_A_BaseLV;
     }
@@ -22088,7 +22090,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「貴族の仮面」の、「サクリファイス」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 284) {
-        w1 += 2 * n_A_BaseLV * EquipNumSearch(ITEM_ID_KIZOKUNO_KAMEN);
+        w1 += 2 * n_A_BaseLV * Chara.EquipNumSearch(ITEM_ID_KIZOKUNO_KAMEN);
     }
 
 
@@ -22098,10 +22100,10 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「レクイエムブレイドウィップ」の、「アローバルカン」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 292) {
-        if (EquipNumSearch(ITEM_ID_REQUIEM_VIOLIN)) {
+        if (Chara.EquipNumSearch(ITEM_ID_REQUIEM_VIOLIN)) {
             if (n_A_Weapon_ATKplus >= 7) w1 += 200;
         }
-        if (EquipNumSearch(ITEM_ID_REQUIEM_BLADEWHIP)) {
+        if (Chara.EquipNumSearch(ITEM_ID_REQUIEM_BLADEWHIP)) {
             if (n_A_Weapon_ATKplus >= 7) w1 += 200;
         }
     }
@@ -22112,7 +22114,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「古びたボーンサークレット」の、「クロスインパクト」「ダークイリュージョン」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 460 || n_A_ActiveSkill == 461) {
-        if (EquipNumSearch(ITEM_ID_FURUBITA_BONECIRCRET)) {
+        if (Chara.EquipNumSearch(ITEM_ID_FURUBITA_BONECIRCRET)) {
             if (n_A_HEAD_DEF_PLUS >= 7) w1 += 20;
             if (n_A_HEAD_DEF_PLUS >= 9) w1 += 15;
         }
@@ -22123,8 +22125,8 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「古びたバレリーナの髪飾り」の、「振動残響」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 639) {
-        if (EquipNumSearch(ITEM_ID_FURUBITA_BALLERINA)
-            || EquipNumSearch(ITEM_ID_FURUBITA_MINSTRELSONG)) {
+        if (Chara.EquipNumSearch(ITEM_ID_FURUBITA_BALLERINA)
+            || Chara.EquipNumSearch(ITEM_ID_FURUBITA_MINSTRELSONG)) {
             if (n_A_HEAD_DEF_PLUS >= 7) w1 += 30;
             if (n_A_HEAD_DEF_PLUS >= 9) w1 += 20;
         }
@@ -22134,7 +22136,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「古びたブレイジングソウル」の、「雷光弾」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 623) {
-        if (EquipNumSearch(ITEM_ID_FURUBITA_BLAZINGSOUL)) {
+        if (Chara.EquipNumSearch(ITEM_ID_FURUBITA_BLAZINGSOUL)) {
             if (n_A_HEAD_DEF_PLUS >= 7) w1 += 30;
             if (n_A_HEAD_DEF_PLUS >= 9) w1 += 20;
         }
@@ -22144,11 +22146,11 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「古びたドライバーバンド」の、「コールドスロワー」「フレイムスロワー」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 552 || n_A_ActiveSkill == 553) {
-        if (EquipNumSearch(ITEM_ID_FURUBITA_DRIVERBAND_KIRO)) {
+        if (Chara.EquipNumSearch(ITEM_ID_FURUBITA_DRIVERBAND_KIRO)) {
             if (n_A_HEAD_DEF_PLUS >= 7) w1 += 30;
             if (n_A_HEAD_DEF_PLUS >= 9) w1 += 20;
         }
-        if (EquipNumSearch(ITEM_ID_FURUBITA_DRIVERBAND_AKA)) {
+        if (Chara.EquipNumSearch(ITEM_ID_FURUBITA_DRIVERBAND_AKA)) {
             if (n_A_HEAD_DEF_PLUS >= 7) w1 += 30;
             if (n_A_HEAD_DEF_PLUS >= 9) w1 += 20;
         }
@@ -22158,7 +22160,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「古びたルーンサークレット」の、「ウィンドカッター」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 443) {
-        if (EquipNumSearch(ITEM_ID_FURUBITA_RUNECIRCRET)) {
+        if (Chara.EquipNumSearch(ITEM_ID_FURUBITA_RUNECIRCRET)) {
             if (n_A_HEAD_DEF_PLUS >= 7) w1 += 200;
             if (n_A_HEAD_DEF_PLUS >= 9) w1 += 150;
         }
@@ -22168,7 +22170,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「古びたルーンサークレット」の、「ストームブラスト」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 452) {
-        if (EquipNumSearch(ITEM_ID_FURUBITA_RUNECIRCRET)) {
+        if (Chara.EquipNumSearch(ITEM_ID_FURUBITA_RUNECIRCRET)) {
             if (n_A_HEAD_DEF_PLUS >= 7) w1 += 50;
             if (n_A_HEAD_DEF_PLUS >= 9) w1 += 30;
         }
@@ -22178,7 +22180,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「古びた守護の冠」の、「キャノンスピア」「バニシングポイント」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 569 || n_A_ActiveSkill == 570) {
-        if (EquipNumSearch(ITEM_ID_FURUBITA_SHUGONOKANNMURI)) {
+        if (Chara.EquipNumSearch(ITEM_ID_FURUBITA_SHUGONOKANNMURI)) {
             if (n_A_HEAD_DEF_PLUS >= 7) w1 += 20;
             if (n_A_HEAD_DEF_PLUS >= 9) w1 += 15;
         }
@@ -22190,28 +22192,28 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「サファイアリスト」の、装備効果
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 736) {
-        w1 += 5 * ROUNDDOWN(n_A_BaseLV / 20) * EquipNumSearch(ITEM_ID_SAPPHIRE_LIST);
+        w1 += 5 * Foot.ROUNDDOWN(n_A_BaseLV / 20) * Chara.EquipNumSearch(ITEM_ID_SAPPHIRE_LIST);
     }
 
     //----------------------------------------------------------------
     // 「エメラルドイヤリング」の、「アローバルカン」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 292) {
-        w1 += n_A_BaseLV * EquipNumSearch(ITEM_ID_EMERALDEARRING);
+        w1 += n_A_BaseLV * Chara.EquipNumSearch(ITEM_ID_EMERALDEARRING);
     }
 
     //----------------------------------------------------------------
     // 「エメラルドイヤリング」の、「ミュージカルストライク」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 199) {
-        w1 += n_A_BaseLV * EquipNumSearch(ITEM_ID_EMERALDEARRING);
+        w1 += n_A_BaseLV * Chara.EquipNumSearch(ITEM_ID_EMERALDEARRING);
     }
 
     //----------------------------------------------------------------
     // 「エメラルドイヤリング」の、「矢撃ち」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 207) {
-        w1 += n_A_BaseLV * EquipNumSearch(ITEM_ID_EMERALDEARRING);
+        w1 += n_A_BaseLV * Chara.EquipNumSearch(ITEM_ID_EMERALDEARRING);
     }
 
 
@@ -22221,19 +22223,19 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_ARROW_STORM || n_A_ActiveSkill == SKILL_ID_SEVERE_RAINSTORM) {
 
-        if (n_A_Arrow == ARROW_ID_HONOONO_YA && EquipNumSearch(ITEM_SET_ID_GENSONO_TOWEL_MOERU_YUMI)) {
+        if (n_A_Arrow == ARROW_ID_HONOONO_YA && Chara.EquipNumSearch(ITEM_SET_ID_GENSONO_TOWEL_MOERU_YUMI)) {
             w1 += 5 * n_A_Weapon_ATKplus;
         }
 
-        if (n_A_Arrow == ARROW_ID_SUISHONO_YA && EquipNumSearch(ITEM_SET_ID_GENSONO_TOWEL_HYOTENNO_YUMI)) {
+        if (n_A_Arrow == ARROW_ID_SUISHONO_YA && Chara.EquipNumSearch(ITEM_SET_ID_GENSONO_TOWEL_HYOTENNO_YUMI)) {
             w1 += 5 * n_A_Weapon_ATKplus;
         }
 
-        if (n_A_Arrow == ARROW_ID_GANSEKINO_YA && EquipNumSearch(ITEM_SET_ID_GENSONO_TOWEL_DAICHINO_YUMI)) {
+        if (n_A_Arrow == ARROW_ID_GANSEKINO_YA && Chara.EquipNumSearch(ITEM_SET_ID_GENSONO_TOWEL_DAICHINO_YUMI)) {
             w1 += 5 * n_A_Weapon_ATKplus;
         }
 
-        if (n_A_Arrow == ARROW_ID_KAZENO_YA && EquipNumSearch(ITEM_SET_ID_GENSONO_TOWEL_HAYATENO_YUMI)) {
+        if (n_A_Arrow == ARROW_ID_KAZENO_YA && Chara.EquipNumSearch(ITEM_SET_ID_GENSONO_TOWEL_HAYATENO_YUMI)) {
             w1 += 5 * n_A_Weapon_ATKplus;
         }
     }
@@ -22244,21 +22246,21 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「アルクイエンのネックレス」の、「カートレボリューション」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_CART_REVOLUTION) {
-        w1 += n_A_BaseLV * EquipNumSearch(ITEM_ID_ARKUIENNO_NECKLACE);
+        w1 += n_A_BaseLV * Chara.EquipNumSearch(ITEM_ID_ARKUIENNO_NECKLACE);
     }
 
     //----------------------------------------------------------------
     // 「アルクイエンのネックレス」の、「アックストルネード」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_AXE_TORNADE) {
-        w1 += ROUNDDOWN(n_A_BaseLV / 3) * EquipNumSearch(ITEM_ID_ARKUIENNO_NECKLACE);
+        w1 += Foot.ROUNDDOWN(n_A_BaseLV / 3) * Chara.EquipNumSearch(ITEM_ID_ARKUIENNO_NECKLACE);
     }
 
     //----------------------------------------------------------------
     // 「アルクイエンのネックレス」の、「パワースイング」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_POWER_SWING) {
-        w1 += ROUNDDOWN(n_A_BaseLV / 5) * EquipNumSearch(ITEM_ID_ARKUIENNO_NECKLACE);
+        w1 += Foot.ROUNDDOWN(n_A_BaseLV / 5) * Chara.EquipNumSearch(ITEM_ID_ARKUIENNO_NECKLACE);
     }
 
     //----------------------------------------------------------------
@@ -22266,7 +22268,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_WATER_DRAGON_BREATH || n_A_ActiveSkill == SKILL_ID_FIRE_DRAGON_BREATH) {
 
-        if (EquipNumSearch(ITEM_ID_RED_BABY_DRAGON)) {
+        if (Chara.EquipNumSearch(ITEM_ID_RED_BABY_DRAGON)) {
 
             if (n_A_HEAD_DEF_PLUS >= 6) w1 += 15;
             if (n_A_HEAD_DEF_PLUS >= 8) w1 += 15;
@@ -22278,7 +22280,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「執行者のマント」の、「グリムトゥース」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_GRIM_TOOTH) {
-        if (EquipNumSearch(ITEM_ID_SHIKKOSHANO_MANT)) {
+        if (Chara.EquipNumSearch(ITEM_ID_SHIKKOSHANO_MANT)) {
             // スキル習得による効果
             if (LearnedSkillSearch(SKILL_ID_GRIM_TOOTH) >= 5) {
                 w1 += 50;
@@ -22295,7 +22297,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「執行者のマント」の、「ソウルブレイカー」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_SOUL_BREAKER) {
-        if (EquipNumSearch(ITEM_ID_SHIKKOSHANO_MANT)) {
+        if (Chara.EquipNumSearch(ITEM_ID_SHIKKOSHANO_MANT)) {
             // スキル習得による効果
             if (LearnedSkillSearch(SKILL_ID_SOUL_BREAKER) >= 10) {
                 w1 += 50;
@@ -22303,7 +22305,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
 
             // 過剰精錬による効果
             if (n_A_SHOULDER_DEF_PLUS >= 7) {
-                w1 += ROUNDDOWN(n_A_BaseLV / 3);
+                w1 += Foot.ROUNDDOWN(n_A_BaseLV / 3);
             }
         }
     }
@@ -22312,7 +22314,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「執行者のマント」の、「クロスインパクト」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_CROSS_IMPACT) {
-        if (EquipNumSearch(ITEM_ID_SHIKKOSHANO_MANT)) {
+        if (Chara.EquipNumSearch(ITEM_ID_SHIKKOSHANO_MANT)) {
             // スキル習得による効果
             if (LearnedSkillSearch(SKILL_ID_CROSS_IMPACT) >= 5) {
                 w1 += 5;
@@ -22320,7 +22322,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
 
             // 過剰精錬による効果
             if (n_A_SHOULDER_DEF_PLUS >= 7) {
-                w1 += ROUNDDOWN(n_A_BaseLV / 30);
+                w1 += Foot.ROUNDDOWN(n_A_BaseLV / 30);
             }
         }
     }
@@ -22331,7 +22333,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「試験管ヘアバンド」の、「カートキャノン」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_CART_CANNON) {
-        if (EquipNumSearch(ITEM_ID_SHIKENKAN_HAIRBAND)) {
+        if (Chara.EquipNumSearch(ITEM_ID_SHIKENKAN_HAIRBAND)) {
             if (n_A_HEAD_DEF_PLUS >= 6) w1 += 20;
             if (n_A_HEAD_DEF_PLUS >= 8) w1 += 30;
         }
@@ -22341,7 +22343,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「試験管ヘアバンド」の、「カートトルネード」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_CART_TORNADO) {
-        if (EquipNumSearch(ITEM_ID_SHIKENKAN_HAIRBAND)) {
+        if (Chara.EquipNumSearch(ITEM_ID_SHIKENKAN_HAIRBAND)) {
             if (n_A_HEAD_DEF_PLUS >= 6) w1 += 10;
             if (n_A_HEAD_DEF_PLUS >= 8) w1 += 20;
         }
@@ -22354,7 +22356,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_SLUG_SHOT) {
         if (n_A_WeaponType == ITEM_KIND_SHOTGUN) {
-            w1 += 7 * ROUNDDOWN(SU_STR / 10);
+            w1 += 7 * Foot.ROUNDDOWN(SU_STR / 10);
             if (SU_STR >= 110) {
                 w1 += 30;
             }
@@ -22366,7 +22368,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_HAMMER_OF_GOD) {
         if (n_A_WeaponType == ITEM_KIND_RIFLE) {
-            w1 += 7 * ROUNDDOWN(SU_INT / 10);
+            w1 += 7 * Foot.ROUNDDOWN(SU_INT / 10);
             if (SU_INT >= 110) {
                 w1 += 30;
             }
@@ -22378,7 +22380,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_ROUND_TRIP) {
         if (n_A_WeaponType == ITEM_KIND_GATLINGGUN) {
-            w1 += 7 * ROUNDDOWN(SU_AGI / 10);
+            w1 += 7 * Foot.ROUNDDOWN(SU_AGI / 10);
             if (SU_AGI >= 110) {
                 w1 += 30;
             }
@@ -22390,7 +22392,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_DRAGON_TAIL) {
         if (n_A_WeaponType == ITEM_KIND_GRENADEGUN) {
-            w1 += 7 * ROUNDDOWN(SU_LUK / 10);
+            w1 += 7 * Foot.ROUNDDOWN(SU_LUK / 10);
             if (SU_LUK >= 110) {
                 w1 += 30;
             }
@@ -22417,7 +22419,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「与一の肩掛け」の、「エイムドボルト」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_AIMED_BOLT) {
-        if (EquipNumSearch(ITEM_ID_YOICHINO_KATAKAE)) {
+        if (Chara.EquipNumSearch(ITEM_ID_YOICHINO_KATAKAE)) {
 
             // スキル習得レベルによる効果
             if (LearnedSkillSearch(SKILL_ID_AIMED_BOLT) >= 10) {
@@ -22425,9 +22427,9 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
             }
 
             // 装備の過剰による効果
-            if (EquipNumSearch(ITEM_ID_YOICHINO_KATAKAE)) {
+            if (Chara.EquipNumSearch(ITEM_ID_YOICHINO_KATAKAE)) {
                 if (n_A_SHOULDER_DEF_PLUS >= 7) {
-                    w1 += ROUNDDOWN(n_A_BaseLV / 30);
+                    w1 += Foot.ROUNDDOWN(n_A_BaseLV / 30);
                 }
             }
         }
@@ -22437,7 +22439,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「与一の肩掛け」の、「シャープシューティング」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_SHARP_SHOOTING) {
-        if (EquipNumSearch(ITEM_ID_YOICHINO_KATAKAE)) {
+        if (Chara.EquipNumSearch(ITEM_ID_YOICHINO_KATAKAE)) {
 
             // スキル習得レベルによる効果
             if (LearnedSkillSearch(SKILL_ID_SHARP_SHOOTING) >= 5) {
@@ -22446,7 +22448,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
 
             // 装備の過剰による効果
             if (n_A_SHOULDER_DEF_PLUS >= 7) {
-                w1 += ROUNDDOWN(n_A_BaseLV / 3);
+                w1 += Foot.ROUNDDOWN(n_A_BaseLV / 3);
             }
         }
     }
@@ -22455,7 +22457,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「与一の肩掛け」の、「ブリッツビート」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_BLITZ_BEAT) {
-        if (EquipNumSearch(ITEM_ID_YOICHINO_KATAKAE)) {
+        if (Chara.EquipNumSearch(ITEM_ID_YOICHINO_KATAKAE)) {
 
             // スキル習得レベルによる効果
             if (LearnedSkillSearch(SKILL_ID_BLITZ_BEAT) >= 5) {
@@ -22464,7 +22466,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
 
             // 装備の過剰による効果
             if (n_A_SHOULDER_DEF_PLUS >= 7) {
-                w1 += ROUNDDOWN(n_A_BaseLV / 5);
+                w1 += Foot.ROUNDDOWN(n_A_BaseLV / 5);
             }
         }
     }
@@ -22475,16 +22477,16 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「シャドウリング」の、「バックスタブ」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_BACK_STAB) {
-        w1 += 2 * n_A_BaseLV * EquipNumSearch(ITEM_ID_SHADOW_RING);
+        w1 += 2 * n_A_BaseLV * Chara.EquipNumSearch(ITEM_ID_SHADOW_RING);
     }
 
     //----------------------------------------------------------------
     // 「シャドウリング」の、「トライアングルショット」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_TRIANGLE_SHOT) {
-        if (TimeItemNumSearch(98)) {
+        if (Chara.TimeItemNumSearch(98)) {
             // 当強化効果はバフとしてかかるらしいので、複数装備しても効果は増えない
-            w1 += ROUNDDOWN(n_A_BaseLV / 3) * 1;
+            w1 += Foot.ROUNDDOWN(n_A_BaseLV / 3) * 1;
         }
     }
 
@@ -22494,7 +22496,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「パワードセット」の、「アームズキャノン」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_ARMS_CANNON) {
-        if (EquipNumSearch(ITEM_SET_ID_POWERED_SET)) {
+        if (Chara.EquipNumSearch(ITEM_SET_ID_POWERED_SET)) {
             w1 += 50;
             if (n_A_BODY_DEF_PLUS >= 7
                 && n_A_SHOULDER_DEF_PLUS >= 7
@@ -22508,7 +22510,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「パワードセット」の、「フレイムスロワー」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_FLAME_THROWER) {
-        if (EquipNumSearch(ITEM_SET_ID_POWERED_SET)) {
+        if (Chara.EquipNumSearch(ITEM_SET_ID_POWERED_SET)) {
             w1 += 50;
             if (n_A_BODY_DEF_PLUS >= 7
                 && n_A_SHOULDER_DEF_PLUS >= 7
@@ -22522,7 +22524,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「パワードセット」の、「コールドスロワー」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_COLD_THROWER) {
-        if (EquipNumSearch(ITEM_SET_ID_POWERED_SET)) {
+        if (Chara.EquipNumSearch(ITEM_SET_ID_POWERED_SET)) {
             w1 += 50;
             if (n_A_BODY_DEF_PLUS >= 7
                 && n_A_SHOULDER_DEF_PLUS >= 7
@@ -22536,7 +22538,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「ガーディアンセット」の、「バルカンアーム」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_VULCAN_ARM) {
-        if (EquipNumSearch(ITEM_SET_ID_GUARDIAN_SET)) {
+        if (Chara.EquipNumSearch(ITEM_SET_ID_GUARDIAN_SET)) {
             if (n_A_BODY_DEF_PLUS >= 7
                 && n_A_SHOULDER_DEF_PLUS >= 7
                 && n_A_SHOES_DEF_PLUS >= 7) {
@@ -22549,7 +22551,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「ガーディアンセット」の、「ブーストナックル」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_BOOST_KNUCKLE) {
-        if (EquipNumSearch(ITEM_SET_ID_GUARDIAN_SET)) {
+        if (Chara.EquipNumSearch(ITEM_SET_ID_GUARDIAN_SET)) {
             if (n_A_BODY_DEF_PLUS >= 7
                 && n_A_SHOULDER_DEF_PLUS >= 7
                 && n_A_SHOES_DEF_PLUS >= 7) {
@@ -22564,7 +22566,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「バイオプロテクターセット」の、「スポアエクスプロージョン」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_SPORE_EXPLOSION) {
-        if (EquipNumSearch(ITEM_SET_ID_BIO_PROTECTOR_KIKAI_SHOKUBUTSU_BO)) {
+        if (Chara.EquipNumSearch(ITEM_SET_ID_BIO_PROTECTOR_KIKAI_SHOKUBUTSU_BO)) {
             w1 += 5 * n_A_HEAD_DEF_PLUS;
         }
     }
@@ -22575,7 +22577,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「古王の双刃」の、「クロスインパクト」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_CROSS_IMPACT) {
-        if (EquipNumSearch(ITEM_ID_KOONO_SOZIN)) {
+        if (Chara.EquipNumSearch(ITEM_ID_KOONO_SOZIN)) {
             w1 += 3 * n_A_Weapon_ATKplus;
         }
     }
@@ -22583,7 +22585,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「古王の双刃」の、「クロスリッパーラッシャー」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_CROSS_RIPPER_SLASHER) {
-        if (EquipNumSearch(ITEM_ID_KOONO_SOZIN)) {
+        if (Chara.EquipNumSearch(ITEM_ID_KOONO_SOZIN)) {
             w1 += 2 * n_A_Weapon_ATKplus;
         }
     }
@@ -22591,7 +22593,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「古王の双刃」の、「ローリングカッター」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_ROLLING_CUTTER) {
-        if (EquipNumSearch(ITEM_ID_KOONO_SOZIN)) {
+        if (Chara.EquipNumSearch(ITEM_ID_KOONO_SOZIN)) {
             w1 += 1 * n_A_Weapon_ATKplus;
         }
     }
@@ -22602,7 +22604,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「アヴェンジャーランス」の、「バニシングポイント」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_BANISHING_POINT) {
-        if (EquipNumSearch(ITEM_ID_AVENGER_LANCE)) {
+        if (Chara.EquipNumSearch(ITEM_ID_AVENGER_LANCE)) {
             if (n_A_Weapon_ATKplus >= 9) {
                 w1 += 20;
             }
@@ -22612,7 +22614,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「アヴェンジャーランス」の、「ハンドレッドスピア」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_HANDRED_SPEAR) {
-        if (EquipNumSearch(ITEM_ID_AVENGER_LANCE)) {
+        if (Chara.EquipNumSearch(ITEM_ID_AVENGER_LANCE)) {
             if (n_A_Weapon_ATKplus >= 9) {
                 w1 += 20;
             }
@@ -22623,7 +22625,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「アヴェンジャーツーハンドアックス」の、「アックストルネード」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_AXE_TORNADE) {
-        if (EquipNumSearch(ITEM_ID_AVENGER_TWOHAND_AXE)) {
+        if (Chara.EquipNumSearch(ITEM_ID_AVENGER_TWOHAND_AXE)) {
             if (n_A_Weapon_ATKplus >= 9) {
                 w1 += 20;
             }
@@ -22633,7 +22635,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「アヴェンジャーツーハンドアックス」の、「パワースイング」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_POWER_SWING) {
-        if (EquipNumSearch(ITEM_ID_AVENGER_TWOHAND_AXE)) {
+        if (Chara.EquipNumSearch(ITEM_ID_AVENGER_TWOHAND_AXE)) {
             if (n_A_Weapon_ATKplus >= 9) {
                 w1 += 20;
             }
@@ -22644,7 +22646,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「アヴェンジャーハンターボウ」の、「アローストーム」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_ARROW_STORM) {
-        if (EquipNumSearch(ITEM_ID_AVENGER_HUNTERBOW)) {
+        if (Chara.EquipNumSearch(ITEM_ID_AVENGER_HUNTERBOW)) {
             if (n_A_Weapon_ATKplus >= 9) {
                 w1 += 20;
             }
@@ -22654,7 +22656,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「アヴェンジャーハンターボウ」の、「シビアレインストーム」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_SEVERE_RAINSTORM) {
-        if (EquipNumSearch(ITEM_ID_AVENGER_HUNTERBOW)) {
+        if (Chara.EquipNumSearch(ITEM_ID_AVENGER_HUNTERBOW)) {
             if (n_A_Weapon_ATKplus >= 9) {
                 w1 += 20;
             }
@@ -22665,7 +22667,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「アヴェンジャー風魔手裏剣」の、「風魔手裏剣-乱華」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_FUMASHURIKEN_RANKA) {
-        if (EquipNumSearch(ITEM_ID_AVENGER_FUMASHURIKEN)) {
+        if (Chara.EquipNumSearch(ITEM_ID_AVENGER_FUMASHURIKEN)) {
             if (n_A_Weapon_ATKplus >= 9) {
                 w1 += 20;
             }
@@ -22678,7 +22680,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「ギガントブーツ　アックスセット」の、「カートターミネーション」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_CART_TERMINATION) {
-        if (EquipNumSearch(ITEM_SET_ID_GIGANT_BOOTS_GIGANT_AXE)) {
+        if (Chara.EquipNumSearch(ITEM_SET_ID_GIGANT_BOOTS_GIGANT_AXE)) {
             if (n_A_SHOES_DEF_PLUS >= 7) {
                 if (n_A_Weapon_ATKplus >= 7) w1 += 8;
                 if (n_A_Weapon_ATKplus >= 9) w1 += 12;
@@ -22692,7 +22694,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_ARROW_STORM
         || n_A_ActiveSkill == SKILL_ID_AIMED_BOLT) {
-        if (EquipNumSearch(ITEM_SET_ID_GIGANT_BOOTS_GIGANT_BOW)) {
+        if (Chara.EquipNumSearch(ITEM_SET_ID_GIGANT_BOOTS_GIGANT_BOW)) {
             if (n_A_SHOES_DEF_PLUS >= 7) {
                 if (n_A_Weapon_ATKplus >= 7) w1 += 20;
                 if (n_A_Weapon_ATKplus >= 9) w1 += 30;
@@ -22706,7 +22708,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_SPIRAL_PIERCE
         || n_A_ActiveSkill == SKILL_ID_SONIC_WAVE) {
-        if (EquipNumSearch(ITEM_SET_ID_GIGANT_BOOTS_GIGANT_LANCE)) {
+        if (Chara.EquipNumSearch(ITEM_SET_ID_GIGANT_BOOTS_GIGANT_LANCE)) {
             if (n_A_Weapon_ATKplus >= 7) w1 += 20;
             if (n_A_Weapon_ATKplus >= 9) w1 += 30;
         }
@@ -22724,7 +22726,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
         || n_A_ActiveSkill == SKILL_ID_HOLY_CROSS) {
 
         if (LearnedSkillSearch(SKILL_ID_KIHE_SHUREN) == 0) {
-            if (EquipNumSearch(ITEM_ID_SAVE_THE_KING)) {
+            if (Chara.EquipNumSearch(ITEM_ID_SAVE_THE_KING)) {
                 w1 += n_A_Weapon_ATKplus * 20;
             }
         }
@@ -22737,7 +22739,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「反逆者のスカーフ」の、「クイックドローショット」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_QUICKDRAW_SHOT) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_HANGYAKUSHANO_SCARF)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_HANGYAKUSHANO_SCARF)) > 0) {
             w1 += 5 * LearnedSkillSearch(SKILL_ID_ETERNAL_CHAIN) * itemCount;
         }
     }
@@ -22746,7 +22748,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「反逆者のスカーフ」の、「シャッターストーム」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_SHUTTER_STORM) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_HANGYAKUSHANO_SCARF)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_HANGYAKUSHANO_SCARF)) > 0) {
             w1 += 10 * LearnedSkillSearch(SKILL_ID_SHUTTER_STORM) * itemCount;
         }
     }
@@ -22755,7 +22757,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「反逆者のスカーフ」の、「ファイアーレイン」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_FIRE_RAIN) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_HANGYAKUSHANO_SCARF)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_HANGYAKUSHANO_SCARF)) > 0) {
             w1 += 5 * LearnedSkillSearch(SKILL_ID_FIRE_RAIN) * itemCount;
         }
     }
@@ -22764,7 +22766,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「反逆者のスカーフ」の、「マススパイラル」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_MASS_SPIRAL) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_HANGYAKUSHANO_SCARF)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_HANGYAKUSHANO_SCARF)) > 0) {
             w1 += 5 * LearnedSkillSearch(SKILL_ID_MASS_SPIRAL) * itemCount;
         }
     }
@@ -22775,7 +22777,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「神魔バフォメットの角」の、「デュプレライト（物理）」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_GRAHAM_LIGHT) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_SHINMA_BAPHOMETNO_TSUNO)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_SHINMA_BAPHOMETNO_TSUNO)) > 0) {
             w1 += 10 * n_A_HEAD_DEF_PLUS * itemCount;
         }
     }
@@ -22784,7 +22786,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「神魔バフォメットの角　ブラッディクロスセット」の、「ダーククロス」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_DARK_CROSS) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_SHINMA_BAPHOMETNO_TSUNO_BLOODY_CROSS)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_SHINMA_BAPHOMETNO_TSUNO_BLOODY_CROSS)) > 0) {
             w1 += 10 * n_A_Weapon_ATKplus * itemCount;
 
             if (n_A_Weapon_ATKplus >= 10) {
@@ -22799,7 +22801,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「ガーディアンプロセッサ　パイルバンカーセット」の、「バルカンアーム」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_VULCAN_ARM) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_GUARDIAN_PROCESSOR_PILEBUNKER)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_GUARDIAN_PROCESSOR_PILEBUNKER)) > 0) {
             if (n_A_Weapon_ATKplus >= 7) {
                 w1 += 50;
             }
@@ -22813,7 +22815,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「ガーディアンプロセッサ　パイルバンカーセット」の、「ブーストナックル」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_BOOST_KNUCKLE) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_GUARDIAN_PROCESSOR_PILEBUNKER)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_GUARDIAN_PROCESSOR_PILEBUNKER)) > 0) {
             if (n_A_Weapon_ATKplus >= 7) {
                 w1 += 30;
             }
@@ -22829,7 +22831,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「勇者の靴　達人の剣　セット」の、「バッシュ」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_BASH) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_YUSHANO_KUTSU_TATSUZINNO_KEN)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_YUSHANO_KUTSU_TATSUZINNO_KEN)) > 0) {
             w1 += 10 * LearnedSkillSearch(SKILL_ID_ENCHANT_BLADE) * itemCount;
             w1 += 10 * LearnedSkillSearch(SKILL_ID_AURA_BLADE) * itemCount;
         }
@@ -22839,7 +22841,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「勇者の靴　達人の剣　セット」の、「ボウリングバッシュ」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_BOWLING_BASH) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_YUSHANO_KUTSU_TATSUZINNO_KEN)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_YUSHANO_KUTSU_TATSUZINNO_KEN)) > 0) {
             w1 += 10 * LearnedSkillSearch(SKILL_ID_ENCHANT_BLADE) * itemCount;
             w1 += 10 * LearnedSkillSearch(SKILL_ID_AURA_BLADE) * itemCount;
         }
@@ -22851,7 +22853,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「業風石　ゲラドリア　セット」の、「ウィンドカッター」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_WIND_CUTTER) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_GOFUSEKI_GERADRIA)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_GOFUSEKI_GERADRIA)) > 0) {
             if (n_A_Weapon_ATKplus >= 7) {
                 w1 += 30 * itemCount;
             }
@@ -22870,19 +22872,19 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「ミラージュブレイドウィップ」の、「アローバルカン」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_ARRAW_VULKAN) {
-        if (EquipNumSearch(ITEM_ID_DIVA_VIOLIN)) {
+        if (Chara.EquipNumSearch(ITEM_ID_DIVA_VIOLIN)) {
             if (n_A_Weapon_ATKplus >= 7) w1 += 150;
             if (n_A_Weapon_ATKplus >= 9) w1 += 50;
         }
-        if (EquipNumSearch(ITEM_ID_DIVA_BLADEWHIP)) {
+        if (Chara.EquipNumSearch(ITEM_ID_DIVA_BLADEWHIP)) {
             if (n_A_Weapon_ATKplus >= 7) w1 += 150;
             if (n_A_Weapon_ATKplus >= 9) w1 += 50;
         }
-        if (EquipNumSearch(ITEM_ID_MIRRORAGE_VIOLIN)) {
+        if (Chara.EquipNumSearch(ITEM_ID_MIRRORAGE_VIOLIN)) {
             if (n_A_Weapon_ATKplus >= 7) w1 += 150;
             if (n_A_Weapon_ATKplus >= 9) w1 += 50;
         }
-        if (EquipNumSearch(ITEM_ID_MIRRORAGE_BLADEWHIP)) {
+        if (Chara.EquipNumSearch(ITEM_ID_MIRRORAGE_BLADEWHIP)) {
             if (n_A_Weapon_ATKplus >= 7) w1 += 150;
             if (n_A_Weapon_ATKplus >= 9) w1 += 50;
         }
@@ -22894,7 +22896,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「執行者のシューズ」の、「メテオアサルト」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_METEOR_ASSALT) {
-        if (EquipNumSearch(ITEM_ID_SHIKKOUSHANO_SHOES)) {
+        if (Chara.EquipNumSearch(ITEM_ID_SHIKKOUSHANO_SHOES)) {
             // スキル習得による効果
             if (LearnedSkillSearch(SKILL_ID_POISON_REACT) > 0) {
                 w1 += 30 * LearnedSkillSearch(SKILL_ID_POISON_REACT);
@@ -22916,7 +22918,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「獄エンチャント」の、「ストームブラスト」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_STORM_BLAST) {
-        if (CardNumSearch(CARD_ID_GOKU)) {
+        if (Chara.CardNumSearch(CARD_ID_GOKU)) {
             // 職業限定の効果
             if (IsSameJobClass(JOB_ID_RUNEKNIGHT)) {
                 w1 += 100;
@@ -22928,7 +22930,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「獄エンチャント」の、「ウォーグストライク」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_WUG_STRIKE) {
-        if (CardNumSearch(CARD_ID_GOKU)) {
+        if (Chara.CardNumSearch(CARD_ID_GOKU)) {
             // 職業限定の効果
             if (IsSameJobClass(JOB_ID_RANGER)) {
                 w1 += 30;
@@ -22942,7 +22944,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「巨人の加護　アックスセット」の、「カートターミネーション」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_CART_TERMINATION) {
-        if (EquipNumSearch(ITEM_SET_ID_KYOZINNO_KAGO_GIGANT_AXE)) {
+        if (Chara.EquipNumSearch(ITEM_SET_ID_KYOZINNO_KAGO_GIGANT_AXE)) {
             if (n_A_Weapon_ATKplus >= 7) w1 += 5;
             if (n_A_Weapon_ATKplus >= 9) w1 += 10;
         }
@@ -22954,7 +22956,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_ARROW_STORM
         || n_A_ActiveSkill == SKILL_ID_AIMED_BOLT) {
-        if (EquipNumSearch(ITEM_SET_ID_KYOZINNO_KAGO_GIGANT_BOW)) {
+        if (Chara.EquipNumSearch(ITEM_SET_ID_KYOZINNO_KAGO_GIGANT_BOW)) {
             if (n_A_Weapon_ATKplus >= 7) w1 += 5;
             if (n_A_Weapon_ATKplus >= 9) w1 += 10;
         }
@@ -22966,7 +22968,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_SPIRAL_PIERCE
         || n_A_ActiveSkill == SKILL_ID_SONIC_WAVE) {
-        if (EquipNumSearch(ITEM_SET_ID_KYOZINNO_KAGO_GIGANT_LANCE)) {
+        if (Chara.EquipNumSearch(ITEM_SET_ID_KYOZINNO_KAGO_GIGANT_LANCE)) {
             if (n_A_Weapon_ATKplus >= 7) w1 += 5;
             if (n_A_Weapon_ATKplus >= 9) w1 += 10;
         }
@@ -22978,14 +22980,14 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「深淵の王の指輪」の、「クロスリッパースラッシャー」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_CROSS_RIPPER_SLASHER) {
-        w1 += 1 * ROUNDDOWN(n_A_BaseLV / 3) * EquipNumSearch(ITEM_ID_SHINENNO_ONO_YUBIWA);
+        w1 += 1 * Foot.ROUNDDOWN(n_A_BaseLV / 3) * Chara.EquipNumSearch(ITEM_ID_SHINENNO_ONO_YUBIWA);
     }
 
     //----------------------------------------------------------------
     // 「深淵の王の指輪」の、「ローリングカッター」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_ROLLING_CUTTER) {
-        w1 += 1 * ROUNDDOWN(n_A_BaseLV / 10) * EquipNumSearch(ITEM_ID_SHINENNO_ONO_YUBIWA);
+        w1 += 1 * Foot.ROUNDDOWN(n_A_BaseLV / 10) * Chara.EquipNumSearch(ITEM_ID_SHINENNO_ONO_YUBIWA);
     }
 
     //----------------------------------------------------------------
@@ -22997,7 +22999,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
         || n_A_ActiveSkill == SKILL_ID_BASH
         || n_A_ActiveSkill == SKILL_ID_HOLY_CROSS) {
 
-        if (EquipNumSearch(ITEM_SET_ID_KINGS_GUARD_SAVE_THE_KING)) {
+        if (Chara.EquipNumSearch(ITEM_SET_ID_KINGS_GUARD_SAVE_THE_KING)) {
             w1 += n_A_SHIELD_DEF_PLUS * 20;
         }
     }
@@ -23076,21 +23078,21 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「ケミカルグローブ」の、「カートレボリューション」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_CART_REVOLUTION) {
-        w1 += 1 * ROUNDDOWN(n_A_BaseLV / 1) * EquipNumSearch(ITEM_ID_CHEMICAL_GLOVE);
+        w1 += 1 * Foot.ROUNDDOWN(n_A_BaseLV / 1) * Chara.EquipNumSearch(ITEM_ID_CHEMICAL_GLOVE);
     }
 
     //----------------------------------------------------------------
     // 「ケミカルグローブ」の、「カートキャノン」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_CART_CANNON) {
-        w1 += 2 * ROUNDDOWN(n_A_BaseLV / 20) * EquipNumSearch(ITEM_ID_CHEMICAL_GLOVE);
+        w1 += 2 * Foot.ROUNDDOWN(n_A_BaseLV / 20) * Chara.EquipNumSearch(ITEM_ID_CHEMICAL_GLOVE);
     }
 
     //----------------------------------------------------------------
     // 「ケミカルグローブ」の、「カートトルネード」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_CART_TORNADO) {
-        w1 += 2 * ROUNDDOWN(n_A_BaseLV / 30) * EquipNumSearch(ITEM_ID_CHEMICAL_GLOVE);
+        w1 += 2 * Foot.ROUNDDOWN(n_A_BaseLV / 30) * Chara.EquipNumSearch(ITEM_ID_CHEMICAL_GLOVE);
     }
 
 
@@ -23099,7 +23101,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「Y.S.F.0.1.セット」の、「スパイラルピアース」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_SPIRAL_PIERCE) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_YSF01_PLATE_FULLSET)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_YSF01_PLATE_FULLSET)) > 0) {
             if (n_A_BODY_DEF_PLUS >= 7 && n_A_SHOULDER_DEF_PLUS >= 7 && n_A_SHOES_DEF_PLUS >= 7) {
                 w1 += 100 * itemCount;
             }
@@ -23113,7 +23115,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「Y.S.F.0.1.セット」の、「スピアブーメラン」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_SPEAR_BOOMERANG) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_YSF01_PLATE_FULLSET)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_YSF01_PLATE_FULLSET)) > 0) {
             if (n_A_BODY_DEF_PLUS >= 7 && n_A_SHOULDER_DEF_PLUS >= 7 && n_A_SHOES_DEF_PLUS >= 7) {
                 w1 += 200 * itemCount;
             }
@@ -23127,7 +23129,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「Y.S.F.0.1.セット」の、「ハンドレッドスピア」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_HANDRED_SPEAR) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_YSF01_PLATE_FULLSET)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_YSF01_PLATE_FULLSET)) > 0) {
             if (n_A_BODY_DEF_PLUS >= 7 && n_A_SHOULDER_DEF_PLUS >= 7 && n_A_SHOES_DEF_PLUS >= 7) {
                 w1 += 100 * itemCount;
             }
@@ -23143,9 +23145,9 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「スナイピングベール」の、「マススパイラル」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_MASS_SPIRAL) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_SNIPING_VEIL)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_SNIPING_VEIL)) > 0) {
             if (n_A_SHOULDER_DEF_PLUS >= 7) {
-                w1 += 1 * ROUNDDOWN(n_A_BaseLV / 3) * itemCount;
+                w1 += 1 * Foot.ROUNDDOWN(n_A_BaseLV / 3) * itemCount;
             }
         }
     }
@@ -23154,9 +23156,9 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「スナイピングベール」の、「アンチマテリアルブラスト」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_UNTIMATERIAL_BLAST) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_SNIPING_VEIL)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_SNIPING_VEIL)) > 0) {
             if (n_A_SHOULDER_DEF_PLUS >= 7) {
-                w1 += 3 * ROUNDDOWN(n_A_BaseLV / 4) * itemCount;
+                w1 += 3 * Foot.ROUNDDOWN(n_A_BaseLV / 4) * itemCount;
             }
         }
     }
@@ -23165,9 +23167,9 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「スナイピングベール」の、「ハンマーオブゴッド」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_HAMMER_OF_GOD) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_SNIPING_VEIL)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_SNIPING_VEIL)) > 0) {
             if (n_A_SHOULDER_DEF_PLUS >= 7) {
-                w1 += 6 * ROUNDDOWN(n_A_BaseLV / 5) * itemCount;
+                w1 += 6 * Foot.ROUNDDOWN(n_A_BaseLV / 5) * itemCount;
             }
         }
     }
@@ -23178,7 +23180,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「英雄の指輪　達人の槌セット」の、「ホーリークロス」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_HOLY_CROSS) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_EIYUNO_YUBIWA_TATSUZINNO_TSUCHI_YUSHANO_KUTSU)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_EIYUNO_YUBIWA_TATSUZINNO_TSUCHI_YUSHANO_KUTSU)) > 0) {
             if (n_A_Weapon_ATKplus >= 7) {
                 w1 += 50 * itemCount;
             }
@@ -23188,7 +23190,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
         }
     }
     if (n_A_ActiveSkill == SKILL_ID_HOLY_CROSS) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_EIYUNO_YUBIWA_TATSUZINNO_TSUCHI_S2_YUSHANO_KUTSU)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_EIYUNO_YUBIWA_TATSUZINNO_TSUCHI_S2_YUSHANO_KUTSU)) > 0) {
             if (n_A_Weapon_ATKplus >= 7) {
                 w1 += 50 * itemCount;
             }
@@ -23202,7 +23204,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「英雄の指輪　達人の剣セット」の、「バッシュ」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_BASH) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_EIYUNO_YUBIWA_TATSUZINNO_KEN_YUSHANO_KUTSU)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_EIYUNO_YUBIWA_TATSUZINNO_KEN_YUSHANO_KUTSU)) > 0) {
             if (n_A_Weapon_ATKplus >= 7) {
                 w1 += 100 * itemCount;
             }
@@ -23216,7 +23218,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「英雄の指輪　達人の剣セット」の、「ボウリングバッシュ」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_BOWLING_BASH) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_EIYUNO_YUBIWA_TATSUZINNO_KEN_YUSHANO_KUTSU)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_EIYUNO_YUBIWA_TATSUZINNO_KEN_YUSHANO_KUTSU)) > 0) {
             if (n_A_Weapon_ATKplus >= 7) {
                 w1 += 100 * itemCount;
             }
@@ -23230,7 +23232,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「英雄の指輪　達人の斧セット」の、「アックストルネード」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_AXE_TORNADE) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_EIYUNO_YUBIWA_TATSUZINNO_ONO_YUSHANO_KUTSU)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_EIYUNO_YUBIWA_TATSUZINNO_ONO_YUSHANO_KUTSU)) > 0) {
             if (n_A_Weapon_ATKplus >= 7) {
                 w1 += 20 * itemCount;
             }
@@ -23240,7 +23242,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
         }
     }
     if (n_A_ActiveSkill == SKILL_ID_AXE_TORNADE) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_EIYUNO_YUBIWA_TATSUZINNO_ONO_S2_YUSHANO_KUTSU)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_EIYUNO_YUBIWA_TATSUZINNO_ONO_S2_YUSHANO_KUTSU)) > 0) {
             if (n_A_Weapon_ATKplus >= 7) {
                 w1 += 20 * itemCount;
             }
@@ -23256,8 +23258,8 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「灰羽のブーツ　黒羽スーツセット」の、「クラスターボム」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_CLUSTER_BOMB) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_HAIHANENO_BOOTS_KUROHANO_SUITS)) > 0) {
-            w1 += 30 * ROUNDDOWN(SU_INT / 20) * itemCount;
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_HAIHANENO_BOOTS_KUROHANO_SUITS)) > 0) {
+            w1 += 30 * Foot.ROUNDDOWN(SU_INT / 20) * itemCount;
 
             if (n_A_BODY_DEF_PLUS >= 7) {
                 w1 += 400 * itemCount;
@@ -23273,7 +23275,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「灰羽のブーツ　黒羽スーツセット」の、「エイムドボルト」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_AIMED_BOLT) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_HAIHANENO_BOOTS_KUROHANO_SUITS)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_HAIHANENO_BOOTS_KUROHANO_SUITS)) > 0) {
             if (n_A_BODY_DEF_PLUS >= 7) {
                 w1 += 20 * itemCount;
             }
@@ -23288,7 +23290,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「灰羽のブーツ　白羽スーツセット」の、「シャープシューティング」による強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_SHARP_SHOOTING) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_HAIHANENO_BOOTS_SHIRAHANO_SUITS)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_HAIHANENO_BOOTS_SHIRAHANO_SUITS)) > 0) {
             if (n_A_BODY_DEF_PLUS >= 7) {
                 w1 += 50 * itemCount;
             }
@@ -23303,7 +23305,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「灰羽のブーツ　白羽スーツセット」の、「ブリッツビート」による強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_BLITZ_BEAT) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_HAIHANENO_BOOTS_SHIRAHANO_SUITS)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_HAIHANENO_BOOTS_SHIRAHANO_SUITS)) > 0) {
             if (n_A_BODY_DEF_PLUS >= 7) {
                 w1 += 40 * itemCount;
             }
@@ -23347,11 +23349,11 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「大自然のロープ」の、「アローバルカン」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_ARRAW_VULKAN) {
-        if (EquipNumSearch(ITEM_ID_DAISHIZENNO_GUITAR)) {
+        if (Chara.EquipNumSearch(ITEM_ID_DAISHIZENNO_GUITAR)) {
             if (n_A_Weapon_ATKplus >= 7) w1 += 150;
             if (n_A_Weapon_ATKplus >= 9) w1 += 50;
         }
-        if (EquipNumSearch(ITEM_ID_DAISHIZENNO_ROPE)) {
+        if (Chara.EquipNumSearch(ITEM_ID_DAISHIZENNO_ROPE)) {
             if (n_A_Weapon_ATKplus >= 7) w1 += 150;
             if (n_A_Weapon_ATKplus >= 9) w1 += 50;
         }
@@ -23363,13 +23365,13 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「用心棒のスカーフ」の、「風魔手裏剣投げ」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_FUMASHURIKEN_NAGE) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_YOZINBONO_SCARF)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_YOZINBONO_SCARF)) > 0) {
             if (LearnedSkillSearch(SKILL_ID_FUMASHURIKEN_NAGE) >= 5) {
                 w1 += 50 * itemCount;
             }
 
             if (n_A_SHOULDER_DEF_PLUS >= 7) {
-                w1 += 1 * ROUNDDOWN(n_A_BaseLV / 1) * itemCount;
+                w1 += 1 * Foot.ROUNDDOWN(n_A_BaseLV / 1) * itemCount;
             }
         }
     }
@@ -23378,13 +23380,13 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「用心棒のスカーフ」の、「風魔手裏剣-乱華-」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_FUMASHURIKEN_RANKA) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_YOZINBONO_SCARF)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_YOZINBONO_SCARF)) > 0) {
             if (LearnedSkillSearch(SKILL_ID_FUMASHURIKEN_RANKA) >= 5) {
                 w1 += 30 * itemCount;
             }
 
             if (n_A_SHOULDER_DEF_PLUS >= 7) {
-                w1 += 1 * ROUNDDOWN(n_A_BaseLV / 3) * itemCount;
+                w1 += 1 * Foot.ROUNDDOWN(n_A_BaseLV / 3) * itemCount;
             }
         }
     }
@@ -23395,7 +23397,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「鉱員のリュック」の、「マグマイラプション」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_MAGMA_ILLUPTION) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_KOINNNO_RUCKSACK)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_KOINNNO_RUCKSACK)) > 0) {
             w1 += 10 * n_A_SHOULDER_DEF_PLUS * itemCount;
         }
     }
@@ -23406,7 +23408,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「スカラバハイヒール　エルヴンボウセット」の、「シビアレインストーム」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_SEVERE_RAINSTORM || n_A_ActiveSkill == SKILL_ID_SEVERE_RAINSTORM_EX) {
-        if (EquipNumSearchMIG(ITEM_SET_ID_SCARABA_HIGHHEEL_ELVEN_BOW) > 0) {
+        if (Chara.EquipNumSearchMIG(ITEM_SET_ID_SCARABA_HIGHHEEL_ELVEN_BOW) > 0) {
             if (n_A_SHOES_DEF_PLUS >= 7) {
                 if (n_A_Weapon_ATKplus >= 8) w1 += 8;
                 if (n_A_Weapon_ATKplus >= 10) w1 += 12;
@@ -23420,7 +23422,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「スカラバハイヒール　ドゥルガーセット」の、「ローリングカッター」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_ROLLING_CUTTER) {
-        if ((itemCount = EquipNumSearchMIG(ITEM_SET_ID_SCARABA_HIGHHEEL_DULLGER)) > 0) {
+        if ((itemCount = Chara.EquipNumSearchMIG(ITEM_SET_ID_SCARABA_HIGHHEEL_DULLGER)) > 0) {
             let vartmp = 0;
 
             if (n_A_Weapon_ATKplus >= 7) vartmp += 8;
@@ -23436,7 +23438,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「エメラルドリング」の、「アローシャワー」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_ARROW_SHOWER) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_EMERALD_RING)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_EMERALD_RING)) > 0) {
             w1 += 1 * n_A_BaseLV * itemCount;
         }
     }
@@ -23445,7 +23447,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「エメラルドリング」の、「ダブルストレイフィング」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_DOUBLE_STRAFING) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_EMERALD_RING)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_EMERALD_RING)) > 0) {
             w1 += 1 * n_A_BaseLV * itemCount;
         }
     }
@@ -23454,8 +23456,8 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「エメラルドリング」の、「シビアレインストーム」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_SEVERE_RAINSTORM || n_A_ActiveSkill == SKILL_ID_SEVERE_RAINSTORM_EX) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_EMERALD_RING)) > 0) {
-            w1 += 2 * ROUNDDOWN(n_A_BaseLV / 10) * itemCount;
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_EMERALD_RING)) > 0) {
+            w1 += 2 * Foot.ROUNDDOWN(n_A_BaseLV / 10) * itemCount;
         }
     }
 
@@ -23465,7 +23467,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「悪魔の手」の、「獅子吼」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_SISIKO) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_AKUMANO_TE)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_AKUMANO_TE)) > 0) {
             if (n_A_HEAD_DEF_PLUS >= 7) {
                 w1 += 30 * itemCount;
             }
@@ -23481,7 +23483,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「不死鳥の冠」の、「オーバーブランド」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_OVER_BLAND) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_FUSHICHONO_KANMURI)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_FUSHICHONO_KANMURI)) > 0) {
             if (n_A_HEAD_DEF_PLUS >= 7) {
                 w1 += 15 * itemCount;
             }
@@ -23497,8 +23499,8 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「おもちゃの指輪」の、「バッシュ」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_BASH) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_OMOCHANO_YUBIWA)) > 0) {
-            w1 += 1 * ROUNDDOWN(n_A_BaseLV / 1) * itemCount;
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_OMOCHANO_YUBIWA)) > 0) {
+            w1 += 1 * Foot.ROUNDDOWN(n_A_BaseLV / 1) * itemCount;
         }
     }
 
@@ -23506,8 +23508,8 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「おもちゃの指輪」の、「ボウリングバッシュ」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_BOWLING_BASH) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_OMOCHANO_YUBIWA)) > 0) {
-            w1 += 3 * ROUNDDOWN(n_A_BaseLV / 5) * itemCount;
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_OMOCHANO_YUBIWA)) > 0) {
+            w1 += 3 * Foot.ROUNDDOWN(n_A_BaseLV / 5) * itemCount;
         }
     }
 
@@ -23517,8 +23519,8 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「特選ウサギのお守り」の、「キャロットビート」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_CARROT_BEAT) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_TOKUSEN_USAGINO_OMAMORI)) > 0) {
-            w1 += 1 * ROUNDDOWN(n_A_BaseLV / 10) * itemCount;
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_TOKUSEN_USAGINO_OMAMORI)) > 0) {
+            w1 += 1 * Foot.ROUNDDOWN(n_A_BaseLV / 10) * itemCount;
         }
     }
 
@@ -23528,7 +23530,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「虹色のスカーフ」の、「アローストーム」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_ARROW_STORM) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_NIZIIRONO_SCARF)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_NIZIIRONO_SCARF)) > 0) {
             w1 += 1 * LearnedSkillSearch(SKILL_ID_AIMED_BOLT) * itemCount;
         }
     }
@@ -23539,7 +23541,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「イリュージョン名射手のりんご」の、「ダブルストレイフィング」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_DOUBLE_STRAFING) {
-        if (EquipNumSearch(ITEM_ID_ILLUSION_MEISHASHUNO_RINGO)) {
+        if (Chara.EquipNumSearch(ITEM_ID_ILLUSION_MEISHASHUNO_RINGO)) {
             if (n_A_BaseLV >= 170) {
                 w1 += 70;
             }
@@ -23552,7 +23554,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「イリュージョン神の使者」の、「シールドチェーン」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_SHIELD_CHAIN) {
-        if (EquipNumSearch(ITEM_ID_ILLUSION_KAMINO_SHISHA)) {
+        if (Chara.EquipNumSearch(ITEM_ID_ILLUSION_KAMINO_SHISHA)) {
             if (n_A_BaseLV >= 170) {
                 w1 += 15;
             }
@@ -23563,7 +23565,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「イリュージョン神の使者」の、「シールドブーメラン」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_SHIELD_BOOMERANG) {
-        if (EquipNumSearch(ITEM_ID_ILLUSION_KAMINO_SHISHA)) {
+        if (Chara.EquipNumSearch(ITEM_ID_ILLUSION_KAMINO_SHISHA)) {
             if (n_A_BaseLV >= 170) {
                 w1 += 15;
             }
@@ -23576,7 +23578,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「イリュージョンポールアクス」の、「スパイラルピアース」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_SPIRAL_PIERCE) {
-        if (EquipNumSearch(ITEM_ID_ILLUSION_POLE_AXE)) {
+        if (Chara.EquipNumSearch(ITEM_ID_ILLUSION_POLE_AXE)) {
             if (n_A_BaseLV >= 170) {
                 w1 += 15 * n_A_Weapon_ATKplus;
             }
@@ -23589,7 +23591,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「イリュージョンウォーアクス」の、「アックスブーメラン」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_AXE_BOOMERANG) {
-        if (EquipNumSearch(ITEM_ID_ILLUSION_WAR_AXE)) {
+        if (Chara.EquipNumSearch(ITEM_ID_ILLUSION_WAR_AXE)) {
             if (n_A_BaseLV >= 170) {
                 w1 += 10 * n_A_Weapon_ATKplus;
             }
@@ -23602,7 +23604,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「インペリアルブーツ」の、「バニシングポイント」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_BANISHING_POINT) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_IMPERIAL_BOOTS)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_IMPERIAL_BOOTS)) > 0) {
             w1 += 10 * LearnedSkillSearch(SKILL_ID_CANNON_SPEAR) * itemCount;
         }
     }
@@ -23613,7 +23615,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「勇者のブローチ　勇者のジャッジメントローブセット」の、「地雷震」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_ZIRAISHIN) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_YUSHANO_BROACH_YUSHANO_JUDGEMENT_ROBE)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_YUSHANO_BROACH_YUSHANO_JUDGEMENT_ROBE)) > 0) {
             w1 += 5 * n_A_BODY_DEF_PLUS * itemCount;
         }
     }
@@ -23624,7 +23626,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「勇者のブローチ　勇者のジャッジメントローブセット」の、「双龍脚」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_SORYUKYAKU) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_YUSHANO_BROACH_YUSHANO_JUDGEMENT_ROBE)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_YUSHANO_BROACH_YUSHANO_JUDGEMENT_ROBE)) > 0) {
             w1 += 5 * n_A_BODY_DEF_PLUS * itemCount;
         }
     }
@@ -23635,7 +23637,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「勇者のブローチ　勇者のジャッジメントローブセット」の、「天羅地網」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_TENRACHIMO) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_YUSHANO_BROACH_YUSHANO_JUDGEMENT_ROBE)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_YUSHANO_BROACH_YUSHANO_JUDGEMENT_ROBE)) > 0) {
             w1 += 5 * n_A_BODY_DEF_PLUS * itemCount;
         }
     }
@@ -23646,7 +23648,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「勇者のブローチ　勇者のプレートセット」の、「バニシングポイント」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_BANISHING_POINT) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_YUSHANO_BROACH_YUSHANO_PLATE)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_YUSHANO_BROACH_YUSHANO_PLATE)) > 0) {
             w1 += 5 * n_A_BODY_DEF_PLUS * itemCount;
         }
     }
@@ -23657,7 +23659,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「勇者のブローチ　勇者のプレートセット」の、「ストームブラスト」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_STORM_BLAST) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_YUSHANO_BROACH_YUSHANO_PLATE)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_YUSHANO_BROACH_YUSHANO_PLATE)) > 0) {
             w1 += 5 * n_A_BODY_DEF_PLUS * itemCount;
         }
     }
@@ -23673,7 +23675,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
         || n_A_ActiveSkill == SKILL_ID_BASH
         || n_A_ActiveSkill == SKILL_ID_HOLY_CROSS) {
 
-        if (EquipNumSearch(ITEM_SET_ID_KINGS_MAIL_SAVE_THE_KING)) {
+        if (Chara.EquipNumSearch(ITEM_SET_ID_KINGS_MAIL_SAVE_THE_KING)) {
             w1 += 20 * n_A_BODY_DEF_PLUS;
         }
 
@@ -23685,7 +23687,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「古龍ジラントカード」の、「ウォータードラゴンブレス」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_WATER_DRAGON_BREATH) {
-        if ((itemCount = CardNumSearch(CARD_ID_KORYU_ZIRANT, CARD_REGION_ID_ACCESSARY_1_ANY)) > 0) {
+        if ((itemCount = Chara.CardNumSearch(CARD_ID_KORYU_ZIRANT, CARD_REGION_ID_ACCESSARY_1_ANY)) > 0) {
             w1 += 50 * itemCount;
         }
     }
@@ -23694,7 +23696,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「古龍ジラントカード」の、「ファイアードラゴンブレス」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_FIRE_DRAGON_BREATH) {
-        if ((itemCount = CardNumSearch(CARD_ID_KORYU_ZIRANT, CARD_REGION_ID_ACCESSARY_2_ANY)) > 0) {
+        if ((itemCount = Chara.CardNumSearch(CARD_ID_KORYU_ZIRANT, CARD_REGION_ID_ACCESSARY_2_ANY)) > 0) {
             w1 += 50 * itemCount;
         }
     }
@@ -23705,9 +23707,9 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「エンチャント　反逆者」の、「ラウンドトリップ」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_ROUND_TRIP) {
-        if ((cardCount = CardNumSearch(CARD_ID_ENCHANT_HANGYAKUSHA)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_ENCHANT_HANGYAKUSHA)) > 0) {
             if (SU_AGI >= 110) {
-                w1 += 30 * ROUNDDOWN((SU_AGI - 110) / 5) * cardCount;
+                w1 += 30 * Foot.ROUNDDOWN((SU_AGI - 110) / 5) * cardCount;
             }
         }
     }
@@ -23716,9 +23718,9 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「エンチャント　反逆者」の、「ドラゴンテイル」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_DRAGON_TAIL) {
-        if ((cardCount = CardNumSearch(CARD_ID_ENCHANT_HANGYAKUSHA)) > 0) {
+        if ((cardCount = Chara.CardNumSearch(CARD_ID_ENCHANT_HANGYAKUSHA)) > 0) {
             if (SU_LUK >= 110) {
-                w1 += 30 * ROUNDDOWN((SU_LUK - 110) / 5) * cardCount;
+                w1 += 30 * Foot.ROUNDDOWN((SU_LUK - 110) / 5) * cardCount;
             }
         }
     }
@@ -23729,7 +23731,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「イリュージョン熱血鉢巻き」の、「天羅地網」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_TENRACHIMO) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_ILLUSION_NEKKETSU_HACHIMAKI)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_ILLUSION_NEKKETSU_HACHIMAKI)) > 0) {
             if (n_A_BaseLV >= 170) {
                 w1 += 5 * n_A_HEAD_DEF_PLUS * itemCount;
             }
@@ -23742,7 +23744,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「螺旋風魔の宝珠」の、「風魔手裏剣投げ」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_FUMASHURIKEN_NAGE) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_RASEN_FUMANO_HOZYU)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_RASEN_FUMANO_HOZYU)) > 0) {
             if (LearnedSkillSearch(SKILL_ID_GENZYUTSU_KAGEMUSHA) >= 5) {
                 w1 += 2 * Math.floor(n_A_BaseLV / 4) * itemCount;
             }
@@ -23755,7 +23757,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「螺旋風魔の宝珠」の、「風魔手裏剣-乱華-」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_FUMASHURIKEN_RANKA) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_RASEN_FUMANO_HOZYU)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_RASEN_FUMANO_HOZYU)) > 0) {
             if (LearnedSkillSearch(SKILL_ID_GENZYUTSU_KAGEMUSHA) >= 5) {
                 w1 += 1 * Math.floor(n_A_BaseLV / 4) * itemCount;
             }
@@ -23768,7 +23770,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「フロンティアブーツ　自警団の弓セット」の、「シビアレインストーム」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_SEVERE_RAINSTORM) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_FRONTIER_BOOTS_ZIKEDANNO_YUMI)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_FRONTIER_BOOTS_ZIKEDANNO_YUMI)) > 0) {
             if (n_A_SHOES_DEF_PLUS >= 7) {
                 if (SU_INT >= 120) {
                     w1 += 50 * itemCount;
@@ -23777,7 +23779,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
         }
     }
     if (n_A_ActiveSkill == SKILL_ID_SEVERE_RAINSTORM_EX) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_FRONTIER_BOOTS_ZIKEDANNO_YUMI)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_FRONTIER_BOOTS_ZIKEDANNO_YUMI)) > 0) {
             if (n_A_SHOES_DEF_PLUS >= 7) {
                 if (SU_INT >= 120) {
                     w1 += 50 * itemCount;
@@ -23790,7 +23792,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「フロンティアブーツ　自警団の弓セット」の、「トライアングルショット」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_TRIANGLE_SHOT) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_FRONTIER_BOOTS_ZIKEDANNO_YUMI)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_FRONTIER_BOOTS_ZIKEDANNO_YUMI)) > 0) {
             if (n_A_SHOES_DEF_PLUS >= 7) {
                 if (SU_INT >= 120) {
                     w1 += 50 * itemCount;
@@ -23803,7 +23805,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「悪鬼羅刹の指輪」の、「獅子吼」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_SISIKO) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_AKKI_RASETSUNO_YUBIWA)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_AKKI_RASETSUNO_YUBIWA)) > 0) {
             if (LearnedSkillSearch(SKILL_ID_BAKKISANDAN) >= 5) {
                 w1 += 30 * itemCount;
             }
@@ -23814,7 +23816,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「悪鬼羅刹の指輪」の、「修羅身弾」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_SHURASHINDAN) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_AKKI_RASETSUNO_YUBIWA)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_AKKI_RASETSUNO_YUBIWA)) > 0) {
             if (LearnedSkillSearch(SKILL_ID_BAKKISANDAN) >= 5) {
                 w1 += 100 * itemCount;
             }
@@ -23825,7 +23827,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「ジャガーノート」の、「バニシングバスター」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_BUNISHING_BASTER) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_JAGUAR_NOTE)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_JAGUAR_NOTE)) > 0) {
             w1 += 60 * LearnedSkillSearch(SKILL_ID_BUNISHING_BASTER) * itemCount;
         }
     }
@@ -23834,7 +23836,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「ジャガーノート」の、「ファイアーレイン」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_FIRE_RAIN) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_JAGUAR_NOTE)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_JAGUAR_NOTE)) > 0) {
             w1 += 50 * LearnedSkillSearch(SKILL_ID_FIRE_RAIN) * itemCount;
         }
     }
@@ -23844,7 +23846,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     //----------------------------------------------------------------
     if ((n_A_ActiveSkill == SKILL_ID_HOWLING_MINE)
         || (n_A_ActiveSkill == SKILL_ID_HOWLING_MINE_APPEND)) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_JAGUAR_NOTE)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_JAGUAR_NOTE)) > 0) {
             w1 += 40 * LearnedSkillSearch(SKILL_ID_HOWLING_MINE) * itemCount;
         }
     }
@@ -23855,8 +23857,8 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「ウルティオ-OS」の、「デュプレライト（物理）」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_GRAHAM_LIGHT) {
-        itemCountRight = EquipNumSearch(ITEM_ID_ULTIO_OS, EQUIP_REGION_ID_ARMS);
-        itemCountLeft = EquipNumSearch(ITEM_ID_ULTIO_OS, EQUIP_REGION_ID_ARMS_LEFT);
+        itemCountRight = Chara.EquipNumSearch(ITEM_ID_ULTIO_OS, EQUIP_REGION_ID_ARMS);
+        itemCountLeft = Chara.EquipNumSearch(ITEM_ID_ULTIO_OS, EQUIP_REGION_ID_ARMS_LEFT);
         if ((itemCountRight > 0) || (itemCountLeft > 0)) {
             w1 += 7 * n_A_BaseLV * itemCountRight;
             w1 += 7 * n_A_BaseLV * itemCountLeft;
@@ -23869,8 +23871,8 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「バーチャルボウ-OS」の、「クラスターボム」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_CLUSTER_BOMB) {
-        itemCountRight = EquipNumSearch(ITEM_ID_VIRTUAL_BOW_OS, EQUIP_REGION_ID_ARMS);
-        itemCountLeft = EquipNumSearch(ITEM_ID_VIRTUAL_BOW_OS, EQUIP_REGION_ID_ARMS_LEFT);
+        itemCountRight = Chara.EquipNumSearch(ITEM_ID_VIRTUAL_BOW_OS, EQUIP_REGION_ID_ARMS);
+        itemCountLeft = Chara.EquipNumSearch(ITEM_ID_VIRTUAL_BOW_OS, EQUIP_REGION_ID_ARMS_LEFT);
         if ((itemCountRight > 0) || (itemCountLeft > 0)) {
             w1 += 4 * n_A_BaseLV * itemCountRight;
             w1 += 4 * n_A_BaseLV * itemCountLeft;
@@ -23883,8 +23885,8 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「MH-P89-OS」の、「振動残響」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_SHINDOZANKYO) {
-        itemCountRight = EquipNumSearch(ITEM_ID_MH_P89_OS, EQUIP_REGION_ID_ARMS);
-        itemCountLeft = EquipNumSearch(ITEM_ID_MH_P89_OS, EQUIP_REGION_ID_ARMS_LEFT);
+        itemCountRight = Chara.EquipNumSearch(ITEM_ID_MH_P89_OS, EQUIP_REGION_ID_ARMS);
+        itemCountLeft = Chara.EquipNumSearch(ITEM_ID_MH_P89_OS, EQUIP_REGION_ID_ARMS_LEFT);
         if ((itemCountRight > 0) || (itemCountLeft > 0)) {
             w1 += 1 * Math.floor(n_A_BaseLV / 2) * itemCountRight;
             w1 += 1 * Math.floor(n_A_BaseLV / 2) * itemCountLeft;
@@ -23897,7 +23899,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「ハートハンター・ベラレカード」の、「スプレッドアタック」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_SPREAD_ATTACK) {
-        if ((itemCount = CardNumSearch(CARD_ID_HEART_HUNTER_BELLARE)) > 0) {
+        if ((itemCount = Chara.CardNumSearch(CARD_ID_HEART_HUNTER_BELLARE)) > 0) {
             w1 += 3 * n_A_BaseLV * itemCount;
 
             if (IsSameJobClass(JOB_ID_REBELLION)) {
@@ -23916,7 +23918,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「ハートハンター・Mベラレカード」の、「ラピッドシャワー」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_RAPID_SHOWER) {
-        if ((itemCount = CardNumSearch(CARD_ID_HEART_HUNTER_M_BELLARE)) > 0) {
+        if ((itemCount = Chara.CardNumSearch(CARD_ID_HEART_HUNTER_M_BELLARE)) > 0) {
             w1 += 1 * n_A_BaseLV * itemCount;
 
             if (IsSameJobClass(JOB_ID_REBELLION)) {
@@ -23935,7 +23937,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「不調和の思念体シューズ　ウィンドゲイル　セット」の、「アローシャワー」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_ARROW_SHOWER) {
-        itemCount = EquipNumSearch(ITEM_SET_ID_FUCHOWANO_SHINENTAI_SHOES_WIND_GAIL);
+        itemCount = Chara.EquipNumSearch(ITEM_SET_ID_FUCHOWANO_SHINENTAI_SHOES_WIND_GAIL);
         if (itemCount > 0) {
             w1 += 4 * n_A_BaseLV * itemCount;
         }
@@ -23945,14 +23947,14 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「不調和の思念体シューズ　ウィンドゲイル　セット」の、「シビアレインストーム」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_SEVERE_RAINSTORM) {
-        itemCount = EquipNumSearch(ITEM_SET_ID_FUCHOWANO_SHINENTAI_SHOES_WIND_GAIL);
+        itemCount = Chara.EquipNumSearch(ITEM_SET_ID_FUCHOWANO_SHINENTAI_SHOES_WIND_GAIL);
         if (itemCount > 0) {
             w1 += 1 * Math.floor(n_A_BaseLV / 2) * itemCount;
         }
     }
 
     if (n_A_ActiveSkill == SKILL_ID_SEVERE_RAINSTORM_EX) {
-        itemCount = EquipNumSearch(ITEM_SET_ID_FUCHOWANO_SHINENTAI_SHOES_WIND_GAIL);
+        itemCount = Chara.EquipNumSearch(ITEM_SET_ID_FUCHOWANO_SHINENTAI_SHOES_WIND_GAIL);
         if (itemCount > 0) {
             w1 += 1 * Math.floor(n_A_BaseLV / 2) * itemCount;
         }
@@ -23964,7 +23966,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「不調和の思念体シューズ　シャープスター　セット」の、「シャープシューティング」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_SHARP_SHOOTING) {
-        itemCount = EquipNumSearch(ITEM_SET_ID_FUCHOWANO_SHINENTAI_SHOES_SHARP_STAR);
+        itemCount = Chara.EquipNumSearch(ITEM_SET_ID_FUCHOWANO_SHINENTAI_SHOES_SHARP_STAR);
         if (itemCount > 0) {
             w1 += 1 * n_A_BaseLV * itemCount;
         }
@@ -23974,7 +23976,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「不調和の思念体シューズ　シャープスター　セット」の、「ダブルストレイフィング」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_DOUBLE_STRAFING) {
-        itemCount = EquipNumSearch(ITEM_SET_ID_FUCHOWANO_SHINENTAI_SHOES_SHARP_STAR);
+        itemCount = Chara.EquipNumSearch(ITEM_SET_ID_FUCHOWANO_SHINENTAI_SHOES_SHARP_STAR);
         if (itemCount > 0) {
             w1 += 2 * n_A_BaseLV * itemCount;
         }
@@ -23986,7 +23988,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「不調和の思念体シューズ　ファルケンシューター　セット」の、「ブリッツビート」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_BLITZ_BEAT) {
-        itemCount = EquipNumSearch(ITEM_SET_ID_FUCHOWANO_SHINENTAI_SHOES_FALCEN_SHOOTER);
+        itemCount = Chara.EquipNumSearch(ITEM_SET_ID_FUCHOWANO_SHINENTAI_SHOES_FALCEN_SHOOTER);
         if (itemCount > 0) {
             w1 += 2 * n_A_BaseLV * itemCount;
         }
@@ -23996,7 +23998,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「不調和の思念体シューズ　ファルケンシューター　セット」の、「ウォーグストライク」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_WUG_STRIKE) {
-        itemCount = EquipNumSearch(ITEM_SET_ID_FUCHOWANO_SHINENTAI_SHOES_FALCEN_SHOOTER);
+        itemCount = Chara.EquipNumSearch(ITEM_SET_ID_FUCHOWANO_SHINENTAI_SHOES_FALCEN_SHOOTER);
         if (itemCount > 0) {
             w1 += 1 * Math.floor(n_A_BaseLV / 2) * itemCount;
         }
@@ -24008,7 +24010,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「ビリー・コスルリースカード」の、「インベナム」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_ENVENOM) {
-        cardCount = CardNumSearch(CARD_ID_BILLY_COSRLEASE);
+        cardCount = Chara.CardNumSearch(CARD_ID_BILLY_COSRLEASE);
         if (cardCount > 0) {
             w1 += 2 * n_A_BaseLV * cardCount;
         }
@@ -24020,7 +24022,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「イフォドスカード」の、「スピアブーメラン」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_SPEAR_BOOMERANG) {
-        cardCount = CardNumSearch(CARD_ID_IFODOS);
+        cardCount = Chara.CardNumSearch(CARD_ID_IFODOS);
         if (cardCount > 0) {
             w1 += 4 * n_A_BaseLV * cardCount;
         }
@@ -24032,7 +24034,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「ユメヒメカード」の、「アローシャワー」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_ARROW_SHOWER) {
-        cardCount = CardNumSearch(CARD_ID_YUMEHIME);
+        cardCount = Chara.CardNumSearch(CARD_ID_YUMEHIME);
         if (cardCount > 0) {
             w1 += 2 * n_A_BaseLV * cardCount;
         }
@@ -24044,7 +24046,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「イリュージョンミリタリーブーツ」の、「アックストルネード」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_AXE_TORNADE) {
-        itemCount = EquipNumSearch(ITEM_ID_ILLUSION_MILITARY_BOOTS);
+        itemCount = Chara.EquipNumSearch(ITEM_ID_ILLUSION_MILITARY_BOOTS);
         if (itemCount > 0) {
             w1 += 30 * LearnedSkillSearch(SKILL_ID_AXE_BOOMERANG) * itemCount;
         }
@@ -24056,7 +24058,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「イリュージョンミリタリーブーツ」の、「アックスブーメラン」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_AXE_BOOMERANG) {
-        itemCount = EquipNumSearch(ITEM_ID_ILLUSION_MILITARY_BOOTS);
+        itemCount = Chara.EquipNumSearch(ITEM_ID_ILLUSION_MILITARY_BOOTS);
         if (itemCount > 0) {
             w1 += 20 * LearnedSkillSearch(SKILL_ID_AXE_BOOMERANG) * itemCount;
         }
@@ -24068,12 +24070,12 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「暴威のマフラー」の、「シビアレインストーム」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_SEVERE_RAINSTORM) {
-        if ((itemCount = EquipNumSearchMIG(ITEM_ID_BOINO_MUFFLER)) > 0) {
+        if ((itemCount = Chara.EquipNumSearchMIG(ITEM_ID_BOINO_MUFFLER)) > 0) {
             w1 += 2 * LearnedSkillSearch(SKILL_ID_FRIGNO_UTA) * itemCount;
         }
     }
     if (n_A_ActiveSkill == SKILL_ID_SEVERE_RAINSTORM_EX) {
-        if ((itemCount = EquipNumSearchMIG(ITEM_ID_BOINO_MUFFLER)) > 0) {
+        if ((itemCount = Chara.EquipNumSearchMIG(ITEM_ID_BOINO_MUFFLER)) > 0) {
             w1 += 2 * LearnedSkillSearch(SKILL_ID_FRIGNO_UTA) * itemCount;
         }
     }
@@ -24084,8 +24086,8 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「メタルスティック」の、「バニシングポイント」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_BANISHING_POINT) {
-        itemCountRight = EquipNumSearch(ITEM_ID_METAL_STICK, EQUIP_REGION_ID_ARMS);
-        itemCountLeft = EquipNumSearch(ITEM_ID_METAL_STICK, EQUIP_REGION_ID_ARMS_LEFT);
+        itemCountRight = Chara.EquipNumSearch(ITEM_ID_METAL_STICK, EQUIP_REGION_ID_ARMS);
+        itemCountLeft = Chara.EquipNumSearch(ITEM_ID_METAL_STICK, EQUIP_REGION_ID_ARMS_LEFT);
 
         if ((itemCountRight + itemCountLeft) > 0) {
             w1 += 2 * n_A_BaseLV * (itemCountRight + itemCountLeft);
@@ -24110,8 +24112,8 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「氷炎悪神の刃鎌」の、「メナーナイト」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_MAMMONITE) {
-        itemCountRight = EquipNumSearch(ITEM_ID_HYOEN_AKUSHINNO_HAGAMA, EQUIP_REGION_ID_ARMS);
-        itemCountLeft = EquipNumSearch(ITEM_ID_HYOEN_AKUSHINNO_HAGAMA, EQUIP_REGION_ID_ARMS_LEFT);
+        itemCountRight = Chara.EquipNumSearch(ITEM_ID_HYOEN_AKUSHINNO_HAGAMA, EQUIP_REGION_ID_ARMS);
+        itemCountLeft = Chara.EquipNumSearch(ITEM_ID_HYOEN_AKUSHINNO_HAGAMA, EQUIP_REGION_ID_ARMS_LEFT);
 
         if ((itemCountRight + itemCountLeft) > 0) {
             w1 += 10 * n_A_BaseLV * (itemCountRight + itemCountLeft);
@@ -24124,7 +24126,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「追撃者のシューズ」の、「フェイタルメナス」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_FATAL_MENUS) {
-        itemCount = EquipNumSearch(ITEM_ID_TSUIGEKISHANO_SHOES);
+        itemCount = Chara.EquipNumSearch(ITEM_ID_TSUIGEKISHANO_SHOES);
         if (itemCount > 0) {
             w1 += 10 * LearnedSkillSearch(SKILL_ID_KEN_SHUREN) * itemCount;
             w1 += 10 * LearnedSkillSearch(SKILL_ID_KEN_SHUREN_GENETIC) * itemCount;
@@ -24141,7 +24143,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
         || (n_A_ActiveSkill == SKILL_ID_CARROT_BEAT)
         || (n_A_ActiveSkill == SKILL_ID_SAVAGENO_TAMASHI)
     ) {
-        if ((itemCount = EquipNumSearch(ITEM_ID_YOCHIYOCHI_URIBO_SUTAI)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_ID_YOCHIYOCHI_URIBO_SUTAI)) > 0) {
             w1 += 15 * LearnedSkillSearch(SKILL_ID_SAVAGENO_TAMASHI) * itemCount;
         }
     }
@@ -24152,7 +24154,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「試験管ブーツ」の、「カートトルネード」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_CART_TORNADO) {
-        itemCount = EquipNumSearch(ITEM_ID_SHIKENKAN_BOOTS);
+        itemCount = Chara.EquipNumSearch(ITEM_ID_SHIKENKAN_BOOTS);
         if (itemCount > 0) {
             w1 += 10 * LearnedSkillSearch(SKILL_ID_CRAZY_WEED) * itemCount;
         }
@@ -24164,7 +24166,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「溶岩のマント」の、「アックストルネード」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_AXE_TORNADE) {
-        itemCount = EquipNumSearch(ITEM_ID_YOGANNO_MANT);
+        itemCount = Chara.EquipNumSearch(ITEM_ID_YOGANNO_MANT);
         if (itemCount > 0) {
             w1 += 20 * LearnedSkillSearch(SKILL_ID_AXE_BOOMERANG) * itemCount;
         }
@@ -24174,7 +24176,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「溶岩のマント」の、「パワースイング」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_POWER_SWING) {
-        itemCount = EquipNumSearch(ITEM_ID_YOGANNO_MANT);
+        itemCount = Chara.EquipNumSearch(ITEM_ID_YOGANNO_MANT);
         if (itemCount > 0) {
             w1 += 20 * LearnedSkillSearch(SKILL_ID_AXE_BOOMERANG) * itemCount;
         }
@@ -24187,7 +24189,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「ファフニールブレス」の、「ファイアードラゴンブレス」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_FIRE_DRAGON_BREATH) {
-        itemCount = EquipNumSearch(ITEM_ID_FAFNIR_BREATH);
+        itemCount = Chara.EquipNumSearch(ITEM_ID_FAFNIR_BREATH);
         if (itemCount > 0) {
             w1 += 20 * LearnedSkillSearch(SKILL_ID_DRAGON_HOWLING) * itemCount;
         }
@@ -24197,7 +24199,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「ファフニールブレス」の、「ウォータードラゴンブレス」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_WATER_DRAGON_BREATH) {
-        itemCount = EquipNumSearch(ITEM_ID_FAFNIR_BREATH);
+        itemCount = Chara.EquipNumSearch(ITEM_ID_FAFNIR_BREATH);
         if (itemCount > 0) {
             w1 += 20 * LearnedSkillSearch(SKILL_ID_DRAGON_HOWLING) * itemCount;
         }
@@ -24207,7 +24209,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「追撃者のリング」の、「フェイタルメナス」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_FATAL_MENUS) {
-        itemCount = EquipNumSearch(ITEM_ID_TSUIGEKISHANO_RING);
+        itemCount = Chara.EquipNumSearch(ITEM_ID_TSUIGEKISHANO_RING);
         if (itemCount > 0) {
             w1 += 1 * Math.floor(n_A_BaseLV / 3) * itemCount;
         }
@@ -24219,7 +24221,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「天魔外道の外套」の、「獅子吼」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_SISIKO) {
-        itemCount = EquipNumSearch(ITEM_ID_TENMA_GEDONO_GAITO);
+        itemCount = Chara.EquipNumSearch(ITEM_ID_TENMA_GEDONO_GAITO);
         if (itemCount > 0) {
             w1 += 15 * LearnedSkillSearch(SKILL_ID_BAKKISANDAN) * itemCount;
         }
@@ -24231,7 +24233,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「ルーングリーブ」の、「スパイラルピアース」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_SPIRAL_PIERCE) {
-        itemCount = EquipNumSearch(ITEM_ID_RUNE_GREEVE);
+        itemCount = Chara.EquipNumSearch(ITEM_ID_RUNE_GREEVE);
         if (itemCount > 0) {
             w1 += 40 * LearnedSkillSearch(SKILL_ID_DRAGON_HOWLING) * itemCount;
         }
@@ -24241,7 +24243,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「ルーングリーブ」の、「ハンドレッドスピア」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_HANDRED_SPEAR) {
-        itemCount = EquipNumSearch(ITEM_ID_RUNE_GREEVE);
+        itemCount = Chara.EquipNumSearch(ITEM_ID_RUNE_GREEVE);
         if (itemCount > 0) {
             w1 += 40 * LearnedSkillSearch(SKILL_ID_DRAGON_HOWLING) * itemCount;
         }
@@ -24254,7 +24256,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     //----------------------------------------------------------------
     if ((n_A_ActiveSkill == SKILL_ID_NUKUMORI) || (n_A_ActiveSkill == SKILL_ID_NUKUMORI_KABE)) {
         if (IsSameJobClass(JOB_ID_STAR_EMPEROR)) {
-            itemCount = EquipNumSearch(ITEM_ID_POLLUX_RING);
+            itemCount = Chara.EquipNumSearch(ITEM_ID_POLLUX_RING);
             if (itemCount > 0) {
                 w1 += 100 * itemCount;
             }
@@ -24267,7 +24269,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「科学者のマント」の、「スポアエクスプロージョン」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_SPORE_EXPLOSION) {
-        itemCount = EquipNumSearch(ITEM_ID_KAGAKUSHANO_MANT);
+        itemCount = Chara.EquipNumSearch(ITEM_ID_KAGAKUSHANO_MANT);
         if (itemCount > 0) {
             w1 += 20 * LearnedSkillSearch(SKILL_ID_FIRE_EXPANSION) * itemCount;
         }
@@ -24280,8 +24282,8 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     //----------------------------------------------------------------
     if ((n_A_ActiveSkill == SKILL_ID_NUKUMORI) || (n_A_ActiveSkill == SKILL_ID_NUKUMORI_KABE)) {
 
-        itemCountRight = EquipNumSearch(ITEM_ID_SLOTH_TEXT, EQUIP_REGION_ID_ARMS);
-        itemCountLeft = EquipNumSearch(ITEM_ID_SLOTH_TEXT, EQUIP_REGION_ID_ARMS_LEFT);
+        itemCountRight = Chara.EquipNumSearch(ITEM_ID_SLOTH_TEXT, EQUIP_REGION_ID_ARMS);
+        itemCountLeft = Chara.EquipNumSearch(ITEM_ID_SLOTH_TEXT, EQUIP_REGION_ID_ARMS_LEFT);
 
         if (itemCountRight > 0) {
             if (n_A_Weapon_ATKplus >= 7) {
@@ -24308,7 +24310,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「パワードウィング」の、「アームズキャノン」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_ARMS_CANNON) {
-        itemCount = EquipNumSearchMIG(ITEM_ID_POWERED_WING);
+        itemCount = Chara.EquipNumSearchMIG(ITEM_ID_POWERED_WING);
         if (itemCount > 0) {
             w1 += 25 * LearnedSkillSearch(SKILL_ID_PILE_BUNKER) * itemCount;
         }
@@ -24318,7 +24320,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「パワードウィング」の、「コールドスローワー」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_COLD_THROWER) {
-        itemCount = EquipNumSearchMIG(ITEM_ID_POWERED_WING);
+        itemCount = Chara.EquipNumSearchMIG(ITEM_ID_POWERED_WING);
         if (itemCount > 0) {
             w1 += 25 * LearnedSkillSearch(SKILL_ID_PILE_BUNKER) * itemCount;
         }
@@ -24328,7 +24330,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「パワードウィング」の、「フレイムスローワー」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_FLAME_THROWER) {
-        itemCount = EquipNumSearchMIG(ITEM_ID_POWERED_WING);
+        itemCount = Chara.EquipNumSearchMIG(ITEM_ID_POWERED_WING);
         if (itemCount > 0) {
             w1 += 25 * LearnedSkillSearch(SKILL_ID_PILE_BUNKER) * itemCount;
         }
@@ -24340,7 +24342,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「エリュマントスの皮」の、「アローストーム」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_ARROW_STORM) {
-        itemCount = EquipNumSearchMIG(ITEM_ID_ERYMANTHNO_KAWA);
+        itemCount = Chara.EquipNumSearchMIG(ITEM_ID_ERYMANTHNO_KAWA);
         if (itemCount > 0) {
             w1 += 1 * LearnedSkillSearch(SKILL_ID_AIMED_BOLT) * itemCount;
         }
@@ -24352,7 +24354,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「インペリアルガトリングスーツ」の、「ファイアーレイン」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_FIRE_RAIN) {
-        itemCount = EquipNumSearchMIG(ITEM_ID_IMPERIAL_GATLING_SUIT);
+        itemCount = Chara.EquipNumSearchMIG(ITEM_ID_IMPERIAL_GATLING_SUIT);
         if (itemCount > 0) {
             w1 += 20 * LearnedSkillSearch(SKILL_ID_HEAT_BARREL) * itemCount;
         }
@@ -24362,7 +24364,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「グレースガトリングスーツ」の、「ファイアーレイン」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_FIRE_RAIN) {
-        itemCount = EquipNumSearchMIG(ITEM_ID_GRACE_GATLING_SUIT);
+        itemCount = Chara.EquipNumSearchMIG(ITEM_ID_GRACE_GATLING_SUIT);
         if (itemCount > 0) {
             w1 += 50 * LearnedSkillSearch(SKILL_ID_HEAT_BARREL) * itemCount;
         }
@@ -24374,7 +24376,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「インペリアルクルシフォームスーツ」の、「十文字斬り」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_ZYUMONZIGIRI) {
-        itemCount = EquipNumSearchMIG(ITEM_ID_IMPERIAL_CRUCIFORM_SUIT);
+        itemCount = Chara.EquipNumSearchMIG(ITEM_ID_IMPERIAL_CRUCIFORM_SUIT);
         if (itemCount > 0) {
             w1 += 15 * Math.floor(LearnedSkillSearch(SKILL_ID_ZYUMONZIGIRI) / 5) * itemCount;
         }
@@ -24384,7 +24386,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「グレースクルシフォームスーツ」の、「十文字斬り」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_ZYUMONZIGIRI) {
-        itemCount = EquipNumSearchMIG(ITEM_ID_GRACE_CRUCIFORM_SUIT);
+        itemCount = Chara.EquipNumSearchMIG(ITEM_ID_GRACE_CRUCIFORM_SUIT);
         if (itemCount > 0) {
             w1 += 15 * Math.floor(LearnedSkillSearch(SKILL_ID_ZYUMONZIGIRI) / 2) * itemCount;
         }
@@ -24396,7 +24398,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「グロトネリーア」の、「トライアングルショット」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_TRIANGLE_SHOT) {
-        itemCount = EquipNumSearchMIG(ITEM_ID_GLOTONERIA);
+        itemCount = Chara.EquipNumSearchMIG(ITEM_ID_GLOTONERIA);
         if (itemCount > 0) {
             w1 += 50 * LearnedSkillSearch(SKILL_ID_MAELSTORM) * itemCount;
         }
@@ -24408,7 +24410,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「グロトネリーア」の、「フェイントボム」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_FAINT_BOMB) {
-        itemCount = EquipNumSearchMIG(ITEM_ID_GLOTONERIA);
+        itemCount = Chara.EquipNumSearchMIG(ITEM_ID_GLOTONERIA);
         if (itemCount > 0) {
             w1 += 15 * LearnedSkillSearch(SKILL_ID_MAELSTORM) * itemCount;
         }
@@ -24420,7 +24422,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「山岳ヘルメット」の、「パワースイング」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_POWER_SWING) {
-        if (TimeItemNumSearch(TIME_ITEM_ID_SANGAKU_HELMET)) {
+        if (Chara.TimeItemNumSearch(TIME_ITEM_ID_SANGAKU_HELMET)) {
             w1 += 1 * SU_VIT;
         }
     }
@@ -24431,7 +24433,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「インペリアルアーティススーツ」の、「ボウリングバッシュ」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_BOWLING_BASH) {
-        itemCount = EquipNumSearchMIG(ITEM_ID_IMPERIAL_ARTIS_SUIT);
+        itemCount = Chara.EquipNumSearchMIG(ITEM_ID_IMPERIAL_ARTIS_SUIT);
         if (itemCount > 0) {
             if (LearnedSkillSearch(SKILL_ID_ONO_SHUREN) >= 10) {
                 w1 += 2 * Math.floor(n_A_BaseLV / 3) * itemCount;
@@ -24445,7 +24447,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「グレースアーティススーツ」の、「ボウリングバッシュ」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_BOWLING_BASH) {
-        itemCount = EquipNumSearchMIG(ITEM_ID_GRACE_ARTIS_SUIT);
+        itemCount = Chara.EquipNumSearchMIG(ITEM_ID_GRACE_ARTIS_SUIT);
         if (itemCount > 0) {
             if (LearnedSkillSearch(SKILL_ID_ONO_SHUREN) >= 10) {
                 w1 += 2 * n_A_BaseLV * itemCount;
@@ -24459,7 +24461,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「インペリアルコンフィデンシャルメイル」の、「ソニックウェーブ」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_SONIC_WAVE) {
-        itemCount = EquipNumSearch(ITEM_ID_IMPERIAL_CONFIDENCIAL_MAIL);
+        itemCount = Chara.EquipNumSearch(ITEM_ID_IMPERIAL_CONFIDENCIAL_MAIL);
         if (itemCount > 0) {
             if (LearnedSkillSearch(SKILL_ID_DEATH_BOUND) >= 10) {
                 w1 += 1 * Math.floor(n_A_BaseLV / 3) * itemCount;
@@ -24473,7 +24475,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「グレースコンフィデンシャルメイル」の、「ソニックウェーブ」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_SONIC_WAVE) {
-        itemCount = EquipNumSearch(ITEM_ID_GRACE_CONFIDENCIAL_MAIL);
+        itemCount = Chara.EquipNumSearch(ITEM_ID_GRACE_CONFIDENCIAL_MAIL);
         if (itemCount > 0) {
             if (LearnedSkillSearch(SKILL_ID_DEATH_BOUND) >= 10) {
                 w1 += 1 * n_A_BaseLV * itemCount;
@@ -24487,7 +24489,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「アヴァレーツォ」の、「カウンタースラッシュ」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_COUNTER_SLASH) {
-        itemCount = EquipNumSearch(ITEM_ID_AVARECO);
+        itemCount = Chara.EquipNumSearch(ITEM_ID_AVARECO);
         if (itemCount > 0) {
             w1 += 6 * LearnedSkillSearch(SKILL_ID_CROSS_IMPACT) * itemCount;
         }
@@ -24497,7 +24499,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「アヴァレーツォ」の、「クロスインパクト」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_CROSS_IMPACT) {
-        itemCount = EquipNumSearch(ITEM_ID_AVARECO);
+        itemCount = Chara.EquipNumSearch(ITEM_ID_AVARECO);
         if (itemCount > 0) {
             w1 += 30 * LearnedSkillSearch(SKILL_ID_CROSS_IMPACT) * itemCount;
         }
@@ -24509,7 +24511,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「パラケルススコート」の、「カートキャノン」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_CART_CANNON) {
-        itemCount = EquipNumSearch(ITEM_ID_PARACELSUS_COAT);
+        itemCount = Chara.EquipNumSearch(ITEM_ID_PARACELSUS_COAT);
         if (itemCount > 0) {
             if (LearnedSkillSearch(SKILL_ID_FIRE_EXPANSION) >= 5) {
                 w1 += 2 * n_A_BaseLV * itemCount;
@@ -24521,7 +24523,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「パラケルススコート」の、「カートトルネード」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_CART_TORNADO) {
-        itemCount = EquipNumSearch(ITEM_ID_PARACELSUS_COAT);
+        itemCount = Chara.EquipNumSearch(ITEM_ID_PARACELSUS_COAT);
         if (itemCount > 0) {
             if (LearnedSkillSearch(SKILL_ID_FIRE_EXPANSION) >= 5) {
                 w1 += 1 * n_A_BaseLV * itemCount;
@@ -24541,11 +24543,11 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「ツインヘッド・ドラゴンメイル」「ツインヘッド・ドラゴンブーツ」の、「ウォータードラゴンブレス」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_WATER_DRAGON_BREATH) {
-        itemCount = EquipNumSearch(ITEM_ID_TWIN_HEAD_DRAGON_MAIL);
+        itemCount = Chara.EquipNumSearch(ITEM_ID_TWIN_HEAD_DRAGON_MAIL);
         if (itemCount > 0) {
             w1 += 10 * LearnedSkillSearch(SKILL_ID_WATER_DRAGON_BREATH) * itemCount;
         }
-        itemCount = EquipNumSearch(ITEM_ID_TWIN_HEAD_DRAGON_BOOTS);
+        itemCount = Chara.EquipNumSearch(ITEM_ID_TWIN_HEAD_DRAGON_BOOTS);
         if (itemCount > 0) {
             w1 += 10 * LearnedSkillSearch(SKILL_ID_WATER_DRAGON_BREATH) * itemCount;
         }
@@ -24555,11 +24557,11 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「ツインヘッド・ドラゴンメイル」「ツインヘッド・ドラゴンブーツ」の、「ファイアードラゴンブレス」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_FIRE_DRAGON_BREATH) {
-        itemCount = EquipNumSearch(ITEM_ID_TWIN_HEAD_DRAGON_MAIL);
+        itemCount = Chara.EquipNumSearch(ITEM_ID_TWIN_HEAD_DRAGON_MAIL);
         if (itemCount > 0) {
             w1 += 10 * LearnedSkillSearch(SKILL_ID_FIRE_DRAGON_BREATH) * itemCount;
         }
-        itemCount = EquipNumSearch(ITEM_ID_TWIN_HEAD_DRAGON_BOOTS);
+        itemCount = Chara.EquipNumSearch(ITEM_ID_TWIN_HEAD_DRAGON_BOOTS);
         if (itemCount > 0) {
             w1 += 10 * LearnedSkillSearch(SKILL_ID_FIRE_DRAGON_BREATH) * itemCount;
         }
@@ -24569,7 +24571,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「ゾディアック　巨蟹宮のマント」セットの、職業による効果
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_AXE_TORNADE) {
-        if (CardNumSearch(CARD_SET_ID_ENCHANT_ZODIAC_KYOKAIKYUNO_MANT)) {
+        if (Chara.CardNumSearch(CARD_SET_ID_ENCHANT_ZODIAC_KYOKAIKYUNO_MANT)) {
             if (IsSameJobClass(JOB_ID_MECHANIC)) {
                 w1 += 10 * n_A_SHOULDER_DEF_PLUS;
             }
@@ -24580,7 +24582,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「ゾディアック　金牛宮のダイアデム」セットの、職業による効果
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_CART_CANNON) {
-        if (CardNumSearch(CARD_SET_ID_ENCHANT_ZODIAC_KINGYUKYUNO_DIADEM)) {
+        if (Chara.CardNumSearch(CARD_SET_ID_ENCHANT_ZODIAC_KINGYUKYUNO_DIADEM)) {
             if (IsSameJobClass(JOB_ID_GENETIC)) {
                 w1 += 5 * n_A_HEAD_DEF_PLUS;
             }
@@ -24591,7 +24593,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「ゾディアック　金牛宮のマント」セットの、職業による効果
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_CART_TORNADO) {
-        if (CardNumSearch(CARD_SET_ID_ENCHANT_ZODIAC_KINGYUKYUNO_MANT)) {
+        if (Chara.CardNumSearch(CARD_SET_ID_ENCHANT_ZODIAC_KINGYUKYUNO_MANT)) {
             if (IsSameJobClass(JOB_ID_GENETIC)) {
                 w1 += 5 * n_A_SHOULDER_DEF_PLUS;
             }
@@ -24602,14 +24604,14 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「ゾディアック　金牛宮のシューズ」セットの、職業による効果
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_CART_CANNON) {
-        if (CardNumSearch(CARD_SET_ID_ENCHANT_ZODIAC_KINGYUKYUNO_SHOES)) {
+        if (Chara.CardNumSearch(CARD_SET_ID_ENCHANT_ZODIAC_KINGYUKYUNO_SHOES)) {
             if (IsSameJobClass(JOB_ID_GENETIC)) {
                 w1 += 15 * n_A_SHOES_DEF_PLUS;
             }
         }
     }
     if (n_A_ActiveSkill == SKILL_ID_CART_TORNADO) {
-        if (CardNumSearch(CARD_SET_ID_ENCHANT_ZODIAC_KINGYUKYUNO_SHOES)) {
+        if (Chara.CardNumSearch(CARD_SET_ID_ENCHANT_ZODIAC_KINGYUKYUNO_SHOES)) {
             if (IsSameJobClass(JOB_ID_GENETIC)) {
                 w1 += 10 * n_A_SHOES_DEF_PLUS;
             }
@@ -24620,14 +24622,14 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「ゾディアック　天秤宮のシューズ」セットの、職業による効果
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_WATER_DRAGON_BREATH) {
-        if (CardNumSearch(CARD_SET_ID_ENCHANT_ZODIAC_TENBINKYUNO_SHOES)) {
+        if (Chara.CardNumSearch(CARD_SET_ID_ENCHANT_ZODIAC_TENBINKYUNO_SHOES)) {
             if (IsSameJobClass(JOB_ID_RUNEKNIGHT)) {
                 w1 += 5 * n_A_SHOES_DEF_PLUS;
             }
         }
     }
     if (n_A_ActiveSkill == SKILL_ID_FIRE_DRAGON_BREATH) {
-        if (CardNumSearch(CARD_SET_ID_ENCHANT_ZODIAC_TENBINKYUNO_SHOES)) {
+        if (Chara.CardNumSearch(CARD_SET_ID_ENCHANT_ZODIAC_TENBINKYUNO_SHOES)) {
             if (IsSameJobClass(JOB_ID_RUNEKNIGHT)) {
                 w1 += 5 * n_A_SHOES_DEF_PLUS;
             }
@@ -24638,7 +24640,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「ゾディアック　磨羯宮のマント」セットの、職業による効果
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_TRIANGLE_SHOT) {
-        if (CardNumSearch(CARD_SET_ID_ENCHANT_ZODIAC_MAKATSUKYUNO_MANT)) {
+        if (Chara.CardNumSearch(CARD_SET_ID_ENCHANT_ZODIAC_MAKATSUKYUNO_MANT)) {
             if (IsSameJobClass(JOB_ID_SHADOWCHASER)) {
                 w1 += 15 * n_A_SHOULDER_DEF_PLUS;
             }
@@ -24651,7 +24653,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「エンドオブザワールド」の、「カウンタースラッシュ」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_COUNTER_SLASH) {
-        itemCount = EquipNumSearch(ITEM_ID_END_OF_THE_WORLD);
+        itemCount = Chara.EquipNumSearch(ITEM_ID_END_OF_THE_WORLD);
         if (itemCount > 0) {
             w1 += 6 * LearnedSkillSearch(SKILL_ID_ROLLING_CUTTER) * itemCount;
         }
@@ -24661,7 +24663,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「エンドオブザワールド」の、「ローリングカッター」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_ROLLING_CUTTER) {
-        itemCount = EquipNumSearch(ITEM_ID_END_OF_THE_WORLD);
+        itemCount = Chara.EquipNumSearch(ITEM_ID_END_OF_THE_WORLD);
         if (itemCount > 0) {
             w1 += 100 * LearnedSkillSearch(SKILL_ID_ROLLING_CUTTER) * itemCount;
         }
@@ -24673,7 +24675,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「シンフルオパールリング」の、「温もり」強化
     //----------------------------------------------------------------
     if ((n_A_ActiveSkill == SKILL_ID_NUKUMORI) || (n_A_ActiveSkill == SKILL_ID_NUKUMORI_KABE)) {
-        itemCount = EquipNumSearch(ITEM_ID_SINFUL_OPAL_RING);
+        itemCount = Chara.EquipNumSearch(ITEM_ID_SINFUL_OPAL_RING);
         if (itemCount > 0) {
             w1 += 100 * itemCount;
         }
@@ -24685,7 +24687,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「光輝」の、「雷光弾」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_RAIKODAN) {
-        itemCount = EquipNumSearchMIG(ITEM_ID_KOKI);
+        itemCount = Chara.EquipNumSearchMIG(ITEM_ID_KOKI);
         if (itemCount > 0) {
             if (LearnedSkillSearch(SKILL_ID_SENDENPO) >= 5) {
                 w1 += 2 * n_A_BaseLV * itemCount;
@@ -24699,7 +24701,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「プラチナムアビトレイター」の、「キャノンスピア」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_CANNON_SPEAR) {
-        itemCount = EquipNumSearchMIG(ITEM_ID_PLATINUM_ARBITRATOR);
+        itemCount = Chara.EquipNumSearchMIG(ITEM_ID_PLATINUM_ARBITRATOR);
         if (itemCount > 0) {
             if (LearnedSkillSearch(SKILL_ID_CANNON_SPEAR) >= 5) {
                 w1 += 1 * Math.floor(n_A_BaseLV / 2) * itemCount;
@@ -24711,7 +24713,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「プラチナムアビトレイター」の、「バニシングポイント」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_BANISHING_POINT) {
-        itemCount = EquipNumSearchMIG(ITEM_ID_PLATINUM_ARBITRATOR);
+        itemCount = Chara.EquipNumSearchMIG(ITEM_ID_PLATINUM_ARBITRATOR);
         if (itemCount > 0) {
             if (LearnedSkillSearch(SKILL_ID_CANNON_SPEAR) >= 5) {
                 w1 += 2 * Math.floor(n_A_BaseLV / 2) * itemCount;
@@ -24729,7 +24731,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
         || (n_A_ActiveSkill == SKILL_ID_CARROT_BEAT)
         || (n_A_ActiveSkill == SKILL_ID_SAVAGENO_TAMASHI)
     ) {
-        if ((itemCount = EquipNumSearch(ITEM_SET_ID_ENCHANT_ZODIAC_TOKUSEN_DORAM_CAPE)) > 0) {
+        if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_ENCHANT_ZODIAC_TOKUSEN_DORAM_CAPE)) > 0) {
             w1 += 5 * n_A_SHOULDER_DEF_PLUS * itemCount;
         }
     }
@@ -24742,7 +24744,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
         || (n_A_ActiveSkill == SKILL_ID_CARROT_BEAT)
         || (n_A_ActiveSkill == SKILL_ID_SAVAGENO_TAMASHI)
     ) {
-        if (TimeItemNumSearch(TIME_ITEM_ID_CHOTOTSU_MOUSHIN) > 0) {
+        if (Chara.TimeItemNumSearch(TIME_ITEM_ID_CHOTOTSU_MOUSHIN) > 0) {
             w1 += Math.min(100, charaData[CHARA_DATA_INDEX_MAXHP] / 1000);
         }
     }
@@ -24761,7 +24763,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「ヘビィメタリンカード」の、「カートレボリューション」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_CART_REVOLUTION) {
-        w1 += 50 * CardNumSearch(549);
+        w1 += 50 * Chara.CardNumSearch(549);
     }
 
 
@@ -25005,7 +25007,7 @@ function ApplyPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData
 
 
     // dmg に対して、ここまでで求めた強化値、装備自体の当該スキル強化値、カード自体の当該スキル強化値を適用する
-    dmg = ROUNDDOWN(dmg * (100 + w1) / 100);
+    dmg = Foot.ROUNDDOWN(dmg * (100 + w1) / 100);
 
 
 
@@ -25022,7 +25024,7 @@ function ApplyPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData
                 switch (dmgType) {
 
                     case 1:
-                        dmg = ROUNDDOWN(dmg * 145 / 100);
+                        dmg = Foot.ROUNDDOWN(dmg * 145 / 100);
                         break;
 
                     case 2:
@@ -25127,114 +25129,114 @@ function ApplyPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData
         /*
             // ローリングカッター
             case SKILL_ID_ROLLING_CUTTER:
-        
+
                 // 一般マップでない、かつ、YE系マップでない場合のみ、増加
                 switch (n_B_TAISEI[MOB_CONF_PLAYER_ID_SENTO_AREA]) {
-        
+
                 case MOB_CONF_PLAYER_ID_SENTO_AREA_NONE:
                 case MOB_CONF_PLAYER_ID_SENTO_AREA_YE:
                 case MOB_CONF_PLAYER_ID_SENTO_AREA_YE_GVG_TE:
                 case MOB_CONF_PLAYER_ID_SENTO_AREA_YE_COLOSSEUM:
                 case MOB_CONF_PLAYER_ID_SENTO_AREA_YE_SHINKIRO:
                     break;
-        
+
                 default:
                     w1 += 50;
                     break;
-        
+
                 }
-        
+
                 break;
-        
+
             // クロスリッパーラッシャー
             case SKILL_ID_CROSS_RIPPER_SLASHER:
-        
+
                 // 一般マップでない、かつ、YE系マップでない場合のみ、増加
                 switch (n_B_TAISEI[MOB_CONF_PLAYER_ID_SENTO_AREA]) {
-        
+
                 case MOB_CONF_PLAYER_ID_SENTO_AREA_NONE:
                 case MOB_CONF_PLAYER_ID_SENTO_AREA_YE:
                 case MOB_CONF_PLAYER_ID_SENTO_AREA_YE_GVG_TE:
                 case MOB_CONF_PLAYER_ID_SENTO_AREA_YE_COLOSSEUM:
                 case MOB_CONF_PLAYER_ID_SENTO_AREA_YE_SHINKIRO:
                     break;
-        
+
                 default:
                     w1 += 50;
                     break;
-        
+
                 }
-        
+
                 break;
-        
+
             // ブーストナックル
             case SKILL_ID_BOOST_KNUCKLE:
-        
+
                 // 一般マップでない、かつ、YE系マップでない場合のみ、増加
                 switch (n_B_TAISEI[MOB_CONF_PLAYER_ID_SENTO_AREA]) {
-        
+
                 case MOB_CONF_PLAYER_ID_SENTO_AREA_NONE:
                 case MOB_CONF_PLAYER_ID_SENTO_AREA_YE:
                 case MOB_CONF_PLAYER_ID_SENTO_AREA_YE_GVG_TE:
                 case MOB_CONF_PLAYER_ID_SENTO_AREA_YE_COLOSSEUM:
                 case MOB_CONF_PLAYER_ID_SENTO_AREA_YE_SHINKIRO:
                     break;
-        
+
                 default:
                     w1 += 100;
                     break;
-        
+
                 }
-        
+
                 break;
-        
+
             // パイルバンカー
             case SKILL_ID_PILE_BUNKER:
-        
+
                 // 一般マップでない、かつ、YE系マップでない場合のみ、増加
                 switch (n_B_TAISEI[MOB_CONF_PLAYER_ID_SENTO_AREA]) {
-        
+
                 case MOB_CONF_PLAYER_ID_SENTO_AREA_NONE:
                 case MOB_CONF_PLAYER_ID_SENTO_AREA_YE:
                 case MOB_CONF_PLAYER_ID_SENTO_AREA_YE_GVG_TE:
                 case MOB_CONF_PLAYER_ID_SENTO_AREA_YE_COLOSSEUM:
                 case MOB_CONF_PLAYER_ID_SENTO_AREA_YE_SHINKIRO:
                     break;
-        
+
                 default:
                     w1 += 100;
                     break;
-        
+
                 }
-        
+
                 break;
-        
+
             // バルカンアーム
             case SKILL_ID_VULCAN_ARM:
-        
+
                 // 一般マップでない、かつ、YE系マップでない場合のみ、増加
                 switch (n_B_TAISEI[MOB_CONF_PLAYER_ID_SENTO_AREA]) {
-        
+
                 case MOB_CONF_PLAYER_ID_SENTO_AREA_NONE:
                 case MOB_CONF_PLAYER_ID_SENTO_AREA_YE:
                 case MOB_CONF_PLAYER_ID_SENTO_AREA_YE_GVG_TE:
                 case MOB_CONF_PLAYER_ID_SENTO_AREA_YE_COLOSSEUM:
                 case MOB_CONF_PLAYER_ID_SENTO_AREA_YE_SHINKIRO:
                     break;
-        
+
                 default:
                     w1 += 200;
                     break;
-        
+
                 }
-        
+
                 break;
         */
 
 
     }
 
-    dmg = ROUNDDOWN(dmg * w1 / 100);
+    dmg = Foot.ROUNDDOWN(dmg * w1 / 100);
 
 
 
@@ -25249,16 +25251,16 @@ function ApplyPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData
 function ApplyPhysicalSkillDamageRatioChangeSubArcanaCard(cardid) {
     let vartmp = 0;
 
-    let cardCountArmsRight = CardNumSearch(cardid, CARD_REGION_ID_ARMS_RIGHT_ANY);
-    let cardCountArmsLeft = CardNumSearch(cardid, CARD_REGION_ID_ARMS_LEFT_ANY);
-    let cardCountHeadTop = CardNumSearch(cardid, CARD_REGION_ID_HEAD_TOP_ANY);
-    let cardCountHeadMid = CardNumSearch(cardid, CARD_REGION_ID_HEAD_MID_ANY);
-    let cardCountShield = CardNumSearch(cardid, CARD_REGION_ID_SHIELD_ANY);
-    let cardCountBody = CardNumSearch(cardid, CARD_REGION_ID_BODY_ANY);
-    let cardCountShoulder = CardNumSearch(cardid, CARD_REGION_ID_SHOULDER_ANY);
-    let cardCountShoes = CardNumSearch(cardid, CARD_REGION_ID_SHOES_ANY);
-    let cardCountAccessary1 = CardNumSearch(cardid, CARD_REGION_ID_ACCESSARY_1_ANY);
-    let cardCountAccessary2 = CardNumSearch(cardid, CARD_REGION_ID_ACCESSARY_2_ANY);
+    let cardCountArmsRight = Chara.CardNumSearch(cardid, CARD_REGION_ID_ARMS_RIGHT_ANY);
+    let cardCountArmsLeft = Chara.CardNumSearch(cardid, CARD_REGION_ID_ARMS_LEFT_ANY);
+    let cardCountHeadTop = Chara.CardNumSearch(cardid, CARD_REGION_ID_HEAD_TOP_ANY);
+    let cardCountHeadMid = Chara.CardNumSearch(cardid, CARD_REGION_ID_HEAD_MID_ANY);
+    let cardCountShield = Chara.CardNumSearch(cardid, CARD_REGION_ID_SHIELD_ANY);
+    let cardCountBody = Chara.CardNumSearch(cardid, CARD_REGION_ID_BODY_ANY);
+    let cardCountShoulder = Chara.CardNumSearch(cardid, CARD_REGION_ID_SHOULDER_ANY);
+    let cardCountShoes = Chara.CardNumSearch(cardid, CARD_REGION_ID_SHOES_ANY);
+    let cardCountAccessary1 = Chara.CardNumSearch(cardid, CARD_REGION_ID_ACCESSARY_1_ANY);
+    let cardCountAccessary2 = Chara.CardNumSearch(cardid, CARD_REGION_ID_ACCESSARY_2_ANY);
 
     vartmp += 1 * n_A_Weapon_ATKplus * cardCountArmsRight;
     vartmp += 1 * n_A_Weapon2_ATKplus * cardCountArmsLeft;
@@ -25307,7 +25309,7 @@ function ApplyLexAeterna(mobData, dmg) {
         if (mobData[20] == 1) w_num = 10;
         else w_num = 20;
     }
-    dmg = ROUNDDOWN(dmg * (100 + w_num) / 100);
+    dmg = Foot.ROUNDDOWN(dmg * (100 + w_num) / 100);
 
     return dmg;
 }
@@ -25377,7 +25379,7 @@ function CalcMeanDamageLeftHand(skillId, mobData, dmg) {
  * @param {*} bOnlyUsed true: 時限アイテム効果等も検索する / false: 職業スキルだけを検索する(default)
  * @returns 設定されているLv
  */
-function UsedSkillSearch(sklId, bOnlyUsed = false) {
+export function UsedSkillSearch(sklId, bOnlyUsed = false) {
     var sklLv = 0;
     var effectivLvArray = [0];
     var bAvoidRecalc = false;
@@ -25389,94 +25391,94 @@ function UsedSkillSearch(sklId, bOnlyUsed = false) {
     switch (sklId) {
         // バーサーク
         case SKILL_ID_BERSERK:
-            if (TimeItemNumSearch(35)) effectivLvArray.push(1);
-            if (TimeItemNumSearch(111)) effectivLvArray.push(1);
+            if (Chara.TimeItemNumSearch(35)) effectivLvArray.push(1);
+            if (Chara.TimeItemNumSearch(111)) effectivLvArray.push(1);
             break;
 
         // オーバートラストマックス
         case SKILL_ID_OVER_TRUST_MAX:
-            if (TimeItemNumSearch(112)) effectivLvArray.push(5);
+            if (Chara.TimeItemNumSearch(112)) effectivLvArray.push(5);
             break;
 
         // 魔法力増幅
         case SKILL_ID_MAHORYOKU_ZOFUKU:
-            if ((sklLv = g_confDataNizi[CCharaConfNizi.CONF_ID_MAHORYOKU_ZOFUKU]) > 0) {
+            if (g_confDataNizi && CCharaConfNizi && (sklLv = g_confDataNizi[CCharaConfNizi.CONF_ID_MAHORYOKU_ZOFUKU]) > 0) {
                 effectivLvArray.push(sklLv);
             }
-            if (TimeItemNumSearch(113)) effectivLvArray.push(5);
+            if (Chara.TimeItemNumSearch(113)) effectivLvArray.push(5);
             break;
 
         // オーラブレイド
         case SKILL_ID_AURA_BLADE:
-            if ((sklLv = g_confDataNizi[CCharaConfNizi.CONF_ID_AURA_BLADE]) > 0) {
+            if (g_confDataNizi && CCharaConfNizi && (sklLv = g_confDataNizi[CCharaConfNizi.CONF_ID_AURA_BLADE]) > 0) {
                 effectivLvArray.push(sklLv);
             }
             break;
 
         // トゥルーサイト
         case SKILL_ID_TRUE_SIGHT:
-            if (TimeItemNumSearch(TIME_ITEM_ID_LEASER_OF_EAGLE_TRUE_SIGHT)) {
+            if (Chara.TimeItemNumSearch(TIME_ITEM_ID_LEASER_OF_EAGLE_TRUE_SIGHT)) {
                 effectivLvArray.push(2);
             }
-            if (TimeItemNumSearch(TIME_ITEM_ID_JITTER_BUG)) {
+            if (Chara.TimeItemNumSearch(TIME_ITEM_ID_JITTER_BUG)) {
                 effectivLvArray.push(1);
             }
             break;
 
         // 金剛
         case SKILL_ID_KONGO:
-            if ((sklLv = g_confDataNizi[CCharaConfNizi.CONF_ID_KONGO]) > 0) {
+            if (g_confDataNizi && CCharaConfNizi && (sklLv = g_confDataNizi[CCharaConfNizi.CONF_ID_KONGO]) > 0) {
                 effectivLvArray.push(sklLv);
             }
             break;
 
         // 集中力向上
         case SKILL_ID_SHUCHURYOKU_KOZYO:
-            if (TimeItemNumSearch(TIME_ITEM_ID_VNDER_CANMER_SHUCHURYOKU_KOZYO) > 0) {
+            if (Chara.TimeItemNumSearch(TIME_ITEM_ID_VNDER_CANMER_SHUCHURYOKU_KOZYO) > 0) {
                 effectivLvArray.push(5);
             }
-            else if ((bufLv = g_confDataIchizi[CCharaConfIchizi.CONF_ID_SHUCHURYOKU_KOZYO]) > 0) {
+            else if (g_confDataIchizi && CCharaConfIchizi && (bufLv = g_confDataIchizi[CCharaConfIchizi.CONF_ID_SHUCHURYOKU_KOZYO]) > 0) {
                 effectivLvArray.push(bufLv);
             }
-            else if (TimeItemNumSearch(TIME_ITEM_ID_BLUE_RIBBON) > 0) {
+            else if (Chara.TimeItemNumSearch(TIME_ITEM_ID_BLUE_RIBBON) > 0) {
                 effectivLvArray.push(2);
             }
-            else if (TimeItemNumSearch(4) > 0) {
+            else if (Chara.TimeItemNumSearch(4) > 0) {
                 effectivLvArray.push(1);;
             }
             break;
 
         // アンリミット
         case SKILL_ID_UNLIMIT:
-            if ((bufLv = g_confDataSanzi[CCharaConfSanzi.CONF_ID_UNLIMIT]) > 0) {
+            if (g_confDataSanzi && CCharaConfSanzi && (bufLv = g_confDataSanzi[CCharaConfSanzi.CONF_ID_UNLIMIT]) > 0) {
                 effectivLvArray.push(bufLv);
             }
-            else if (TimeItemNumSearch(TIME_ITEM_ID_GULARUSION_UNLIMIT) > 0) {
+            else if (Chara.TimeItemNumSearch(TIME_ITEM_ID_GULARUSION_UNLIMIT) > 0) {
                 effectivLvArray.push(5);
             }
-            else if (TimeItemNumSearch(TIME_ITEM_ID_TRAVELER_RING_GOKETSU) > 0) {
+            else if (Chara.TimeItemNumSearch(TIME_ITEM_ID_TRAVELER_RING_GOKETSU) > 0) {
                 effectivLvArray.push(5);
             }
-            else if (TimeItemNumSearch(TIME_ITEM_ID_DARK_TRIAD) > 0) {
+            else if (Chara.TimeItemNumSearch(TIME_ITEM_ID_DARK_TRIAD) > 0) {
                 effectivLvArray.push(5);
             }
-            else if (TimeItemNumSearch(TIME_ITEM_ID_URUNO_KAGO) > 0) {
+            else if (Chara.TimeItemNumSearch(TIME_ITEM_ID_URUNO_KAGO) > 0) {
                 effectivLvArray.push(5);
             }
-            else if (TimeItemNumSearch(TIME_ITEM_ID_ENCHANT_GOKETSU_SENZAI_KAIHO_WIND_HAWK_3) > 0) {
+            else if (Chara.TimeItemNumSearch(TIME_ITEM_ID_ENCHANT_GOKETSU_SENZAI_KAIHO_WIND_HAWK_3) > 0) {
                 effectivLvArray.push(5);
             }
-            else if (TimeItemNumSearch(TIME_ITEM_ID_TRIANGLE_DISASTER) > 0) {
+            else if (Chara.TimeItemNumSearch(TIME_ITEM_ID_TRIANGLE_DISASTER) > 0) {
                 effectivLvArray.push(5);
             }
-            else if (TimeItemNumSearch(TIME_ITEM_ID_ENCHANT_GOKETSU_SENZAI_KAIHO_SHADOW_CHASER_2) > 0) {
+            else if (Chara.TimeItemNumSearch(TIME_ITEM_ID_ENCHANT_GOKETSU_SENZAI_KAIHO_SHADOW_CHASER_2) > 0) {
                 effectivLvArray.push(5);
             }
             break;
 
         // テレキネシスインテンス
         case SKILL_ID_TELECHINESIS_INSTENCE:
-            if (TimeItemNumSearch(TIME_ITEM_ID_ILLUSION_ANCIENT_DUGGER_TELECHINESIS_INSTENCE) > 0) {
+            if (Chara.TimeItemNumSearch(TIME_ITEM_ID_ILLUSION_ANCIENT_DUGGER_TELECHINESIS_INSTENCE) > 0) {
                 effectivLvArray.push(3);
             }
             break;
@@ -25485,7 +25487,7 @@ function UsedSkillSearch(sklId, bOnlyUsed = false) {
         case SKILL_ID_SANDANSHO:
 
             // 「陣羽織」による、追加発動効果
-            if (EquipNumSearch(ITEM_ID_ZINBAORI)) {
+            if (Chara.EquipNumSearch(ITEM_ID_ZINBAORI)) {
 
                 if (n_A_SHOULDER_DEF_PLUS >= 9) {
                     effectivLvArray.push(10);
@@ -25499,12 +25501,12 @@ function UsedSkillSearch(sklId, bOnlyUsed = false) {
             }
 
             // 「混沌のサイドワインダーカード」による、追加発動効果
-            if (CardNumSearch(CARD_ID_KONTONNO_SIDEWINDER)) {
+            if (Chara.CardNumSearch(CARD_ID_KONTONNO_SIDEWINDER)) {
                 effectivLvArray.push(5);
             }
 
             // 「変異キメラガレンシスカード」による、追加発動効果
-            if (CardNumSearch(CARD_ID_HENI_CHIMERA_GALENSIS, CARD_REGION_ID_HEAD_TOP_ANY)) {
+            if (Chara.CardNumSearch(CARD_ID_HENI_CHIMERA_GALENSIS, CARD_REGION_ID_HEAD_TOP_ANY)) {
                 effectivLvArray.push(n_A_HEAD_DEF_PLUS);
             }
             break;
@@ -25513,27 +25515,27 @@ function UsedSkillSearch(sklId, bOnlyUsed = false) {
         case SKILL_ID_DOUBLE_ATTACK:
 
             // 「サイドワインダーカード」の効果
-            if (CardNumSearch(CARD_ID_SIDEWINDER)) {
+            if (Chara.CardNumSearch(CARD_ID_SIDEWINDER)) {
                 effectivLvArray.push(1);
             }
 
             // 「ひよこちゃん」の効果
-            if (EquipNumSearch(ITEM_ID_HIYOKOCHAN)) {
+            if (Chara.EquipNumSearch(ITEM_ID_HIYOKOCHAN)) {
                 effectivLvArray.push(2);
             }
 
             // 「[レンタル] ひよこちゃん」の効果
-            if (EquipNumSearch(ITEM_ID_HIYOKOCHAN_RENTAL)) {
+            if (Chara.EquipNumSearch(ITEM_ID_HIYOKOCHAN_RENTAL)) {
                 effectivLvArray.push(2);
             }
 
             // 「バレンタイン帽　反対派の証セット」の効果
-            if (EquipNumSearch(ITEM_SET_ID_VALENTINE_BO_HANTAIHANO_AKASHI)) {
+            if (Chara.EquipNumSearch(ITEM_SET_ID_VALENTINE_BO_HANTAIHANO_AKASHI)) {
                 effectivLvArray.push(2);
             }
 
             // 「彷徨う者の羽織　傘セット」の効果
-            if (EquipNumSearch(ITEM_SET_ID_SAMAYOUMONONO_HAORI_KASA)) {
+            if (Chara.EquipNumSearch(ITEM_SET_ID_SAMAYOUMONONO_HAORI_KASA)) {
                 if (n_A_SHOULDER_DEF_PLUS >= 7) {
                     effectivLvArray.push(5);
                 }
@@ -25543,12 +25545,12 @@ function UsedSkillSearch(sklId, bOnlyUsed = false) {
             }
 
             // 「バレンタイン帽　反対派の証セット」の効果
-            if (EquipNumSearch(ITEM_ID_NEIGAN)) {
+            if (Chara.EquipNumSearch(ITEM_ID_NEIGAN)) {
                 effectivLvArray.push(5);
             }
 
             // 「陣羽織」の効果
-            if (EquipNumSearch(ITEM_ID_ZINBAORI)) {
+            if (Chara.EquipNumSearch(ITEM_ID_ZINBAORI)) {
                 if (n_A_SHOULDER_DEF_PLUS >= 9) {
                     effectivLvArray.push(10);
                 }
@@ -25561,36 +25563,36 @@ function UsedSkillSearch(sklId, bOnlyUsed = false) {
             }
 
             // 「スタッフオブパフィ」の効果
-            if (EquipNumSearch(ITEM_ID_STUFF_OF_PUFFY)) {
+            if (Chara.EquipNumSearch(ITEM_ID_STUFF_OF_PUFFY)) {
                 if (n_A_Weapon_ATKplus >= 10) {
                     effectivLvArray.push(3);
                 }
             }
 
             // 「頭フィーリル　浮遊する賢者セット」の追加発動の効果
-            if (TimeItemNumSearch(71)) {
+            if (Chara.TimeItemNumSearch(71)) {
                 effectivLvArray.push(10);
             }
 
             // 「サーキットボード-OS」の効果
-            if (EquipNumSearch(ITEM_ID_CIRCUIT_BOARD_OS)) {
+            if (Chara.EquipNumSearch(ITEM_ID_CIRCUIT_BOARD_OS)) {
                 if (n_A_Weapon_ATKplus >= 10) {
                     effectivLvArray.push(10);
                 }
             }
 
             // 「トートの書」の効果
-            if (EquipNumSearch(ITEM_ID_TOTONO_SHO) || EquipNumSearch(ITEM_ID_TOTONO_SHO_T1)) {
+            if (Chara.EquipNumSearch(ITEM_ID_TOTONO_SHO) || Chara.EquipNumSearch(ITEM_ID_TOTONO_SHO_T1)) {
                 effectivLvArray.push(10);
             }
 
             // 「潜在覚醒(スペルフィストI)」の効果
-            if (CardNumSearch(CARD_SET_ID_ENCHANT_SHINRINO_KAIHO_SENZAI_SPELL_FIST_1) > 0) {
+            if (Chara.CardNumSearch(CARD_SET_ID_ENCHANT_SHINRINO_KAIHO_SENZAI_SPELL_FIST_1) > 0) {
                 effectivLvArray.push(10);
             }
 
             // 「分身」スキルの効果
-            if (g_confDataSanzi[CCharaConfSanzi.CONF_ID_BUNSHIN] > 0) {
+            if (g_confDataSanzi && CCharaConfSanzi && (g_confDataSanzi[CCharaConfSanzi.CONF_ID_BUNSHIN] > 0)) {
                 effectivLvArray.push(2 * g_confDataSanzi[CCharaConfSanzi.CONF_ID_BUNSHIN]);
             }
 
@@ -25722,7 +25724,7 @@ function GetFixedAppendAtk(skillId, charaData, specData, mobData, w_DAM, ch_MAXM
             if (UsedSkillSearch(SKILL_ID_ENCHANT_BLADE)) {
                 w = w - (mobData[14] + n_B_MDEF2);
             } else {
-                w = ROUNDDOWN(w * (1000 + mobData[14]) / (1000 + mobData[14] * 10) - n_B_MDEF2);
+                w = Foot.ROUNDDOWN(w * (1000 + mobData[14]) / (1000 + mobData[14] * 10) - n_B_MDEF2);
             }
 
             // 最終上昇量を算出
@@ -26247,7 +26249,7 @@ function ApplyReceiveDamageAmplify(mobData, dmg) {
                             if(n_A_ActiveSkill != 0) {
                                 dmg = Math.floor(dmg * 0.6);
                             }
-            
+
                             // 遠距離通常攻撃の場合は、80% への補正
                             else if(n_Enekyori == 1) {
                                 dmg = Math.floor(dmg * 0.8);

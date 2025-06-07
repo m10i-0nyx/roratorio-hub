@@ -203,15 +203,15 @@
             // 機能処理系 javascript ファイル
             {src: "js/calcautospell.js", type: "text/javascript" },
             {src: "../../roro/m/js/rndench.js", type: "text/javascript" },
-            {src: "../../roro/m/js/equip.js", type: "text/javascript" },
-            {src: "../../roro/m/js/learnedskill.js", type: "text/javascript" },
-            {src: "../../roro/m/js/slotpager.js", type: "text/javascript" },
+            //{src: "../../roro/m/js/equip.js", type: "module" },  // roro/m/js/foot.jsの時に依存関係で読み込む
+            //{src: "../../roro/m/js/learnedskill.js", type: "module" },  // roro/m/js/foot.jsの時に依存関係で読み込む
+            //{src: "../../roro/m/js/slotpager.js", type: "module" },  // roro/m/js/foot.jsの時に依存関係で読み込む
             {src: "../../roro/m/js/spmode.js", type: "text/javascript" },
             {src: "../../roro/m/js/quickcontrol.js", type: "text/javascript" },
 
             // データ管理系 javascript ファイル
-            {src: "../../roro/m/js/chara.js", type: "text/javascript" },
-            {src: "../../roro/m/js/mob.js", type: "text/javascript" },
+            //{src: "../../roro/m/js/chara.js", type: "module" },  // roro/m/js/foot.jsの時に依存関係で読み込む
+            //{src: "../../roro/m/js/mob.js", type: "module" },  // roro/m/js/foot.jsの時に依存関係で読み込む
             {src: "../../roro/m/js/CAttackMethodConf.js", type: "text/javascript" },
 
             // キャラクター設定操作系 javascript ファイル
@@ -235,16 +235,16 @@
 
             // 機能処理系 HTML 処理 javascript ファイル
             {src: "../../roro/m/js/CItemInfoManager.js", type: "text/javascript" },
-            {src: "js/hmjob.js", type: "text/javascript" },
+            //{src: "js/hmjob.js", type: "module" },  // roro/m/js/foot.jsの時に依存関係で読み込む
             //{src: "../../roro/m/js/hmautospell.js", type: "text/javascript" },
-            {src: "../../roro/m/js/hmcard.js", type: "text/javascript" },
-            {src: "../../roro/m/js/hmcostume.js", type: "text/javascript" },
+            //{src: "../../roro/m/js/hmcard.js", type: "module" },  // roro/m/js/foot.jsの時に依存関係で読み込む
+            //{src: "../../roro/m/js/hmcostume.js", type: "module" },  // roro/m/js/foot.jsの時に依存関係で読み込む
             //{src: "../../roro/m/js/hmequip.js", type: "text/javascript" },
             {src: "js/CMonsterMapAreaComponentManager.js", type: "text/javascript" },
-            {src: "../../roro/m/js/hmrndopt.js", type: "text/javascript" },
+            //{src: "../../roro/m/js/hmrndopt.js", type: "module" },  // roro/m/js/foot.jsの時に依存関係で読み込む
             //{src: "../../roro/m/js/hmlearnedskill.js", type: "text/javascript" },
             {src: "../../roro/m/js/hmchara.js", type: "text/javascript" },
-            {src: "../../roro/m/js/hmmob.js", type: "text/javascript" },
+            //{src: "../../roro/m/js/hmmob.js", type: "module" },  // roro/m/js/foot.jsの時に依存関係で読み込む
 
             // その他、機能系 javascript ファイル
             {src: "../../roro/m/js/castsim.js", type: "text/javascript" },
@@ -279,7 +279,7 @@
             {src: "js/CBattleCalcInfo.js", type: "text/javascript" },
             {src: "js/CBattleCalcResult.js", type: "text/javascript" },
             {src: "js/CBattleCalcResultAll.js", type: "text/javascript" },
-            {src: "js/head.js", type: "text/javascript" },
+            //{src: "js/head.js", type: "module" },  // roro/m/js/foot.jsの時に依存関係で読み込む
 
             // セーブデータ管理系 javascript ファイル -->
             {src: "../../roro/m/js/CSaveDataMappingManager.js", type: "text/javascript" },
@@ -329,10 +329,10 @@
             {src: "js/saveload.js", type: "text/javascript" },
 
             // 機能処理系 javascript ファイル （この辺の順序整理したい）-->
-            {src: "js/CAttackMethodAreaComponentManager.js", type: "text/javascript" },
+            //{src: "js/CAttackMethodAreaComponentManager.js", type: "module" },
 
             // メイン処理系 javascript ファイル -->
-            {src: "../../roro/m/js/foot.js", type: "text/javascript" },
+            {src: "../../roro/m/js/foot.js", type: "module" },
 
             // 左メニュー用 javascript ファイル -->
             {src: "../../roro/frame.js", type: "text/javascript" },
@@ -392,7 +392,8 @@
         window.addEventListener("load", function () {
             console.log("Window loaded");
             // エンチャントサーチのロード
-            new enchSearch();
+            // DEBUG中
+            //new enchSearch();
 
             // 検索可能ドロップダウンリストのロード
             LoadSelect2();
@@ -495,31 +496,31 @@
 
                                                     <tr>
                                                         <td style="min-width: 4em; text-align:center;">LV</td>
-                                                        <td style="min-width: 7em;"><select id="OBJID_SELECT_BASE_LEVEL" name="A_BaseLV"onChange="CalcStatusPoint(true) | StAllCalc() | CAttackMethodAreaComponentManager.RebuildControls() | AutoCalc()"></select></td>
+                                                        <td style="min-width: 7em;"><select id="OBJID_SELECT_BASE_LEVEL" name="A_BaseLV"onChange="CalcStatusPoint(true) | Foot.StAllCalc() | CAttackMethodAreaComponentManager.RebuildControls() | AutoCalc()"></select></td>
 
                                                         <td style="min-width: 4em; text-align:center;">JobLV</td>
-                                                        <td style="min-width: 7em;"><select id="OBJID_SELECT_JOB_LEVEL" name="A_JobLV"onChange="StAllCalc() | AutoCalc()"></select></td>
+                                                        <td style="min-width: 7em;"><select id="OBJID_SELECT_JOB_LEVEL" name="A_JobLV"onChange="Foot.StAllCalc() | AutoCalc()"></select></td>
 
                                                         <td style="min-width: 4em; text-align:center;">職業</td>
-                                                        <td style="min-width: 7em;"><select id="OBJID_SELECT_JOB" name="A_JOB" onChange="OnChangeJob(this.value) | StAllCalc() | CalcStatusPoint(false) | AutoCalc()"></select></td>
+                                                        <td style="min-width: 7em;"><select id="OBJID_SELECT_JOB" name="A_JOB" onChange="OnChangeJob(this.value) | Foot.StAllCalc() | CalcStatusPoint(false) | AutoCalc()"></select></td>
                                                     </tr>
 
                                                     <tr>
                                                         <td style="text-align: center;">Str</td>
                                                         <td>
-                                                            <select id="OBJID_SELECT_STATUS_STR" name="A_STR" onChange="CalcStatusPoint(false) | StAllCalc() | AutoCalc()"></select>
+                                                            <select id="OBJID_SELECT_STATUS_STR" name="A_STR" onChange="CalcStatusPoint(false) | Foot.StAllCalc() | AutoCalc()"></select>
                                                             <span id="OBJID_SPAN_STATUS_BONUS_STR"></span>
                                                         </td>
 
                                                         <td style="text-align: center;">Agi</td>
                                                         <td>
-                                                            <select id="OBJID_SELECT_STATUS_AGI" name="A_AGI" onChange="CalcStatusPoint(false) | StAllCalc() | AutoCalc()"></select>
+                                                            <select id="OBJID_SELECT_STATUS_AGI" name="A_AGI" onChange="CalcStatusPoint(false) | Foot.StAllCalc() | AutoCalc()"></select>
                                                             <span id="OBJID_SPAN_STATUS_BONUS_AGI"></span>
                                                         </td>
 
                                                         <td style="text-align: center;">Vit</td>
                                                         <td>
-                                                            <select id="OBJID_SELECT_STATUS_VIT" name="A_VIT" onChange="CalcStatusPoint(false) | StAllCalc() | AutoCalc()"></select>
+                                                            <select id="OBJID_SELECT_STATUS_VIT" name="A_VIT" onChange="CalcStatusPoint(false) | Foot.StAllCalc() | AutoCalc()"></select>
                                                             <span id="OBJID_SPAN_STATUS_BONUS_VIT"></span>
                                                         </td>
                                                     </tr>
@@ -527,19 +528,19 @@
                                                     <tr>
                                                         <td style="text-align: center;">Int</td>
                                                         <td>
-                                                            <select id="OBJID_SELECT_STATUS_INT" name="A_INT" onChange="CalcStatusPoint(false) | StAllCalc() | AutoCalc()"></select>
+                                                            <select id="OBJID_SELECT_STATUS_INT" name="A_INT" onChange="CalcStatusPoint(false) | Foot.StAllCalc() | AutoCalc()"></select>
                                                             <span id="OBJID_SPAN_STATUS_BONUS_INT"></span>
                                                         </td>
 
                                                         <td style="text-align: center;">Dex</td>
                                                         <td>
-                                                            <select id="OBJID_SELECT_STATUS_DEX" name="A_DEX" onChange="CalcStatusPoint(false) | StAllCalc() | AutoCalc()"></select>
+                                                            <select id="OBJID_SELECT_STATUS_DEX" name="A_DEX" onChange="CalcStatusPoint(false) | Foot.StAllCalc() | AutoCalc()"></select>
                                                             <span id="OBJID_SPAN_STATUS_BONUS_DEX"></span>
                                                         </td>
 
                                                         <td style="text-align: center;">Luk</td>
                                                         <td>
-                                                            <select id="OBJID_SELECT_STATUS_LUK" name="A_LUK" onChange="CalcStatusPoint(false) | StAllCalc() | AutoCalc()"></select>
+                                                            <select id="OBJID_SELECT_STATUS_LUK" name="A_LUK" onChange="CalcStatusPoint(false) | Foot.StAllCalc() | AutoCalc()"></select>
                                                             <span id="OBJID_SPAN_STATUS_BONUS_LUK"></span>
                                                         </td>
                                                     </tr>
@@ -565,7 +566,7 @@
                                                     <tr>
                                                         <td style="min-width: 4em; text-align:center; background-color: #ddddff;">Pow</td>
                                                         <td style="min-width: 7em;">
-                                                            <select id="OBJID_SELECT_STATUS_POW" name="A_POW" onChange="CalcStatusPoint(false) | StAllCalc() | AutoCalc()"></select>
+                                                            <select id="OBJID_SELECT_STATUS_POW" name="A_POW" onChange="CalcStatusPoint(false) | Foot.StAllCalc() | AutoCalc()"></select>
                                                             <span id="OBJID_SPAN_STATUS_BONUS_POW"></span>
                                                         </td>
 
@@ -583,7 +584,7 @@
                                                     <tr>
                                                         <td style="text-align:center; background-color: #ddddff;">Sta</td>
                                                         <td>
-                                                            <select id="OBJID_SELECT_STATUS_STA" name="A_STA" onChange="CalcStatusPoint(false) | StAllCalc() | AutoCalc()"></select>
+                                                            <select id="OBJID_SELECT_STATUS_STA" name="A_STA" onChange="CalcStatusPoint(false) | Foot.StAllCalc() | AutoCalc()"></select>
                                                             <span id="OBJID_SPAN_STATUS_BONUS_STA"></span>
                                                         </td>
 
@@ -601,7 +602,7 @@
                                                     <tr>
                                                         <td style="text-align:center; background-color: #ddddff;">Wis</td>
                                                         <td>
-                                                            <select id="OBJID_SELECT_STATUS_WIS" name="A_WIS" onChange="CalcStatusPoint(false) | StAllCalc() | AutoCalc()"></select>
+                                                            <select id="OBJID_SELECT_STATUS_WIS" name="A_WIS" onChange="CalcStatusPoint(false) | Foot.StAllCalc() | AutoCalc()"></select>
                                                             <span id="OBJID_SPAN_STATUS_BONUS_WIS"></span>
                                                         </td>
 
@@ -614,7 +615,7 @@
                                                     <tr>
                                                         <td style="text-align:center; background-color: #ddddff;">Spl</td>
                                                         <td>
-                                                            <select id="OBJID_SELECT_STATUS_SPL" name="A_SPL" onChange="CalcStatusPoint(false) | StAllCalc() | AutoCalc()"></select>
+                                                            <select id="OBJID_SELECT_STATUS_SPL" name="A_SPL" onChange="CalcStatusPoint(false) | Foot.StAllCalc() | AutoCalc()"></select>
                                                             <span id="OBJID_SPAN_STATUS_BONUS_SPL"></span>
                                                         </td>
 
@@ -627,7 +628,7 @@
                                                     <tr>
                                                         <td style="text-align:center; background-color: #ddddff;">Con</td>
                                                         <td>
-                                                            <select id="OBJID_SELECT_STATUS_CON" name="A_CON" onChange="CalcStatusPoint(false) | StAllCalc() | AutoCalc()"></select>
+                                                            <select id="OBJID_SELECT_STATUS_CON" name="A_CON" onChange="CalcStatusPoint(false) | Foot.StAllCalc() | AutoCalc()"></select>
                                                             <span id="OBJID_SPAN_STATUS_BONUS_CON"></span>
                                                         </td>
 
@@ -640,7 +641,7 @@
                                                     <tr>
                                                         <td style="text-align:center; background-color: #ddddff;">Crt</td>
                                                         <td>
-                                                            <select id="OBJID_SELECT_STATUS_CRT" name="A_CRT" onChange="CalcStatusPoint(false) | StAllCalc() | AutoCalc()"></select>
+                                                            <select id="OBJID_SELECT_STATUS_CRT" name="A_CRT" onChange="CalcStatusPoint(false) | Foot.StAllCalc() | AutoCalc()"></select>
                                                             <span id="OBJID_SPAN_STATUS_BONUS_CRT"></span>
                                                         </td>
                                                     </tr>
@@ -781,11 +782,11 @@
                         <tr>
                             <td>
                                 <span id="nm026">スピードポーション：</span>
-                                <select id="OBJID_SPEED_POT" name = "A_SpeedPOT" onChange = "StAllCalc() | AutoCalc()">
+                                <select id="OBJID_SPEED_POT" name = "A_SpeedPOT" onChange = "Foot.StAllCalc() | AutoCalc()">
                                 </select>
                                 <br>
                                 <span id="nm027">武器タイプ：</span>
-                                <select id="OBJID_ARMS_TYPE_RIGHT" name="A_WeaponType" onChange="OnChangeArmsTypeRight(this[this.selectedIndex].value) | StAllCalc() | AutoCalc()">
+                                <select id="OBJID_ARMS_TYPE_RIGHT" name="A_WeaponType" onChange="OnChangeArmsTypeRight(this[this.selectedIndex].value) | Foot.StAllCalc() | AutoCalc()">
                                 </select>
                                 <span id = "A_SobWeaponName"></span>
                                 <span id = "OBJID_SPAN_SELECT_ARROW"></span>
@@ -822,7 +823,7 @@
                                             </select>
                                         </td>
                                         <td rowspan="2">
-                                            <select id="OBJID_ARMS_RIGHT_TRANSCENDENCE" name="A_Weapon_Transcendence" onChange = "StAllCalc() | AutoCalc()">
+                                            <select id="OBJID_ARMS_RIGHT_TRANSCENDENCE" name="A_Weapon_Transcendence" onChange = "Foot.StAllCalc() | AutoCalc()">
                                                 <option value="0">-
                                                 <option value="1">★1
                                                 <option value="2">★2
@@ -868,7 +869,7 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <select id="OBJID_ARMS_LEFT_TRANSCENDENCE" name="A_Weapon2_Transcendence" onChange = "StAllCalc() | AutoCalc()" disabled>
+                                            <select id="OBJID_ARMS_LEFT_TRANSCENDENCE" name="A_Weapon2_Transcendence" onChange = "Foot.StAllCalc() | AutoCalc()" disabled>
                                                 <option value="0">-
                                                 <option value="1">★1
                                                 <option value="2">★2
@@ -904,7 +905,7 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <select id="OBJID_HEAD_TOP_TRANSCENDENCE" name="A_HEAD_DEF_Transcendence" onChange = "StAllCalc() | AutoCalc()">
+                                            <select id="OBJID_HEAD_TOP_TRANSCENDENCE" name="A_HEAD_DEF_Transcendence" onChange = "Foot.StAllCalc() | AutoCalc()">
                                                 <option value="0">-
                                                 <option value="1">★1
                                                 <option value="2">★2
@@ -969,7 +970,7 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <select id="OBJID_SHIELD_TRANSCENDENCE" name="A_SHIELD_DEF_Transcendence" onChange = "StAllCalc() | AutoCalc()">
+                                            <select id="OBJID_SHIELD_TRANSCENDENCE" name="A_SHIELD_DEF_Transcendence" onChange = "Foot.StAllCalc() | AutoCalc()">
                                                 <option value="0">-
                                                 <option value="1">★1
                                                 <option value="2">★2
@@ -1004,7 +1005,7 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <select id="OBJID_BODY_TRANSCENDENCE" name="A_BODY_DEF_Transcendence" onChange = "StAllCalc() | AutoCalc()">
+                                            <select id="OBJID_BODY_TRANSCENDENCE" name="A_BODY_DEF_Transcendence" onChange = "Foot.StAllCalc() | AutoCalc()">
                                                 <option value="0">-
                                                 <option value="1">★1
                                                 <option value="2">★2
@@ -1039,7 +1040,7 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <select id="OBJID_SHOULDER_TRANSCENDENCE" name="A_SHOULDER_DEF_Transcendence" onChange = "StAllCalc() | AutoCalc()">
+                                            <select id="OBJID_SHOULDER_TRANSCENDENCE" name="A_SHOULDER_DEF_Transcendence" onChange = "Foot.StAllCalc() | AutoCalc()">
                                                 <option value="0">-
                                                 <option value="1">★1
                                                 <option value="2">★2
@@ -1074,7 +1075,7 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <select id="OBJID_SHOES_TRANSCENDENCE" name="A_SHOES_DEF_Transcendence" onChange = "StAllCalc() | AutoCalc()">
+                                            <select id="OBJID_SHOES_TRANSCENDENCE" name="A_SHOES_DEF_Transcendence" onChange = "Foot.StAllCalc() | AutoCalc()">
                                                 <option value="0">-
                                                 <option value="1">★1
                                                 <option value="2">★2

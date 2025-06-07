@@ -1,42 +1,51 @@
+"use strict";
+import * as CAttackMethodAreaComponentManager from "../../../ro4/m/js/CAttackMethodAreaComponentManager.js";
+import * as Foot from "./foot.js";
+import * as HmCard from "./hmcard.js";
+import * as HmJob from "../../../ro4/m/js/hmjob.js";
+import * as HmRndopt from "./hmrndopt.js";
+import * as LearnedSkill from "./learnedskill.js";
+import * as SlotPager from "./slotpager.js";
+
 /**
  * ステータスや装備などを初期化して職業変更する
  * @param {Number} jobId
  */
-function changeJobSettings(jobId) {
-    var i = 0
-    var j = 0;;
-    var objSelect = null;
-
+export function changeJobSettings(jobId) {
     // 職業情報の初期化
-    InitJobInfo();
-    jobId = n_A_JOB;
+    Foot.InitJobInfo();
+    //jobId = n_A_JOB;
+
     // 計算機の初期化
-    Init();
+    Foot.Init();
     // 武器属性付与手段の名称の設定
-    if (41 <= n_A_JOB && n_A_JOB <= 43) myInnerHtml("ID_A_HUYO_NAME", "暖かい風", 0);
-    else myInnerHtml("ID_A_HUYO_NAME", "武器属性付与", 0);
+    if (jobId == "TAEKWON" && jobId == "STAR") {
+        myInnerHtml("ID_A_HUYO_NAME", "暖かい風", 0);
+    } else {
+        myInnerHtml("ID_A_HUYO_NAME", "武器属性付与", 0);
+    }
     // ベースレベル選択セレクトボックスの設定
     var lv = 0;
     var lvMax = GetBaseLevelMax(jobId);
     var lvMin = GetBaseLevelMin(jobId);
-    objSelect = document.getElementById("OBJID_SELECT_BASE_LEVEL");
+    var objSelect = document.getElementById("OBJID_SELECT_BASE_LEVEL");
     HtmlRemoveOptionAll(objSelect);
     for (lv = lvMin; lv <= lvMax; lv++) {
         HtmlCreateElementOption(lv, lv, objSelect);
     }
     objSelect.value = lvMin;
     // ジョブレベル選択セレクトボックスの設定
-    lv = 0;
-    lvMax = GetJobLevelMax(jobId);
-    lvMin = 1;
-    objSelect = document.getElementById("OBJID_SELECT_JOB_LEVEL");
+    var lv = 0;
+    var lvMax = GetJobLevelMax(jobId);
+    var lvMin = 1;
+    var objSelect = document.getElementById("OBJID_SELECT_JOB_LEVEL");
     HtmlRemoveOptionAll(objSelect);
     for (lv = lvMin; lv <= lvMax; lv++) {
         HtmlCreateElementOption(lv, lv, objSelect);
     }
     objSelect.value = lvMin;
     // ステータス選択セレクトボックスの設定
-    RebuildStatusSelect(jobId);
+    HmJob.RebuildStatusSelect(jobId);
     // 速度ＰＯＴ選択セレクトボックスの設定
     // スピードアップポーション
     for (var i = 2; i <= 3; i++) {
@@ -60,7 +69,7 @@ function changeJobSettings(jobId) {
         document.calcForm.A_SpeedPOT.options[3] = new Option("■特殊(" + SkillObjNew[304][SKILL_DATA_INDEX_NAME] + ")(Lv85)", 3);
     }
     // スパノビの装備制限解除フラグを初期化
-    g_bSuperNoviceFullWeapon = undefined;
+    globalThis.g_bSuperNoviceFullWeapon = undefined;
     // 二刀流状態の解除
     if (n_Nitou) {
         n_Nitou = false;
@@ -69,8 +78,8 @@ function changeJobSettings(jobId) {
     // 武器種類選択セレクトボックスの設定
     var jobData = g_constDataManager.GetDataObject(CONST_DATA_KIND_JOB, jobId);
     HtmlRemoveOptionAll(document.calcForm.A_WeaponType);
-    j = 0;
-    for (i = 0; i <= 21; i++) {
+    var j = 0;
+    for (var i = 0; i <= 21; i++) {
         // スパノビ系の両手斧は装備制限解除状態の時のみ可
         if (GetHigherJobSeriesID(jobId) == JOB_SERIES_ID_SUPERNOVICE) {
             if (i == ITEM_KIND_AXE_2HAND) {
@@ -99,7 +108,7 @@ function changeJobSettings(jobId) {
     }
     OnClickSkillSWLearned();
     // 攻撃手段欄の初期化
-    CAttackMethodAreaComponentManager.RebuildControls();
+    CAttackMethodAreaComponentManager.CAttackMethodAreaComponentManager.RebuildControls();
     // 拡張表示の選択値記憶のリセット
     CExtraInfoAreaComponentManager.ClearStoredValueAll(true);
     // 拡張表示の再構築
@@ -129,7 +138,7 @@ function OnChangeArmsTypeRight(itemKind) {
     var objSelectArrow = null;
 
     // 職業情報の更新
-    InitJobInfo();
+    Foot.InitJobInfo();
 
     // 武器種別の設定
     HtmlSetObjectValueById("OBJID_ARMS_TYPE_RIGHT", itemKind);
@@ -198,7 +207,7 @@ function OnChangeArmsTypeRight(itemKind) {
 
             objSelectArrow = document.createElement("select");
             objSelectArrow.setAttribute("id", "OBJID_SELECT_ARROW");
-            objSelectArrow.setAttribute("onChange", "StAllCalc() | AutoCalc()");
+            objSelectArrow.setAttribute("onChange", "Foot.StAllCalc() | AutoCalc()");
             objRoot.appendChild(objSelectArrow);
         }
 
@@ -228,12 +237,12 @@ function OnChangeArmsTypeRight(itemKind) {
 
     if (GetHigherJobSeriesID(n_A_JOB) == 8 && itemKind != ITEM_KIND_KATAR) {
         if (!n_Nitou) {
-            myInnerHtml("A_SobWeaponName", "　左手：" + '<select id="OBJID_ARMS_TYPE_LEFT" name="A_Weapon2Type" onChange = "OnChangeArmsTypeLeft(this[this.selectedIndex].value) | StAllCalc() | AutoCalc()"> <option value="0">素手or盾<option value="1">短剣<option value="2">片手剣<option value="6">片手斧</select>', 0);
+            myInnerHtml("A_SobWeaponName", "　左手：" + '<select id="OBJID_ARMS_TYPE_LEFT" name="A_Weapon2Type" onChange = "OnChangeArmsTypeLeft(this[this.selectedIndex].value) | Foot.StAllCalc() | AutoCalc()"> <option value="0">素手or盾<option value="1">短剣<option value="2">片手剣<option value="6">片手斧</select>', 0);
         }
     }
     else if ((IsSameJobClass(JOB_ID_KAGERO) || IsSameJobClass(JOB_ID_OBORO)) && (itemKind != ITEM_KIND_FUMA)) {
         if (!n_Nitou) {
-            myInnerHtml("A_SobWeaponName", "　左手：" + '<select id="OBJID_ARMS_TYPE_LEFT" name="A_Weapon2Type" onChange = "OnChangeArmsTypeLeft(this[this.selectedIndex].value) | StAllCalc() | AutoCalc()"> <option value=0>素手or盾<option value=1>短剣</select>', 0);
+            myInnerHtml("A_SobWeaponName", "　左手：" + '<select id="OBJID_ARMS_TYPE_LEFT" name="A_Weapon2Type" onChange = "OnChangeArmsTypeLeft(this[this.selectedIndex].value) | Foot.StAllCalc() | AutoCalc()"> <option value=0>素手or盾<option value=1>短剣</select>', 0);
         }
     }
     else {
@@ -275,17 +284,17 @@ function OnChangeArmsTypeRight(itemKind) {
     OnChangeEquip(EQUIP_REGION_ID_ARMS, parseInt(eval(OBJID_ARMS_RIGHT.value)));
 
     // 使用可否の更新
-    if (GetSlotMode() == SLOTPAGER_MODE_CARD) {
-        SetCardSlotEnability(EQUIP_REGION_ID_ARMS);
-        SetCardSlotEnability(EQUIP_REGION_ID_SHIELD);
+    if (SlotPager.GetSlotMode() == SLOTPAGER_MODE_CARD) {
+        HmCard.SetCardSlotEnability(EQUIP_REGION_ID_ARMS);
+        HmCard.SetCardSlotEnability(EQUIP_REGION_ID_SHIELD);
     }
     else {
-        SetRndOptEnablityAll();
+        HmRndopt.SetRndOptEnablityAll();
         // SetEnchSlotsEnablity();
     }
 
     // 攻撃手段の更新
-    CAttackMethodAreaComponentManager.RebuildControls();
+    CAttackMethodAreaComponentManager.CAttackMethodAreaComponentManager.RebuildControls();
 
     // アイテムデータ説明の更新
     CItemInfoManager.OnChangeEquip(CONST_DATA_KIND_ITEM, n_A_Equip[EQUIP_REGION_ID_ARMS]);
@@ -366,7 +375,7 @@ function GetFlagAppendedItemName(targetId) {
     return (IsLearnedEffectEquipable(CONST_DATA_KIND_ITEM, targetId)) ? ("【習】" + baseName) : baseName;
 }
 
-function GetFlagAppendedCardName(targetId) {
+export function GetFlagAppendedCardName(targetId) {
 
     var baseName = "";
 
@@ -377,8 +386,7 @@ function GetFlagAppendedCardName(targetId) {
 
 function IsLearnedEffectEquipable(dataKind, targetId) {
 
-    var idx = 0;
-    var idxSet = 0;
+    let setIndexArray;
 
     // アイテム単品を判定
     if (dataKind == CONST_DATA_KIND_ITEM) {
@@ -403,15 +411,15 @@ function IsLearnedEffectEquipable(dataKind, targetId) {
     // セットでの対象を判定
     if (setIndexArray) {
 
-        for (idxSet = 0; idxSet < setIndexArray.length; idxSet++) {
+        for (let idxSet = 0; idxSet < setIndexArray.length; idxSet++) {
 
-            setIndex = setIndexArray[idxSet];
+            let setIndex = setIndexArray[idxSet];
 
-            setDataId = w_SE[setIndex][0];
+            let setDataId = w_SE[setIndex][0];
 
             // セット定義のアイテムを判定
             if (setDataId >= 0) {
-                for (idx = ITEM_DATA_INDEX_SPBEGIN; idx < ItemObjNew[setDataId].length; idx += 2) {
+                for (var idx = ITEM_DATA_INDEX_SPBEGIN; idx < ItemObjNew[setDataId].length; idx += 2) {
                     if (ItemObjNew[setDataId][idx] == ITEM_SP_LEARNED_SKILL_EFFECT) {
                         return true;
                     }
@@ -420,7 +428,7 @@ function IsLearnedEffectEquipable(dataKind, targetId) {
 
             // セット定義のカードを判定
             else {
-                for (idx = CARD_DATA_INDEX_SPBEGIN; idx < CardObjNew[Math.abs(setDataId)].length; idx += 2) {
+                for (var idx = CARD_DATA_INDEX_SPBEGIN; idx < CardObjNew[Math.abs(setDataId)].length; idx += 2) {
                     if (CardObjNew[Math.abs(setDataId)][idx] == ITEM_SP_LEARNED_SKILL_EFFECT) {
                         return true;
                     }
@@ -466,7 +474,7 @@ function OnChangeArmsTypeLeft(itemKind) {
 
     // 武器種別の設定
     HtmlSetObjectValueById("OBJID_ARMS_TYPE_LEFT", itemKind);
-    n_A_Weapon2Type = itemKind;
+    globalThis.n_A_Weapon2Type = itemKind;
 
     // 対象セレクトボックスの取得
     objSelectLeft = document.getElementById("OBJID_ARMS_LEFT");
@@ -478,7 +486,7 @@ function OnChangeArmsTypeLeft(itemKind) {
     objSelectShiledTranscendence = document.getElementById("OBJID_SHIELD_TRANSCENDENCE");
 
     // 職業情報の更新
-    InitJobInfo();
+    Foot.InitJobInfo();
 
     // 左手装備、および、盾装備の、情報クリア
     ClearEquip(EQUIP_REGION_ID_ARMS_LEFT);
@@ -491,7 +499,7 @@ function OnChangeArmsTypeLeft(itemKind) {
     if (itemKind != ITEM_KIND_NONE) {
 
         // 盾のカード情報を全クリア
-        ClearCardSlot(EQUIP_REGION_ID_SHIELD);
+        HmCard.ClearCardSlot(EQUIP_REGION_ID_SHIELD);
 
         // 左手武器欄を有効化する
         objArrayToVisible.push(objSelectLeft);
@@ -512,7 +520,7 @@ function OnChangeArmsTypeLeft(itemKind) {
     else {
 
         // 左手武器のカード情報を全クリア
-        ClearCardSlot(EQUIP_REGION_ID_ARMS_LEFT);
+        HmCard.ClearCardSlot(EQUIP_REGION_ID_ARMS_LEFT);
 
         // 左手武器欄を無効化する
         HtmlSetObjectValueById("OBJID_ARMS_LEFT_TRANSCENDENCE", 0);
@@ -566,19 +574,19 @@ function OnChangeArmsTypeLeft(itemKind) {
     OnChangeEquip(EQUIP_REGION_ID_ARMS_LEFT, HtmlGetObjectValueById("OBJID_ARMS_LEFT", ITEM_ID_SUDE));
 
     // 左手武器、および盾のカード欄を再構築
-    RebuildCardSelect(EQUIP_REGION_ID_ARMS_LEFT, n_A_Equip[EQUIP_REGION_ID_ARMS_LEFT]);
-    RebuildCardSelect(EQUIP_REGION_ID_SHIELD, n_A_Equip[EQUIP_REGION_ID_SHIELD]);
+    HmCard.RebuildCardSelect(EQUIP_REGION_ID_ARMS_LEFT, n_A_Equip[EQUIP_REGION_ID_ARMS_LEFT]);
+    HmCard.RebuildCardSelect(EQUIP_REGION_ID_SHIELD, n_A_Equip[EQUIP_REGION_ID_SHIELD]);
 
     // ステートフルデータも更新する
     SetStatefullData("DATA_OBJID_ARMS_LEFT", n_A_Equip[EQUIP_REGION_ID_ARMS_LEFT]);
 
     // 使用可否の更新
-    if (GetSlotMode() == SLOTPAGER_MODE_CARD) {
-        SetCardSlotEnability(EQUIP_REGION_ID_ARMS_LEFT);
-        SetCardSlotEnability(EQUIP_REGION_ID_SHIELD);
+    if (SlotPager.GetSlotMode() == SLOTPAGER_MODE_CARD) {
+        HmCard.SetCardSlotEnability(EQUIP_REGION_ID_ARMS_LEFT);
+        HmCard.SetCardSlotEnability(EQUIP_REGION_ID_SHIELD);
     }
     else {
-        SetRndOptEnablityAll();
+        HmRndopt.SetRndOptEnablityAll();
         // SetEnchSlotsEnablity();
     }
 }
@@ -684,10 +692,10 @@ function RebuildArmsLeftSelect() {
 function OnChangeRefined() {
 
     // ステータス全計算
-    StAllCalc();
+    Foot.StAllCalc();
 
     // 攻撃手段の更新
-    CAttackMethodAreaComponentManager.RebuildControls();
+    CAttackMethodAreaComponentManager.CAttackMethodAreaComponentManager.RebuildControls();
 
 }
 
@@ -708,22 +716,22 @@ function OnChangeEquip(eqpRgnId, itemId) {
     ClearEnchantOnChangeEquip(eqpRgnId, itemId);
 
     // スロット欄の更新
-    if (GetSlotMode() == SLOTPAGER_MODE_CARD) {
+    if (SlotPager.GetSlotMode() == SLOTPAGER_MODE_CARD) {
 
         // 選択セレクトボックスの再構築
-        RebuildCardSelect(eqpRgnId, itemId);
+        HmCard.RebuildCardSelect(eqpRgnId, itemId);
 
         // 使用可否の設定
-        SetCardSlotEnability(eqpRgnId);
+        HmCard.SetCardSlotEnability(eqpRgnId);
     }
     else {
 
         // 選択セレクトボックスの再構築
-        RebuildRndOptSelect(eqpRgnId, itemId);
+        HmRndopt.RebuildRndOptSelect(eqpRgnId, itemId);
         // RebuildRndEnchSelect(eqpRgnId, itemId);
 
         // 使用可否の設定
-        SetRndOptEnablityAll();
+        HmRndopt.SetRndOptEnablityAll();
         // SetEnchSlotsEnablity();
     }
 
@@ -731,7 +739,7 @@ function OnChangeEquip(eqpRgnId, itemId) {
     UpdateStatefullDataOnChangeEquip(eqpRgnId);
 
     // ステータス全計算
-    StAllCalc();
+    Foot.StAllCalc();
 
     // アイテムデータ表示の更新
     CItemInfoManager.OnChangeEquip(CONST_DATA_KIND_ITEM, itemId);
@@ -740,10 +748,10 @@ function OnChangeEquip(eqpRgnId, itemId) {
     UpdateLearnedSkillNotice();
 
     // 習得スキル設定欄の強調表示更新
-    UpdateLearnedSkillSettingColoring();
+    LearnedSkill.UpdateLearnedSkillSettingColoring();
 
     // 攻撃手段の更新
-    CAttackMethodAreaComponentManager.RebuildControls();
+    CAttackMethodAreaComponentManager.CAttackMethodAreaComponentManager.RebuildControls();
 
 }
 
@@ -961,27 +969,27 @@ function UpdateStatefullDataOnChangeEquip(eqpRgnId) {
     SetStatefullData("DATA_" + strObjId, valueOfObject);
 
     // カード・一般エンチャント
-    for (idx = idxMinCard; idx <= idxMaxCard; idx++) {
+    for (var idx = idxMinCard; idx <= idxMaxCard; idx++) {
         valueOfObject = HtmlGetObjectValueById(strObjId + "_CARD_" + idx, 0);
         SetStatefullData("DATA_" + strObjId + "_CARD_" + idx, valueOfObject);
     }
 
     // ランダムオプション
-    for (idx = 0; idx < RND_OPT_SLOT_COUNT; idx++) {
+    for (var idx = 0; idx < RND_OPT_SLOT_COUNT; idx++) {
 
         // ランダムオプション種別
-        objIdKind = GetObjectIdRndOptKind(eqpRgnId, idx)
+        objIdKind = HmRndopt.GetObjectIdRndOptKind(eqpRgnId, idx)
         rndOptKind = HtmlGetObjectValueByIdAsInteger(objIdKind, 0);
 
         // ランダムオプション値
-        objIdValue = GetObjectIdRndOptValue(eqpRgnId, idx)
+        objIdValue = HmRndopt.GetObjectIdRndOptValue(eqpRgnId, idx)
         rndOptValue = HtmlGetObjectValueByIdAsInteger(objIdValue, 0);
 
         SetEquipRndOptTable(eqpRgnId, idx, rndOptKind, rndOptValue);
     }
 }
 
-function UpdateLearnedSkillNotice() {
+export function UpdateLearnedSkillNotice() {
 
     var idx = 0;
     var itemId = 0;
@@ -1033,9 +1041,9 @@ function UpdateLearnedSkillNotice() {
 
     // 全てのカードを走査し、習得スキル設定対象がないかをチェック
     if (!bEquipped) {
-        for (idx = 0; idx < n_A_card.length; idx++) {
+        for (var idx = 0; idx < n_A_card.length; idx++) {
 
-            cardId = n_A_card[idx];
+            var cardId = n_A_card[idx];
 
             spidx = CARD_DATA_INDEX_SPBEGIN;
 
@@ -1152,7 +1160,7 @@ function OnClickSwapArms() {
     }
 
     // ランダムエンチャント画面の場合は、カード画面にする
-    slotPageModeOld = GetSlotMode();
+    slotPageModeOld = SlotPager.GetSlotMode();
     if (slotPageModeOld == SLOTPAGER_MODE_RNDENCH) {
         OnClickSlotModeButton();
     }
@@ -1206,7 +1214,7 @@ function OnClickSwapArms() {
     SaveSlotStateRndEnch(EQUIP_REGION_ID_ARMS_LEFT);
 
     // 入力画面を戻す
-    if (slotPageModeOld != GetSlotMode()) {
+    if (slotPageModeOld != SlotPager.GetSlotMode()) {
         OnClickSlotModeButton();
     }
 
@@ -1226,7 +1234,7 @@ function OnChangeCard(cardId) {
 
     SaveSlotStateCardAll();
 
-    StAllCalc();
+    Foot.StAllCalc();
 
     if (cardId >= 0) {
         CItemInfoManager.OnChangeEquip(CONST_DATA_KIND_CARD, cardId);
@@ -1236,10 +1244,10 @@ function OnChangeCard(cardId) {
     UpdateLearnedSkillNotice();
 
     // 習得スキル設定欄の強調表示更新
-    UpdateLearnedSkillSettingColoring();
+    LearnedSkill.UpdateLearnedSkillSettingColoring();
 
     // 攻撃手段の更新
-    CAttackMethodAreaComponentManager.RebuildControls();
+    CAttackMethodAreaComponentManager.CAttackMethodAreaComponentManager.RebuildControls();
 }
 
 
@@ -1251,7 +1259,7 @@ function OnChangeCard(cardId) {
  */
 function OnChangeCostume(costumeId) {
     SaveSlotStateCostumeAll();
-    StAllCalc();
+    Foot.StAllCalc();
     CItemInfoManager.OnChangeEquip(CONST_DATA_KIND_COSTUME, costumeId);
 }
 
@@ -1264,7 +1272,7 @@ function OnChangeCostume(costumeId) {
  */
 function OnChangeRandomEnchant() {
     SaveSlotStateRndEnchAll();
-    StAllCalc();
+    Foot.StAllCalc();
 }
 
 
@@ -1460,7 +1468,7 @@ function RebuildArmorsSelect() {
  *-----------------------------------------------------------------------------------------------
  * @return なし
  ************************************************************************************************/
-function InitEquipDefaultAll() {
+export function InitEquipDefaultAll() {
 
     // 個別関数を全コール
     InitEquipDefault(EQUIP_REGION_ID_ARMS);
@@ -1568,7 +1576,7 @@ function __InitEquipDefault(objidPrifix, itemId) {
  *-----------------------------------------------------------------------------------------------
  * @return なし
  ************************************************************************************************/
-function ClearEquipAll() {
+export function ClearEquipAll() {
 
     // 個別関数を全コール
     ClearEquip(EQUIP_REGION_ID_ARMS);
@@ -1663,23 +1671,23 @@ function __ClearEquip(eqpRgnId, objidPrifix, itemId) {
     HtmlSetObjectValueById(objidPrifix, itemId);
 
     // スロット欄の更新
-    if (GetSlotMode() == SLOTPAGER_MODE_CARD) {
+    if (SlotPager.GetSlotMode() == SLOTPAGER_MODE_CARD) {
 
         // 選択セレクトボックスの再構築
-        RebuildCardSelect(eqpRgnId, itemId);
+        HmCard.RebuildCardSelect(eqpRgnId, itemId);
 
         // 使用可否の設定
-        SetCardSlotEnability(eqpRgnId);
+        HmCard.SetCardSlotEnability(eqpRgnId);
     }
     else {
 
         // 選択セレクトボックスの再構築
-        RebuildRndOptSelect(eqpRgnId, itemId);
-        // RebuildRndEnchSelect(eqpRgnId, itemId);
+        HmRndopt.RebuildRndOptSelect(eqpRgnId, itemId);
+        // HmRndopt.RebuildRndEnchSelect(eqpRgnId, itemId);
 
         // 使用可否の設定
-        SetRndOptEnablity(eqpRgnId);
-        // SetEnchSlotsEnablity(eqpRgnId);
+        HmRndopt.SetRndOptEnablity(eqpRgnId);
+        // HmRndopt.SetEnchSlotsEnablity(eqpRgnId);
     }
 
     // ステートフルデータを更新
@@ -1699,7 +1707,7 @@ function __ClearEquip(eqpRgnId, objidPrifix, itemId) {
  *-----------------------------------------------------------------------------------------------
  * @return true:遠距離攻撃, false:遠距離でない
  ************************************************************************************************/
-function IsLongRange(itemId) {
+export function IsLongRange(itemId) {
 
     var wpntype = 0;
     wpntype = ItemObjNew[itemId][ITEM_DATA_INDEX_KIND];
@@ -1734,7 +1742,7 @@ function IsLongRange(itemId) {
 function copyAccs(from, to) {
     // ランダムオプション入力中はelementがないので処理できない
     // 中途半端になるので何もしないようにする
-    if (GetSlotMode() != SLOTPAGER_MODE_CARD) {
+    if (SlotPager.GetSlotMode() != SLOTPAGER_MODE_CARD) {
         return;
     }
 

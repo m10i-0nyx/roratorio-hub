@@ -1,14 +1,17 @@
 function CCharaConfIchizi(confArray) {
 
+    // 追加: 配列の初期化
+    this.confDataObj = [];
+
     // 継承定義
     CCharaConfIchizi.prototype = new CConfBase();
-
 
 
     // 基底クラスのコンストラクタ呼び出し
     CConfBase.call(this, confArray);
 
-
+    // confArrayがnullやundefinedの場合は空配列で初期化
+    this.confArray = (confArray && Array.isArray(confArray)) ? confArray : [];
 
     // 設定の限界値
     // この数を超える場合は、セーブデータの拡張が必要
@@ -213,8 +216,8 @@ function CCharaConfIchizi(confArray) {
         //----------------------------------------------------------------
         // 一次職支援設定変数配列を初期化
         //----------------------------------------------------------------
-        for (idx = 0; idx < this.confCountLimit; idx++) {
-            if (idx < this.confDataObj.length) {
+        for (var idx = 0; idx < this.confCountLimit; idx++) {
+            if (this.confDataObj[idx]) {
                 this.confArray[idx] = this.confDataObj[idx][CConfBase.CONF_DATA_INDEX_DEFAULT_VALUE];
             }
             else {

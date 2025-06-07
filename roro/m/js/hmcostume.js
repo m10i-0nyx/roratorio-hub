@@ -9,7 +9,7 @@
  *-----------------------------------------------------------------------------------------------
  * @return なし
  ************************************************************************************************/
-function ClearCostumeSlotAll(eqpRgnId) {
+export function ClearCostumeSlotAll(eqpRgnId) {
 
     // 個別関数を全コール
     ClearCostumeSlot(EQUIP_REGION_ID_HEAD_UNDER);
@@ -106,7 +106,7 @@ function __ClearCostumeSlot(objidPrifix) {
  * @param itemId 変更後のアイテムＩＤ
  *-----------------------------------------------------------------------------------------------
  ************************************************************************************************/
-function RebuildCostumeSelect(eqpRgnId, itemId) {
+export function RebuildCostumeSelect(eqpRgnId, itemId) {
 
     var objidPrifix = "";
     var objSelect = null;
@@ -199,7 +199,7 @@ function BuildUpCostumeSlotsCostume(eqpRgnId, itemId, objArySlots) {
 
     var sortedCostumeObj = null;
 
-    var jobData = g_constDataManager.GetDataObject(CONST_DATA_KIND_JOB, n_A_JOB);
+    var jobData = g_constDataManager.GetDataObject(CONST_DATA_KIND_JOB, globalThis.n_A_JOB);
 
 
 
@@ -256,7 +256,7 @@ function BuildUpCostumeSlotsCostume(eqpRgnId, itemId, objArySlots) {
 /**
  * 衣装スロットの使用可否を設定する.
  */
-function SetCostumeSlotEnabilityAll() {
+export function SetCostumeSlotEnabilityAll() {
 
     // 個別関数を全コール
     SetCostumeSlotEnability(EQUIP_REGION_ID_HEAD_UNDER);

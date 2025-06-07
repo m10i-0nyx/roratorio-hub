@@ -1,9 +1,14 @@
 "use strict";
+import * as Chara from "../../../roro/m/js/chara.js";
+import * as Foot from "../../../roro/m/js/foot.js";
+import * as Head from "./head.js";
+import * as HmRndopt from "../../../roro/m/js/hmrndopt.js";
+import * as LearnedSkill from "../../../roro/m/js/learnedskill.js";
 
-g_pureStatus = [];
-g_bonusStatus = [];
+globalThis.g_pureStatus = [];
+globalThis.g_bonusStatus = [];
 
-function RebuildStatusSelect(jobId) {
+export function RebuildStatusSelect(jobId) {
 
     var objStr = null;
     var objAgi = null;
@@ -91,7 +96,7 @@ function RebuildStatusSelect(jobId) {
  * ステータスポイントを計算する
  * @param bIgnoreAutoCalc 自動計算回避フラグ
  */
-function CalcStatusPoint(bIgnoreAutoCalc) {
+export function CalcStatusPoint(bIgnoreAutoCalc) {
 
     // ベースレベルの自動計算チェックボックスの状態を取得
     if (BLVauto.checked == 0) {
@@ -205,7 +210,7 @@ function CalcStatusPoint(bIgnoreAutoCalc) {
  * @param statusValue ステータス値
  * @return 必要コスト
  */
-function GetStatusIncrementCost(statusValue) {
+export function GetStatusIncrementCost(statusValue) {
     if (statusValue <= 100) return Math.floor((statusValue - 2) / 10) + 2;
     if (statusValue <= 105) return 16;
     if (statusValue <= 110) return 20;
@@ -220,7 +225,7 @@ function GetStatusIncrementCost(statusValue) {
  * @param statusValue ステータス値
  * @return 必要コストの相和
  */
-function GetStatusTotalCost(statusValue) {
+export function GetStatusTotalCost(statusValue) {
 
     var statusPoint = 0;
 
@@ -237,7 +242,7 @@ function GetStatusTotalCost(statusValue) {
  * @param baseLevel ベースレベル
  * @return 獲得ステー足すポイント
  */
-function GetEarningStatusPoint(baseLevel) {
+export function GetEarningStatusPoint(baseLevel) {
 
     if (baseLevel <= 1) {
         return 0;
@@ -290,7 +295,7 @@ function GetEarningStatusPoint(baseLevel) {
 /**
  * ステータス補正を画面出力する.
  */
-function DisplayStatusBonusAll(baseLv, valSTR, valAGI, valVIT, valINT, valDEX, valLUK, valPOW, valSTA, valWIS, valSPL, valCON, valCRT) {
+export function DisplayStatusBonusAll(baseLv, valSTR, valAGI, valVIT, valINT, valDEX, valLUK, valPOW, valSTA, valWIS, valSPL, valCON, valCRT) {
 
     var valWork = 0;
     var objStatus = null;
@@ -361,7 +366,7 @@ function DisplayStatusBonusAll(baseLv, valSTR, valAGI, valVIT, valINT, valDEX, v
 /**
  * 導出ステータスを画面出力する.
  */
-function DisplayReferStatusAll() {
+export function DisplayReferStatusAll() {
 
     var valWork = 0;
     var objStatus = null;
@@ -404,7 +409,7 @@ function DisplayReferStatusAll() {
  * 純粋な基本ステータスの全合計を取得する.
  * @reutnr 純粋な基本ステータスの全合計
  */
-function GetTotalPureBasicStatus() {
+export function GetTotalPureBasicStatus() {
     return (SU_STR + SU_AGI + SU_VIT + SU_DEX + SU_INT + SU_LUK);
 }
 
@@ -414,7 +419,7 @@ function GetTotalPureBasicStatus() {
 //
 //================================================================================================================================
 
-function StoreSpecStatusBonusAll(valPOW, valSTA, valWIS, valSPL, valCON, valCRT) {
+export function StoreSpecStatusBonusAll(valPOW, valSTA, valWIS, valSPL, valCON, valCRT) {
 
     var value = 0;
 
@@ -442,7 +447,7 @@ function StoreSpecStatusBonusAll(valPOW, valSTA, valWIS, valSPL, valCON, valCRT)
  * @param {*} paramId MIG_PARAM_ID_{POW|STA|WIS|SPL|CON|CRT}
  * @returns
  */
-function GetTotalSpecStatus(paramId) {
+export function GetTotalSpecStatus(paramId) {
 
     var value = 0;
 
@@ -465,7 +470,7 @@ function GetTotalSpecStatus(paramId) {
  * @param baseLevel ベースレベル
  * @return 獲得ステータスポイント
  */
-function GetEarningTSStatusPoint(baseLv) {
+export function GetEarningTSStatusPoint(baseLv) {
     var stPoint = 0;
     if (baseLv < 200) {
         return 0;
@@ -476,15 +481,15 @@ function GetEarningTSStatusPoint(baseLv) {
     return stPoint;
 }
 
-function GetTStatusPoint(baseLv) {
-    stPoint = GetEarningTSStatusPoint(baseLv);
+export function GetTStatusPoint(baseLv) {
+    var stPoint = GetEarningTSStatusPoint(baseLv);
     // 消費ポイントを計算
-    stPoint -= g_pureStatus[MIG_PARAM_ID_POW];
-    stPoint -= g_pureStatus[MIG_PARAM_ID_STA];
-    stPoint -= g_pureStatus[MIG_PARAM_ID_WIS];
-    stPoint -= g_pureStatus[MIG_PARAM_ID_SPL];
-    stPoint -= g_pureStatus[MIG_PARAM_ID_CON];
-    stPoint -= g_pureStatus[MIG_PARAM_ID_CRT];
+    stPoint -= globalThis.g_pureStatus[MIG_PARAM_ID_POW];
+    stPoint -= globalThis.g_pureStatus[MIG_PARAM_ID_STA];
+    stPoint -= globalThis.g_pureStatus[MIG_PARAM_ID_WIS];
+    stPoint -= globalThis.g_pureStatus[MIG_PARAM_ID_SPL];
+    stPoint -= globalThis.g_pureStatus[MIG_PARAM_ID_CON];
+    stPoint -= globalThis.g_pureStatus[MIG_PARAM_ID_CRT];
 
     return stPoint;
 }
@@ -492,7 +497,7 @@ function GetTStatusPoint(baseLv) {
 /**
  * 四次特性ステータス適用関数.
  */
-function ApplySpecStatusModifications(charaData, n_tok) {
+export function ApplySpecStatusModifications(charaData, n_tok) {
     charaData[CHARA_DATA_INDEX_STATUS_ATK] += 5 * GetTotalSpecStatus(MIG_PARAM_ID_POW);
 
     charaData[CHARA_DATA_INDEX_HIT] += 2 * GetTotalSpecStatus(MIG_PARAM_ID_CON);
@@ -500,11 +505,11 @@ function ApplySpecStatusModifications(charaData, n_tok) {
 }
 
 // 元の処理の構造上、同時に処理できないもの
-function ApplySpecStatusModifyMATK(charaData, n_tok) {
+export function ApplySpecStatusModifyMATK(charaData, n_tok) {
     charaData[CHARA_DATA_INDEX_STATUS_MATK] += 5 * GetTotalSpecStatus(MIG_PARAM_ID_SPL);
 }
 
-function GetPAtk() {
+export function GetPAtk() {
 
     var value = 0;
     var sklLv = 0;
@@ -516,15 +521,15 @@ function GetPAtk() {
     value += Math.floor(GetTotalSpecStatus(MIG_PARAM_ID_CON) / 5);
 
     // 装備効果
-    value += GetEquippedTotalSPEquip(ITEM_SP_P_ATK_PLUS);
-    value += GetEquippedTotalSPCardAndElse(ITEM_SP_P_ATK_PLUS);
-    value += GetRndOptTotalValue(ITEM_SP_P_ATK_PLUS);
+    value += Foot.GetEquippedTotalSPEquip(ITEM_SP_P_ATK_PLUS);
+    value += Foot.GetEquippedTotalSPCardAndElse(ITEM_SP_P_ATK_PLUS);
+    value += HmRndopt.GetRndOptTotalValue(ITEM_SP_P_ATK_PLUS);
 
     // 性能カスタマイズ
     value += g_objCharaConfCustomSpecStatus.GetConf(CCharaConfCustomSpecStatus.CONF_ID_P_ATK_PLUS)
 
     // 「インペリアルガード」スキル「アタックスタンス」による効果
-    if ((sklLv = UsedSkillSearch(SKILL_ID_ATTACK_STANCE)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_ATTACK_STANCE)) > 0) {
 
         // 盾装備時限定
         if (n_A_Equip[EQUIP_REGION_ID_SHIELD] != ITEM_ID_NOEQUIP_SHIELD) {
@@ -533,17 +538,17 @@ function GetPAtk() {
     }
 
     // 「アビスチェイサー」スキル「アビススレイヤー」による効果
-    if ((sklLv = UsedSkillSearch(SKILL_ID_ABYSS_SLAYER)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_ABYSS_SLAYER)) > 0) {
         value += 2 * sklLv;
     }
 
     // 「インクイジター」スキル「強靭な信念」による効果
-    if ((sklLv = UsedSkillSearch(SKILL_ID_KYOZINNA_SHINNEN)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_KYOZINNA_SHINNEN)) > 0) {
         value += [0, 1, 3, 5, 10, 15][sklLv];
     }
 
     // 「トルバドゥール／トルヴェール」スキル「ステージマナー」による効果
-    if ((sklLv = UsedSkillSearch(SKILL_ID_STAGE_MANNER)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_STAGE_MANNER)) > 0) {
 
         // 弓・楽器・鞭装備時装備時限定
         switch (n_A_WeaponType) {
@@ -556,19 +561,19 @@ function GetPAtk() {
     }
 
     // 「天帝」スキル「兵法修練」による効果
-    if ((sklLv = Math.max(LearnedSkillSearch(SKILL_ID_HYOHO_SHUREN), UsedSkillSearch(SKILL_ID_HYOHO_SHUREN))) > 0) {
+    if ((sklLv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_HYOHO_SHUREN), Head.UsedSkillSearch(SKILL_ID_HYOHO_SHUREN))) > 0) {
         value += (1 * Math.min(5, sklLv)) + (2 * Math.min(5, Math.max(0, sklLv - 5)));
     }
 
     // 四次職支援「コンペテンティア」による効果
     // SKILL_ID_CONPETENTIA
-    if ((bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_CONPETENTIA]) > 0) {
+    if (g_confDataYozi && CCharaConfYozi && (bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_CONPETENTIA]) > 0) {
         value += 20 + 2 * bufLv;
     }
 
     // 四次職支援「プロンテラマーチ」による効果
     // 「自身の周辺31 x 31セルにトルバドゥールかトルヴェールの異性のパーティーメンバーがいる場合、P.Atk増加量が 1.5倍になる」効果は未実装
-    if ((bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_PRONTERA_MARCH]) > 0) {
+    if (g_confDataYozi && CCharaConfYozi && (bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_PRONTERA_MARCH]) > 0) {
         const values = [0, 1, 3, 5, 8, 12];
         if (bufLv < values.length) {
             value += values[bufLv];
@@ -576,32 +581,32 @@ function GetPAtk() {
     }
 
     // 四次職支援「武士符」による効果
-    if ((bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_BUSHI_FU]) > 0) {
+    if (g_confDataYozi && CCharaConfYozi && (bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_BUSHI_FU]) > 0) {
         value += 2 * bufLv;
     }
 
     // 「スピリットハンドラー」スキル「スピリットマスタリー」による効果
-    if ((sklLv = Math.max(LearnedSkillSearch(SKILL_ID_SPIRIT_MASTERY), UsedSkillSearch(SKILL_ID_SPIRIT_MASTERY))) > 0) {
+    if ((sklLv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_SPIRIT_MASTERY), Head.UsedSkillSearch(SKILL_ID_SPIRIT_MASTERY))) > 0) {
         value += [0, 1, 2, 3, 4, 5, 6, 7, 9, 12, 15][sklLv];
     }
 
     // 「スピリットハンドラー」スキル「三霊一体」による効果
-    if ((sklLv = UsedSkillSearch(SKILL_ID_SANREI_ITTAI)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_SANREI_ITTAI)) > 0) {
         value += 3 * sklLv;
     }
 
     // 「スピリットハンドラー」スキル「にゃんブレッシング」による効果
-    if ((bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_NYAN_BRESSING]) > 0) {
+    if (g_confDataYozi && CCharaConfYozi && (bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_NYAN_BRESSING]) > 0) {
         value += 5 * bufLv;
     }
 
     // 「ハイパーノービス」スキル「独学 -戦闘学-」による効果
-    if ((sklLv = Math.max(LearnedSkillSearch(SKILL_ID_DOKUGAKU_SENTOGAKU), UsedSkillSearch(SKILL_ID_DOKUGAKU_SENTOGAKU))) > 0) {
+    if ((sklLv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_DOKUGAKU_SENTOGAKU), Head.UsedSkillSearch(SKILL_ID_DOKUGAKU_SENTOGAKU))) > 0) {
         value += [0, 1, 2, 3, 4, 5, 6, 7, 9, 12, 15][sklLv];
     }
 
     // 「ナイトウォッチ」スキル「P.F.I」による効果
-    if ((sklLv = Math.max(LearnedSkillSearch(SKILL_ID_PFI), UsedSkillSearch(SKILL_ID_PFI))) > 0) {
+    if ((sklLv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_PFI), Head.UsedSkillSearch(SKILL_ID_PFI))) > 0) {
         // 銃装備時のみ
         switch (n_A_WeaponType) {
             case ITEM_KIND_HANDGUN:
@@ -615,14 +620,14 @@ function GetPAtk() {
     }
 
     // 「ナイトウォッチ」スキル「ヒドゥンカード」による効果
-    if ((sklLv = UsedSkillSearch(SKILL_ID_HIDDEN_CARD)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_HIDDEN_CARD)) > 0) {
         value += sklLv + 5;
     }
 
     return value;
 }
 
-function GetSMatk() {
+export function GetSMatk() {
 
     var value = 0;
     var sklLv = 0;
@@ -634,15 +639,15 @@ function GetSMatk() {
     value += Math.floor(GetTotalSpecStatus(MIG_PARAM_ID_CON) / 5);
 
     // 装備効果
-    value += GetEquippedTotalSPEquip(ITEM_SP_S_MATK_PLUS);
-    value += GetEquippedTotalSPCardAndElse(ITEM_SP_S_MATK_PLUS);
-    value += GetRndOptTotalValue(ITEM_SP_S_MATK_PLUS);
+    value += Foot.GetEquippedTotalSPEquip(ITEM_SP_S_MATK_PLUS);
+    value += Foot.GetEquippedTotalSPCardAndElse(ITEM_SP_S_MATK_PLUS);
+    value += HmRndopt.GetRndOptTotalValue(ITEM_SP_S_MATK_PLUS);
 
     // 性能カスタマイズ
     value += g_objCharaConfCustomSpecStatus.GetConf(CCharaConfCustomSpecStatus.CONF_ID_S_MATK_PLUS)
 
     // アークメイジスキル「両手杖修練」
-    if ((sklLv = UsedSkillSearch(SKILL_ID_RYOTETUSE_SHUREN)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_RYOTETUSE_SHUREN)) > 0) {
 
         // 両手杖時限定
         if (n_A_WeaponType == ITEM_KIND_STUFF) {
@@ -666,7 +671,7 @@ function GetSMatk() {
     }
 
     // 「インペリアルガード」スキル「アタックスタンス」による効果
-    if ((sklLv = UsedSkillSearch(SKILL_ID_ATTACK_STANCE)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_ATTACK_STANCE)) > 0) {
 
         // 盾装備時限定
         if (n_A_Equip[EQUIP_REGION_ID_SHIELD] != ITEM_ID_NOEQUIP_SHIELD) {
@@ -675,12 +680,12 @@ function GetSMatk() {
     }
 
     // 「アビスチェイサー」スキル「アビススレイヤー」による効果
-    if ((sklLv = UsedSkillSearch(SKILL_ID_ABYSS_SLAYER)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_ABYSS_SLAYER)) > 0) {
         value += 2 * sklLv;
     }
 
     // 「トルバドゥール／トルヴェール」スキル「ステージマナー」による効果
-    if ((sklLv = UsedSkillSearch(SKILL_ID_STAGE_MANNER)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_STAGE_MANNER)) > 0) {
 
         // 弓・楽器・鞭装備時装備時限定
         switch (n_A_WeaponType) {
@@ -693,12 +698,12 @@ function GetSMatk() {
     }
 
     // 「ソウルアセティック」スキル「護符修練」による効果
-    if ((sklLv = UsedSkillSearch(SKILL_ID_GOFU_SHUREN)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_GOFU_SHUREN)) > 0) {
         value += 1 * sklLv;
     }
 
     // 「ソウルアセティック」スキル「四方五行陣状態」による効果
-    if ((sklLv = UsedSkillSearch(SKILL_ID_SHIHO_FU_ZYOTAI)) >= 4) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_SHIHO_FU_ZYOTAI)) >= 4) {
         if (n_A_ActiveSkill === SKILL_ID_SHIHO_GOGYO_ZIN) {
             // 「四方五行陣」のダメージはS.Matkのバフが付与された後に計算されるため、個別処理しています
             value += 2 * n_A_ActiveSkillLV;
@@ -709,18 +714,18 @@ function GetSMatk() {
 
     // 四次職支援「コンペテンティア」による効果
     // SKILL_ID_CONPETENTIA
-    if ((bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_CONPETENTIA]) > 0) {
+    if (g_confDataYozi && CCharaConfYozi && (bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_CONPETENTIA]) > 0) {
         value += 20 + 2 * bufLv;
     }
 
     // 四次職支援「スペルエンチャンティング」による効果
-    if ((bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_SPELL_ENCHANTING]) > 0) {
+    if (g_confDataYozi && CCharaConfYozi && (bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_SPELL_ENCHANTING]) > 0) {
         value += 5 * bufLv;
     }
 
     // 四次職支援「夕焼けのセレナーデ」による効果
     // 「自身の周辺31 x 31セルにトルバドゥールかトルヴェールの異性のパーティーメンバーがいる場合、S.Matk増加量が 1.5倍になる」効果は未実装
-    if ((bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_YUYAKENO_SERENADE]) > 0) {
+    if (g_confDataYozi && CCharaConfYozi && (bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_YUYAKENO_SERENADE]) > 0) {
         const values = [0, 1, 3, 5, 8, 12];
         if (bufLv < values.length) {
             value += values[bufLv];
@@ -728,27 +733,27 @@ function GetSMatk() {
     }
 
     // 四次職支援「法師符」による効果
-    if ((bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_HOSHI_FU]) > 0) {
+    if (g_confDataYozi && CCharaConfYozi && (bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_HOSHI_FU]) > 0) {
         value += 2 * bufLv;
     }
 
     // 「スピリットハンドラー」スキル「スピリットマスタリー」による効果
-    if ((sklLv = Math.max(LearnedSkillSearch(SKILL_ID_SPIRIT_MASTERY), UsedSkillSearch(SKILL_ID_SPIRIT_MASTERY))) > 0) {
+    if ((sklLv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_SPIRIT_MASTERY), Head.UsedSkillSearch(SKILL_ID_SPIRIT_MASTERY))) > 0) {
         value += [0, 1, 2, 3, 4, 5, 6, 7, 9, 12, 15][sklLv];
     }
 
     // 「スピリットハンドラー」スキル「三霊一体」による効果
-    if ((sklLv = UsedSkillSearch(SKILL_ID_SANREI_ITTAI)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_SANREI_ITTAI)) > 0) {
         value += 3 * sklLv;
     }
 
     // 「スピリットハンドラー」スキル「にゃんブレッシング」による効果
-    if ((bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_NYAN_BRESSING]) > 0) {
+    if (g_confDataYozi && CCharaConfYozi && (bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_NYAN_BRESSING]) > 0) {
         value += 5 * bufLv;
     }
 
     // 「ハイパーノービス」スキル「独学 -魔導学-」による効果
-    if ((sklLv = Math.max(LearnedSkillSearch(SKILL_ID_DOKUGAKU_MADOGAKU), UsedSkillSearch(SKILL_ID_DOKUGAKU_MADOGAKU))) > 0) {
+    if ((sklLv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_DOKUGAKU_MADOGAKU), Head.UsedSkillSearch(SKILL_ID_DOKUGAKU_MADOGAKU))) > 0) {
         value += [0, 1, 2, 3, 4, 5, 6, 7, 9, 12, 15][sklLv];
     }
 
@@ -756,7 +761,7 @@ function GetSMatk() {
     return value;
 }
 
-function GetCRate() {
+export function GetCRate() {
 
     var value = 0;
     var bufLv = 0;
@@ -768,16 +773,16 @@ function GetCRate() {
 
     // 装備効果
     value += n_tok[ITEM_SP_C_RATE_PLUS];
-    value += GetEquippedTotalSPEquip(ITEM_SP_C_RATE_PLUS);
-    value += GetEquippedTotalSPCardAndElse(ITEM_SP_C_RATE_PLUS);
-    value += GetRndOptTotalValue(ITEM_SP_C_RATE_PLUS);
+    value += Foot.GetEquippedTotalSPEquip(ITEM_SP_C_RATE_PLUS);
+    value += Foot.GetEquippedTotalSPCardAndElse(ITEM_SP_C_RATE_PLUS);
+    value += HmRndopt.GetRndOptTotalValue(ITEM_SP_C_RATE_PLUS);
 
     // 性能カスタマイズ
     value += g_objCharaConfCustomSpecStatus.GetConf(CCharaConfCustomSpecStatus.CONF_ID_C_RATE_PLUS)
 
     // 四次職支援「プレセンスアキエース」による効果
     // SKILL_ID_PRESENSE_AKYACE
-    if ((bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_PRESENSE_AKYACE]) > 0) {
+    if (g_confDataYozi && CCharaConfYozi && (bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_PRESENSE_AKYACE]) > 0) {
         value += 5 * bufLv;
     }
 
@@ -790,7 +795,7 @@ function GetCRate() {
  * 特性ステータス、装備、スキルを考慮した最終RESを取得する
  * @returns RESの値
  */
-function GetRes() {
+export function GetRes() {
     let value = 0;
     let sklLv = 0;
     let bufLv = 0;
@@ -799,27 +804,27 @@ function GetRes() {
     value += 5 * Math.floor(GetTotalSpecStatus(MIG_PARAM_ID_STA) / 3);
     // 装備効果
     value += n_tok[ITEM_SP_RES_PLUS];
-    value += GetRndOptTotalValue(ITEM_SP_RES_PLUS);
+    value += HmRndopt.GetRndOptTotalValue(ITEM_SP_RES_PLUS);
     // 性能カスタマイズ
     value += g_objCharaConfCustomSpecStatus.GetConf(CCharaConfCustomSpecStatus.CONF_ID_RES_PLUS)
     // 「インペリアルガード」スキル「盾修練」による効果
-    if ((sklLv = Math.max(LearnedSkillSearch(SKILL_ID_TATE_SHUREN), UsedSkillSearch(SKILL_ID_TATE_SHUREN))) > 0) {
+    if ((sklLv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_TATE_SHUREN), Head.UsedSkillSearch(SKILL_ID_TATE_SHUREN))) > 0) {
         // 盾装備時限定
         if (n_A_Equip[EQUIP_REGION_ID_SHIELD] != ITEM_ID_NOEQUIP_SHIELD) {
             value += 10 * sklLv;
         }
     }
     // 「インクイジター」スキル「堅固な信念」による効果
-    if ((sklLv = UsedSkillSearch(SKILL_ID_KENKONA_SHINNEN)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_KENKONA_SHINNEN)) > 0) {
         value += [0, 10, 20, 40, 70, 100][sklLv];
     }
     // 四次職支援「防御装置有効化」による効果
-    if ((bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_BOGYO_SOCHI_YUKOKA]) > 0) {
+    if (g_confDataYozi && CCharaConfYozi && (bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_BOGYO_SOCHI_YUKOKA]) > 0) {
         value += [0, 20, 30, 40, 60, 100][bufLv];
     }
     // 四次職支援「ミュージカルインタールード」による効果
     // 「自身の周辺31 x 31セルにトルバドゥールかトルヴェールの異性のパーティーメンバーがいる場合、Res増加量が 1.5倍になる」効果は未実装
-    if ((bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_MUSICAL_INTERLUDE]) > 0) {
+    if (g_confDataYozi && CCharaConfYozi && (bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_MUSICAL_INTERLUDE]) > 0) {
         const values = [0, 20, 30, 40, 60, 100];
         if (bufLv < values.length) {
             value += values[bufLv];
@@ -828,7 +833,7 @@ function GetRes() {
     return value;
 }
 
-function GetMres() {
+export function GetMres() {
 
     var value = 0;
 
@@ -840,7 +845,7 @@ function GetMres() {
 
     // 装備効果
     value += n_tok[ITEM_SP_MRES_PLUS];
-    value += GetRndOptTotalValue(ITEM_SP_MRES_PLUS);
+    value += HmRndopt.GetRndOptTotalValue(ITEM_SP_MRES_PLUS);
 
     // 性能カスタマイズ
     value += g_objCharaConfCustomSpecStatus.GetConf(CCharaConfCustomSpecStatus.CONF_ID_MRES_PLUS)
@@ -849,7 +854,7 @@ function GetMres() {
     return value;
 }
 
-function GetHPlus() {
+export function GetHPlus() {
 
     var value = 0;
 
@@ -860,7 +865,7 @@ function GetHPlus() {
 
     // 装備効果
     value += n_tok[ITEM_SP_H_PLUS_PLUS];
-    value += GetRndOptTotalValue(ITEM_SP_H_PLUS_PLUS);
+    value += HmRndopt.GetRndOptTotalValue(ITEM_SP_H_PLUS_PLUS);
 
     // 性能カスタマイズ
     value += g_objCharaConfCustomSpecStatus.GetConf(CCharaConfCustomSpecStatus.CONF_ID_H_PLUS_PLUS)
@@ -868,7 +873,7 @@ function GetHPlus() {
     return value;
 }
 
-function GetMobRes(mobData) {
+export function GetMobRes(mobData) {
 
     var value = 0;
     var bufLv = 0;
@@ -885,12 +890,12 @@ function GetMobRes(mobData) {
 
     // 四次職支援「アルグトゥステルム」による効果
     // SKILL_ID_ARUGUTUS_TERUM
-    if ((bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_ARUGUTUS_TERUM]) > 0) {
+    if (g_confDataYozi && CCharaConfYozi && (bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_ARUGUTUS_TERUM]) > 0) {
         ignore += 5 * bufLv;
     }
 
     // シャドウクロス「ポテントベナム」による効果
-    if ((bufLv = UsedSkillSearch(SKILL_ID_POTENT_VENOM)) > 0) {
+    if ((bufLv = Head.UsedSkillSearch(SKILL_ID_POTENT_VENOM)) > 0) {
         ignore += 20 + bufLv;
     }
 
@@ -904,7 +909,7 @@ function GetMobRes(mobData) {
     return value;
 }
 
-function GetMobMres(mobData) {
+export function GetMobMres(mobData) {
 
     var value = 0;
     var bufLv = 0;
@@ -921,7 +926,7 @@ function GetMobMres(mobData) {
 
     // 四次職支援「アルグトゥスヴィタ」による効果
     // SKILL_ID_ARUGUTUS_VITA
-    if ((bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_ARUGUTUS_VITA]) > 0) {
+    if (g_confDataYozi && CCharaConfYozi && (bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_ARUGUTUS_VITA]) > 0) {
         ignore += 5 * bufLv;
     }
 
@@ -938,7 +943,7 @@ function GetMobMres(mobData) {
 /**
  * 導出特性ステータス P.Atk による物理ダメージ増幅効果の適用.
  */
-function ApplyPAtkAmplify(dmg) {
+export function ApplyPAtkAmplify(dmg) {
 
     var patk = 0;
     var amped = 0;
@@ -958,7 +963,7 @@ function ApplyPAtkAmplify(dmg) {
 /**
  * 導出特性ステータス S.Matk による魔法ダメージ増幅効果の適用.
  */
-function ApplySMatkAmplify(dmg) {
+export function ApplySMatkAmplify(dmg) {
 
     var smatk = 0;
     var amped = 0;
@@ -978,7 +983,7 @@ function ApplySMatkAmplify(dmg) {
 /**
  * 導出特性ステータス C.Rate によるクリティカルダメージ増幅効果の適用.
  */
-function ApplyCRateAmplify(criDmgRate) {
+export function ApplyCRateAmplify(criDmgRate) {
 
     var crate = 0;
     var amped = 0;
@@ -1000,7 +1005,7 @@ function ApplyCRateAmplify(criDmgRate) {
 /**
  * 導出特性ステータス Res によるダメージ減衰効果の適用.
  */
-function ApplyResResist(mobData, dmg) {
+export function ApplyResResist(mobData, dmg) {
 
     var res = 0;
     var resistedRatio = 0;
@@ -1028,7 +1033,7 @@ function ApplyResResist(mobData, dmg) {
 /**
  * 導出特性ステータス Mres によるダメージ減衰効果の適用.
  */
-function ApplyMresResist(mobData, dmg) {
+export function ApplyMresResist(mobData, dmg) {
 
     var mres = 0;
     var resistedRatio = 0;
@@ -1056,7 +1061,7 @@ function ApplyMresResist(mobData, dmg) {
 /**
  * 左手ステータスATKのP.Atkペナルティ
  */
-function ApplyPAtkLeftHandPenalty(charaData, specData, mobData, dmg) {
+export function ApplyPAtkLeftHandPenalty(charaData, specData, mobData, dmg) {
 
     // TODO: 何かおかしい
     return dmg;
@@ -1079,19 +1084,20 @@ function ApplyPAtkLeftHandPenalty(charaData, specData, mobData, dmg) {
  * @remarks foot.js を移植したくなかったため、無理やり分離した
  * @remarks ただ、呼び出し側も途中で追加計算していたりするため、特性ごとに個別に呼び出し処理をかかないといけない
  */
-function ApplySpecModify(spid, spVal) {
+export function ApplySpecModify(spid, spVal) {
 
     var sklLv = 0;
     var bufLv = 0;
     var valWork = 0;
     var arrayWork = null;
+    var itemCount = 0;
 
     switch (spid) {
 
         case ITEM_SP_HIT_PLUS:
 
             // 「インペリアルガード」スキル「槍＆片手剣修練」習得による効果
-            if ((sklLv = Math.max(LearnedSkillSearch(SKILL_ID_YARI_KATATE_KEN_SHUREN), UsedSkillSearch(SKILL_ID_YARI_KATATE_KEN_SHUREN))) > 0) {
+            if ((sklLv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_YARI_KATATE_KEN_SHUREN), Head.UsedSkillSearch(SKILL_ID_YARI_KATATE_KEN_SHUREN))) > 0) {
 
                 // 片手剣・片手槍・両手槍装備時限定
                 switch (n_A_WeaponType) {
@@ -1104,17 +1110,17 @@ function ApplySpecModify(spid, spVal) {
             }
 
             // 「アビスチェイサー」スキル「アビススレイヤー」による効果
-            if ((sklLv = UsedSkillSearch(SKILL_ID_ABYSS_SLAYER)) > 0) {
+            if ((sklLv = Head.UsedSkillSearch(SKILL_ID_ABYSS_SLAYER)) > 0) {
                 spVal += 50 * Math.floor((sklLv + 1) / 2);
             }
 
             // 「天帝」スキル「兵法修練」による効果
-            if ((sklLv = Math.max(LearnedSkillSearch(SKILL_ID_HYOHO_SHUREN), UsedSkillSearch(SKILL_ID_HYOHO_SHUREN))) > 0) {
+            if ((sklLv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_HYOHO_SHUREN), Head.UsedSkillSearch(SKILL_ID_HYOHO_SHUREN))) > 0) {
                 spVal += [0, 3, 6, 9, 12, 15, 20, 25, 30, 40, 50][sklLv];
             }
 
             // 「ナイトウォッチ」スキル「インテンシブエイム」による効果
-            if ((sklLv = UsedSkillSearch(SKILL_ID_INTENSIVE_AIM)) > 0) {
+            if ((sklLv = Head.UsedSkillSearch(SKILL_ID_INTENSIVE_AIM)) > 0) {
                 spVal += 250;
             }
 
@@ -1123,7 +1129,7 @@ function ApplySpecModify(spid, spVal) {
         case ITEM_SP_FLEE_PLUS:
 
             // 「シャドウクロス」スキル「シャドウセンス」習得による効果
-            if ((sklLv = UsedSkillSearch(SKILL_ID_SHADOW_SENSE)) > 0) {
+            if ((sklLv = Head.UsedSkillSearch(SKILL_ID_SHADOW_SENSE)) > 0) {
 
                 spVal += 10 * sklLv;
                 if (sklLv >= 8) {
@@ -1138,7 +1144,7 @@ function ApplySpecModify(spid, spVal) {
         case ITEM_SP_CRI_PLUS:
 
             // 「シャドウクロス」スキル「シャドウセンス」習得による効果
-            if ((sklLv = UsedSkillSearch(SKILL_ID_SHADOW_SENSE)) > 0) {
+            if ((sklLv = Head.UsedSkillSearch(SKILL_ID_SHADOW_SENSE)) > 0) {
 
                 // 右手短剣、カタール装備時限定
                 switch (n_A_WeaponType) {
@@ -1166,7 +1172,7 @@ function ApplySpecModify(spid, spVal) {
             }
 
             // 「ナイトウォッチ」スキル「インテンシブエイム」による効果
-            if ((sklLv = UsedSkillSearch(SKILL_ID_INTENSIVE_AIM)) > 0) {
+            if ((sklLv = Head.UsedSkillSearch(SKILL_ID_INTENSIVE_AIM)) > 0) {
                 spVal += 50;
             }
 
@@ -1175,7 +1181,7 @@ function ApplySpecModify(spid, spVal) {
         case ITEM_SP_MAXHP_UP:
 
             // 「インクイジター」スキル「堅固な信念」による効果
-            if ((sklLv = UsedSkillSearch(SKILL_ID_KENKONA_SHINNEN)) > 0) {
+            if ((sklLv = Head.UsedSkillSearch(SKILL_ID_KENKONA_SHINNEN)) > 0) {
                 spVal += 10;
             }
             break;
@@ -1183,7 +1189,7 @@ function ApplySpecModify(spid, spVal) {
         case ITEM_SP_ATK_PLUS:
 
             // 「インペリアルガード」スキル「ガードスタンス」による効果（ペナルティ）
-            if ((sklLv = UsedSkillSearch(SKILL_ID_GUARD_STANCE)) > 0) {
+            if ((sklLv = Head.UsedSkillSearch(SKILL_ID_GUARD_STANCE)) > 0) {
 
                 // 盾装備時限定
                 if (n_A_Equip[EQUIP_REGION_ID_SHIELD] != ITEM_ID_NOEQUIP_SHIELD) {
@@ -1192,12 +1198,12 @@ function ApplySpecModify(spid, spVal) {
             }
 
             // 「インクイジター」スキル「強靭な信念」による効果
-            if ((sklLv = UsedSkillSearch(SKILL_ID_KYOZINNA_SHINNEN)) > 0) {
+            if ((sklLv = Head.UsedSkillSearch(SKILL_ID_KYOZINNA_SHINNEN)) > 0) {
                 spVal += 100;
             }
 
             // 「ナイトウォッチ」スキル「インテンシブエイム」による効果
-            if ((sklLv = UsedSkillSearch(SKILL_ID_INTENSIVE_AIM)) > 0) {
+            if ((sklLv = Head.UsedSkillSearch(SKILL_ID_INTENSIVE_AIM)) > 0) {
                 spVal += 100;
             }
 
@@ -1207,7 +1213,7 @@ function ApplySpecModify(spid, spVal) {
         case ITEM_SP_DEF_PLUS:
 
             // 「インペリアルガード」スキル「ガードスタンス」による効果
-            if ((sklLv = UsedSkillSearch(SKILL_ID_GUARD_STANCE)) > 0) {
+            if ((sklLv = Head.UsedSkillSearch(SKILL_ID_GUARD_STANCE)) > 0) {
 
                 // 盾装備時限定
                 if (n_A_Equip[EQUIP_REGION_ID_SHIELD] != ITEM_ID_NOEQUIP_SHIELD) {
@@ -1219,7 +1225,7 @@ function ApplySpecModify(spid, spVal) {
             }
 
             // 「インペリアルガード」スキル「アタックスタンス」による効果（ペナルティ）
-            if ((sklLv = UsedSkillSearch(SKILL_ID_ATTACK_STANCE)) > 0) {
+            if ((sklLv = Head.UsedSkillSearch(SKILL_ID_ATTACK_STANCE)) > 0) {
 
                 // 盾装備時限定
                 if (n_A_Equip[EQUIP_REGION_ID_SHIELD] != ITEM_ID_NOEQUIP_SHIELD) {
@@ -1228,12 +1234,12 @@ function ApplySpecModify(spid, spVal) {
             }
 
             // 四次職支援「クライマックスインパクト」による効果
-            if ((bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_CLIMAX_IMPACT]) > 0) {
+            if (g_confDataYozi && CCharaConfYozi && (bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_CLIMAX_IMPACT]) > 0) {
                 spVal += 300;
             }
 
             // 四次職支援「防御装置有効化」による効果
-            if ((bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_BOGYO_SOCHI_YUKOKA]) > 0) {
+            if (g_confDataYozi && CCharaConfYozi && (bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_BOGYO_SOCHI_YUKOKA]) > 0) {
                 spVal += 300;
             }
             break;
@@ -1241,7 +1247,7 @@ function ApplySpecModify(spid, spVal) {
         case ITEM_SP_MDEF_PLUS:
 
             // 四次職支援「クライマックスインパクト」による効果
-            if ((bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_CLIMAX_IMPACT]) > 0) {
+            if (g_confDataYozi && CCharaConfYozi && (bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_CLIMAX_IMPACT]) > 0) {
                 spVal += 50;
             }
             break;
@@ -1249,24 +1255,24 @@ function ApplySpecModify(spid, spVal) {
         case ITEM_SP_LONGRANGE_DAMAGE_UP:
 
             // 「マイスター」スキル「ラッシュ状態」による効果
-            if ((sklLv = UsedSkillSearch(SKILL_ID_RUSH_STATE)) > 0) {
+            if ((sklLv = Head.UsedSkillSearch(SKILL_ID_RUSH_STATE)) > 0) {
                 spVal += 2 * sklLv;
             }
 
             // 「未知なる集中のブーツ」の純粋なステータスによる効果
-            if ((itemCount = EquipNumSearch(ITEM_ID_MICHINARU_SHUCHUNO_BOOTS)) > 0) {
+            if ((itemCount = Chara.EquipNumSearch(ITEM_ID_MICHINARU_SHUCHUNO_BOOTS)) > 0) {
                 if (g_pureStatus[MIG_PARAM_ID_CON] >= 100) {
                     spVal += 30 * itemCount;
                 }
             }
 
             // 四次職支援「天地神霊」による効果
-            if ((bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_TENCHI_SHINRE]) > 0) {
+            if (g_confDataYozi && CCharaConfYozi && (bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_TENCHI_SHINRE]) > 0) {
                 spVal += 10 + bufLv;
             }
 
             // 「ナイトウォッチ」スキル「ヒドゥンカード」による効果
-            if ((sklLv = UsedSkillSearch(SKILL_ID_HIDDEN_CARD)) > 0) {
+            if ((sklLv = Head.UsedSkillSearch(SKILL_ID_HIDDEN_CARD)) > 0) {
                 spVal += 100 + sklLv * 10;
             }
 
@@ -1276,7 +1282,7 @@ function ApplySpecModify(spid, spVal) {
         case ITEM_SP_PHYSICAL_DAMAGE_UP_SIZE_MEDIUM:
         case ITEM_SP_PHYSICAL_DAMAGE_UP_SIZE_LARGE:
             // 「カーディナル」スキル「鈍器＆本修練」習得による効果
-            if ((sklLv = UsedSkillSearch(SKILL_ID_DONKI_HON_SHUREN)) > 0) {
+            if ((sklLv = Head.UsedSkillSearch(SKILL_ID_DONKI_HON_SHUREN)) > 0) {
                 // 鈍器、本装備時限定
                 switch (n_A_WeaponType) {
                     case ITEM_KIND_CLUB:
@@ -1287,7 +1293,7 @@ function ApplySpecModify(spid, spVal) {
                 }
             }
             // 「アビスチェイサー」スキル「短剣＆弓修練」習得による効果
-            if ((sklLv = Math.max(LearnedSkillSearch(SKILL_ID_TANKEN_YUMI_SHUREN), UsedSkillSearch(SKILL_ID_TANKEN_YUMI_SHUREN))) > 0) {
+            if ((sklLv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_TANKEN_YUMI_SHUREN), Head.UsedSkillSearch(SKILL_ID_TANKEN_YUMI_SHUREN))) > 0) {
                 // 短剣、弓装備時限定
                 switch (n_A_WeaponType) {
                     case ITEM_KIND_KNIFE:
@@ -1318,7 +1324,7 @@ function ApplySpecModify(spid, spVal) {
         case ITEM_SP_PHYSICAL_DAMAGE_UP_RACE_HUMAN_NOT_PLAYER:
 
             // 「インクイジター」スキル「信仰の意志」習得による効果
-            if ((sklLv = UsedSkillSearch(SKILL_ID_SHINKONO_ISHI)) > 0) {
+            if ((sklLv = Head.UsedSkillSearch(SKILL_ID_SHINKONO_ISHI)) > 0) {
 
                 // 爪装備時限定
                 switch (n_A_WeaponType) {
@@ -1347,7 +1353,7 @@ function ApplySpecModify(spid, spVal) {
         case ITEM_SP_RESIST_ELM_WATER:
 
             // 四次職支援「クライマックスインパクト」による効果
-            if ((bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_CLIMAX_IMPACT]) > 0) {
+            if (g_confDataYozi && CCharaConfYozi && (bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_CLIMAX_IMPACT]) > 0) {
                 spVal += 25;
             }
             break;
@@ -1356,7 +1362,7 @@ function ApplySpecModify(spid, spVal) {
         case ITEM_SP_RESIST_ELM_UNDEAD:
 
             // 「インペリアルガード」スキル「ホーリーシールド」による効果
-            if ((sklLv = UsedSkillSearch(SKILL_ID_HOLY_SHIELD)) > 0) {
+            if ((sklLv = Head.UsedSkillSearch(SKILL_ID_HOLY_SHIELD)) > 0) {
 
                 // 盾装備時限定
                 if (n_A_Equip[EQUIP_REGION_ID_SHIELD] != ITEM_ID_NOEQUIP_SHIELD) {
@@ -1372,7 +1378,7 @@ function ApplySpecModify(spid, spVal) {
         case ITEM_SP_CRITICAL_DAMAGE_UP:
 
             // 「未知なる創造のブーツ」の純粋なステータスによる効果
-            if ((itemCount = EquipNumSearch(ITEM_ID_MICHINARU_SOZONO_BOOTS)) > 0) {
+            if ((itemCount = Chara.EquipNumSearch(ITEM_ID_MICHINARU_SOZONO_BOOTS)) > 0) {
                 if (g_pureStatus[MIG_PARAM_ID_CRT] >= 100) {
                     spVal += 30 * itemCount;
                 }
@@ -1382,7 +1388,7 @@ function ApplySpecModify(spid, spVal) {
         case ITEM_SP_PERFECT_ATTACK_UP:
 
             // 「インクイジター」スキル「忠実な信念」習得による効果
-            if ((sklLv = UsedSkillSearch(SKILL_ID_CHUZITSUNA_SHINNEN)) > 0) {
+            if ((sklLv = Head.UsedSkillSearch(SKILL_ID_CHUZITSUNA_SHINNEN)) > 0) {
                 spVal += [0, 1, 3, 5, 10, 15][sklLv];
             }
             break;
@@ -1390,7 +1396,7 @@ function ApplySpecModify(spid, spVal) {
         case ITEM_SP_MATK_PLUS_TYPE_NOT_WEAPON:
 
             // 「アークメイジ」スキル「クライマックスハリケーン状態」による効果
-            if ((sklLv = UsedSkillSearch(SKILL_ID_CLIMAX_HURRICANE_STATE)) > 0) {
+            if ((sklLv = Head.UsedSkillSearch(SKILL_ID_CLIMAX_HURRICANE_STATE)) > 0) {
                 spVal += 200;
             }
             break;
@@ -1398,7 +1404,7 @@ function ApplySpecModify(spid, spVal) {
         case ITEM_SP_ASPD_PLUS:
 
             // 「インクイジター」スキル「忠実な信念」習得による効果
-            if ((sklLv = UsedSkillSearch(SKILL_ID_CHUZITSUNA_SHINNEN)) > 0) {
+            if ((sklLv = Head.UsedSkillSearch(SKILL_ID_CHUZITSUNA_SHINNEN)) > 0) {
                 spVal += 1;
             }
             break;
@@ -1408,7 +1414,7 @@ function ApplySpecModify(spid, spVal) {
         case ITEM_SP_PHYSICAL_RESIST_SIZE_LARGE:
 
             // 「ドラゴンナイト」スキル「ツーハンドディフェンディング」習得による効果
-            if ((sklLv = Math.max(LearnedSkillSearch(SKILL_ID_TWOHAND_DEFENDING), UsedSkillSearch(SKILL_ID_TWOHAND_DEFENDING))) > 0) {
+            if ((sklLv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_TWOHAND_DEFENDING), Head.UsedSkillSearch(SKILL_ID_TWOHAND_DEFENDING))) > 0) {
                 // 両手武器装備時限定
                 switch (n_A_WeaponType) {
                     case ITEM_KIND_SWORD_2HAND:
@@ -1420,7 +1426,7 @@ function ApplySpecModify(spid, spVal) {
             }
 
             // 「マイスター」スキル「ツーアックスディフェンディング」習得による効果
-            if ((sklLv = Math.max(LearnedSkillSearch(SKILL_ID_TWO_AXE_DEFENDING), UsedSkillSearch(SKILL_ID_TWO_AXE_DEFENDING))) > 0) {
+            if ((sklLv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_TWO_AXE_DEFENDING), Head.UsedSkillSearch(SKILL_ID_TWO_AXE_DEFENDING))) > 0) {
                 // 両手斧装備時限定
                 switch (n_A_WeaponType) {
                     case ITEM_KIND_AXE_2HAND:
@@ -1434,7 +1440,7 @@ function ApplySpecModify(spid, spVal) {
         case ITEM_SP_MAGICAL_DAMAGE_UP_SIZE_MEDIUM:
         case ITEM_SP_MAGICAL_DAMAGE_UP_SIZE_LARGE:
             // 「アビスチェイサー」スキル「魔法剣修練」習得による効果
-            if ((sklLv = Math.max(LearnedSkillSearch(SKILL_ID_MAHOKEN_SHUREN), UsedSkillSearch(SKILL_ID_MAHOKEN_SHUREN))) > 0) {
+            if ((sklLv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_MAHOKEN_SHUREN), Head.UsedSkillSearch(SKILL_ID_MAHOKEN_SHUREN))) > 0) {
                 // 短剣、片手剣装備時限定
                 switch (n_A_WeaponType) {
                     case ITEM_KIND_KNIFE:
@@ -1452,11 +1458,11 @@ function ApplySpecModify(spid, spVal) {
         case ITEM_SP_SHORTRANGE_DAMAGE_UP:
 
             // 四次職支援「天地神霊」による効果
-            if ((bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_TENCHI_SHINRE]) > 0) {
+            if (g_confDataYozi && CCharaConfYozi && (bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_TENCHI_SHINRE]) > 0) {
                 spVal += 10 + bufLv;
             }
             // 「マイスター」スキル「ラッシュ状態」による効果
-            if ((sklLv = UsedSkillSearch(SKILL_ID_RUSH_STATE)) > 0) {
+            if ((sklLv = Head.UsedSkillSearch(SKILL_ID_RUSH_STATE)) > 0) {
                 spVal += 2 * sklLv;
             }
             break;
@@ -1488,7 +1494,7 @@ function ApplySpecModify(spid, spVal) {
         case ITEM_SP_MAGICAL_DAMAGE_UP_ELM_UNDEAD:
 
             // 「カーディナル」スキル「フィドスアニムス」習得による効果
-            if ((sklLv = UsedSkillSearch(SKILL_ID_FIDOS_ANIMUS)) > 0) {
+            if ((sklLv = Head.UsedSkillSearch(SKILL_ID_FIDOS_ANIMUS)) > 0) {
 
                 // 聖属性魔法
                 if ([ITEM_SP_MAGICAL_DAMAGE_UP_ELM_HOLY].indexOf(spid) >= 0) {
@@ -1509,7 +1515,7 @@ function ApplySpecModify(spid, spVal) {
             }
 
             // 「アークメイジ」スキル「クライマックスハリケーン状態」による効果
-            if ((sklLv = UsedSkillSearch(SKILL_ID_CLIMAX_HURRICANE_STATE)) > 0) {
+            if ((sklLv = Head.UsedSkillSearch(SKILL_ID_CLIMAX_HURRICANE_STATE)) > 0) {
 
                 // 風属性魔法
                 if ([ITEM_SP_MAGICAL_DAMAGE_UP_ELM_WIND].indexOf(spid) >= 0) {
@@ -1518,7 +1524,7 @@ function ApplySpecModify(spid, spVal) {
             }
 
             // 「インペリアルガード」スキル「ホーリーシールド」による効果
-            if ((sklLv = UsedSkillSearch(SKILL_ID_HOLY_SHIELD)) > 0) {
+            if ((sklLv = Head.UsedSkillSearch(SKILL_ID_HOLY_SHIELD)) > 0) {
 
                 // 盾装備時限定
                 if (n_A_Equip[EQUIP_REGION_ID_SHIELD] != ITEM_ID_NOEQUIP_SHIELD) {
@@ -1531,7 +1537,7 @@ function ApplySpecModify(spid, spVal) {
             }
 
             // 「エレメンタルマスター」スキル「魔法本修練」による効果
-            if ((sklLv = UsedSkillSearch(SKILL_ID_MAHO_HON_SHUREN)) > 0) {
+            if ((sklLv = Head.UsedSkillSearch(SKILL_ID_MAHO_HON_SHUREN)) > 0) {
 
                 // 本装備時限定
                 switch (n_A_WeaponType) {
@@ -1556,7 +1562,7 @@ function ApplySpecModify(spid, spVal) {
             }
 
             // 四次職支援「クライマックスインパクト」による効果
-            if ((bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_CLIMAX_IMPACT]) > 0) {
+            if (g_confDataYozi && CCharaConfYozi && (bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_CLIMAX_IMPACT]) > 0) {
                 // 水属性魔法
                 if ([ITEM_SP_MAGICAL_DAMAGE_UP_ELM_WATER].indexOf(spid) >= 0) {
                     spVal += 25;
@@ -1564,7 +1570,7 @@ function ApplySpecModify(spid, spVal) {
             }
 
             // 四次職支援「天地神霊」による効果
-            if ((bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_TENCHI_SHINRE]) > 0) {
+            if (g_confDataYozi && CCharaConfYozi && (bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_TENCHI_SHINRE]) > 0) {
                 spVal += 10 + bufLv;
             }
 
@@ -1588,7 +1594,7 @@ function ApplySpecModify(spid, spVal) {
         case ITEM_SP_MAGICAL_DAMAGE_UP_MONSTER_ELM_PSYCO:
         case ITEM_SP_MAGICAL_DAMAGE_UP_MONSTER_ELM_UNDEAD:
             // 四次職支援「五行符」による効果
-            if ((bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_GOGYO_FU]) > 0) {
+            if (g_confDataYozi && CCharaConfYozi && (bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_GOGYO_FU]) > 0) {
                 arrayWork = [
                     ITEM_SP_MAGICAL_DAMAGE_UP_MONSTER_ELM_FIRE,
                     ITEM_SP_MAGICAL_DAMAGE_UP_MONSTER_ELM_WATER,
@@ -1637,7 +1643,7 @@ function ApplySpecModify(spid, spVal) {
         case ITEM_SP_PHYSICAL_DAMAGE_UP_MONSTER_ELM_PSYCO:
         case ITEM_SP_PHYSICAL_DAMAGE_UP_MONSTER_ELM_UNDEAD:
             // 四次職支援「五行符」による効果
-            if ((bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_GOGYO_FU]) > 0) {
+            if (g_confDataYozi && CCharaConfYozi && (bufLv = g_confDataYozi[CCharaConfYozi.CONF_ID_GOGYO_FU]) > 0) {
                 arrayWork = [
                     ITEM_SP_PHYSICAL_DAMAGE_UP_MONSTER_ELM_VANITY,
                     ITEM_SP_PHYSICAL_DAMAGE_UP_MONSTER_ELM_WATER,

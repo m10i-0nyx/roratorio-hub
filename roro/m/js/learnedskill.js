@@ -1,7 +1,8 @@
+import * as Equipt from "./equip.js";
 
 var n_SkillSWLearned = false;
 
-LEARNED_SKILL_MAX_COUNT = 200;
+globalThis.LEARNED_SKILL_MAX_COUNT = 200;
 
 //================================================================================================
 //================================================================================================
@@ -11,12 +12,12 @@ LEARNED_SKILL_MAX_COUNT = 200;
 //================================================================================================
 //================================================================================================
 
-n_A_LearnedSkill = new Array();
+globalThis.n_A_LearnedSkill = new Array();
 for (var dmyidx = 0; dmyidx < LEARNED_SKILL_MAX_COUNT; dmyidx++) {
-    n_A_LearnedSkill[dmyidx] = 0;
+    globalThis.n_A_LearnedSkill[dmyidx] = 0;
 }
 
-function LearnedSkillSearch(skillId) {
+export function LearnedSkillSearch(skillId) {
 
     var idx = 0;
     var learnSkillIdArray = g_constDataManager.GetDataObject(CONST_DATA_KIND_JOB, n_A_JOB).GetLearnSkillIdArray();
@@ -24,7 +25,7 @@ function LearnedSkillSearch(skillId) {
 
     for (idx = 0; idx < learnSkillIdArray.length; idx++) {
         if (learnSkillIdArray[idx] == skillId) {
-            return n_A_LearnedSkill[idx];
+            return globalThis.n_A_LearnedSkill[idx];
         }
     }
 
@@ -32,7 +33,7 @@ function LearnedSkillSearch(skillId) {
 
 }
 
-function OnClickSkillSWLearned() {
+export function OnClickSkillSWLearned() {
 
     var objSW = null;
 
@@ -117,7 +118,7 @@ function OnClickSkillSWLearned() {
     objSpan.setAttribute("style", "color : red");
     objTd.appendChild(objSpan);
 
-    UpdateLearnedSkillNotice();
+    Equipt.UpdateLearnedSkillNotice();
 
 
     // 設定欄の注意書き部分を構築
@@ -310,7 +311,7 @@ function IsLearnedSkillTarget(skillId) {
 
 
 
-function UpdateLearnedSkillSettingColoring() {
+export function UpdateLearnedSkillSettingColoring() {
 
     var idx = 0;
 

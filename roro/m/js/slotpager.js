@@ -1,21 +1,24 @@
+import * as HmCard from "./hmcard.js";
+import * as HmCostume from "./hmcostume.js";
+
 //================================================================================================
 //
 // 定数定義
 //
 //================================================================================================
 
-SLOTPAGER_MODE_CARD = 0;
-SLOTPAGER_MODE_RNDENCH = 1;
-SLOTPAGER_MODE_RNDOPT = 1;		// 1 のエイリアス
+globalThis.SLOTPAGER_MODE_CARD = 0;
+globalThis.SLOTPAGER_MODE_RNDENCH = 1;
+globalThis.SLOTPAGER_MODE_RNDOPT = 1;		// 1 のエイリアス
 
-SLOT_INDEX_CARD_MIN = 1;
-SLOT_INDEX_CARD_MAX = 4;
+globalThis.SLOT_INDEX_CARD_MIN = 1;
+globalThis.SLOT_INDEX_CARD_MAX = 4;
 
-SLOT_INDEX_COSTUME_MIN = 1;
-SLOT_INDEX_COSTUME_MAX = 1;
+globalThis.SLOT_INDEX_COSTUME_MIN = 1;
+globalThis.SLOT_INDEX_COSTUME_MAX = 1;
 
-SLOT_INDEX_RNDENCH_MIN = 1;
-SLOT_INDEX_RNDENCH_MAX = 5;
+globalThis.SLOT_INDEX_RNDENCH_MIN = 1;
+globalThis.SLOT_INDEX_RNDENCH_MAX = 5;
 
 
 //================================================================================================
@@ -41,7 +44,7 @@ SLOT_INDEX_RNDENCH_MAX = 5;
  *-----------------------------------------------------------------------------------------------
  * @return 現在のスロットモード
  ************************************************************************************************/
-function GetSlotMode() {
+export function GetSlotMode() {
     return parseInt(GetStatefullData("DATA_OBJID_SLOT_MODE_BUTTON", 0));
 }
 
@@ -273,7 +276,7 @@ function __SaveSlotStateCard(objidPrefix) {
  *-----------------------------------------------------------------------------------------------
  * @return なし
  ************************************************************************************************/
-function BreakSlotOfCardAll() {
+export function BreakSlotOfCardAll() {
 
     // 個別関数を全コール
     BreakSlotOfCard(EQUIP_REGION_ID_ARMS);
@@ -409,7 +412,7 @@ function __BreakSlotOfCardShort(objidPrifix) {
  *-----------------------------------------------------------------------------------------------
  * @return なし
  ************************************************************************************************/
-function RebuildSlotAsCardAll() {
+export function RebuildSlotAsCardAll() {
 
     // 個別関数を全コール
     RebuildSlotAsCard(EQUIP_REGION_ID_ARMS);
@@ -538,7 +541,7 @@ function __RebuildSlotAsCard(eqpRgnId, objidPrifix) {
 
         // カード選択セレクトボックスの再構築
         itemId = GetStatefullData("DATA_" + objidPrifix, 0);
-        RebuildCardSelect(eqpRgnId, itemId);
+        HmCard.RebuildCardSelect(eqpRgnId, itemId);
     }
 }
 
@@ -827,7 +830,7 @@ function __SaveSlotStateCostume(objidPrefix) {
  *-----------------------------------------------------------------------------------------------
  * @return なし
  ************************************************************************************************/
-function BreakSlotOfCostumeAll() {
+export function BreakSlotOfCostumeAll() {
 
     // 個別関数を全コール
     BreakSlotOfCostume(EQUIP_REGION_ID_HEAD_UNDER);
@@ -925,7 +928,7 @@ function __BreakSlotOfCostume(objidPrifix) {
  *-----------------------------------------------------------------------------------------------
  * @return なし
  ************************************************************************************************/
-function RebuildSlotAsCostumeAll() {
+export function RebuildSlotAsCostumeAll() {
 
     // 個別関数を全コール
     RebuildSlotAsCostume(EQUIP_REGION_ID_HEAD_UNDER);
@@ -1030,7 +1033,7 @@ function __RebuildSlotAsCostume(eqpRgnId, objidPrifix) {
 
         // 衣装選択セレクトボックスの再構築
         itemId = GetStatefullData("DATA_" + objidPrifix, 0);
-        RebuildCostumeSelect(eqpRgnId, itemId);
+        HmCostume.RebuildCostumeSelect(eqpRgnId, itemId);
     }
 }
 

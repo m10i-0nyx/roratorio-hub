@@ -1,5 +1,8 @@
-
-
+import * as Foot from "./foot.js";
+import * as Head from "../../../ro4/m/js/head.js";
+import * as HmJob from "../../../ro4/m/js/hmjob.js";
+import * as HmRndopt from "./hmrndopt.js";
+import * as LearnedSkill from "./learnedskill.js";
 
 
 // キャラクターデータインデックス
@@ -129,7 +132,7 @@ CHARA_DATA_INDEX_COMBO_PARAM		= idx++;
  * @param rgnId  装備箇所ＩＤ（未指定時はすべて）
  * @returns 装備数
  */
-function EquipNumSearch(itemId, rgnId) {
+export function EquipNumSearch(itemId, rgnId) {
     //function EquipNumSearch(itemId, rgnId == EQUIP_REGION_ID_ANY) {
 
     // 仮引数に未対応のブラウザ対策
@@ -159,7 +162,7 @@ function EquipNumSearch(itemId, rgnId) {
 }
 
 // TODO: データ移行過渡処理
-function EquipNumSearchMIG(itemId, rgnId) {
+export function EquipNumSearchMIG(itemId, rgnId) {
     var eqpnum = EquipNumSearch(itemId, rgnId);
 
     // 既存機能の処理速度への影響を考慮して、この判定順序
@@ -181,7 +184,7 @@ function EquipNumSearchMIG(itemId, rgnId) {
  * @param rgnId  装備箇所ＩＤ（未指定時はすべて）
  * @returns 装備数
  */
-function CardNumSearch(cardId, rgnId) {
+export function CardNumSearch(cardId, rgnId) {
     //function CardNumSearch(cardId, rgnId = CARD_REGION_ID_ANY) {
 
     // 仮引数に未対応のブラウザ対策
@@ -313,7 +316,7 @@ function CardNumSearch(cardId, rgnId) {
  * @param rgnId  装備箇所ＩＤ（未指定時はすべて）
  * @returns 装備数
  */
-function CostumeNumSearch(costumeId, rgnId) {
+export function CostumeNumSearch(costumeId, rgnId) {
     //function CostumeNumSearch(costumeId, rgnId == COSTUME_REGION_ID_ANY) {
 
     // 仮引数に未対応のブラウザ対策
@@ -347,72 +350,70 @@ function CostumeNumSearch(costumeId, rgnId) {
 
 
 
-
-
-EXBUF_ID_ENDURE = 1990001;
-EXBUF_ID_ASUMUPTIO = 2050000;
-EXBUF_ID_IDUNNNO_RINGO = 3030001;
-EXBUF_ID_IDUNNNO_RINGO_BUFFER_VITRANK = 3030002;
-EXBUF_ID_IDUNNNO_RINGO_BUFFER_SKILLLV = 3030003;
-EXBUF_ID_HUMMING = 3040001;
-EXBUF_ID_HUMMING_BUFFER_DEXRANK = 3040002;
-EXBUF_ID_HUMMING_BUFFER_SKILLLV = 3040003;
-EXBUF_ID_SERVICE_FOR_YOU = 3060001;
-EXBUF_ID_SERVICE_FOR_YOU_BUFFER_INTRANK = 3060002;
-EXBUF_ID_SERVICE_FOR_YOU_BUFFER_SKILLLV = 3060003;
-EXBUF_ID_IKUSADAIKONO_HIBIKI = 3090001;
-EXBUF_ID_FUSHANIMUKATTE_TOTSUGEKI = 3190101;
-EXBUF_ID_FUSHANIMUKATTE_TOTSUGEKI_BUFFER_JOBLV = 3190102;
-EXBUF_ID_FUSHANIMUKATTE_TOTSUGEKI_BUFFER_SKILLLV = 3190103;
-EXBUF_ID_ECHONO_UTA = 3190201;
-EXBUF_ID_ECHONO_UTA_BUFFER_JOBLV = 3190202;
-EXBUF_ID_ECHONO_UTA_BUFFER_SKILLLV = 3190203;
-EXBUF_ID_KOIBITOTACHINOTAMENO_SYMPHONY = 3190501;
-EXBUF_ID_KOIBITOTACHINOTAMENO_SYMPHONY_BUFFER_JOBLV = 3190502;
-EXBUF_ID_KOIBITOTACHINOTAMENO_SYMPHONY_BUFFER_SKILLLV = 3190503;
-EXBUF_ID_FRIGGNO_UTA = 3190700;
-EXBUF_ID_FRYDAY_NIGHT_FEVER = 3390100;
-EXBUF_ID_RELAZUNO_TSUYU = 3390301;
-EXBUF_ID_RELAZUNO_TSUYU_COUNT_OF_MINWAN = 3390302;
-EXBUF_ID_BEYOND_OF_WARCRAY = 3390401;
-EXBUF_ID_BEYOND_OF_WARCRAY_COUNT_OF_MINWAN = 3390401;
-EXBUF_ID_DANCE_WITH_WUG = 3390601;
-EXBUF_ID_DANCE_WITH_WUG_COUNT_OF_MINWAN = 3390602;
-EXBUF_ID_GOSPEL_HP_UP = 4060000;
-EXBUF_ID_GOSPEL_SP_UP = 4070000;
-EXBUF_ID_GOSPEL_HIT_FLEE_PLUS = 4090000;
-EXBUF_ID_DELUGE = 6000100;
-EXBUF_ID_ZYUTSUSHIKI_TENKAI = 6100000;
-EXBUF_ID_FIGHTING_SPIRIT = 6110000;
-EXBUF_ID_ODINNO_CHIKARA = 6120000;
-EXBUF_ID_ODINNO_EPICLESIS = 6130000;
-EXBUF_ID_HOM_S_PAINKILLER = 6210001;
-EXBUF_ID_HOM_S_PAINKILLER_HOM_LEVEL = 6210002;
-EXBUF_ID_CHATTERING = 6470001;
-EXBUF_ID_CHAGASHI = 7000000;
-EXBUF_ID_NIZIIRONO_OKASHI = 7020000;
-EXBUF_ID_URAMINO_HAKO = 7090000;
-EXBUF_ID_VITATA500 = 7240000;
-EXBUF_ID_BUCHE_DE_NOEL = 7250000;
-EXBUF_ID_RUNEMIDGARTSSAN_OYATSU = 7260000;
-EXBUF_ID_SCHWARZWALDSAN_OYATSU = 7270000;
-EXBUF_ID_GUARANA_CANDY = 7350000;
-EXBUF_ID_YAKITOMOROKOSHI = 7360000;
-EXBUF_ID_HPZOKA_POTION = 7380000;
-EXBUF_ID_SPZOKA_POTION = 7390000;
-EXBUF_ID_SENTOYAKU = 7410000;
-EXBUF_ID_EVENT_BUF_ATK_PLUS = 7420000;
-EXBUF_ID_EVENT_BUF_HIT_PLUS = 7440000;
-EXBUF_ID_ORLEANS_FULLCOURSE = 7490000;
-EXBUF_ID_OTP_LOGIN_BONUS = 8220400;
-EXBUF_ID_CUSTOM_HIT_PLUS = 9100000;
-EXBUF_ID_CUSTOM_ATK_PLUS = 9170000;
-EXBUF_ID_CUSTOM_HP_PLUS = 10010000;
-EXBUF_ID_CUSTOM_HP_UP = 10030000;
-EXBUF_ID_CUSTOM_SP_PLUS = 10040000;
-EXBUF_ID_CUSTOM_SP_UP = 10060000;
-EXBUF_ID_CUSTOM_DEF_PLUS = 10070000;
-EXBUF_ID_CUSTOM_MDEF_PLUS = 10080000;
+export const EXBUF_ID_ENDURE = 1990001;
+export const EXBUF_ID_ASUMUPTIO = 2050000;
+export const EXBUF_ID_IDUNNNO_RINGO = 3030001;
+export const EXBUF_ID_IDUNNNO_RINGO_BUFFER_VITRANK = 3030002;
+export const EXBUF_ID_IDUNNNO_RINGO_BUFFER_SKILLLV = 3030003;
+export const EXBUF_ID_HUMMING = 3040001;
+export const EXBUF_ID_HUMMING_BUFFER_DEXRANK = 3040002;
+export const EXBUF_ID_HUMMING_BUFFER_SKILLLV = 3040003;
+export const EXBUF_ID_SERVICE_FOR_YOU = 3060001;
+export const EXBUF_ID_SERVICE_FOR_YOU_BUFFER_INTRANK = 3060002;
+export const EXBUF_ID_SERVICE_FOR_YOU_BUFFER_SKILLLV = 3060003;
+export const EXBUF_ID_IKUSADAIKONO_HIBIKI = 3090001;
+export const EXBUF_ID_FUSHANIMUKATTE_TOTSUGEKI = 3190101;
+export const EXBUF_ID_FUSHANIMUKATTE_TOTSUGEKI_BUFFER_JOBLV = 3190102;
+export const EXBUF_ID_FUSHANIMUKATTE_TOTSUGEKI_BUFFER_SKILLLV = 3190103;
+export const EXBUF_ID_ECHONO_UTA = 3190201;
+export const EXBUF_ID_ECHONO_UTA_BUFFER_JOBLV = 3190202;
+export const EXBUF_ID_ECHONO_UTA_BUFFER_SKILLLV = 3190203;
+export const EXBUF_ID_KOIBITOTACHINOTAMENO_SYMPHONY = 3190501;
+export const EXBUF_ID_KOIBITOTACHINOTAMENO_SYMPHONY_BUFFER_JOBLV = 3190502;
+export const EXBUF_ID_KOIBITOTACHINOTAMENO_SYMPHONY_BUFFER_SKILLLV = 3190503;
+export const EXBUF_ID_FRIGGNO_UTA = 3190700;
+export const EXBUF_ID_FRYDAY_NIGHT_FEVER = 3390100;
+export const EXBUF_ID_RELAZUNO_TSUYU = 3390301;
+export const EXBUF_ID_RELAZUNO_TSUYU_COUNT_OF_MINWAN = 3390302;
+export const EXBUF_ID_BEYOND_OF_WARCRAY = 3390401;
+export const EXBUF_ID_BEYOND_OF_WARCRAY_COUNT_OF_MINWAN = 3390401;
+export const EXBUF_ID_DANCE_WITH_WUG = 3390601;
+export const EXBUF_ID_DANCE_WITH_WUG_COUNT_OF_MINWAN = 3390602;
+export const EXBUF_ID_GOSPEL_HP_UP = 4060000;
+export const EXBUF_ID_GOSPEL_SP_UP = 4070000;
+export const EXBUF_ID_GOSPEL_HIT_FLEE_PLUS = 4090000;
+export const EXBUF_ID_DELUGE = 6000100;
+export const EXBUF_ID_ZYUTSUSHIKI_TENKAI = 6100000;
+export const EXBUF_ID_FIGHTING_SPIRIT = 6110000;
+export const EXBUF_ID_ODINNO_CHIKARA = 6120000;
+export const EXBUF_ID_ODINNO_EPICLESIS = 6130000;
+export const EXBUF_ID_HOM_S_PAINKILLER = 6210001;
+export const EXBUF_ID_HOM_S_PAINKILLER_HOM_LEVEL = 6210002;
+export const EXBUF_ID_CHATTERING = 6470001;
+export const EXBUF_ID_CHAGASHI = 7000000;
+export const EXBUF_ID_NIZIIRONO_OKASHI = 7020000;
+export const EXBUF_ID_URAMINO_HAKO = 7090000;
+export const EXBUF_ID_VITATA500 = 7240000;
+export const EXBUF_ID_BUCHE_DE_NOEL = 7250000;
+export const EXBUF_ID_RUNEMIDGARTSSAN_OYATSU = 7260000;
+export const EXBUF_ID_SCHWARZWALDSAN_OYATSU = 7270000;
+export const EXBUF_ID_GUARANA_CANDY = 7350000;
+export const EXBUF_ID_YAKITOMOROKOSHI = 7360000;
+export const EXBUF_ID_HPZOKA_POTION = 7380000;
+export const EXBUF_ID_SPZOKA_POTION = 7390000;
+export const EXBUF_ID_SENTOYAKU = 7410000;
+export const EXBUF_ID_EVENT_BUF_ATK_PLUS = 7420000;
+export const EXBUF_ID_EVENT_BUF_HIT_PLUS = 7440000;
+export const EXBUF_ID_ORLEANS_FULLCOURSE = 7490000;
+export const EXBUF_ID_OTP_LOGIN_BONUS = 8220400;
+export const EXBUF_ID_CUSTOM_HIT_PLUS = 9100000;
+export const EXBUF_ID_CUSTOM_ATK_PLUS = 9170000;
+export const EXBUF_ID_CUSTOM_HP_PLUS = 10010000;
+export const EXBUF_ID_CUSTOM_HP_UP = 10030000;
+export const EXBUF_ID_CUSTOM_SP_PLUS = 10040000;
+export const EXBUF_ID_CUSTOM_SP_UP = 10060000;
+export const EXBUF_ID_CUSTOM_DEF_PLUS = 10070000;
+export const EXBUF_ID_CUSTOM_MDEF_PLUS = 10080000;
 /**
  * 指定の外支援Ｂｕｆｆの効果値（レベル、補正値等）を取得する.
  * （自身の習得しているスキルは含まない）
@@ -420,7 +421,7 @@ EXBUF_ID_CUSTOM_MDEF_PLUS = 10080000;
  * @returns 効果値（レベル、補正値等）
  */
 
-function ExBuffNumSearch(exBufId) {
+export function ExBuffNumSearch(exBufId) {
 
     var val = 0;
     var confval = 0;
@@ -430,9 +431,11 @@ function ExBuffNumSearch(exBufId) {
 
     switch (exBufId) {
 
-        // 支援アスムプティオ
+        // 支援エンデュア
         case EXBUF_ID_ENDURE:
-            exBufNum = g_confDataIchizi[CCharaConfIchizi.CONF_ID_ENDURE];
+            if (g_confDataIchizi && CCharaConfIchizi) {
+                exBufNum = g_confDataIchizi[CCharaConfIchizi.CONF_ID_ENDURE];
+            }
             break;
 
     }
@@ -442,7 +445,9 @@ function ExBuffNumSearch(exBufId) {
 
         // 支援アスムプティオ
         case EXBUF_ID_ASUMUPTIO:
-            exBufNum = g_confDataNizi[CCharaConfNizi.CONF_ID_ASSUMPTIO];
+            if (g_confDataNizi && CCharaConfNizi) {
+                exBufNum = g_confDataNizi[CCharaConfNizi.CONF_ID_ASSUMPTIO];
+            }
             break;
 
     }
@@ -548,7 +553,9 @@ function ExBuffNumSearch(exBufId) {
 
         // 支援フリッグの歌
         case EXBUF_ID_FRIGGNO_UTA:
-            exBufNum = g_confDataSanzi[CCharaConfSanzi.CONF_ID_FRIGGNO_UTA];
+            if (g_confDataSanzi && CCharaConfSanzi) {
+                exBufNum = g_confDataSanzi[CCharaConfSanzi.CONF_ID_FRIGGNO_UTA];
+            }
             break;
 
 
@@ -613,55 +620,55 @@ function ExBuffNumSearch(exBufId) {
     }
 
 
+    if (g_confDataSanzi && CCharaConfSanzi) {
+        switch (exBufId) {
 
-    switch (exBufId) {
+            // 支援デリュージ
+            case EXBUF_ID_DELUGE:
+                val = g_confDataNizi[CCharaConfNizi.CONF_ID_ZOKUSEIBA_SHURUI];
+                if (val == CCharaConfNizi.CONF_ID_ZOKUSEIBA_SHURUI_DELUGE) {
+                    exBufNum = g_confDataNizi[CCharaConfNizi.CONF_ID_ZOKUSEIBA_LEVEL];
+                }
+                break;
 
-        // 支援デリュージ
-        case EXBUF_ID_DELUGE:
-            val = g_confDataNizi[CCharaConfNizi.CONF_ID_ZOKUSEIBA_SHURUI];
-            if (val == CCharaConfNizi.CONF_ID_ZOKUSEIBA_SHURUI_DELUGE) {
-                exBufNum = g_confDataNizi[CCharaConfNizi.CONF_ID_ZOKUSEIBA_LEVEL];
-            }
-            break;
+            // 支援術式-展開
+            case EXBUF_ID_ZYUTSUSHIKI_TENKAI:
+                exBufNum = g_confDataSanzi[CCharaConfSanzi.CONF_ID_ZYUTSUSHIKI_TENKAI];
+                break;
 
-        // 支援術式-展開-
-        case EXBUF_ID_ZYUTSUSHIKI_TENKAI:
-            exBufNum = g_confDataSanzi[CCharaConfSanzi.CONF_ID_ZYUTSUSHIKI_TENKAI];
-            break;
+            // 支援ファイティングスピリット
+            case EXBUF_ID_FIGHTING_SPIRIT:
+                exBufNum = g_confDataSanzi[CCharaConfSanzi.CONF_ID_FIGHTING_SPIRIT];
+                break;
 
-        // 支援ファイティングスピリット
-        case EXBUF_ID_FIGHTING_SPIRIT:
-            exBufNum = g_confDataSanzi[CCharaConfSanzi.CONF_ID_FIGHTING_SPIRIT];
-            break;
+            // 支援オーディンの力
+            case EXBUF_ID_ODINNO_CHIKARA:
+                exBufNum = g_confDataSanzi[CCharaConfSanzi.CONF_ID_ODINNO_CHIKARA];
+                break;
 
-        // 支援オーディンの力
-        case EXBUF_ID_ODINNO_CHIKARA:
-            exBufNum = g_confDataSanzi[CCharaConfSanzi.CONF_ID_ODINNO_CHIKARA];
-            break;
+            // 支援エピクレシス
+            case EXBUF_ID_ODINNO_EPICLESIS:
+                exBufNum = g_confDataSanzi[CCharaConfSanzi.CONF_ID_EPICLESIS];
+                break;
 
-        // 支援エピクレシス
-        case EXBUF_ID_ODINNO_EPICLESIS:
-            exBufNum = g_confDataSanzi[CCharaConfSanzi.CONF_ID_EPICLESIS];
-            break;
+            // 支援ホムＳペインキラー
+            case EXBUF_ID_HOM_S_PAINKILLER:
+                exBufNum = g_confDataSanzi[CCharaConfSanzi.CONF_ID_PAIN_KILLER];
+                break;
 
-        // 支援ホムＳペインキラー
-        case EXBUF_ID_HOM_S_PAINKILLER:
-            exBufNum = g_confDataSanzi[CCharaConfSanzi.CONF_ID_PAIN_KILLER];
-            break;
+            // 支援ホムＳペインキラー　ホムンクルスのレベル
+            case EXBUF_ID_HOM_S_PAINKILLER_HOM_LEVEL:
+                if (g_confDataSanzi[CCharaConfSanzi.CONF_ID_PAIN_KILLER] > 0) {
+                    exBufNum = g_confDataSanzi[CCharaConfSanzi.CONF_ID_PAIN_KILLER_BASE_LEVEL];
+                }
+                break;
 
-        // 支援ホムＳペインキラー　ホムンクルスのレベル
-        case EXBUF_ID_HOM_S_PAINKILLER_HOM_LEVEL:
-            if (g_confDataSanzi[CCharaConfSanzi.CONF_ID_PAIN_KILLER] > 0) {
-                exBufNum = g_confDataSanzi[CCharaConfSanzi.CONF_ID_PAIN_KILLER_BASE_LEVEL];
-            }
-            break;
-
-        // 支援チャタリング/ミャウミャウ
-        case EXBUF_ID_CHATTERING:
-            exBufNum = g_confDataSanzi[CCharaConfSanzi.CONF_ID_CHATTERING];
-            break;
+            // 支援チャタリング/ミャウミャウ
+            case EXBUF_ID_CHATTERING:
+                exBufNum = g_confDataSanzi[CCharaConfSanzi.CONF_ID_CHATTERING];
+                break;
+        }
     }
-
 
 
     switch (exBufId) {
@@ -836,7 +843,7 @@ function ExBuffNumSearch(exBufId) {
  * @param timeItemId 時限アイテムＩＤ
  * @returns 使用数
  */
-function TimeItemNumSearch(timeItemId) {
+export function TimeItemNumSearch(timeItemId) {
 
     var timeItemNum = 0;
 
@@ -865,7 +872,7 @@ function TimeItemNumSearch(timeItemId) {
 /**
  * 装備等によるステータスの追加補正値を取得する（防御属性）.
  */
-function GetStatusModifyBodyElement() {
+export function GetStatusModifyBodyElement() {
 
     var val = ELM_ID_VANITY;
     var itemCount = 0;
@@ -873,7 +880,7 @@ function GetStatusModifyBodyElement() {
     //----------------------------------------------------------------
     // 「四次精霊　ディフェンスモード」の効果
     //----------------------------------------------------------------
-    switch (UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL)) {
+    switch (Head.UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL)) {
         case SERE_SUPPORT_SKILL_ID_FLAME_ARMOR:
             return ELM_ID_FIRE;
         case SERE_SUPPORT_SKILL_ID_CRYSTAL_ARMOR:
@@ -889,7 +896,7 @@ function GetStatusModifyBodyElement() {
     //----------------------------------------------------------------
     // スキル「シェイプシフト」の、効果
     //----------------------------------------------------------------
-    switch (UsedSkillSearch(SKILL_ID_SHAPE_SHIFT)) {
+    switch (Head.UsedSkillSearch(SKILL_ID_SHAPE_SHIFT)) {
         case 1:
             return ELM_ID_FIRE;
         case 2:
@@ -903,14 +910,14 @@ function GetStatusModifyBodyElement() {
     //----------------------------------------------------------------
     // 「聖体降福」の、効果
     //----------------------------------------------------------------
-    if (g_confDataNizi[CCharaConfNizi.CONF_ID_SEITAI_KOFUKU]) {
+    if (g_confDataNizi && g_confDataNizi[CCharaConfNizi.CONF_ID_SEITAI_KOFUKU]) {
         return ELM_ID_HOLY;
     }
 
     //----------------------------------------------------------------
     // 「パイエティ」の、効果
     //----------------------------------------------------------------
-    if (g_confDataSanzi[CCharaConfSanzi.CONF_ID_PIETY]) {
+    if (g_confDataSanzi && g_confDataSanzi[CCharaConfSanzi.CONF_ID_PIETY]) {
         return ELM_ID_HOLY;
     }
 
@@ -929,13 +936,13 @@ function GetStatusModifyBodyElement() {
     else {
 
         // 装備中の単純カード効果を検索
-        val = GetEquippedTotalSPCardAndElse(ITEM_SP_BODY_ELEMENT);
+        val = Foot.GetEquippedTotalSPCardAndElse(ITEM_SP_BODY_ELEMENT);
         if (val != ELM_ID_VANITY) {
             return val;
         }
 
         // カード効果がなければ、装備固有の単純効果を検索
-        val = GetEquippedTotalSPEquip(ITEM_SP_BODY_ELEMENT);
+        val = Foot.GetEquippedTotalSPEquip(ITEM_SP_BODY_ELEMENT);
         if (val != ELM_ID_VANITY) {
             return val;
         }
@@ -1032,7 +1039,7 @@ function GetStatusModifyBodyElement() {
 /**
  * 装備等によるステータスの追加補正値を取得する（ＡＴＫ）.
  */
-function GetStatusModifyAtkPlus() {
+export function GetStatusModifyAtkPlus() {
 
     var idx = 0;
     var val = 0;
@@ -1059,7 +1066,7 @@ function GetStatusModifyAtkPlus() {
     //----------------------------------------------------------------
     // ランダムエンチャント効果
     //----------------------------------------------------------------
-    val += GetRndOptTotalValue(ITEM_SP_ATK_PLUS, null, false);
+    val += HmRndopt.GetRndOptTotalValue(ITEM_SP_ATK_PLUS, null, false);
     // val += GetRndEnchValue(ITEM_SP_ATK_PLUS);
 
     //------------------------------------------------------------------------------------------------
@@ -1115,13 +1122,13 @@ function GetStatusModifyAtkPlus() {
 
         masters = 0;
 
-        masters += (LearnedSkillSearch(SKILL_ID_TANKEN_SEISAKU) >= 3) ? 1 : 0;
-        masters += (LearnedSkillSearch(SKILL_ID_KEN_SEISAKU) >= 3) ? 1 : 0;
-        masters += (LearnedSkillSearch(SKILL_ID_RYOTEKEN_SEISAKU) >= 3) ? 1 : 0;
-        masters += (LearnedSkillSearch(SKILL_ID_ONO_SEISAKU) >= 3) ? 1 : 0;
-        masters += (LearnedSkillSearch(SKILL_ID_MACE_SEISAKU) >= 3) ? 1 : 0;
-        masters += (LearnedSkillSearch(SKILL_ID_KNUCKLE_SEISAKU) >= 3) ? 1 : 0;
-        masters += (LearnedSkillSearch(SKILL_ID_YARI_SEISAKU) >= 3) ? 1 : 0;
+        masters += (LearnedSkill.LearnedSkillSearch(SKILL_ID_TANKEN_SEISAKU) >= 3) ? 1 : 0;
+        masters += (LearnedSkill.LearnedSkillSearch(SKILL_ID_KEN_SEISAKU) >= 3) ? 1 : 0;
+        masters += (LearnedSkill.LearnedSkillSearch(SKILL_ID_RYOTEKEN_SEISAKU) >= 3) ? 1 : 0;
+        masters += (LearnedSkill.LearnedSkillSearch(SKILL_ID_ONO_SEISAKU) >= 3) ? 1 : 0;
+        masters += (LearnedSkill.LearnedSkillSearch(SKILL_ID_MACE_SEISAKU) >= 3) ? 1 : 0;
+        masters += (LearnedSkill.LearnedSkillSearch(SKILL_ID_KNUCKLE_SEISAKU) >= 3) ? 1 : 0;
+        masters += (LearnedSkill.LearnedSkillSearch(SKILL_ID_YARI_SEISAKU) >= 3) ? 1 : 0;
 
         val += 10 * masters * itemCountRight;
         val += 10 * masters * itemCountLeft;
@@ -1132,13 +1139,13 @@ function GetStatusModifyAtkPlus() {
 
         masters = 0;
 
-        masters += (LearnedSkillSearch(SKILL_ID_TANKEN_SEISAKU) >= 3) ? 1 : 0;
-        masters += (LearnedSkillSearch(SKILL_ID_KEN_SEISAKU) >= 3) ? 1 : 0;
-        masters += (LearnedSkillSearch(SKILL_ID_RYOTEKEN_SEISAKU) >= 3) ? 1 : 0;
-        masters += (LearnedSkillSearch(SKILL_ID_ONO_SEISAKU) >= 3) ? 1 : 0;
-        masters += (LearnedSkillSearch(SKILL_ID_MACE_SEISAKU) >= 3) ? 1 : 0;
-        masters += (LearnedSkillSearch(SKILL_ID_KNUCKLE_SEISAKU) >= 3) ? 1 : 0;
-        masters += (LearnedSkillSearch(SKILL_ID_YARI_SEISAKU) >= 3) ? 1 : 0;
+        masters += (LearnedSkill.LearnedSkillSearch(SKILL_ID_TANKEN_SEISAKU) >= 3) ? 1 : 0;
+        masters += (LearnedSkill.LearnedSkillSearch(SKILL_ID_KEN_SEISAKU) >= 3) ? 1 : 0;
+        masters += (LearnedSkill.LearnedSkillSearch(SKILL_ID_RYOTEKEN_SEISAKU) >= 3) ? 1 : 0;
+        masters += (LearnedSkill.LearnedSkillSearch(SKILL_ID_ONO_SEISAKU) >= 3) ? 1 : 0;
+        masters += (LearnedSkill.LearnedSkillSearch(SKILL_ID_MACE_SEISAKU) >= 3) ? 1 : 0;
+        masters += (LearnedSkill.LearnedSkillSearch(SKILL_ID_KNUCKLE_SEISAKU) >= 3) ? 1 : 0;
+        masters += (LearnedSkill.LearnedSkillSearch(SKILL_ID_YARI_SEISAKU) >= 3) ? 1 : 0;
 
         val += 10 * masters * itemCountRight;
         val += 10 * masters * itemCountLeft;
@@ -1150,8 +1157,8 @@ function GetStatusModifyAtkPlus() {
     itemCountRight = EquipNumSearch(ITEM_ID_CACRAM, EQUIP_REGION_ID_ARMS);
     itemCountLeft = EquipNumSearch(ITEM_ID_CACRAM, EQUIP_REGION_ID_ARMS_LEFT);
     if ((itemCountRight > 0) || (itemCountLeft > 0)) {
-        if (LearnedSkillSearch(SKILL_ID_KATAR_SHUREN) >= 10) val += 10 * itemCountRight;
-        if (LearnedSkillSearch(SKILL_ID_KATAR_SHUREN) >= 10) val += 10 * itemCountLeft;
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_KATAR_SHUREN) >= 10) val += 10 * itemCountRight;
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_KATAR_SHUREN) >= 10) val += 10 * itemCountLeft;
     }
 
     //----------------------------------------------------------------
@@ -1183,10 +1190,10 @@ function GetStatusModifyAtkPlus() {
 
         masters = 0;
 
-        masters += (LearnedSkillSearch(SKILL_ID_RENDASHO) >= 5) ? 1 : 0;
-        masters += (LearnedSkillSearch(SKILL_ID_MORYUKEN) >= 5) ? 1 : 0;
-        masters += (LearnedSkillSearch(SKILL_ID_BUKKOKEN) >= 5) ? 1 : 0;
-        masters += (LearnedSkillSearch(SKILL_ID_RENCHUHOGEKI) >= 10) ? 2 : 0;
+        masters += (LearnedSkill.LearnedSkillSearch(SKILL_ID_RENDASHO) >= 5) ? 1 : 0;
+        masters += (LearnedSkill.LearnedSkillSearch(SKILL_ID_MORYUKEN) >= 5) ? 1 : 0;
+        masters += (LearnedSkill.LearnedSkillSearch(SKILL_ID_BUKKOKEN) >= 5) ? 1 : 0;
+        masters += (LearnedSkill.LearnedSkillSearch(SKILL_ID_RENCHUHOGEKI) >= 10) ? 2 : 0;
 
         val += 20 * masters * itemCountRight;
         val += 20 * masters * itemCountLeft;
@@ -1225,9 +1232,9 @@ function GetStatusModifyAtkPlus() {
 
         vartmp += 10 * n_A_Weapon_ATKplus;
 
-        vartmp += 7 * LearnedSkillSearch(SKILL_ID_ONO_SHUREN);
-        vartmp += 10 * LearnedSkillSearch(SKILL_ID_BUKI_KENKYU);
-        vartmp += 30 * LearnedSkillSearch(SKILL_ID_TEKKEN);
+        vartmp += 7 * LearnedSkill.LearnedSkillSearch(SKILL_ID_ONO_SHUREN);
+        vartmp += 10 * LearnedSkill.LearnedSkillSearch(SKILL_ID_BUKI_KENKYU);
+        vartmp += 30 * LearnedSkill.LearnedSkillSearch(SKILL_ID_TEKKEN);
 
         val += vartmp * itemCountRight;
         val += vartmp * itemCountLeft;
@@ -2119,19 +2126,19 @@ function GetStatusModifyAtkPlus() {
     itemCountLeft = EquipNumSearch(ITEM_ID_ILLUSION_RENGEKINO_TSUME, EQUIP_REGION_ID_ARMS_LEFT);
     if ((itemCountRight > 0) || (itemCountLeft > 0)) {
 
-        if (LearnedSkillSearch(SKILL_ID_GOHO) >= 10) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_GOHO) >= 10) {
             val += 50 * (itemCountRight + itemCountLeft);
         }
 
-        if (LearnedSkillSearch(SKILL_ID_SORYUKYAKU) >= 10) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_SORYUKYAKU) >= 10) {
             val += 50 * (itemCountRight + itemCountLeft);
         }
 
-        if (LearnedSkillSearch(SKILL_ID_DAITENHOSUI) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_DAITENHOSUI) >= 5) {
             val += 50 * (itemCountRight + itemCountLeft);
         }
 
-        if (LearnedSkillSearch(SKILL_ID_TENRACHIMO) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_TENRACHIMO) >= 5) {
             val += 50 * (itemCountRight + itemCountLeft);
         }
     }
@@ -2486,7 +2493,7 @@ function GetStatusModifyAtkPlus() {
     // 「ケミカルグローブ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_CHEMICAL_GLOVE)) > 0) {
-        val += 15 * LearnedSkillSearch(SKILL_ID_CART_KAIZO) * itemCount;
+        val += 15 * LearnedSkill.LearnedSkillSearch(SKILL_ID_CART_KAIZO) * itemCount;
     }
 
     //----------------------------------------------------------------
@@ -2514,7 +2521,7 @@ function GetStatusModifyAtkPlus() {
     // 「エメラルドリング」の、スキル習得による強化
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_EMERALD_RING)) > 0) {
-        val += 20 * Math.floor(LearnedSkillSearch(SKILL_ID_DOUBLE_STRAFING) / 2) * itemCount;
+        val += 20 * Math.floor(LearnedSkill.LearnedSkillSearch(SKILL_ID_DOUBLE_STRAFING) / 2) * itemCount;
     }
 
     //----------------------------------------------------------------
@@ -2535,8 +2542,8 @@ function GetStatusModifyAtkPlus() {
     // 「おもちゃの指輪」の、スキル習得による強化
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_OMOCHANO_YUBIWA)) > 0) {
-        val += 10 * Math.floor(LearnedSkillSearch(SKILL_ID_KEN_SHUREN) / 2) * itemCount;
-        val += 10 * Math.floor(LearnedSkillSearch(SKILL_ID_KEN_SHUREN_GENETIC) / 2) * itemCount;
+        val += 10 * Math.floor(LearnedSkill.LearnedSkillSearch(SKILL_ID_KEN_SHUREN) / 2) * itemCount;
+        val += 10 * Math.floor(LearnedSkill.LearnedSkillSearch(SKILL_ID_KEN_SHUREN_GENETIC) / 2) * itemCount;
     }
 
     //----------------------------------------------------------------
@@ -2592,7 +2599,7 @@ function GetStatusModifyAtkPlus() {
     // 「パワードチップ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_POWERED_CHIP)) > 0) {
-        if ((sklLv = LearnedSkillSearch(SKILL_ID_PILE_BUNKER)) >= 3) {
+        if ((sklLv = LearnedSkill.LearnedSkillSearch(SKILL_ID_PILE_BUNKER)) >= 3) {
             val += 100 * itemCount;
         }
     }
@@ -2628,7 +2635,7 @@ function GetStatusModifyAtkPlus() {
     // 「ワークキャップ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_WORK_CAP)) > 0) {
-        if ((sklLv = LearnedSkillSearch(SKILL_ID_AXE_BOOMERANG)) >= 5) {
+        if ((sklLv = LearnedSkill.LearnedSkillSearch(SKILL_ID_AXE_BOOMERANG)) >= 5) {
             val += 100 * itemCount;
         }
     }
@@ -2669,7 +2676,7 @@ function GetStatusModifyAtkPlus() {
     // 「シールドリング」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_SHIELD_RING)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_DEBOTION) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_DEBOTION) >= 5) {
             val += 100 * itemCount;
         }
     }
@@ -2701,7 +2708,7 @@ function GetStatusModifyAtkPlus() {
     // 「ぷりちーウリボウシューズ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_PRETTY_URIBO_SHOES)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_SEIMEINO_TAMASHI) >= 1) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_SEIMEINO_TAMASHI) >= 1) {
             val += 100 * itemCount;
         }
     }
@@ -2717,7 +2724,7 @@ function GetStatusModifyAtkPlus() {
     // 「ダークリング」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_DARK_RING)) > 0) {
-        val += 40 * LearnedSkillSearch(SKILL_ID_WEAPON_CRUSH) * itemCount;
+        val += 40 * LearnedSkill.LearnedSkillSearch(SKILL_ID_WEAPON_CRUSH) * itemCount;
     }
 
     //----------------------------------------------------------------
@@ -2738,7 +2745,7 @@ function GetStatusModifyAtkPlus() {
     // 「インペリアルアニマルローブ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearchMIG(ITEM_ID_IMPERIAL_ANIMAL_ROBE)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_SAVAGENO_TAMASHI) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_SAVAGENO_TAMASHI) >= 5) {
             val += 1 * Math.floor(n_A_BaseLV / 3) * itemCount;
         }
     }
@@ -2747,7 +2754,7 @@ function GetStatusModifyAtkPlus() {
     // 「グレースアニマルローブ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearchMIG(ITEM_ID_GRACE_ANIMAL_ROBE)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_SAVAGENO_TAMASHI) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_SAVAGENO_TAMASHI) >= 5) {
             val += 1 * n_A_BaseLV * itemCount;
         }
     }
@@ -2756,7 +2763,7 @@ function GetStatusModifyAtkPlus() {
     // 「インペリアルクルシフォームスーツ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearchMIG(ITEM_ID_IMPERIAL_CRUCIFORM_SUIT)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_MEIKYO_SHISUI) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_MEIKYO_SHISUI) >= 5) {
             val += 50 * itemCount;
         }
     }
@@ -2765,7 +2772,7 @@ function GetStatusModifyAtkPlus() {
     // 「グレースクルシフォームスーツ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearchMIG(ITEM_ID_GRACE_CRUCIFORM_SUIT)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_MEIKYO_SHISUI) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_MEIKYO_SHISUI) >= 5) {
             val += 150 * itemCount;
         }
     }
@@ -2774,42 +2781,42 @@ function GetStatusModifyAtkPlus() {
     // 「インペリアルマグマスーツ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearchMIG(ITEM_ID_IMPERIAL_MAGMA_SUIT)) > 0) {
-        val += 10 * LearnedSkillSearch(SKILL_ID_AXE_BOOMERANG) * itemCount;
+        val += 10 * LearnedSkill.LearnedSkillSearch(SKILL_ID_AXE_BOOMERANG) * itemCount;
     }
 
     //----------------------------------------------------------------
     // 「グレースマグマスーツ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearchMIG(ITEM_ID_GRACE_MAGMA_SUIT)) > 0) {
-        val += 30 * LearnedSkillSearch(SKILL_ID_AXE_BOOMERANG) * itemCount;
+        val += 30 * LearnedSkill.LearnedSkillSearch(SKILL_ID_AXE_BOOMERANG) * itemCount;
     }
 
     //----------------------------------------------------------------
     // 「インペリアル天地スーツ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearchMIG(ITEM_ID_IMPERIAL_TENCHI_SUIT)) > 0) {
-        val += 10 * LearnedSkillSearch(SKILL_ID_TENKETSU_HAN) * itemCount;
+        val += 10 * LearnedSkill.LearnedSkillSearch(SKILL_ID_TENKETSU_HAN) * itemCount;
     }
 
     //----------------------------------------------------------------
     // 「グレース天地スーツ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearchMIG(ITEM_ID_GRACE_TENCHI_SUIT)) > 0) {
-        val += 30 * LearnedSkillSearch(SKILL_ID_TENKETSU_HAN) * itemCount;
+        val += 30 * LearnedSkill.LearnedSkillSearch(SKILL_ID_TENKETSU_HAN) * itemCount;
     }
 
     //----------------------------------------------------------------
     // 「インペリアルメナススーツ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearchMIG(ITEM_ID_IMPERIAL_MENUS_SUIT)) > 0) {
-        val += 10 * LearnedSkillSearch(SKILL_ID_ESCAPE) * itemCount;
+        val += 10 * LearnedSkill.LearnedSkillSearch(SKILL_ID_ESCAPE) * itemCount;
     }
 
     //----------------------------------------------------------------
     // 「グレースメナススーツ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearchMIG(ITEM_ID_GRACE_MENUS_SUIT)) > 0) {
-        val += 30 * LearnedSkillSearch(SKILL_ID_ESCAPE) * itemCount;
+        val += 30 * LearnedSkill.LearnedSkillSearch(SKILL_ID_ESCAPE) * itemCount;
     }
 
     //----------------------------------------------------------------
@@ -2817,7 +2824,7 @@ function GetStatusModifyAtkPlus() {
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearchMIG(ITEM_ID_GOYUMUSONO_MIKOSHI)) > 0) {
         if (n_A_SHOULDER_DEF_PLUS >= 8) {
-            if (LearnedSkillSearch(SKILL_ID_SHUCHURYOKU_KOZYO) >= 10) {
+            if (LearnedSkill.LearnedSkillSearch(SKILL_ID_SHUCHURYOKU_KOZYO) >= 10) {
                 val += 50 * itemCount;
             }
         }
@@ -2827,35 +2834,35 @@ function GetStatusModifyAtkPlus() {
     // 「インペリアルレインストームスーツ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearchMIG(ITEM_ID_IMPERIAL_RAINSTORM_SUIT)) > 0) {
-        val += 10 * LearnedSkillSearch(SKILL_ID_ENDLESS_HUMMING_VOICE) * itemCount;
+        val += 10 * LearnedSkill.LearnedSkillSearch(SKILL_ID_ENDLESS_HUMMING_VOICE) * itemCount;
     }
 
     //----------------------------------------------------------------
     // 「グレースレインストームスーツ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearchMIG(ITEM_ID_GRACE_RAINSTORM_SUIT)) > 0) {
-        val += 30 * LearnedSkillSearch(SKILL_ID_ENDLESS_HUMMING_VOICE) * itemCount;
+        val += 30 * LearnedSkill.LearnedSkillSearch(SKILL_ID_ENDLESS_HUMMING_VOICE) * itemCount;
     }
 
     //----------------------------------------------------------------
     // 「インペリアルコンフィデンシャルメイル」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_IMPERIAL_CONFIDENCIAL_MAIL)) > 0) {
-        val += 15 * Math.floor(LearnedSkillSearch(SKILL_ID_SONIC_WAVE) / 3) * itemCount;
+        val += 15 * Math.floor(LearnedSkill.LearnedSkillSearch(SKILL_ID_SONIC_WAVE) / 3) * itemCount;
     }
 
     //----------------------------------------------------------------
     // 「グレースコンフィデンシャルメイル」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_GRACE_CONFIDENCIAL_MAIL)) > 0) {
-        val += 15 * LearnedSkillSearch(SKILL_ID_SONIC_WAVE) * itemCount;
+        val += 15 * LearnedSkill.LearnedSkillSearch(SKILL_ID_SONIC_WAVE) * itemCount;
     }
 
     //----------------------------------------------------------------
     // 「改良型パワードスーツ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_KAIRYOGATA_POWERED_SUIT)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_ARMS_CANNON) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_ARMS_CANNON) >= 5) {
             val += 1 * n_A_BaseLV * itemCount;
         }
     }
@@ -2864,14 +2871,14 @@ function GetStatusModifyAtkPlus() {
     // 「ダークトライアド」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_DARK_TRIAD)) > 0) {
-        val += 50 * LearnedSkillSearch(SKILL_ID_MAELSTORM) * itemCount;
+        val += 50 * LearnedSkill.LearnedSkillSearch(SKILL_ID_MAELSTORM) * itemCount;
     }
 
     //----------------------------------------------------------------
     // 「アサルトスーツ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_ASSAULT_SUIT)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_WUG_RIDER) >= 3) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_WUG_RIDER) >= 3) {
             val += 1 * n_A_BaseLV * itemCount;
         }
     }
@@ -2880,7 +2887,7 @@ function GetStatusModifyAtkPlus() {
     // 「デスブリンガー」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_DEATH_BRINGER)) > 0) {
-        val += 50 * LearnedSkillSearch(SKILL_ID_CROSS_IMPACT) * itemCount;
+        val += 50 * LearnedSkill.LearnedSkillSearch(SKILL_ID_CROSS_IMPACT) * itemCount;
     }
 
 
@@ -3289,26 +3296,26 @@ function GetStatusModifyAtkPlus() {
     if ((itemCount = EquipNumSearch(ITEM_SET_ID_YUSHANO_KUTSU_TATSUZINNO_ONO)) > 0) {
         masters = 0;
 
-        masters += (LearnedSkillSearch(SKILL_ID_TANKEN_SEISAKU) >= 3) ? 1 : 0;
-        masters += (LearnedSkillSearch(SKILL_ID_KEN_SEISAKU) >= 3) ? 1 : 0;
-        masters += (LearnedSkillSearch(SKILL_ID_RYOTEKEN_SEISAKU) >= 3) ? 1 : 0;
-        masters += (LearnedSkillSearch(SKILL_ID_ONO_SEISAKU) >= 3) ? 1 : 0;
-        masters += (LearnedSkillSearch(SKILL_ID_MACE_SEISAKU) >= 3) ? 1 : 0;
-        masters += (LearnedSkillSearch(SKILL_ID_KNUCKLE_SEISAKU) >= 3) ? 1 : 0;
-        masters += (LearnedSkillSearch(SKILL_ID_YARI_SEISAKU) >= 3) ? 1 : 0;
+        masters += (LearnedSkill.LearnedSkillSearch(SKILL_ID_TANKEN_SEISAKU) >= 3) ? 1 : 0;
+        masters += (LearnedSkill.LearnedSkillSearch(SKILL_ID_KEN_SEISAKU) >= 3) ? 1 : 0;
+        masters += (LearnedSkill.LearnedSkillSearch(SKILL_ID_RYOTEKEN_SEISAKU) >= 3) ? 1 : 0;
+        masters += (LearnedSkill.LearnedSkillSearch(SKILL_ID_ONO_SEISAKU) >= 3) ? 1 : 0;
+        masters += (LearnedSkill.LearnedSkillSearch(SKILL_ID_MACE_SEISAKU) >= 3) ? 1 : 0;
+        masters += (LearnedSkill.LearnedSkillSearch(SKILL_ID_KNUCKLE_SEISAKU) >= 3) ? 1 : 0;
+        masters += (LearnedSkill.LearnedSkillSearch(SKILL_ID_YARI_SEISAKU) >= 3) ? 1 : 0;
 
         val += 10 * masters * itemCount;
     }
     if ((itemCount = EquipNumSearch(ITEM_SET_ID_YUSHANO_KUTSU_TATSUZINNO_ONO_S2)) > 0) {
         masters = 0;
 
-        masters += (LearnedSkillSearch(SKILL_ID_TANKEN_SEISAKU) >= 3) ? 1 : 0;
-        masters += (LearnedSkillSearch(SKILL_ID_KEN_SEISAKU) >= 3) ? 1 : 0;
-        masters += (LearnedSkillSearch(SKILL_ID_RYOTEKEN_SEISAKU) >= 3) ? 1 : 0;
-        masters += (LearnedSkillSearch(SKILL_ID_ONO_SEISAKU) >= 3) ? 1 : 0;
-        masters += (LearnedSkillSearch(SKILL_ID_MACE_SEISAKU) >= 3) ? 1 : 0;
-        masters += (LearnedSkillSearch(SKILL_ID_KNUCKLE_SEISAKU) >= 3) ? 1 : 0;
-        masters += (LearnedSkillSearch(SKILL_ID_YARI_SEISAKU) >= 3) ? 1 : 0;
+        masters += (LearnedSkill.LearnedSkillSearch(SKILL_ID_TANKEN_SEISAKU) >= 3) ? 1 : 0;
+        masters += (LearnedSkill.LearnedSkillSearch(SKILL_ID_KEN_SEISAKU) >= 3) ? 1 : 0;
+        masters += (LearnedSkill.LearnedSkillSearch(SKILL_ID_RYOTEKEN_SEISAKU) >= 3) ? 1 : 0;
+        masters += (LearnedSkill.LearnedSkillSearch(SKILL_ID_ONO_SEISAKU) >= 3) ? 1 : 0;
+        masters += (LearnedSkill.LearnedSkillSearch(SKILL_ID_MACE_SEISAKU) >= 3) ? 1 : 0;
+        masters += (LearnedSkill.LearnedSkillSearch(SKILL_ID_KNUCKLE_SEISAKU) >= 3) ? 1 : 0;
+        masters += (LearnedSkill.LearnedSkillSearch(SKILL_ID_YARI_SEISAKU) >= 3) ? 1 : 0;
 
         val += 10 * masters * itemCount;
     }
@@ -3433,7 +3440,7 @@ function GetStatusModifyAtkPlus() {
     //----------------------------------------------------------------
     // 「ロイヤルガード　インスピレーション」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = UsedSkillSearch(SKILL_ID_INSPIRATION)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_INSPIRATION)) > 0) {
         val += 40 * sklLv + 3 * n_A_JobLV;
     }
     else if (
@@ -3447,7 +3454,7 @@ function GetStatusModifyAtkPlus() {
     //----------------------------------------------------------------
     // 「ロイヤルガード　シールドスペル」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = UsedSkillSearch(SKILL_ID_SHIELD_SPELL_ATK_PLUS)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_SHIELD_SPELL_ATK_PLUS)) > 0) {
         if (n_A_ActiveSkill != SKILL_ID_SHIELD_SPELL_LV_1) {
             if (sklLv == 1) {
                 val += ItemObjNew[n_A_Equip[EQUIP_REGION_ID_SHIELD]][ITEM_DATA_INDEX_POWER];
@@ -3462,7 +3469,7 @@ function GetStatusModifyAtkPlus() {
     // 「ルーンナイト　ファイティングスピリット」の、効果
     // 「ルーンナイト　ファイティングスピリット（別キャラ支援）」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = UsedSkillSearch(SKILL_ID_FIGHTING_SPIRIT)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_FIGHTING_SPIRIT)) > 0) {
         val += 7 * sklLv;
 
         // ルーンヘルム、ジャスパーサークレット、ファフニールヘルム装備時の追加効果
@@ -3482,8 +3489,8 @@ function GetStatusModifyAtkPlus() {
     //----------------------------------------------------------------
     // 「ロイヤルガード　バンディング」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = UsedSkillSearch(SKILL_ID_BANDING)) > 0) {
-        val += (10 + 10 * sklLv) * (UsedSkillSearch(SKILL_ID_COUNT_OF_RG_FOR_BANDING) + 1);
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_BANDING)) > 0) {
+        val += (10 + 10 * sklLv) * (Head.UsedSkillSearch(SKILL_ID_COUNT_OF_RG_FOR_BANDING) + 1);
     }
 
     //----------------------------------------------------------------
@@ -3495,7 +3502,7 @@ function GetStatusModifyAtkPlus() {
         sklLv = Math.max(sklLv, n_A_ActiveSkillLV);
     }
     else {
-        sklLv = Math.max(sklLv, UsedSkillSearch(SKILL_ID_ATK_PLUS_AFTER_SENKO_RENGEKI));
+        sklLv = Math.max(sklLv, Head.UsedSkillSearch(SKILL_ID_ATK_PLUS_AFTER_SENKO_RENGEKI));
     }
 
     // 特定の戦闘エリアでの補正
@@ -3517,9 +3524,9 @@ function GetStatusModifyAtkPlus() {
     //----------------------------------------------------------------
     // 「ソーサラー　精霊（Passive）」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = UsedSkillSearch(SKILL_ID_SERE)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_SERE)) > 0) {
         // 火Ｌｖ１～火Ｌｖ３のパッシブモードの場合、ＡＴＫ上昇
-        if (UsedSkillSearch(SKILL_ID_SERE_MODE) == 1) {
+        if (Head.UsedSkillSearch(SKILL_ID_SERE_MODE) == 1) {
             if (sklLv == 1) val += 60;
             if (sklLv == 2) val += 120;
             if (sklLv == 3) val += 180;
@@ -3529,9 +3536,9 @@ function GetStatusModifyAtkPlus() {
     //----------------------------------------------------------------
     // 「朧　幻術-残月-」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = UsedSkillSearch(SKILL_ID_GENZYUTSU_ZANGETSU)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_GENZYUTSU_ZANGETSU)) > 0) {
         // HP設定が偶数の場合
-        if (UsedSkillSearch(SKILL_ID_HPSPCONF_FOR_GENZYUTSU_ZANGETSU) <= 1) {
+        if (Head.UsedSkillSearch(SKILL_ID_HPSPCONF_FOR_GENZYUTSU_ZANGETSU) <= 1) {
             val += 20 * sklLv + Math.floor(n_A_BaseLV / 3);
         }
         // HP設定が奇数の場合
@@ -3543,24 +3550,24 @@ function GetStatusModifyAtkPlus() {
     //----------------------------------------------------------------
     // 「Ｓホム　パイロクラスティック」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = UsedSkillSearch(SKILL_ID_PYROCLASTIC)) > 0) {
-        val += 10 * sklLv + 121 + UsedSkillSearch(SKILL_ID_HOMLV_FOR_PYROCLASTIC);
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_PYROCLASTIC)) > 0) {
+        val += 10 * sklLv + 121 + Head.UsedSkillSearch(SKILL_ID_HOMLV_FOR_PYROCLASTIC);
     }
 
     //----------------------------------------------------------------
     // 「リベリオン　プラチナムアルター」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = UsedSkillSearch(SKILL_ID_PLATINUM_ALTER)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_PLATINUM_ALTER)) > 0) {
         // 聖属性の弾丸のみ適用
         if (GetEquippedTotalSPArrow(ITEM_SP_ELEMENTAL) == ELM_ID_HOLY) {
-            val += sklLv * 10 + UsedSkillSearch(SKILL_ID_PLATINUM_ALTER_COIN_COUNT) * 10;
+            val += sklLv * 10 + Head.UsedSkillSearch(SKILL_ID_PLATINUM_ALTER_COIN_COUNT) * 10;
         }
     }
 
     //----------------------------------------------------------------
     // 「スーパーノービス＋　ブレイクスルー」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = Math.max(LearnedSkillSearch(SKILL_ID_BREAK_THROUGH), UsedSkillSearch(SKILL_ID_BREAK_THROUGH))) > 0) {
+    if ((sklLv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_BREAK_THROUGH), Head.UsedSkillSearch(SKILL_ID_BREAK_THROUGH))) > 0) {
         val += 15 * sklLv;
 
         if (sklLv >= 5) {
@@ -3634,7 +3641,7 @@ function GetStatusModifyAtkPlus() {
     //----------------------------------------------------------------
     // 「ソウルリーパー　鷹の魂」の、効果
     //----------------------------------------------------------------
-    if ((bufLv = g_confDataSanzi[CCharaConfSanzi.CONF_ID_TAKANO_TAMASHI]) > 0) {
+    if (g_confDataSanzi && CCharaConfSanzi && (bufLv = g_confDataSanzi[CCharaConfSanzi.CONF_ID_TAKANO_TAMASHI]) > 0) {
 
         // 特定の戦闘エリアでの補正
         switch (n_B_TAISEI[MOB_CONF_PLAYER_ID_SENTO_AREA]) {
@@ -3731,7 +3738,7 @@ function GetStatusModifyAtkPlus() {
 
     // TODO: 四次対応
     for (idx = ITEM_SP_ATK_PLUS; idx <= ITEM_SP_ATK_PLUS; idx++) {
-        val = ApplySpecModify(idx, val);
+        val = HmJob.ApplySpecModify(idx, val);
     }
 
     // 支援スキル効果　ここまで
@@ -3754,7 +3761,7 @@ function GetStatusModifyAtkPlus() {
 /**
 * 装備等によるステータスの追加補正値を取得する（ＭａｘＨＰ＋）.
 */
-function GetStatusModifyMaxHpPlus() {
+export function GetStatusModifyMaxHpPlus() {
 
     var val = 0;
 
@@ -3779,7 +3786,7 @@ function GetStatusModifyMaxHpPlus() {
     //----------------------------------------------------------------
     // ランダムエンチャント効果
     //----------------------------------------------------------------
-    val += GetRndOptTotalValue(ITEM_SP_MAXHP_PLUS, null, false);
+    val += HmRndopt.GetRndOptTotalValue(ITEM_SP_MAXHP_PLUS, null, false);
     // val += GetRndEnchValue(ITEM_SP_MAXHP_PLUS);
 
     //------------------------------------------------------------------------------------------------
@@ -4212,7 +4219,7 @@ function GetStatusModifyMaxHpPlus() {
     // 「イリュージョンミリタリーブーツ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_ILLUSION_MILITARY_BOOTS)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_FAW_MAGIC_DECOY) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_FAW_MAGIC_DECOY) >= 5) {
             val += 150 * n_A_BaseLV * itemCount;
         }
     }
@@ -4221,14 +4228,14 @@ function GetStatusModifyMaxHpPlus() {
     // 「科学者のマント」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_KAGAKUSHANO_MANT)) > 0) {
-        val += 1500 * LearnedSkillSearch(SKILL_ID_CRAZY_WEED) * itemCount;
+        val += 1500 * LearnedSkill.LearnedSkillSearch(SKILL_ID_CRAZY_WEED) * itemCount;
     }
 
     //----------------------------------------------------------------
     // 「インペリアルアニマルローブ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearchMIG(ITEM_ID_IMPERIAL_ANIMAL_ROBE)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_SAVAGENO_TAMASHI) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_SAVAGENO_TAMASHI) >= 5) {
             val += 50 * Math.floor(n_A_BaseLV / 3) * itemCount;
         }
     }
@@ -4237,7 +4244,7 @@ function GetStatusModifyMaxHpPlus() {
     // 「グレースアニマルローブ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearchMIG(ITEM_ID_GRACE_ANIMAL_ROBE)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_SAVAGENO_TAMASHI) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_SAVAGENO_TAMASHI) >= 5) {
             val += 50 * n_A_BaseLV * itemCount;
         }
     }
@@ -4246,7 +4253,7 @@ function GetStatusModifyMaxHpPlus() {
     // 「インペリアル天地スーツ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearchMIG(ITEM_ID_IMPERIAL_TENCHI_SUIT)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_SENRYU_SHOTEN) >= 10) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_SENRYU_SHOTEN) >= 10) {
             val += 50 * Math.floor(n_A_BaseLV / 3) * itemCount;
         }
     }
@@ -4255,7 +4262,7 @@ function GetStatusModifyMaxHpPlus() {
     // 「グレース天地スーツ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearchMIG(ITEM_ID_GRACE_TENCHI_SUIT)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_SENRYU_SHOTEN) >= 10) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_SENRYU_SHOTEN) >= 10) {
             val += 50 * n_A_BaseLV * itemCount;
         }
     }
@@ -4264,7 +4271,7 @@ function GetStatusModifyMaxHpPlus() {
     // 「インペリアルホーリーローブ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearchMIG(ITEM_ID_IMPERIAL_HOLY_ROBE)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_OFFERTORIUM) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_OFFERTORIUM) >= 5) {
             val += 50 * Math.floor(n_A_BaseLV / 3) * itemCount;
         }
     }
@@ -4273,7 +4280,7 @@ function GetStatusModifyMaxHpPlus() {
     // 「グレースホーリーローブ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearchMIG(ITEM_ID_GRACE_HOLY_ROBE)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_OFFERTORIUM) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_OFFERTORIUM) >= 5) {
             val += 50 * n_A_BaseLV * itemCount;
         }
     }
@@ -4282,7 +4289,7 @@ function GetStatusModifyMaxHpPlus() {
     // 「インペリアルサイキックローブ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearchMIG(ITEM_ID_IMPERIAL_PSYCHIC_ROBE)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_VACUUM_EXTREME) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_VACUUM_EXTREME) >= 5) {
             val += 50 * Math.floor(n_A_BaseLV / 3) * itemCount;
         }
     }
@@ -4291,7 +4298,7 @@ function GetStatusModifyMaxHpPlus() {
     // 「グレースサイキックローブ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearchMIG(ITEM_ID_GRACE_PSYCHIC_ROBE)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_VACUUM_EXTREME) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_VACUUM_EXTREME) >= 5) {
             val += 50 * n_A_BaseLV * itemCount;
         }
     }
@@ -4300,7 +4307,7 @@ function GetStatusModifyMaxHpPlus() {
     // 「インペリアルパニッシュメントローブ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_IMPERIAL_PUNISHMENT_ROBE)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_RADIUS) >= 3) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_RADIUS) >= 3) {
             val += 50 * Math.floor(n_A_BaseLV / 3) * itemCount;
         }
     }
@@ -4309,7 +4316,7 @@ function GetStatusModifyMaxHpPlus() {
     // 「グレースパニッシュメントローブ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_GRACE_PUNISHMENT_ROBE)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_RADIUS) >= 3) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_RADIUS) >= 3) {
             val += 50 * n_A_BaseLV * itemCount;
         }
     }
@@ -4318,7 +4325,7 @@ function GetStatusModifyMaxHpPlus() {
     // 「インペリアルカルティベイションコート」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_IMPERIAL_CULTIVATION_COAT)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_ILLUSION_DOOPING) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_ILLUSION_DOOPING) >= 5) {
             val += 50 * Math.floor(n_A_BaseLV / 3) * itemCount;
         }
     }
@@ -4327,7 +4334,7 @@ function GetStatusModifyMaxHpPlus() {
     // 「グレースカルティベイションコート」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_GRACE_CULTIVATION_COAT)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_ILLUSION_DOOPING) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_ILLUSION_DOOPING) >= 5) {
             val += 50 * n_A_BaseLV * itemCount;
         }
     }
@@ -4336,7 +4343,7 @@ function GetStatusModifyMaxHpPlus() {
     // 「パラケルススコート」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_PARACELSUS_COAT)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_CART_BOOST_GENETIC) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_CART_BOOST_GENETIC) >= 5) {
             val += 50 * n_A_BaseLV * itemCount;
         }
     }
@@ -4546,14 +4553,14 @@ function GetStatusModifyMaxHpPlus() {
     //----------------------------------------------------------------
     // 「クルセイダー　フェイス」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = Math.max(LearnedSkillSearch(SKILL_ID_FAITH), UsedSkillSearch(SKILL_ID_FAITH))) > 0) {
+    if ((sklLv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_FAITH), Head.UsedSkillSearch(SKILL_ID_FAITH))) > 0) {
         val += 200 * sklLv;
     }
 
     //----------------------------------------------------------------
     // 「ソーサラー　精霊補助スキル（ソリッドスキン）」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL)) > 0) {
         if (sklLv == 29) {
             val += 2000;
         }
@@ -4562,24 +4569,24 @@ function GetStatusModifyMaxHpPlus() {
     //----------------------------------------------------------------
     // 「サモナー　にゃん魂」の、効果
     //----------------------------------------------------------------
-    if (Math.max(LearnedSkillSearch(SKILL_ID_NYAN_TAMASHI), UsedSkillSearch(SKILL_ID_NYAN_TAMASHI)) > 0) {
+    if (Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_NYAN_TAMASHI), Head.UsedSkillSearch(SKILL_ID_NYAN_TAMASHI)) > 0) {
         val += 2000;
     }
 
     //----------------------------------------------------------------
     // 「サモナー　海の力」の、効果
     //----------------------------------------------------------------
-    if (Math.max(LearnedSkillSearch(SKILL_ID_UMINO_CHIKARA), UsedSkillSearch(SKILL_ID_UMINO_CHIKARA)) > 0) {
+    if (Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_UMINO_CHIKARA), Head.UsedSkillSearch(SKILL_ID_UMINO_CHIKARA)) > 0) {
         val += 1000;
         let summoner_skill_seafood_sum = 0;
-        summoner_skill_seafood_sum += LearnedSkillSearch(SKILL_ID_SHINSENNA_EBI);
-        summoner_skill_seafood_sum += LearnedSkillSearch(SKILL_ID_EBI_ZANMAI);
-        summoner_skill_seafood_sum += LearnedSkillSearch(SKILL_ID_OTORO);
-        summoner_skill_seafood_sum += LearnedSkillSearch(SKILL_ID_MAGURO_SHIELD);
-        summoner_skill_seafood_sum += LearnedSkillSearch(SKILL_ID_GROOMING);
-        summoner_skill_seafood_sum += LearnedSkillSearch(SKILL_ID_NODOWO_NARASU);
-        summoner_skill_seafood_sum += LearnedSkillSearch(SKILL_ID_EBI_PARTY);
-        if (Math.max(summoner_skill_seafood_sum, UsedSkillSearch(SKILL_ID_SEAFOOD_KEI_SHUTOKU_LEVEL_GOKEI)) >= 20) {
+        summoner_skill_seafood_sum += LearnedSkill.LearnedSkillSearch(SKILL_ID_SHINSENNA_EBI);
+        summoner_skill_seafood_sum += LearnedSkill.LearnedSkillSearch(SKILL_ID_EBI_ZANMAI);
+        summoner_skill_seafood_sum += LearnedSkill.LearnedSkillSearch(SKILL_ID_OTORO);
+        summoner_skill_seafood_sum += LearnedSkill.LearnedSkillSearch(SKILL_ID_MAGURO_SHIELD);
+        summoner_skill_seafood_sum += LearnedSkill.LearnedSkillSearch(SKILL_ID_GROOMING);
+        summoner_skill_seafood_sum += LearnedSkill.LearnedSkillSearch(SKILL_ID_NODOWO_NARASU);
+        summoner_skill_seafood_sum += LearnedSkill.LearnedSkillSearch(SKILL_ID_EBI_PARTY);
+        if (Math.max(summoner_skill_seafood_sum, Head.UsedSkillSearch(SKILL_ID_SEAFOOD_KEI_SHUTOKU_LEVEL_GOKEI)) >= 20) {
             val += 3000;
         }
     }
@@ -4587,7 +4594,7 @@ function GetStatusModifyMaxHpPlus() {
     //----------------------------------------------------------------
     // 「スーパーノービス＋　ブレイクスルー」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = Math.max(LearnedSkillSearch(SKILL_ID_BREAK_THROUGH), UsedSkillSearch(SKILL_ID_BREAK_THROUGH))) > 0) {
+    if ((sklLv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_BREAK_THROUGH), Head.UsedSkillSearch(SKILL_ID_BREAK_THROUGH))) > 0) {
         val += 350 * sklLv;
 
         if (sklLv >= 5) {
@@ -4598,7 +4605,7 @@ function GetStatusModifyMaxHpPlus() {
     //----------------------------------------------------------------
     // 「スーパーノービス＋　トランセンデンス」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = Math.max(LearnedSkillSearch(SKILL_ID_TRANSCENDENCE), UsedSkillSearch(SKILL_ID_TRANSCENDENCE))) > 0) {
+    if ((sklLv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_TRANSCENDENCE), Head.UsedSkillSearch(SKILL_ID_TRANSCENDENCE))) > 0) {
         val += 350 * sklLv;
 
         if (sklLv >= 5) {
@@ -4654,7 +4661,7 @@ function GetStatusModifyMaxHpPlus() {
 /**
 * 装備等によるステータスの追加補正値を取得する（ＭａｘＨＰ％）.
 */
-function GetStatusModifyMaxHpUp() {
+export function GetStatusModifyMaxHpUp() {
 
     var val = 0;
 
@@ -4679,7 +4686,7 @@ function GetStatusModifyMaxHpUp() {
     //----------------------------------------------------------------
     // ランダムエンチャント効果
     //----------------------------------------------------------------
-    val += GetRndOptTotalValue(ITEM_SP_MAXHP_UP, null, false);
+    val += HmRndopt.GetRndOptTotalValue(ITEM_SP_MAXHP_UP, null, false);
     // val += GetRndEnchValue(ITEM_SP_MAXHP_UP);
 
     //------------------------------------------------------------------------------------------------
@@ -5491,7 +5498,7 @@ function GetStatusModifyMaxHpUp() {
     // 「ケミカルグローブ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_CHEMICAL_GLOVE)) > 0) {
-        val += 2 * LearnedSkillSearch(SKILL_ID_CART_KAIZO) * itemCount;
+        val += 2 * LearnedSkill.LearnedSkillSearch(SKILL_ID_CART_KAIZO) * itemCount;
     }
 
     //----------------------------------------------------------------
@@ -5526,7 +5533,7 @@ function GetStatusModifyMaxHpUp() {
     // 「天狗の下駄」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_TENGUNO_GETA)) > 0) {
-        if (sklLv = LearnedSkillSearch(SKILL_ID_TENKETSU_KAI)) {
+        if (sklLv = LearnedSkill.LearnedSkillSearch(SKILL_ID_TENKETSU_KAI)) {
             val += 2 * sklLv * itemCount;
         }
     }
@@ -5551,7 +5558,7 @@ function GetStatusModifyMaxHpUp() {
     // 「禁忌の魔導書」の、スキル習得による強化
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_KINKINO_MADOSHO)) > 0) {
-        val += 2 * LearnedSkillSearch(SKILL_ID_ELEMENTAL_SYMPASY) * itemCount;
+        val += 2 * LearnedSkill.LearnedSkillSearch(SKILL_ID_ELEMENTAL_SYMPASY) * itemCount;
     }
 
     //----------------------------------------------------------------
@@ -5656,7 +5663,7 @@ function GetStatusModifyMaxHpUp() {
     // 「不死鳥の冠」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_FUSHICHONO_KANMURI)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_FORCE_OF_BANGUARD) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_FORCE_OF_BANGUARD) >= 5) {
             val += 10 * itemCount;
         }
     }
@@ -5668,13 +5675,13 @@ function GetStatusModifyMaxHpUp() {
 
         sklLv = 0;
 
-        sklLv += LearnedSkillSearch(SKILL_ID_PIKKI_TSUKI);
-        sklLv += LearnedSkillSearch(SKILL_ID_ARCLOUSE_DASH);
-        sklLv += LearnedSkillSearch(SKILL_ID_TAROUNO_KIZU);
-        sklLv += LearnedSkillSearch(SKILL_ID_CARROT_BEAT);
-        sklLv += LearnedSkillSearch(SKILL_ID_KEIKAI);
-        sklLv += LearnedSkillSearch(SKILL_ID_MURENO_CHIKARA);
-        sklLv += LearnedSkillSearch(SKILL_ID_SAVAGENO_TAMASHI);
+        sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_PIKKI_TSUKI);
+        sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_ARCLOUSE_DASH);
+        sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_TAROUNO_KIZU);
+        sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_CARROT_BEAT);
+        sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_KEIKAI);
+        sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_MURENO_CHIKARA);
+        sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_SAVAGENO_TAMASHI);
 
         val += 1 * Math.floor(sklLv / 5) * itemCount;
     }
@@ -5686,13 +5693,13 @@ function GetStatusModifyMaxHpUp() {
 
         sklLv = 0;
 
-        sklLv += LearnedSkillSearch(SKILL_ID_SHINSENNA_EBI);
-        sklLv += LearnedSkillSearch(SKILL_ID_EBI_ZANMAI);
-        sklLv += LearnedSkillSearch(SKILL_ID_OTORO);
-        sklLv += LearnedSkillSearch(SKILL_ID_MAGURO_SHIELD);
-        sklLv += LearnedSkillSearch(SKILL_ID_GROOMING);
-        sklLv += LearnedSkillSearch(SKILL_ID_NODOWO_NARASU);
-        sklLv += LearnedSkillSearch(SKILL_ID_EBI_PARTY);
+        sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_SHINSENNA_EBI);
+        sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_EBI_ZANMAI);
+        sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_OTORO);
+        sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_MAGURO_SHIELD);
+        sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_GROOMING);
+        sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_NODOWO_NARASU);
+        sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_EBI_PARTY);
 
         val += 2 * Math.floor(sklLv / 5) * itemCount;
     }
@@ -5704,13 +5711,13 @@ function GetStatusModifyMaxHpUp() {
 
         sklLv = 0;
 
-        sklLv += LearnedSkillSearch(SKILL_ID_MATATABI_LANCE);
-        sklLv += LearnedSkillSearch(SKILL_ID_MATATABINO_NEKKO);
-        sklLv += LearnedSkillSearch(SKILL_ID_INUHAKKA_METEOR);
-        sklLv += LearnedSkillSearch(SKILL_ID_INUHAKKA_SHOWER);
-        sklLv += LearnedSkillSearch(SKILL_ID_CHATTERING);
-        sklLv += LearnedSkillSearch(SKILL_ID_MYAUMYAU);
-        sklLv += LearnedSkillSearch(SKILL_ID_NYAN_GRASS);
+        sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_MATATABI_LANCE);
+        sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_MATATABINO_NEKKO);
+        sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_INUHAKKA_METEOR);
+        sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_INUHAKKA_SHOWER);
+        sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_CHATTERING);
+        sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_MYAUMYAU);
+        sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_NYAN_GRASS);
 
         val += 1 * Math.floor(sklLv / 5) * itemCount;
     }
@@ -5756,7 +5763,7 @@ function GetStatusModifyMaxHpUp() {
     // 「トラベラーシューズ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_TRAVELER_SHOES)) > 0) {
-        val += 2 * LearnedSkillSearch(SKILL_ID_FRIGNO_UTA) * itemCount;
+        val += 2 * LearnedSkill.LearnedSkillSearch(SKILL_ID_FRIGNO_UTA) * itemCount;
     }
 
     //----------------------------------------------------------------
@@ -5856,7 +5863,7 @@ function GetStatusModifyMaxHpUp() {
     // 「ちゃぷちゃぷニャンプーハット」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_CHAPUCHAPU_NYANPU_HAT)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_EBI_PARTY) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_EBI_PARTY) >= 5) {
             val += 30 * itemCount;
         }
     }
@@ -5865,7 +5872,7 @@ function GetStatusModifyMaxHpUp() {
     // 「ファフニールブレス」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_FAFNIR_BREATH)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_DRAGON_TRAINING) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_DRAGON_TRAINING) >= 5) {
             val += 20 * itemCount;
         }
     }
@@ -5874,7 +5881,7 @@ function GetStatusModifyMaxHpUp() {
     // 「不死鳥のリング」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearchMIG(ITEM_ID_FUSHICHONO_RING)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_KINGS_GRACE) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_KINGS_GRACE) >= 5) {
             val += 15 * itemCount;
         }
     }
@@ -5883,7 +5890,7 @@ function GetStatusModifyMaxHpUp() {
     // 「ジャスパーリング」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearchMIG(ITEM_ID_ZYASPER_RING)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_IGNITION_BREAK) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_IGNITION_BREAK) >= 5) {
             val += 15 * itemCount;
         }
     }
@@ -5892,14 +5899,14 @@ function GetStatusModifyMaxHpUp() {
     // 「辰戌の腕輪」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearchMIG(ITEM_ID_TATSUINUNO_UDEWA)) > 0) {
-        val += 2 * LearnedSkillSearch(SKILL_ID_SENRYU_SHOTEN) * itemCount;
+        val += 2 * LearnedSkill.LearnedSkillSearch(SKILL_ID_SENRYU_SHOTEN) * itemCount;
     }
 
     //----------------------------------------------------------------
     // 「正義の冠」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearchMIG(ITEM_ID_SEIGINO_KANMURI)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_DEBOTION) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_DEBOTION) >= 5) {
             val += 15 * itemCount;
         }
     }
@@ -5908,7 +5915,7 @@ function GetStatusModifyMaxHpUp() {
     // 「インペリアルメナススーツ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearchMIG(ITEM_ID_IMPERIAL_MENUS_SUIT)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_FAINT_BOMB) >= 10) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_FAINT_BOMB) >= 10) {
             val += 5 * itemCount;
         }
     }
@@ -5917,7 +5924,7 @@ function GetStatusModifyMaxHpUp() {
     // 「グレースメナススーツ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearchMIG(ITEM_ID_GRACE_MENUS_SUIT)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_FAINT_BOMB) >= 10) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_FAINT_BOMB) >= 10) {
             val += 15 * itemCount;
         }
     }
@@ -5926,7 +5933,7 @@ function GetStatusModifyMaxHpUp() {
     // 「インペリアルレインストームスーツ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearchMIG(ITEM_ID_IMPERIAL_RAINSTORM_SUIT)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_SEVERE_RAINSTORM) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_SEVERE_RAINSTORM) >= 5) {
             val += 5 * itemCount;
         }
     }
@@ -5935,7 +5942,7 @@ function GetStatusModifyMaxHpUp() {
     // 「グレースレインストームスーツ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearchMIG(ITEM_ID_GRACE_RAINSTORM_SUIT)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_SEVERE_RAINSTORM) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_SEVERE_RAINSTORM) >= 5) {
             val += 15 * itemCount;
         }
     }
@@ -5944,7 +5951,7 @@ function GetStatusModifyMaxHpUp() {
     // 「インペリアルスカルローブ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearchMIG(ITEM_ID_IMPERIAL_SCULL_ROBE)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_SHIRYO_HYOI) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_SHIRYO_HYOI) >= 5) {
             val += 5 * itemCount;
         }
     }
@@ -5953,7 +5960,7 @@ function GetStatusModifyMaxHpUp() {
     // 「グレーススカルローブ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearchMIG(ITEM_ID_GRACE_SCULL_ROBE)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_SHIRYO_HYOI) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_SHIRYO_HYOI) >= 5) {
             val += 15 * itemCount;
         }
     }
@@ -5962,7 +5969,7 @@ function GetStatusModifyMaxHpUp() {
     // 「パラケルススグローブ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_PARACELSUS_GLOVE)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_CART_BOOST_GENETIC) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_CART_BOOST_GENETIC) >= 5) {
             val += 15 * itemCount;
         }
     }
@@ -5971,7 +5978,7 @@ function GetStatusModifyMaxHpUp() {
     // 「きらきらニャンニャンチョーカー」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_KIRAKIRA_NYANNYAN_CHOKER)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_CHATTERING) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_CHATTERING) >= 5) {
             val += 15 * itemCount;
         }
     }
@@ -5980,7 +5987,7 @@ function GetStatusModifyMaxHpUp() {
     // 「インペリアルコンフィデンシャルメイル」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_IMPERIAL_CONFIDENCIAL_MAIL)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_IGNITION_BREAK) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_IGNITION_BREAK) >= 5) {
             val += 15 * itemCount;
         }
     }
@@ -5989,7 +5996,7 @@ function GetStatusModifyMaxHpUp() {
     // 「グレースコンフィデンシャルメイル」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_GRACE_CONFIDENCIAL_MAIL)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_IGNITION_BREAK) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_IGNITION_BREAK) >= 5) {
             val += 50 * itemCount;
         }
     }
@@ -5998,7 +6005,7 @@ function GetStatusModifyMaxHpUp() {
     // 「ファフニールヘルム」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_FAFNIR_HELM)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_DRAGON_TRAINING) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_DRAGON_TRAINING) >= 5) {
             val += 25 * itemCount;
         }
     }
@@ -6007,14 +6014,14 @@ function GetStatusModifyMaxHpUp() {
     // 「もこふわシャークパジャマ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_MOKOFUWA_SHARK_PAJAMA)) > 0) {
-        val += 10 * LearnedSkillSearch(SKILL_ID_GROOMING) * itemCount;
+        val += 10 * LearnedSkill.LearnedSkillSearch(SKILL_ID_GROOMING) * itemCount;
     }
 
     //----------------------------------------------------------------
     // 「トラベラーリング」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_TRAVELER_RING)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_FRIGNO_UTA) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_FRIGNO_UTA) >= 5) {
             val += 25 * itemCount;
         }
     }
@@ -6023,21 +6030,21 @@ function GetStatusModifyMaxHpUp() {
     // 「ツインヘッド・ドラゴンメイル」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_TWIN_HEAD_DRAGON_MAIL)) > 0) {
-        val += 4 * LearnedSkillSearch(SKILL_ID_WATER_DRAGON_BREATH) * itemCount;
+        val += 4 * LearnedSkill.LearnedSkillSearch(SKILL_ID_WATER_DRAGON_BREATH) * itemCount;
     }
 
     //----------------------------------------------------------------
     // 「ツインヘッド・ドラゴンブーツ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_TWIN_HEAD_DRAGON_BOOTS)) > 0) {
-        val += 4 * LearnedSkillSearch(SKILL_ID_WATER_DRAGON_BREATH) * itemCount;
+        val += 4 * LearnedSkill.LearnedSkillSearch(SKILL_ID_WATER_DRAGON_BREATH) * itemCount;
     }
 
     //----------------------------------------------------------------
     // 「鬼神の盟友」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_KISHINNO_MEIYU)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_SENRYU_SHOTEN) >= 10) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_SENRYU_SHOTEN) >= 10) {
             val += 25 * itemCount;
         }
     }
@@ -6055,14 +6062,14 @@ function GetStatusModifyMaxHpUp() {
     // 「プラチナムアビトレイター」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_PLATINUM_ARBITRATOR)) > 0) {
-        val += 8 * LearnedSkillSearch(SKILL_ID_INSPIRATION) * itemCount;
+        val += 8 * LearnedSkill.LearnedSkillSearch(SKILL_ID_INSPIRATION) * itemCount;
     }
 
     //----------------------------------------------------------------
     // 「りんりんニャンカーベル」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_RINRIN_NYAN_KABERU)) > 0) {		// りんりんニャンカーベル装備中
-        val += 3 * LearnedSkillSearch(SKILL_ID_NODOWO_NARASU) * itemCount;	// のどを鳴らすが1上がる度に3%
+        val += 3 * LearnedSkill.LearnedSkillSearch(SKILL_ID_NODOWO_NARASU) * itemCount;	// のどを鳴らすが1上がる度に3%
     }
 
 
@@ -6616,37 +6623,37 @@ function GetStatusModifyMaxHpUp() {
     //----------------------------------------------------------------
     // 「ロイヤルガード　フォースオブバンガード」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = UsedSkillSearch(SKILL_ID_FORCE_OF_BANGUARD)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_FORCE_OF_BANGUARD)) > 0) {
         val += 3 * sklLv;
     }
 
     //----------------------------------------------------------------
     // 「修羅　潜龍昇天」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = UsedSkillSearch(SKILL_ID_SENRYU_SHOTEN)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_SENRYU_SHOTEN)) > 0) {
         val += 2 + sklLv;
     }
 
     //----------------------------------------------------------------
     // 「修羅　点穴 -反-」の、効果（ペナルティ）
     //----------------------------------------------------------------
-    if ((sklLv = UsedSkillSearch(SKILL_ID_TENKETSU_HAN)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_TENKETSU_HAN)) > 0) {
         val += -4 * sklLv;
     }
 
     //----------------------------------------------------------------
     // 「修羅　点穴 -活-」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = UsedSkillSearch(SKILL_ID_TENKETSU_KATSU)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_TENKETSU_KATSU)) > 0) {
         val += 2 * sklLv;
     }
 
     //----------------------------------------------------------------
     // 「ソーサラー　精霊（Passive）」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = UsedSkillSearch(SKILL_ID_SERE)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_SERE)) > 0) {
         // 地Ｌｖ１～地Ｌｖ３のパッシブモードの場合、ＡＴＫ上昇
-        if (UsedSkillSearch(SKILL_ID_SERE_MODE) == 1) {
+        if (Head.UsedSkillSearch(SKILL_ID_SERE_MODE) == 1) {
             if (sklLv == 10) val += 5;
             if (sklLv == 11) val += 10;
             if (sklLv == 12) val += 15;
@@ -6656,7 +6663,7 @@ function GetStatusModifyMaxHpUp() {
     //----------------------------------------------------------------
     // 「ソーサラー　精霊補助スキル（パワーオブガイア）」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL)) > 0) {
         if (sklLv == 35) {
             val += 20;
         }
@@ -6665,7 +6672,7 @@ function GetStatusModifyMaxHpUp() {
     //----------------------------------------------------------------
     // 「星帝　月の構え」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = UsedSkillSearch(SKILL_ID_TSUKINO_KAMAE)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_TSUKINO_KAMAE)) > 0) {
         val += -5 + 10 * sklLv;
     }
 
@@ -6787,7 +6794,7 @@ function GetStatusModifyMaxHpUp() {
 
     // TODO: 四次対応
     for (idx = ITEM_SP_MAXHP_UP; idx <= ITEM_SP_MAXHP_UP; idx++) {
-        val = ApplySpecModify(idx, val);
+        val = HmJob.ApplySpecModify(idx, val);
     }
 
     // 支援スキル効果　ここまで
@@ -6811,7 +6818,7 @@ function GetStatusModifyMaxHpUp() {
 /**
 * 装備等によるステータスの追加補正値を取得する（ＭａｘＳＰ＋）.
 */
-function GetStatusModifyMaxSpPlus() {
+export function GetStatusModifyMaxSpPlus() {
 
     var val = 0;
 
@@ -6836,7 +6843,7 @@ function GetStatusModifyMaxSpPlus() {
     //----------------------------------------------------------------
     // ランダムエンチャント効果
     //----------------------------------------------------------------
-    val += GetRndOptTotalValue(ITEM_SP_MAXSP_PLUS, null, false);
+    val += HmRndopt.GetRndOptTotalValue(ITEM_SP_MAXSP_PLUS, null, false);
     // val += GetRndEnchValue(ITEM_SP_MAXSP_PLUS);
 
     //------------------------------------------------------------------------------------------------
@@ -7390,45 +7397,45 @@ function GetStatusModifyMaxSpPlus() {
     //----------------------------------------------------------------
     // 「ソウルリンカー　カイナ」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = UsedSkillSearch(SKILL_ID_KAINA)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_KAINA)) > 0) {
         val += 30 * sklLv;
     }
 
     //----------------------------------------------------------------
     // 「レンジャー　トラップ研究」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = Math.max(LearnedSkillSearch(SKILL_ID_TRAP_KENKYU), UsedSkillSearch(SKILL_ID_TRAP_KENKYU))) > 0) {
+    if ((sklLv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_TRAP_KENKYU), Head.UsedSkillSearch(SKILL_ID_TRAP_KENKYU))) > 0) {
         val += 200 + 20 * sklLv;
     }
 
     //----------------------------------------------------------------
     // 「ミンストレル／ワンダラー　レッスン」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = UsedSkillSearch(SKILL_ID_LESSON)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_LESSON)) > 0) {
         val += 30 * sklLv;
     }
 
     //----------------------------------------------------------------
     // 「サモナー　にゃん魂」の、効果
     //----------------------------------------------------------------
-    if (Math.max(LearnedSkillSearch(SKILL_ID_NYAN_TAMASHI), UsedSkillSearch(SKILL_ID_NYAN_TAMASHI)) > 0) {
+    if (Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_NYAN_TAMASHI), Head.UsedSkillSearch(SKILL_ID_NYAN_TAMASHI)) > 0) {
         val += 200;
     }
 
     //----------------------------------------------------------------
     // 「サモナー　海の力」の、効果
     //----------------------------------------------------------------
-    if (Math.max(LearnedSkillSearch(SKILL_ID_UMINO_CHIKARA), UsedSkillSearch(SKILL_ID_UMINO_CHIKARA)) > 0) {
+    if (Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_UMINO_CHIKARA), Head.UsedSkillSearch(SKILL_ID_UMINO_CHIKARA)) > 0) {
         val += 100;
         let summoner_skill_seafood_sum = 0;
-        summoner_skill_seafood_sum += LearnedSkillSearch(SKILL_ID_SHINSENNA_EBI);
-        summoner_skill_seafood_sum += LearnedSkillSearch(SKILL_ID_EBI_ZANMAI);
-        summoner_skill_seafood_sum += LearnedSkillSearch(SKILL_ID_OTORO);
-        summoner_skill_seafood_sum += LearnedSkillSearch(SKILL_ID_MAGURO_SHIELD);
-        summoner_skill_seafood_sum += LearnedSkillSearch(SKILL_ID_GROOMING);
-        summoner_skill_seafood_sum += LearnedSkillSearch(SKILL_ID_NODOWO_NARASU);
-        summoner_skill_seafood_sum += LearnedSkillSearch(SKILL_ID_EBI_PARTY);
-        if (Math.max(summoner_skill_seafood_sum, UsedSkillSearch(SKILL_ID_SEAFOOD_KEI_SHUTOKU_LEVEL_GOKEI)) >= 20) {
+        summoner_skill_seafood_sum += LearnedSkill.LearnedSkillSearch(SKILL_ID_SHINSENNA_EBI);
+        summoner_skill_seafood_sum += LearnedSkill.LearnedSkillSearch(SKILL_ID_EBI_ZANMAI);
+        summoner_skill_seafood_sum += LearnedSkill.LearnedSkillSearch(SKILL_ID_OTORO);
+        summoner_skill_seafood_sum += LearnedSkill.LearnedSkillSearch(SKILL_ID_MAGURO_SHIELD);
+        summoner_skill_seafood_sum += LearnedSkill.LearnedSkillSearch(SKILL_ID_GROOMING);
+        summoner_skill_seafood_sum += LearnedSkill.LearnedSkillSearch(SKILL_ID_NODOWO_NARASU);
+        summoner_skill_seafood_sum += LearnedSkill.LearnedSkillSearch(SKILL_ID_EBI_PARTY);
+        if (Math.max(summoner_skill_seafood_sum, Head.UsedSkillSearch(SKILL_ID_SEAFOOD_KEI_SHUTOKU_LEVEL_GOKEI)) >= 20) {
             val += 300;
         }
     }
@@ -7436,7 +7443,7 @@ function GetStatusModifyMaxSpPlus() {
     //----------------------------------------------------------------
     // 「スーパーノービス＋　ブレイクスルー」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = Math.max(LearnedSkillSearch(SKILL_ID_BREAK_THROUGH), UsedSkillSearch(SKILL_ID_BREAK_THROUGH))) > 0) {
+    if ((sklLv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_BREAK_THROUGH), Head.UsedSkillSearch(SKILL_ID_BREAK_THROUGH))) > 0) {
         val += 30 * sklLv;
 
         if (sklLv >= 5) {
@@ -7447,7 +7454,7 @@ function GetStatusModifyMaxSpPlus() {
     //----------------------------------------------------------------
     // 「スーパーノービス＋　トランセンデンス」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = Math.max(LearnedSkillSearch(SKILL_ID_TRANSCENDENCE), UsedSkillSearch(SKILL_ID_TRANSCENDENCE))) > 0) {
+    if ((sklLv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_TRANSCENDENCE), Head.UsedSkillSearch(SKILL_ID_TRANSCENDENCE))) > 0) {
         val += 30 * sklLv;
 
         if (sklLv >= 5) {
@@ -7486,7 +7493,7 @@ function GetStatusModifyMaxSpPlus() {
 /**
 * 装備等によるステータスの追加補正値を取得する（ＭａｘＳＰ％）.
 */
-function GetStatusModifyMaxSpUp() {
+export function GetStatusModifyMaxSpUp() {
 
     var val = 0;
 
@@ -7510,7 +7517,7 @@ function GetStatusModifyMaxSpUp() {
     //----------------------------------------------------------------
     // ランダムエンチャント効果
     //----------------------------------------------------------------
-    val += GetRndOptTotalValue(ITEM_SP_MAXSP_UP, null, false);
+    val += HmRndopt.GetRndOptTotalValue(ITEM_SP_MAXSP_UP, null, false);
     // val += GetRndEnchValue(ITEM_SP_MAXSP_UP);
 
     //------------------------------------------------------------------------------------------------
@@ -8068,7 +8075,7 @@ function GetStatusModifyMaxSpUp() {
     // 「禁忌の魔導書」の、スキル習得による強化
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_KINKINO_MADOSHO)) > 0) {
-        val += 2 * LearnedSkillSearch(SKILL_ID_ELEMENTAL_SYMPASY) * itemCount;
+        val += 2 * LearnedSkill.LearnedSkillSearch(SKILL_ID_ELEMENTAL_SYMPASY) * itemCount;
     }
 
     //----------------------------------------------------------------
@@ -8161,7 +8168,7 @@ function GetStatusModifyMaxSpUp() {
     // 「不死鳥の冠」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_FUSHICHONO_KANMURI)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_FORCE_OF_BANGUARD) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_FORCE_OF_BANGUARD) >= 5) {
             val += 10 * itemCount;
         }
     }
@@ -8173,13 +8180,13 @@ function GetStatusModifyMaxSpUp() {
 
         sklLv = 0;
 
-        sklLv += LearnedSkillSearch(SKILL_ID_PIKKI_TSUKI);
-        sklLv += LearnedSkillSearch(SKILL_ID_ARCLOUSE_DASH);
-        sklLv += LearnedSkillSearch(SKILL_ID_TAROUNO_KIZU);
-        sklLv += LearnedSkillSearch(SKILL_ID_CARROT_BEAT);
-        sklLv += LearnedSkillSearch(SKILL_ID_KEIKAI);
-        sklLv += LearnedSkillSearch(SKILL_ID_MURENO_CHIKARA);
-        sklLv += LearnedSkillSearch(SKILL_ID_SAVAGENO_TAMASHI);
+        sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_PIKKI_TSUKI);
+        sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_ARCLOUSE_DASH);
+        sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_TAROUNO_KIZU);
+        sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_CARROT_BEAT);
+        sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_KEIKAI);
+        sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_MURENO_CHIKARA);
+        sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_SAVAGENO_TAMASHI);
 
         val += 1 * Math.floor(sklLv / 5) * itemCount;
     }
@@ -8191,13 +8198,13 @@ function GetStatusModifyMaxSpUp() {
 
         sklLv = 0;
 
-        sklLv += LearnedSkillSearch(SKILL_ID_SHINSENNA_EBI);
-        sklLv += LearnedSkillSearch(SKILL_ID_EBI_ZANMAI);
-        sklLv += LearnedSkillSearch(SKILL_ID_OTORO);
-        sklLv += LearnedSkillSearch(SKILL_ID_MAGURO_SHIELD);
-        sklLv += LearnedSkillSearch(SKILL_ID_GROOMING);
-        sklLv += LearnedSkillSearch(SKILL_ID_NODOWO_NARASU);
-        sklLv += LearnedSkillSearch(SKILL_ID_EBI_PARTY);
+        sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_SHINSENNA_EBI);
+        sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_EBI_ZANMAI);
+        sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_OTORO);
+        sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_MAGURO_SHIELD);
+        sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_GROOMING);
+        sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_NODOWO_NARASU);
+        sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_EBI_PARTY);
 
         val += 2 * Math.floor(sklLv / 5) * itemCount;
     }
@@ -8209,13 +8216,13 @@ function GetStatusModifyMaxSpUp() {
 
         sklLv = 0;
 
-        sklLv += LearnedSkillSearch(SKILL_ID_MATATABI_LANCE);
-        sklLv += LearnedSkillSearch(SKILL_ID_MATATABINO_NEKKO);
-        sklLv += LearnedSkillSearch(SKILL_ID_INUHAKKA_METEOR);
-        sklLv += LearnedSkillSearch(SKILL_ID_INUHAKKA_SHOWER);
-        sklLv += LearnedSkillSearch(SKILL_ID_CHATTERING);
-        sklLv += LearnedSkillSearch(SKILL_ID_MYAUMYAU);
-        sklLv += LearnedSkillSearch(SKILL_ID_NYAN_GRASS);
+        sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_MATATABI_LANCE);
+        sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_MATATABINO_NEKKO);
+        sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_INUHAKKA_METEOR);
+        sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_INUHAKKA_SHOWER);
+        sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_CHATTERING);
+        sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_MYAUMYAU);
+        sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_NYAN_GRASS);
 
         val += 1 * Math.floor(sklLv / 5) * itemCount;
     }
@@ -8338,7 +8345,7 @@ function GetStatusModifyMaxSpUp() {
     // 「ダークリング」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_DARK_RING)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_CLOAKING_EXCEED) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_CLOAKING_EXCEED) >= 5) {
             val += 15 * itemCount;
         }
     }
@@ -8347,7 +8354,7 @@ function GetStatusModifyMaxSpUp() {
     // 「ちゃぷちゃぷニャンプーハット」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_CHAPUCHAPU_NYANPU_HAT)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_EBI_PARTY) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_EBI_PARTY) >= 5) {
             val += 30 * itemCount;
         }
     }
@@ -8356,7 +8363,7 @@ function GetStatusModifyMaxSpUp() {
     // 「ファフニールブレス」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_FAFNIR_BREATH)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_DRAGON_TRAINING) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_DRAGON_TRAINING) >= 5) {
             val += 20 * itemCount;
         }
     }
@@ -8365,7 +8372,7 @@ function GetStatusModifyMaxSpUp() {
     // 「不死鳥のリング」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearchMIG(ITEM_ID_FUSHICHONO_RING)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_KINGS_GRACE) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_KINGS_GRACE) >= 5) {
             val += 15 * itemCount;
         }
     }
@@ -8374,14 +8381,14 @@ function GetStatusModifyMaxSpUp() {
     // 「辰戌の腕輪」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearchMIG(ITEM_ID_TATSUINUNO_UDEWA)) > 0) {
-        val += 2 * LearnedSkillSearch(SKILL_ID_SENRYU_SHOTEN) * itemCount;
+        val += 2 * LearnedSkill.LearnedSkillSearch(SKILL_ID_SENRYU_SHOTEN) * itemCount;
     }
 
     //----------------------------------------------------------------
     // 「ファフニールヘルム」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_FAFNIR_HELM)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_DRAGON_TRAINING) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_DRAGON_TRAINING) >= 5) {
             val += 25 * itemCount;
         }
     }
@@ -8390,21 +8397,21 @@ function GetStatusModifyMaxSpUp() {
     // 「ツインヘッド・ドラゴンメイル」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_TWIN_HEAD_DRAGON_MAIL)) > 0) {
-        val += 4 * LearnedSkillSearch(SKILL_ID_WATER_DRAGON_BREATH) * itemCount;
+        val += 4 * LearnedSkill.LearnedSkillSearch(SKILL_ID_WATER_DRAGON_BREATH) * itemCount;
     }
 
     //----------------------------------------------------------------
     // 「ツインヘッド・ドラゴンブーツ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_TWIN_HEAD_DRAGON_BOOTS)) > 0) {
-        val += 4 * LearnedSkillSearch(SKILL_ID_WATER_DRAGON_BREATH) * itemCount;
+        val += 4 * LearnedSkill.LearnedSkillSearch(SKILL_ID_WATER_DRAGON_BREATH) * itemCount;
     }
 
     //----------------------------------------------------------------
     // 「ディア・デ・ムエルトス」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_DIA_DE_MUERTOS)) > 0) {
-        val += 5 * LearnedSkillSearch(SKILL_ID_SOUL_ENERGY_KENKYU) * itemCount;
+        val += 5 * LearnedSkill.LearnedSkillSearch(SKILL_ID_SOUL_ENERGY_KENKYU) * itemCount;
     }
 
     //----------------------------------------------------------------
@@ -8751,21 +8758,21 @@ function GetStatusModifyMaxSpUp() {
     //----------------------------------------------------------------
     // 「ハイプリースト　メディタティオ」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = UsedSkillSearch(SKILL_ID_MEDITATIO)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_MEDITATIO)) > 0) {
         val += 1 * sklLv;
     }
 
     //----------------------------------------------------------------
     // 「ハイウィザード　ソウルドレイン」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = UsedSkillSearch(SKILL_ID_SOUL_DRAIN)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_SOUL_DRAIN)) > 0) {
         val += 2 * sklLv;
     }
 
     //----------------------------------------------------------------
     // 「修羅　潜龍昇天」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = UsedSkillSearch(SKILL_ID_SENRYU_SHOTEN)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_SENRYU_SHOTEN)) > 0) {
         val += 2 + sklLv;
     }
 
@@ -8864,7 +8871,7 @@ function GetStatusModifyMaxSpUp() {
 /**
 * 装備等によるステータスの追加補正値を取得する（除算ＤＥＦ＋）.
 */
-function GetStatusModifyDefDivPlus() {
+export function GetStatusModifyDefDivPlus() {
 
     var idx = 0;
     var val = 0;
@@ -8889,7 +8896,7 @@ function GetStatusModifyDefDivPlus() {
     //----------------------------------------------------------------
     // ランダムエンチャント効果
     //----------------------------------------------------------------
-    val += GetRndOptTotalValue(ITEM_SP_DEF_PLUS, null, false);
+    val += HmRndopt.GetRndOptTotalValue(ITEM_SP_DEF_PLUS, null, false);
     // val += GetRndEnchValue(ITEM_SP_DEF_PLUS);
 
     //------------------------------------------------------------------------------------------------
@@ -9054,7 +9061,7 @@ function GetStatusModifyDefDivPlus() {
     // 「天狗の下駄」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_TENGUNO_GETA)) > 0) {
-        if (sklLv = LearnedSkillSearch(SKILL_ID_TENKETSU_KATSU)) {
+        if (sklLv = LearnedSkill.LearnedSkillSearch(SKILL_ID_TENKETSU_KATSU)) {
             val += 30 * sklLv * itemCount;
         }
     }
@@ -9087,7 +9094,7 @@ function GetStatusModifyDefDivPlus() {
     // 「巡礼者の靴」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_ZYUNREISHANO_KUTSU)) > 0) {
-        if (sklLv = LearnedSkillSearch(SKILL_ID_SECRAMENT)) {
+        if (sklLv = LearnedSkill.LearnedSkillSearch(SKILL_ID_SECRAMENT)) {
             val += 50 * sklLv * itemCount;
         }
     }
@@ -9096,7 +9103,7 @@ function GetStatusModifyDefDivPlus() {
     // 「不死鳥の冠」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_FUSHICHONO_KANMURI)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_FORCE_OF_BANGUARD) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_FORCE_OF_BANGUARD) >= 5) {
             val += 150 * itemCount;
         }
     }
@@ -9144,7 +9151,7 @@ function GetStatusModifyDefDivPlus() {
     );
     if (itemCount > 0) {
         if (n_A_SHOULDER_DEF_PLUS >= 8) {
-            if (LearnedSkillSearch(SKILL_ID_ENERGY_COAT) >= 1) {
+            if (LearnedSkill.LearnedSkillSearch(SKILL_ID_ENERGY_COAT) >= 1) {
                 val += 300 * itemCount;
             }
         }
@@ -9154,7 +9161,7 @@ function GetStatusModifyDefDivPlus() {
     // 「インペリアルホーリーローブ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearchMIG(ITEM_ID_IMPERIAL_HOLY_ROBE)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_OFFERTORIUM) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_OFFERTORIUM) >= 5) {
             val += 1 * Math.floor(n_A_BaseLV / 3) * itemCount;
         }
     }
@@ -9163,7 +9170,7 @@ function GetStatusModifyDefDivPlus() {
     // 「グレースホーリーローブ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearchMIG(ITEM_ID_GRACE_HOLY_ROBE)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_OFFERTORIUM) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_OFFERTORIUM) >= 5) {
             val += 1 * n_A_BaseLV * itemCount;
         }
     }
@@ -9172,7 +9179,7 @@ function GetStatusModifyDefDivPlus() {
     // 「ノーザンクロス」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearchMIG(ITEM_ID_NORTHERN_CROSS)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_TELECHINESIS_INSTENCE) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_TELECHINESIS_INSTENCE) >= 5) {
             val += 150 * itemCount;
         }
     }
@@ -9333,15 +9340,15 @@ function GetStatusModifyDefDivPlus() {
     //----------------------------------------------------------------
     // 「メカニック　メインフレーム改造」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = Math.max(LearnedSkillSearch(SKILL_ID_MAINFRAME_KAIZO), UsedSkillSearch(SKILL_ID_MAINFRAME_KAIZO))) > 0) {
+    if ((sklLv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_MAINFRAME_KAIZO), Head.UsedSkillSearch(SKILL_ID_MAINFRAME_KAIZO))) > 0) {
         val += 20 + 20 * sklLv;
     }
 
     //----------------------------------------------------------------
     // 「ロイヤルガード　プレスティージ」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = UsedSkillSearch(SKILL_ID_PRESTAGE)) > 0) {
-        let sklLvDefender = Math.max(LearnedSkillSearch(SKILL_ID_DEFENDER), UsedSkillSearch(SKILL_ID_SKILL_LV_DEFENDER_FOR_PRESTAGE));
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_PRESTAGE)) > 0) {
+        let sklLvDefender = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_DEFENDER), Head.UsedSkillSearch(SKILL_ID_SKILL_LV_DEFENDER_FOR_PRESTAGE));
         vartmp = 0;
         vartmp += Math.floor(15 * sklLv * n_A_BaseLV / 100);
         vartmp += Math.floor(sklLvDefender / 5 * n_A_BaseLV / 2);
@@ -9351,35 +9358,35 @@ function GetStatusModifyDefDivPlus() {
     //----------------------------------------------------------------
     // 「ロイヤルガード　シールドスペル（ＤＥＦ＋）」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = UsedSkillSearch(SKILL_ID_SHIELD_SPELL_DEF_PLUS)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_SHIELD_SPELL_DEF_PLUS)) > 0) {
         if (sklLv == 1) {
             val += Math.floor(10 * n_A_SHIELD_DEF_PLUS * n_A_BaseLV / 100);
         }
         else {
-            val += Math.floor(10 * (UsedSkillSearch(SKILL_ID_SHIELD_SPELL_DEF_PLUS) - 1) * n_A_BaseLV / 100);
+            val += Math.floor(10 * (Head.UsedSkillSearch(SKILL_ID_SHIELD_SPELL_DEF_PLUS) - 1) * n_A_BaseLV / 100);
         }
     }
 
     //----------------------------------------------------------------
     // 「ロイヤルガード　バンディング」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = UsedSkillSearch(SKILL_ID_COUNT_OF_RG_FOR_BANDING)) > 0) {
-        var sklLvBanding = UsedSkillSearch(SKILL_ID_BANDING);
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_COUNT_OF_RG_FOR_BANDING)) > 0) {
+        var sklLvBanding = Head.UsedSkillSearch(SKILL_ID_BANDING);
         val += (5 + sklLvBanding) * (sklLv + 1);
     }
 
     //----------------------------------------------------------------
     // 「ルーンナイト　ストーンハードスキン」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = UsedSkillSearch(SKILL_ID_STONE_HARD_SKIN)) > 0) {
-        const sklLvRuneMastery = Math.max(LearnedSkillSearch(SKILL_ID_RUNE_MASTERY), UsedSkillSearch(SKILL_ID_RUNE_MASTERY));
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_STONE_HARD_SKIN)) > 0) {
+        const sklLvRuneMastery = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_RUNE_MASTERY), Head.UsedSkillSearch(SKILL_ID_RUNE_MASTERY));
         val += Math.floor(n_A_JobLV * sklLvRuneMastery / 4);
     }
 
     //----------------------------------------------------------------
     // 「ソーサラー　精霊スキル　パワーオブガイア」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL)) > 0) {
         if (sklLv == 35) {
             val += 100;
         }
@@ -9418,7 +9425,7 @@ function GetStatusModifyDefDivPlus() {
     //----------------------------------------------------------------
     // 「ソウルリーパー　ゴーレムの魂」の、効果
     //----------------------------------------------------------------
-    if ((bufLv = g_confDataSanzi[CCharaConfSanzi.CONF_ID_GOLEMNO_TAMASHI]) > 0) {
+    if (g_confDataSanzi && CCharaConfSanzi && (bufLv = g_confDataSanzi[CCharaConfSanzi.CONF_ID_GOLEMNO_TAMASHI]) > 0) {
 
         // 特定の戦闘エリアでの補正
         switch (n_B_TAISEI[MOB_CONF_PLAYER_ID_SENTO_AREA]) {
@@ -9446,7 +9453,7 @@ function GetStatusModifyDefDivPlus() {
 
     // TODO: 四次対応
     for (idx = ITEM_SP_DEF_PLUS; idx <= ITEM_SP_DEF_PLUS; idx++) {
-        val = ApplySpecModify(idx, val);
+        val = HmJob.ApplySpecModify(idx, val);
     }
 
     // 支援スキル効果　ここまで
@@ -9469,7 +9476,7 @@ function GetStatusModifyDefDivPlus() {
 /**
 * 装備等によるステータスの追加補正値を取得する（Ｄｅｆ％）.
 */
-function GetStatusModifyDefDivUp() {
+export function GetStatusModifyDefDivUp() {
 
     var val = 0;
 
@@ -9519,30 +9526,30 @@ function GetStatusModifyDefDivUp() {
     //----------------------------------------------------------------
     // 「ロイヤルガード　フォースオブバンガード」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = UsedSkillSearch(SKILL_ID_FORCE_OF_BANGUARD)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_FORCE_OF_BANGUARD)) > 0) {
         val += 2 * sklLv;
     }
 
     //----------------------------------------------------------------
     // 「影狼・朧　土符」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = UsedSkillSearch(SKILL_ID_FU_ELEMENT_OF_FU)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_FU_ELEMENT_OF_FU)) > 0) {
         if (sklLv == ELM_ID_EARTH) {
-            val += 10 * UsedSkillSearch(SKILL_ID_FU_COUNT_OF_FU);
+            val += 10 * Head.UsedSkillSearch(SKILL_ID_FU_COUNT_OF_FU);
         }
     }
 
     //----------------------------------------------------------------
     // 「レンジャー　カモフラージュ」の、効果（ペナルティ）
     //----------------------------------------------------------------
-    if ((sklLv = UsedSkillSearch(SKILL_ID_CAMOUFLAGE)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_CAMOUFLAGE)) > 0) {
         val += -5 * sklLv;
     }
 
     //----------------------------------------------------------------
     // 「ソーサラー　精霊補助スキル　ウォーターバリア」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL)) > 0) {
         if (sklLv == 17) {
             val += 30;
         }
@@ -9551,7 +9558,7 @@ function GetStatusModifyDefDivUp() {
     //----------------------------------------------------------------
     // 「ソーサラー　精霊補助スキル　ソリッドスキン」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL)) > 0) {
         if (sklLv == 29) {
             val += 100;
         }
@@ -9560,7 +9567,7 @@ function GetStatusModifyDefDivUp() {
     //----------------------------------------------------------------
     // 「ジェネティック　Ｓホム　オーバードブースト」の、効果（ペナルティ）
     //----------------------------------------------------------------
-    if ((sklLv = UsedSkillSearch(SKILL_ID_OVERED_BOOST)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_OVERED_BOOST)) > 0) {
         val += -50;
     }
 
@@ -9631,7 +9638,7 @@ function GetStatusModifyDefDivUp() {
 /**
 * 装備等によるステータスの追加補正値を取得する（除算ＭＤＥＦ＋）.
 */
-function GetStatusModifyMdefDivPlus(bIgnoreBuff) {
+export function GetStatusModifyMdefDivPlus(bIgnoreBuff) {
 
     var val = 0;
 
@@ -9655,7 +9662,7 @@ function GetStatusModifyMdefDivPlus(bIgnoreBuff) {
     //----------------------------------------------------------------
     // ランダムエンチャント効果
     //----------------------------------------------------------------
-    val += GetRndOptTotalValue(ITEM_SP_MDEF_PLUS, null, false);
+    val += HmRndopt.GetRndOptTotalValue(ITEM_SP_MDEF_PLUS, null, false);
     // val += GetRndEnchValue(ITEM_SP_MDEF_PLUS);
 
     //------------------------------------------------------------------------------------------------
@@ -9886,7 +9893,7 @@ function GetStatusModifyMdefDivPlus(bIgnoreBuff) {
     // 「不死鳥の冠」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_FUSHICHONO_KANMURI)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_FORCE_OF_BANGUARD) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_FORCE_OF_BANGUARD) >= 5) {
             val += 15 * itemCount;
         }
     }
@@ -9916,7 +9923,7 @@ function GetStatusModifyMdefDivPlus(bIgnoreBuff) {
     );
     if (itemCount > 0) {
         if (n_A_SHOULDER_DEF_PLUS >= 8) {
-            if (LearnedSkillSearch(SKILL_ID_ENERGY_COAT) >= 1) {
+            if (LearnedSkill.LearnedSkillSearch(SKILL_ID_ENERGY_COAT) >= 1) {
                 val += 15 * itemCount;
             }
         }
@@ -9933,7 +9940,7 @@ function GetStatusModifyMdefDivPlus(bIgnoreBuff) {
     // 「ノーザンクロス」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearchMIG(ITEM_ID_NORTHERN_CROSS)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_TELECHINESIS_INSTENCE) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_TELECHINESIS_INSTENCE) >= 5) {
             val += 15 * itemCount;
         }
     }
@@ -9942,22 +9949,22 @@ function GetStatusModifyMdefDivPlus(bIgnoreBuff) {
     // 「きらきらニャンニャンチョーカー」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_KIRAKIRA_NYANNYAN_CHOKER)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_DAICHINO_TAMASHI) >= 1) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_DAICHINO_TAMASHI) >= 1) {
 
             // アイテム効果なので、「習得スキル」欄で設定しても、「パッシブ持続系」で設定してもＯＫとする
             // （大きい方を採用）
 
             vartmp = 0;
 
-            vartmp += LearnedSkillSearch(SKILL_ID_MATATABI_LANCE);
-            vartmp += LearnedSkillSearch(SKILL_ID_MATATABINO_NEKKO);
-            vartmp += LearnedSkillSearch(SKILL_ID_INUHAKKA_METEOR);
-            vartmp += LearnedSkillSearch(SKILL_ID_INUHAKKA_SHOWER);
-            vartmp += LearnedSkillSearch(SKILL_ID_CHATTERING);
-            vartmp += LearnedSkillSearch(SKILL_ID_MYAUMYAU);
-            vartmp += LearnedSkillSearch(SKILL_ID_NYAN_GRASS);
+            vartmp += LearnedSkill.LearnedSkillSearch(SKILL_ID_MATATABI_LANCE);
+            vartmp += LearnedSkill.LearnedSkillSearch(SKILL_ID_MATATABINO_NEKKO);
+            vartmp += LearnedSkill.LearnedSkillSearch(SKILL_ID_INUHAKKA_METEOR);
+            vartmp += LearnedSkill.LearnedSkillSearch(SKILL_ID_INUHAKKA_SHOWER);
+            vartmp += LearnedSkill.LearnedSkillSearch(SKILL_ID_CHATTERING);
+            vartmp += LearnedSkill.LearnedSkillSearch(SKILL_ID_MYAUMYAU);
+            vartmp += LearnedSkill.LearnedSkillSearch(SKILL_ID_NYAN_GRASS);
 
-            vartmp = Math.max(vartmp, UsedSkillSearch(SKILL_ID_PLANT_KEI_SHUTOKU_LEVEL_GOKEI));
+            vartmp = Math.max(vartmp, Head.UsedSkillSearch(SKILL_ID_PLANT_KEI_SHUTOKU_LEVEL_GOKEI));
 
             val += 1 * vartmp * itemCount;
         }
@@ -9967,8 +9974,8 @@ function GetStatusModifyMdefDivPlus(bIgnoreBuff) {
     // 「粛清の靴」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_SHUKUSEINO_KUTSU)) > 0) {
-        val += 10 * LearnedSkillSearch(SKILL_ID_LAUDAAGNUS) * itemCount;
-        val += 10 * LearnedSkillSearch(SKILL_ID_LAUDARAMUS) * itemCount;
+        val += 10 * LearnedSkill.LearnedSkillSearch(SKILL_ID_LAUDAAGNUS) * itemCount;
+        val += 10 * LearnedSkill.LearnedSkillSearch(SKILL_ID_LAUDARAMUS) * itemCount;
     }
 
     //----------------------------------------------------------------
@@ -9976,10 +9983,10 @@ function GetStatusModifyMdefDivPlus(bIgnoreBuff) {
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_FIFTH_ELEMENT)) > 0) {
         vartmp = 0;
-        vartmp += LearnedSkillSearch(SKILL_ID_SUMMON_AGNI);
-        vartmp += LearnedSkillSearch(SKILL_ID_SUMMON_AQUA);
-        vartmp += LearnedSkillSearch(SKILL_ID_SUMMON_VENTOS);
-        vartmp += LearnedSkillSearch(SKILL_ID_SUMMON_TERA);
+        vartmp += LearnedSkill.LearnedSkillSearch(SKILL_ID_SUMMON_AGNI);
+        vartmp += LearnedSkill.LearnedSkillSearch(SKILL_ID_SUMMON_AQUA);
+        vartmp += LearnedSkill.LearnedSkillSearch(SKILL_ID_SUMMON_VENTOS);
+        vartmp += LearnedSkill.LearnedSkillSearch(SKILL_ID_SUMMON_TERA);
 
         val += 4 * vartmp * itemCount;
     }
@@ -10240,7 +10247,7 @@ function GetStatusModifyMdefDivPlus(bIgnoreBuff) {
         vartmp = 0;
 
         // インデュアの使用、発動
-        vartmp = Math.max(vartmp, UsedSkillSearch(SKILL_ID_ENDURE));
+        vartmp = Math.max(vartmp, Head.UsedSkillSearch(SKILL_ID_ENDURE));
         vartmp = Math.max(vartmp, ExBuffNumSearch(EXBUF_ID_ENDURE));
         if (TimeItemNumSearch(TIME_ITEM_ID_LUDE) > 0) {
             vartmp = Math.max(vartmp, 1);
@@ -10299,10 +10306,10 @@ function GetStatusModifyMdefDivPlus(bIgnoreBuff) {
         }
 
         // コンセントレイションの使用、発動
-        if (UsedSkillSearch(SKILL_ID_CONCENTRATION) > 0) {
+        if (Head.UsedSkillSearch(SKILL_ID_CONCENTRATION) > 0) {
             vartmp = Math.max(vartmp, 1);
         }
-        if (g_confDataNizi[CCharaConfNizi.CONF_ID_CONCENTRATION] > 0) {
+        if (g_confDataNizi && CCharaConfNizi && (g_confDataNizi[CCharaConfNizi.CONF_ID_CONCENTRATION] > 0)) {
             vartmp = Math.max(vartmp, 1);
         }
 
@@ -10314,8 +10321,8 @@ function GetStatusModifyMdefDivPlus(bIgnoreBuff) {
         //----------------------------------------------------------------
         // 「ルーンナイト　ストーンハードスキン」の、効果
         //----------------------------------------------------------------
-        if ((sklLv = UsedSkillSearch(SKILL_ID_STONE_HARD_SKIN)) > 0) {
-            const sklLvRuneMastery = Math.max(LearnedSkillSearch(SKILL_ID_RUNE_MASTERY), UsedSkillSearch(SKILL_ID_RUNE_MASTERY));
+        if ((sklLv = Head.UsedSkillSearch(SKILL_ID_STONE_HARD_SKIN)) > 0) {
+            const sklLvRuneMastery = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_RUNE_MASTERY), Head.UsedSkillSearch(SKILL_ID_RUNE_MASTERY));
             val += Math.floor(n_A_JobLV * sklLvRuneMastery / 4);
         }
 
@@ -10351,7 +10358,7 @@ function GetStatusModifyMdefDivPlus(bIgnoreBuff) {
     //----------------------------------------------------------------
     // 「ソウルリーパー　ゴーレムの魂」の、効果
     //----------------------------------------------------------------
-    if ((bufLv = g_confDataSanzi[CCharaConfSanzi.CONF_ID_GOLEMNO_TAMASHI]) > 0) {
+    if (g_confDataSanzi && CCharaConfSanzi && (bufLv = g_confDataSanzi[CCharaConfSanzi.CONF_ID_GOLEMNO_TAMASHI]) > 0) {
 
         // 特定の戦闘エリアでの補正
         switch (n_B_TAISEI[MOB_CONF_PLAYER_ID_SENTO_AREA]) {
@@ -10378,7 +10385,7 @@ function GetStatusModifyMdefDivPlus(bIgnoreBuff) {
 
     // TODO: 四次対応
     for (idx = ITEM_SP_MDEF_PLUS; idx <= ITEM_SP_MDEF_PLUS; idx++) {
-        val = ApplySpecModify(idx, val);
+        val = HmJob.ApplySpecModify(idx, val);
     }
 
     // 支援スキル効果　ここまで
@@ -10402,7 +10409,7 @@ function GetStatusModifyMdefDivPlus(bIgnoreBuff) {
 /**
 * 装備等によるステータスの追加補正値を取得する（Ｍｄｅｆ％）.
 */
-function GetStatusModifyMdefDivUp(bIgnoreBuff) {
+export function GetStatusModifyMdefDivUp(bIgnoreBuff) {
 
     var val = 0;
 
@@ -10462,7 +10469,7 @@ function GetStatusModifyMdefDivUp(bIgnoreBuff) {
         //----------------------------------------------------------------
         // 「ソーサラー　精霊補助スキル　ウォーターバリア」の、効果
         //----------------------------------------------------------------
-        if ((sklLv = UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL)) > 0) {
+        if ((sklLv = Head.UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL)) > 0) {
             if (sklLv == 17) {
                 val += 20;
             }
@@ -10520,7 +10527,7 @@ function GetStatusModifyMdefDivUp(bIgnoreBuff) {
 /**
 * 装備等によるステータスの追加補正値を取得する（ＨＩＴ＋）.
 */
-function GetStatusModifyHitPlus() {
+export function GetStatusModifyHitPlus() {
 
     var idx = 0;
     var val = 0;
@@ -10545,7 +10552,7 @@ function GetStatusModifyHitPlus() {
     //----------------------------------------------------------------
     // ランダムエンチャント効果
     //----------------------------------------------------------------
-    val += GetRndOptTotalValue(ITEM_SP_HIT_PLUS, null, false);
+    val += HmRndopt.GetRndOptTotalValue(ITEM_SP_HIT_PLUS, null, false);
     // val += GetRndEnchValue(ITEM_SP_HIT_PLUS);
 
     //------------------------------------------------------------------------------------------------
@@ -10600,8 +10607,8 @@ function GetStatusModifyHitPlus() {
     itemCountRight = EquipNumSearch(ITEM_ID_METEOR_STRIKE, EQUIP_REGION_ID_ARMS);
     itemCountLeft = EquipNumSearch(ITEM_ID_METEOR_STRIKE, EQUIP_REGION_ID_ARMS_LEFT);
     if ((itemCountRight > 0) || (itemCountLeft > 0)) {
-        val += 5 * LearnedSkillSearch(SKILL_ID_ONO_SHUREN) * itemCountRight;
-        val += 5 * LearnedSkillSearch(SKILL_ID_ONO_SHUREN) * itemCountLeft;
+        val += 5 * LearnedSkill.LearnedSkillSearch(SKILL_ID_ONO_SHUREN) * itemCountRight;
+        val += 5 * LearnedSkill.LearnedSkillSearch(SKILL_ID_ONO_SHUREN) * itemCountLeft;
     }
 
     //----------------------------------------------------------------
@@ -11352,7 +11359,7 @@ function GetStatusModifyHitPlus() {
     // 「剣聖の王冠」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_KENSENO_OKAN)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_KEN_SHUREN) == 10) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_KEN_SHUREN) == 10) {
             val += 10 * itemCount;
         }
     }
@@ -11455,8 +11462,8 @@ function GetStatusModifyHitPlus() {
     // 「試験管ブーツ」の、スキル習得による効果
     //----------------------------------------------------------------
     if ((itemCount = EquipNumSearch(ITEM_ID_SHIKENKAN_BOOTS)) > 0) {
-        val += 20 * LearnedSkillSearch(SKILL_ID_CART_BOOST_WS) * itemCount;
-        val += 20 * LearnedSkillSearch(SKILL_ID_CART_BOOST_GENETIC) * itemCount;
+        val += 20 * LearnedSkill.LearnedSkillSearch(SKILL_ID_CART_BOOST_WS) * itemCount;
+        val += 20 * LearnedSkill.LearnedSkillSearch(SKILL_ID_CART_BOOST_GENETIC) * itemCount;
     }
 
 
@@ -11781,68 +11788,68 @@ function GetStatusModifyHitPlus() {
     //----------------------------------------------------------------
     // 「アーチャー　ワシの目」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = Math.max(LearnedSkillSearch(SKILL_ID_WASHINO_ME), UsedSkillSearch(SKILL_ID_WASHINO_ME))) > 0) {
+    if ((sklLv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_WASHINO_ME), Head.UsedSkillSearch(SKILL_ID_WASHINO_ME))) > 0) {
         val += 1 * sklLv;
     }
 
     //----------------------------------------------------------------
     // 「スナイパー　トゥルーサイト」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = UsedSkillSearch(SKILL_ID_TRUE_SIGHT)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_TRUE_SIGHT)) > 0) {
         val += 3 * sklLv;
     }
     //----------------------------------------------------------------
     // 「二次職支援　トゥルーサイト」の、効果
     //----------------------------------------------------------------
-    else if ((sklLv = g_confDataNizi[CCharaConfNizi.CONF_ID_TRUE_SIGHT]) > 0) {
+    else if (g_confDataNizi && CCharaConfNizi && (sklLv = g_confDataNizi[CCharaConfNizi.CONF_ID_TRUE_SIGHT]) > 0) {
         val += 3 * sklLv;
     }
 
     //----------------------------------------------------------------
     // 「ロードナイト　コンセントレイション」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = UsedSkillSearch(SKILL_ID_CONCENTRATION)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_CONCENTRATION)) > 0) {
         val += 10 * sklLv;
     }
     //----------------------------------------------------------------
     // 「二次職支援　コンセントレイション」の、効果
     //----------------------------------------------------------------
-    else if ((sklLv = g_confDataNizi[CCharaConfNizi.CONF_ID_CONCENTRATION]) > 0) {
+    else if (g_confDataNizi && CCharaConfNizi && (sklLv = g_confDataNizi[CCharaConfNizi.CONF_ID_CONCENTRATION]) > 0) {
         val += 10 * sklLv;
     }
 
     //----------------------------------------------------------------
     // 「ガンスリンガー　スネークアイ」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = Math.max(LearnedSkillSearch(SKILL_ID_SNAKE_EYE), UsedSkillSearch(SKILL_ID_SNAKE_EYE))) > 0) {
+    if ((sklLv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_SNAKE_EYE), Head.UsedSkillSearch(SKILL_ID_SNAKE_EYE))) > 0) {
         val += 1 * sklLv;
     }
 
     //----------------------------------------------------------------
     // 「ガンスリンガー　アジャストメント」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = UsedSkillSearch(SKILL_ID_ADJUSTMENT)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_ADJUSTMENT)) > 0) {
         val -= 30;
     }
 
     //----------------------------------------------------------------
     // 「ガンスリンガー　インクリージングアキュラシー」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = UsedSkillSearch(SKILL_ID_INCREASING_ACCURACY)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_INCREASING_ACCURACY)) > 0) {
         val += 20;
     }
 
     //----------------------------------------------------------------
     // 「ガンスリンガー　シングルアクション」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = Math.max(LearnedSkillSearch(SKILL_ID_SINGLE_ACTION), UsedSkillSearch(SKILL_ID_SINGLE_ACTION))) > 0) {
+    if ((sklLv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_SINGLE_ACTION), Head.UsedSkillSearch(SKILL_ID_SINGLE_ACTION))) > 0) {
         val += 2 * sklLv;
     }
 
     //----------------------------------------------------------------
     // 「ロイヤルガード　インスピレーション」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = UsedSkillSearch(SKILL_ID_INSPIRATION)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_INSPIRATION)) > 0) {
         val += 5 * sklLv + Math.floor(n_A_JobLV / 2);
     }
     else if (
@@ -11856,7 +11863,7 @@ function GetStatusModifyHitPlus() {
     //----------------------------------------------------------------
     // 「メカニック　斧鍛錬（メカニック）」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = Math.max(LearnedSkillSearch(SKILL_ID_ONO_SHUREN_MECHANIC), UsedSkillSearch(SKILL_ID_ONO_SHUREN_MECHANIC))) > 0) {
+    if ((sklLv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_ONO_SHUREN_MECHANIC), Head.UsedSkillSearch(SKILL_ID_ONO_SHUREN_MECHANIC))) > 0) {
         vartmp = 0;
 
         switch (n_A_WeaponType) {
@@ -11876,7 +11883,7 @@ function GetStatusModifyHitPlus() {
     //----------------------------------------------------------------
     // 「ジェネティック　剣鍛錬（ジェネティック）」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = Math.max(LearnedSkillSearch(SKILL_ID_KEN_SHUREN_GENETIC), UsedSkillSearch(SKILL_ID_KEN_SHUREN_GENETIC))) > 0) {
+    if ((sklLv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_KEN_SHUREN_GENETIC), Head.UsedSkillSearch(SKILL_ID_KEN_SHUREN_GENETIC))) > 0) {
         vartmp = 0;
 
         switch (n_A_WeaponType) {
@@ -11892,14 +11899,14 @@ function GetStatusModifyHitPlus() {
     //----------------------------------------------------------------
     // 「リベリオン　ヒートバレル」の、効果
     //----------------------------------------------------------------
-    if ((sklLv = UsedSkillSearch(SKILL_ID_HEAT_BARREL)) > 0) {
+    if ((sklLv = Head.UsedSkillSearch(SKILL_ID_HEAT_BARREL)) > 0) {
         val -= (25 + 5 * sklLv);
     }
 
     //----------------------------------------------------------------
     // 「サモナー　生命の力」の、効果
     //----------------------------------------------------------------
-    if (Math.max(LearnedSkillSearch(SKILL_ID_SEIMEINO_CHIKARA), UsedSkillSearch(SKILL_ID_SEIMEINO_CHIKARA)) > 0) {
+    if (Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_SEIMEINO_CHIKARA), Head.UsedSkillSearch(SKILL_ID_SEIMEINO_CHIKARA)) > 0) {
         val += 50;
     }
 
@@ -11911,7 +11918,7 @@ function GetStatusModifyHitPlus() {
     //----------------------------------------------------------------
     // 「ソウルリーパー　鷹の魂」の、効果
     //----------------------------------------------------------------
-    if ((bufLv = g_confDataSanzi[CCharaConfSanzi.CONF_ID_TAKANO_TAMASHI]) > 0) {
+    if (g_confDataSanzi && CCharaConfSanzi && (bufLv = g_confDataSanzi[CCharaConfSanzi.CONF_ID_TAKANO_TAMASHI]) > 0) {
 
         // 特定の戦闘エリアでの補正
         switch (n_B_TAISEI[MOB_CONF_PLAYER_ID_SENTO_AREA]) {
@@ -11995,7 +12002,7 @@ function GetStatusModifyHitPlus() {
 
     // TODO: 四次対応
     for (idx = ITEM_SP_HIT_PLUS; idx <= ITEM_SP_HIT_PLUS; idx++) {
-        val = ApplySpecModify(idx, val);
+        val = HmJob.ApplySpecModify(idx, val);
     }
 
     // 支援スキル効果　ここまで
@@ -12028,7 +12035,7 @@ function GetStatusModifyHitPlus() {
 /**
 * 装備等によるステータスの追加補正値を取得する（ＭａｘＨＰ％）.
 */
-function GetStatusModifyTEMPPlus() {
+export function GetStatusModifyTEMPPlus() {
 
     var val = 0;
 
