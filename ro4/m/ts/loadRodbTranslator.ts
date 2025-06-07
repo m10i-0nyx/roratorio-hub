@@ -1,4 +1,7 @@
-declare function AutoCalc(): void;
+// @ts-ignore
+import * as pako from "https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js";
+
+declare function AutoCalc(value: any): void;
 declare function CalcStatusPoint(flag: boolean): void;
 declare function changeJobSettings(job_id_num: number): void;
 declare function OnClickSkillSWLearned(): void;
@@ -103,7 +106,7 @@ async function loadRodbTranslator(fragment: string): Promise<void> {
     }
 
     // 不具合の暫定対処
-    // https://github.com/ragnarok-online-japan/translator/issues/1 
+    // https://github.com/ragnarok-online-japan/translator/issues/1
     if (!jsonObject.status.ratorio_job_id_num && jsonObject.status.job_class_localization == "インクイジター") {
         jsonObject.status.ratorio_job_id_num = 74;
         jsonObject.status.job_class = "inquisitor";
@@ -176,7 +179,7 @@ async function loadRodbTranslator(fragment: string): Promise<void> {
     // 計算
     CalcStatusPoint(true);
     StAllCalc();
-    AutoCalc();
+    AutoCalc("");
 }
 
 interface JobStatus {

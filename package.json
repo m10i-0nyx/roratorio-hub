@@ -2,5 +2,18 @@
   "devDependencies": {
     "@types/pako": "^2.0.3",
     "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "@babel/generator": "^7.27.5",
+    "@babel/parser": "^7.27.5",
+    "@babel/template": "^7.27.2",
+    "@babel/traverse": "^7.27.4",
+    "@babel/types": "^7.27.6",
+    "@types/node": "^20.19.0",
+    "expect": "^30.0.0-beta.3",
+    "pako": "^2.1.0",
+    "pretty-format": "^30.0.0-beta.3",
+    "undici-types": "^7.10.0",
+    "zstddec": "^0.1.0"
   }
 }
