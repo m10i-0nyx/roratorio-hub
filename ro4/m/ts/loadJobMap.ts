@@ -20,7 +20,10 @@ export interface JobData {
     learned_skills: number[], //習得スキル
     passive_skills: number[], //パッシブスキル
     attack_skills: number[],  //攻撃スキル
-    allow_equipment_weapons_type: number[] //装備可能武器タイプ
+    allow_equipment_weapons_type: number[], //装備可能武器タイプ
+    basic_min_lv: number, //基本最小レベル
+    basic_max_lv: number, //基本最大レベル
+    job_max_lv: number, //基本最大ジョブレベル
 }
 
 export class JobMap {
@@ -48,7 +51,7 @@ export class JobMap {
 
     /** 職業データをロード */
     static async load(): Promise<void> {
-        let compressed = await loadFileAsUint8Array('json/jobs.json.zst');
+        let compressed = await loadFileAsUint8Array('json/job.json.zst');
         let decompressed = await zstdDecompress(compressed);
         let jobLines = new TextDecoder('utf-8').decode(decompressed);
         try {

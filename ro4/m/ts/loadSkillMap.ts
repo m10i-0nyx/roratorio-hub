@@ -68,7 +68,7 @@ export class SkillMap {
 
     /** スキルデータをロード */
     static async load(): Promise<void> {
-        let compressed = await loadFileAsUint8Array('json/skills.json.zst');
+        let compressed = await loadFileAsUint8Array('json/skill.json.zst');
         let decompressed = await zstdDecompress(compressed);
         let skillLines = new TextDecoder('utf-8').decode(decompressed);
         try {

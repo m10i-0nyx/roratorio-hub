@@ -38,7 +38,7 @@ export class ItemMap {
 
     /** アイテムデータをロード */
     static async load(): Promise<void> {
-        let compressed = await loadFileAsUint8Array('json/items.json.zst');
+        let compressed = await loadFileAsUint8Array('json/item.json.zst');
         let decompressed = await zstdDecompress(compressed);
         let itemLines = new TextDecoder('utf-8').decode(decompressed);
         try {
