@@ -23,48 +23,41 @@ export interface JobData {
     allow_equipment_weapons_type: number[] //装備可能武器タイプ
 }
 
-let jobMap: Record<string, JobData> = {};
+export class JobMap {
+    private static jobMap: Record<string, JobData> = {};
 
-/**
- * 全ての職業を取得する関数
- * @returns 職業の配列
- */
-export function getJobMapIter(): [string, JobData][] {
-    return Object.entries(jobMap);
-}
+    /** 全ての職業を取得 */
+    static getAll(): [string, JobData][] {
+        return Object.entries(this.jobMap);
+    }
 
-/**
- * id_name から Job を取得する関数
- * @param idName 検索したい職業ID名（例: "NOVICE"）
- * @returns Job オブジェクトまたは undefined（見つからない場合）
- */
-export function getJobMapByIdName(idName: string): JobData | undefined {
-    return jobMap[idName];
-}
+    /** id_name から Job を取得 */
+    static getByIdName(idName: string): JobData | undefined {
+        return this.jobMap[idName];
+    }
 
-/**
- * id_num から Job を取得する関数
- * @param idNum 検索したい職業ID番号
- * @returns Job オブジェクトまたは undefined（見つからない場合）
- */
-export function getJobMapByIdNum(idNum: number): JobData | undefined {
-    for (const job of Object.values(jobMap)) {
-        if (job.id_num === idNum) {
-            return job;
+    /** id_num から Job を取得 */
+    static getByIdNum(idNum: number): JobData | undefined {
+        for (const job of Object.values(this.jobMap)) {
+            if (job.id_num === idNum) {
+                return job;
+            }
+        }
+        return undefined;
+    }
+
+    /** 職業データをロード */
+    static async load(): Promise<void> {
+        let compressed = await loadFileAsUint8Array('json/jobs.json.zst');
+        let decompressed = await zstdDecompress(compressed);
+        let jobLines = new TextDecoder('utf-8').decode(decompressed);
+        try {
+            this.jobMap = JSON.parse(jobLines);
+        } catch (err) {
+            console.error('JSON parse error:', err);
         }
     }
-    return undefined;
 }
 
-async function loadJobJSON() {
-    let compressed = await loadFileAsUint8Array('json/jobs.json.zst');
-    let decompressed = await zstdDecompress(compressed);
-    let jobLines = new TextDecoder('utf-8').decode(decompressed);
-    try {
-        jobMap = JSON.parse(jobLines);
-    } catch (err) {
-        console.error('JSON parse error:', err);
-    }
-}
-
-loadJobJSON();
+// 初期ロード
+JobMap.load();

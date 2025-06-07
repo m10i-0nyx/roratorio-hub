@@ -10,51 +10,44 @@ export interface ItemData {
     resname: string; // リソース名
     type: string | null; // アイテムタイプ
 }
-// ハッシュ型配列
-let itemMap: Record<number, ItemData> = {};
 
-/**
- * 全てのアイテムを取得する関数
- * @returns アイテムの配列
- */
-export function getItemMapIter(): [number, ItemData][] {
-    return Object.entries(itemMap).map(
-        ([key, value]) => [Number(key), value] as [number, ItemData]
-    );
-}
+export class ItemMap {
+    private static itemMap: Record<number, ItemData> = {};
 
-/*
-* id から Item を取得する関数
-* @param id 検索したいアイテムID（数値）
-* @returns Item オブジェクトまたは undefined（見つからない場合）
-*/
-export function getItemMapById(id: number): ItemData | undefined {
-    return itemMap[id];
-}
+    /** 全てのアイテムを取得 */
+    static getAll(): [number, ItemData][] {
+        return Object.entries(this.itemMap).map(
+            ([key, value]) => [Number(key), value] as [number, ItemData]
+        );
+    }
 
-/**
- * displayname から Item を取得する関数
- * @param displayName 検索したいアイテム名（完全一致）
- * @returns Item オブジェクトまたは undefined（見つからない場合）
- */
-export function getItemMapByDisplayName(displayName: string): ItemData | undefined {
-    for (const item of Object.values(itemMap)) {
-        if (item.displayname === displayName) {
-            return item;
+    /** id から Item を取得 */
+    static getById(id: number): ItemData | undefined {
+        return this.itemMap[id];
+    }
+
+    /** displayname から Item を取得 */
+    static getByDisplayName(displayName: string): ItemData | undefined {
+        for (const item of Object.values(this.itemMap)) {
+            if (item.displayname === displayName) {
+                return item;
+            }
+        }
+        return undefined;
+    }
+
+    /** アイテムデータをロード */
+    static async load(): Promise<void> {
+        let compressed = await loadFileAsUint8Array('json/items.json.zst');
+        let decompressed = await zstdDecompress(compressed);
+        let itemLines = new TextDecoder('utf-8').decode(decompressed);
+        try {
+            this.itemMap = JSON.parse(itemLines);
+        } catch (err) {
+            console.error('JSON parse error:', err);
         }
     }
-    return undefined;
 }
 
-async function loadItemJSON() {
-    let compressed = await loadFileAsUint8Array('json/items.json.zst');
-    let decompressed = await zstdDecompress(compressed);
-    let itemLines = new TextDecoder('utf-8').decode(decompressed);
-    try {
-        itemMap = JSON.parse(itemLines);
-    } catch (err) {
-        console.error('JSON parse error:', err);
-    }
-}
-
-loadItemJSON();
+// 初期ロード
+ItemMap.load();
