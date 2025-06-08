@@ -339,6 +339,11 @@
             {src: "../../roro/frame.js", type: "text/javascript" },
 
             // load RODB Translator -->
+            {src: "https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako_inflate.min.js",
+             integrity:"sha512-mlnC6JeOvg9V4vBpWMxGKscsCdScB6yvGVCeFF2plnQMRmwH69s9F8SHPbC0oirqfePmRBhqx2s3Bx7WIvHfWg==",
+             crossorigin:"anonymous",
+             referrerpolicy:"no-referrer",
+             type:"text/javascript" },
             {src: "ts-js/loadRodbTranslator.js", type: "module" },
 
             // デバッグ系、データ移行系 javascript ファイル -->
@@ -399,11 +404,7 @@
             LoadSelect2();
 
             // RODB Translatorからのデータロード
-            if (typeof loadRodbTranslator === "function" && window.location.hash) {
-                loadRodbTranslator(window.location.hash);
-            } else {
-                console.warn("loadRodbTranslator is not defined or window.location.hash is empty.");
-            }
+            loadRodbTranslator(window.location.hash);
 
             // ページの読み込みが完了したら、ローディングスピナーを非表示にする
             const loadingSpinner = document.getElementById("loadingSpinner");

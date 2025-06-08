@@ -1,5 +1,4 @@
-// @ts-ignore
-import * as pako from "https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js";
+import * as pako from "pako";
 
 declare function AutoCalc(value: any): void;
 declare function CalcStatusPoint(flag: boolean): void;
@@ -28,7 +27,7 @@ function base64ToUint8Array(base64: string): Uint8Array {
 function zlibDecompress(compressed: Uint8Array): string | null {
     try {
         // pako.inflate() で zlib データを解凍
-        const decompressedData = pako.inflate(compressed);
+        const decompressedData = globalThis.pako.inflate(compressed);
         return new TextDecoder('utf-8').decode(decompressedData);
     } catch (err) {
         console.error("解凍エラー:", err);
@@ -82,7 +81,7 @@ async function fetchSearchSkill(seachUrls: string[]): Promise<void> {
     }
 }
 
-async function loadRodbTranslator(fragment: string): Promise<void> {
+export async function loadRodbTranslator(fragment: string): Promise<void> {
     const prefixCheck = /^#rtx(\d+):(.+)$/;
     const matches = prefixCheck.exec(fragment);
     if (!matches) {
@@ -227,3 +226,10 @@ interface RodbTranslatorJsonFormat {
     supports: object;
     additional_info: AdditionalInfo;
 }
+
+declare global {
+    var loadRodbTranslator: (fragments: string) => Promise<void>;
+}
+
+// グローバルに代入
+globalThis.loadRodbTranslator = loadRodbTranslator;
