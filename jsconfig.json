@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "module": "ESNext",
+        "moduleResolution": "Bundler",
+        "target": "ES2022",
+        "allowImportingTsExtensions": true,
+        "strictNullChecks": true,
+        "strictFunctionTypes": true
+    },
+    "include": [
+        "ro4/m/js/*",
+        "roro/m/js/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "**/node_modules/*",
+        "**/json/*"
+    ]
+}
