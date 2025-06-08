@@ -1,6 +1,5 @@
 "use strict";
-import * as Foot from "./foot.js";
-import * as HmJob from "../../../ro4/m/js/hmjob.js";
+
 
 export function UpdateMobDataHtml(monsterId, mobData) {
 

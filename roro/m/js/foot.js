@@ -1,17 +1,48 @@
 "use strict";
+
+/**
+ * [WIP]
+ * 負けてglobalThinに依存している変数、関数を書き出してる
+ * 将来的に纏める
+ */
+
 import { JobMap } from "../../../ro4/m/ts-js/loadJobMap.js";
-import * as CAttackMethodAreaComponentManager from "../../../ro4/m/js/CAttackMethodAreaComponentManager.js";
-import * as Chara from "./chara.js";
-import * as Equip from "./equip.js";
+globalThis.jobMap = JobMap;
+
+// module imports
+import { CAttackMethodAreaComponentManager } from "../../../ro4/m/js/CAttackMethodAreaComponentManager.js";
+import * as CalcAutoSpell from "../../../ro4/m/js/calcautospell.js";
+import * as Chara from "../../../roro/m/js/chara.js";
+import * as Equip from "../../../roro/m/js/equip.js"; 307
+import * as Foot from "../../../roro/m/js/foot.js";
+import * as Global from "../../../ro4/m/js/global.js";
 import * as Head from "../../../ro4/m/js/head.js";
-import * as HmCard from "./hmcard.js";
-import * as HmCostume from "./hmcostume.js";
+import * as HmCard from "../../../roro/m/js/hmcard.js";
+import * as HmCostume from "../../../roro/m/js/hmcostume.js";
 import * as HmJob from "../../../ro4/m/js/hmjob.js";
-import * as HmMob from "./hmmob.js";
-import * as HmRndopt from "./hmrndopt.js";
-import * as LearnedSkill from "./learnedskill.js";
-import * as Mob from "./mob.js";
-import * as SlotPager from "./slotpager.js";
+import * as HmMob from "../../../roro/m/js/hmmob.js";
+import * as HmRndopt from "../../../roro/m/js/hmrndopt.js";
+import * as LearnedSkill from "../../../roro/m/js/learnedskill.js";
+import * as Mob from "../../../roro/m/js/mob.js";
+import * as SlotPager from "../../../roro/m/js/slotpager.js";
+
+globalThis.CalcAutoSpell = CalcAutoSpell;
+globalThis.Chara = Chara;
+globalThis.Equip = Equip;
+globalThis.Foot = Foot;
+globalThis.Global = Global;
+globalThis.Head = Head;
+globalThis.HmCard = HmCard;
+globalThis.HmCostume = HmCostume;
+globalThis.HmJob = HmJob;
+globalThis.HmMob = HmMob;
+globalThis.HmRndopt = HmRndopt;
+globalThis.LearnedSkill = LearnedSkill;
+globalThis.Mob = Mob;
+globalThis.SlotPager = SlotPager;
+
+// 依存度が高すぎる関数をグローバルで参照可能にした
+globalThis.__DIG3 = globalThis.Global.__DIG3
 
 /**
  * 主にキャラクタステータスに作用する関数がまとめられたファイル
@@ -704,7 +735,7 @@ export function StAllCalc() {
     //----------------------------------------------------------------
     // 攻撃手段を取得する
     //----------------------------------------------------------------
-    attackMethodConf = CAttackMethodAreaComponentManager.CAttackMethodAreaComponentManager.GetAttackMethodConf();
+    attackMethodConf = CAttackMethodAreaComponentManager.GetAttackMethodConf();
 
     globalThis.n_A_ActiveSkill = attackMethodConf.GetSkillId();
     globalThis.n_A_ActiveSkillLV = attackMethodConf.GetSkillLv();
@@ -919,20 +950,20 @@ export function StAllCalc() {
 
     // オートスペル設定の取得
     var objSelect = null;
-    for (var idx = 0; idx < AUTO_SPELL_SETTING_COUNT; idx++) {
-        objSelect = document.getElementById("OBJID_AS_SKILL_ID_" + (OBJID_OFFSET_AS_SKILL_ID + idx));
+    for (var idx = 0; idx < CalcAutoSpell.AUTO_SPELL_SETTING_COUNT; idx++) {
+        objSelect = document.getElementById("OBJID_AS_SKILL_ID_" + (CalcAutoSpell.OBJID_OFFSET_AS_SKILL_ID + idx));
         if (objSelect) {
-            n_A_PassSkill5[OBJID_OFFSET_AS_SKILL_ID + idx] = eval(objSelect.value);
+            n_A_PassSkill5[CalcAutoSpell.OBJID_OFFSET_AS_SKILL_ID + idx] = eval(objSelect.value);
         }
 
-        objSelect = document.getElementById("OBJID_AS_SKILL_LV_" + (OBJID_OFFSET_AS_SKILL_LV + idx));
+        objSelect = document.getElementById("OBJID_AS_SKILL_LV_" + (CalcAutoSpell.OBJID_OFFSET_AS_SKILL_LV + idx));
         if (objSelect) {
-            n_A_PassSkill5[OBJID_OFFSET_AS_SKILL_LV + idx] = eval(objSelect.value);
+            n_A_PassSkill5[CalcAutoSpell.OBJID_OFFSET_AS_SKILL_LV + idx] = eval(objSelect.value);
         }
 
-        objSelect = document.getElementById("OBJID_AS_SKILL_PROB_" + (OBJID_OFFSET_AS_SKILL_PROB + idx));
+        objSelect = document.getElementById("OBJID_AS_SKILL_PROB_" + (CalcAutoSpell.OBJID_OFFSET_AS_SKILL_PROB + idx));
         if (objSelect) {
-            n_A_PassSkill5[OBJID_OFFSET_AS_SKILL_PROB + idx] = eval(objSelect.value);
+            n_A_PassSkill5[CalcAutoSpell.OBJID_OFFSET_AS_SKILL_PROB + idx] = eval(objSelect.value);
         }
     }
 
@@ -1381,7 +1412,7 @@ export function StAllCalc() {
     // プレイヤー防御属性の導出
     //================================================================================================
 
-    let n_A_BodyZokusei = Chara.GetStatusModifyBodyElement();
+    globalThis.n_A_BodyZokusei = Chara.GetStatusModifyBodyElement();
 
 
 
@@ -8098,8 +8129,9 @@ export function StAllCalc() {
     var w_castINT = n_A_INT;
     if (w_castINT < 0) w_castINT = 0;
     charaData[CHARA_DATA_INDEX_CAST_PARAM] = w_castDEX + w_castINT / 2;
-    let n_A_CAST_COMMON = 1 - Math.sqrt((w_castDEX + w_castINT / 2) / Head.CAST_PARAM_BORDER);
-    if (n_A_CAST_COMMON < 0) n_A_CAST_COMMON = 0;
+
+    globalThis.n_A_CAST_COMMON = 1 - Math.sqrt((w_castDEX + w_castINT / 2) / Head.CAST_PARAM_BORDER);
+    if (globalThis.n_A_CAST_COMMON < 0) globalThis.n_A_CAST_COMMON = 0;
 
     var w = 100;
     w += n_tok[73];
@@ -22579,7 +22611,7 @@ export function StAllCalc() {
  * @param {*} skillId
  * @returns
  */
-function GetCastScalingOfSkillForCastTimeVary(skillId) {
+export function GetCastScalingOfSkillForCastTimeVary(skillId) {
     var itemCount = 0;
     var eqpnum = 0;
     var scaling = 100;
@@ -23351,7 +23383,7 @@ function GetCastScalingOfSkillForCastTimeVary(skillId) {
  * @param {*} skillId
  * @returns
  */
-function GetCastFixOfSkillForCastTimeVary(skillId) {
+export function GetCastFixOfSkillForCastTimeVary(skillId) {
     var castfix = 0;
 
     // 装備品の短縮効果
@@ -23529,7 +23561,7 @@ function GetCastFixOfSkillForCastTimeVary(skillId) {
  * @param {Number} skillId
  * @returns {Number} 装備品や性能カスタマイズ効果を考慮した後の固定詠唱時間％
  */
-function GetCastScalingOfSkillForCastTimeFixed(skillId) {
+export function GetCastScalingOfSkillForCastTimeFixed(skillId) {
     let itemCount = 0;
     let eqpnum = 0;
     /** 最終的な固定詠唱時間％ */
@@ -23767,7 +23799,7 @@ function GetCastScalingOfSkillForCastTimeFixed(skillId) {
  * @param {Number} skillId
  * @returns {Number} 装備品や性能カスタマイズ効果により短縮される時間（ミリ秒）
  */
-function GetCastFixOfSkillForCastTimeFixed(skillId) {
+export function GetCastFixOfSkillForCastTimeFixed(skillId) {
     /** 短縮された固定詠唱時間（ミリ秒） */
     let castfix = 0;
 
@@ -23984,7 +24016,7 @@ function GetCastFixOfSkillForCastTimeForce(skillId) {
  * @param {Number} skillId
  * @returns {Number} 装備品や性能カスタマイズ効果により短縮される時間（ミリ秒）
  */
-function GetCoolFixOfSkill(skillId) {
+export function GetCoolFixOfSkill(skillId) {
     /** 短縮されたクールタイム */
     let coolfix = 0;
     let amp = 0;
@@ -29518,7 +29550,7 @@ function GetEquippedSPSubSPCardAndElse(spid, invalidCardIdArray, bListUp) {
     var timeObj = 0;
     var w_num = new Array();
     // 追加発動効果の指定状況を取得
-    for (idx = 0; idx < g_timeItemConf.length; idx++) {
+    for (var idx = 0; idx < g_timeItemConf.length; idx++) {
         if (g_timeItemConfEffective[idx]) {
             w_num[idx] = g_timeItemConf[idx];
         }
@@ -30278,7 +30310,7 @@ export function InitJobInfo() {
  * @param {*} NS2 検索対象の配列
  * @returns 見つかった場合は 1 / 見つからなかった場合は 0
  */
-function NumSearch(NS1, NS2) {
+export function NumSearch(NS1, NS2) {
     let end = NS2.length - 1;
     for (let i = 0; i <= end; i++) {
         if (NS1 == NS2[i]) return 1;
@@ -30292,7 +30324,7 @@ function NumSearch(NS1, NS2) {
  * @param {Array} NS2 検索対象の配列
  * @returns 最初に要素が見つかった位置 / 見つからなかった場合は -1
  */
-function NumSearch2(NS1, NS2) {
+export function NumSearch2(NS1, NS2) {
     let end = NS2.length - 1;
     for (let i = 0; i <= end; i++) {
         if (NS1 == NS2[i]) return i;
@@ -30304,7 +30336,7 @@ function NumSearch2(NS1, NS2) {
  * 古びた頭装備の装備数を取得する.
  * @return 装備個数（０～）
  */
-function EquipNumSearchFurubitaHead() {
+export function EquipNumSearchFurubitaHead() {
 
     // いずれかの古びた頭装備があれば、１個
     if (Chara.EquipNumSearch(ITEM_ID_FURUBITA_BONECIRCRET)
@@ -30334,7 +30366,7 @@ function EquipNumSearchFurubitaHead() {
  * 古びたシリーズセットの装備セット数を取得する.
  * @return 装備セット数（０～）
  */
-function EquipNumSearchFurubitaSet() {
+export function EquipNumSearchFurubitaSet() {
 
     // 戦死者のマントは必須
     if (Chara.EquipNumSearch(ITEM_ID_SENSHISHANO_MANT) == 0) {
@@ -30415,23 +30447,24 @@ g_objMobConfInput.BuildUpSelectArea(document.getElementById("OBJID_TD_MOB_CONF_I
 
 globalThis.n_A_JOB = 0;
 document.calcForm.A_JOB.value = 0;
-Equip.changeJobSettings("NOVICE");
+//Equip.changeJobSettings("NOVICE"); //[WIP]
+Equip.changeJobSettings(0);
 
 if (true) {
     //--------------------------------
     // ステートフルデータの初期化
     //--------------------------------
-    UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_ARMS);
-    UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_ARMS_LEFT);
-    UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_HEAD_TOP);
-    UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_HEAD_MID);
-    UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_HEAD_UNDER);
-    UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_SHIELD);
-    UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_BODY);
-    UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_SHOULDER);
-    UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_SHOES);
-    UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_ACCESSARY_1);
-    UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_ACCESSARY_2);
+    Equip.UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_ARMS);
+    Equip.UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_ARMS_LEFT);
+    Equip.UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_HEAD_TOP);
+    Equip.UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_HEAD_MID);
+    Equip.UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_HEAD_UNDER);
+    Equip.UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_SHIELD);
+    Equip.UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_BODY);
+    Equip.UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_SHOULDER);
+    Equip.UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_SHOES);
+    Equip.UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_ACCESSARY_1);
+    Equip.UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_ACCESSARY_2);
 }
 
 function LoadSaveDataToCalculator() {
@@ -30489,8 +30522,8 @@ if (splittedArray.length == 2) {
 }
 
 // 再計算
-CalcStatusPoint(true);
-calc();
+HmJob.CalcStatusPoint(true);
+Head.calc();
 
 export function Init() {
 
@@ -30547,10 +30580,10 @@ export function Init() {
 
     // オートスペル設定
     globalThis.n_A_PassSkill5 = new Array();
-    for (var idx = 0; idx < AUTO_SPELL_SETTING_COUNT; idx++) {
-        globalThis.n_A_PassSkill5[OBJID_OFFSET_AS_SKILL_ID + idx] = 0;
-        globalThis.n_A_PassSkill5[OBJID_OFFSET_AS_SKILL_LV + idx] = 0;
-        globalThis.n_A_PassSkill5[OBJID_OFFSET_AS_SKILL_PROB + idx] = 0;
+    for (var idx = 0; idx < CalcAutoSpell.AUTO_SPELL_SETTING_COUNT; idx++) {
+        globalThis.n_A_PassSkill5[CalcAutoSpell.OBJID_OFFSET_AS_SKILL_ID + idx] = 0;
+        globalThis.n_A_PassSkill5[CalcAutoSpell.OBJID_OFFSET_AS_SKILL_LV + idx] = 0;
+        globalThis.n_A_PassSkill5[CalcAutoSpell.OBJID_OFFSET_AS_SKILL_PROB + idx] = 0;
     }
 
     globalThis.n_A_PassSkill7 = new Array();
@@ -30664,7 +30697,7 @@ export function Init() {
     //--------------------------------
     // 攻撃方法欄の初期化
     //--------------------------------
-    CAttackMethodAreaComponentManager.CAttackMethodAreaComponentManager.RebuildControls();
+    CAttackMethodAreaComponentManager.RebuildControls();
 
 
 
@@ -30729,7 +30762,7 @@ export function Init() {
     LearnedSkill.OnClickSkillSWLearned();
     Head.Click_Skill3SW();
     Head.Click_Skill4SW();
-    OnClickExtractSettingAutoSpell();
+    CalcAutoSpell.OnClickExtractSettingAutoSpell();
 
     //	Head.Click_Skill6SW();
 
@@ -30757,8 +30790,8 @@ export function Init() {
     BuildUpCastSimSimulateArea(document.getElementById("OBJID_TD_CASTSIM"), false);
 }
 
-g_intervalFunctionSimulateCastTime = null;
-g_castProgressInterval = 10;
+globalThis.g_intervalFunctionSimulateCastTime = null;
+globalThis.g_castProgressInterval = 10;
 
 function OnClickSimulateCastTimeStart(castTime, delayTime) {
 

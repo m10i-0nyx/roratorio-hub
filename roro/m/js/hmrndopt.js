@@ -1,5 +1,4 @@
 "use strict";
-import * as Foot from "./foot.js";
 
 
 function GetObjectPrefixRndOpt(eqpRgnId) {
@@ -219,7 +218,7 @@ function CreateRndOptValue(objRoot, eqpRgnId, slotIndex) {
 
 
 
-function SetUpRndOptKind(objRndOpt, rndOptListId) {
+export function SetUpRndOptKind(objRndOpt, rndOptListId) {
 
     var idx = 0;
 

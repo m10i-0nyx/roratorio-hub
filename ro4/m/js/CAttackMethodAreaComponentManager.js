@@ -1,7 +1,5 @@
 "use strict";
-import * as Chara from "../../../roro/m/js/chara.js";
-import * as Foot from "../../../roro/m/js/foot.js";
-import * as Head from "./head.js";
+
 
 //----------------------------------------------------------------
 // オプションリストの種別
@@ -23,7 +21,7 @@ CGlobalConstManager.DefineEnum(
 /**
  * 攻撃手段オプションデータクラス.
  */
-function CAttackMethodOptionData(valueC, labelC) {
+export function CAttackMethodOptionData(valueC, labelC) {
 
     // 値
     this.value = ((valueC !== undefined) ? valueC : 0);
@@ -88,7 +86,8 @@ function CAttackMethodOptionData(valueC, labelC) {
         return this.nextOptionList;
     };
 }
-
+// グローバルに定義
+globalThis.CAttackMethodAreaComponentManager = CAttackMethodAreaComponentManager;
 
 
 /**
@@ -1406,6 +1405,7 @@ CAttackMethodAreaComponentManager.GetEffectiveAttackMethodDataArray = function (
     var collectedMultiplyArray = null;
     var effectiveMultiply = 0;
 
+    var bufLv = 0;
 
 
     // 結果用配列を用意

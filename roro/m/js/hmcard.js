@@ -1,5 +1,4 @@
-import { GetFlagAppendedCardName } from "./equip.js";
-
+"use strict";
 
 globalThis.CardShortObj = [
     [
@@ -1079,7 +1078,7 @@ function BuildUpCardSlotsCard(eqpRgnId, itemId, enchantTypeId, objArySlots) {
 
         for (idx = 0; idx < cardSortObjTarget.length; idx++) {
             cardId = cardSortObjTarget[idx];
-            cardName = GetFlagAppendedCardName(cardId);
+            cardName = Equip.Equip.GetFlagAppendedCardName(cardId);
 
             HtmlCreateElementOption(cardId, cardName, objSelect);
         }
@@ -1132,7 +1131,7 @@ function BuildUpCardSlotsEnchant(enchantTypeId, objArySlots) {
                 dataName = "エンチャントなし";
             }
             else {
-                dataName = GetFlagAppendedCardName(dataId);
+                dataName = Equip.GetFlagAppendedCardName(dataId);
             }
 
             // エンチャント項目を選択肢に追加
@@ -1335,7 +1334,7 @@ function BuildUpCardSlotsMIG(eqpRgnId, itemId, enchInfoArray, objArySlots) {
 
         for (idx = 0; idx < cardSortObjTarget.length; idx++) {
             cardId = cardSortObjTarget[idx];
-            cardName = GetFlagAppendedCardName(cardId);
+            cardName = Equip.GetFlagAppendedCardName(cardId);
 
             HtmlCreateElementOption(cardId, cardName, objSelect);
         }

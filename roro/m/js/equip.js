@@ -1,11 +1,4 @@
 "use strict";
-import * as CAttackMethodAreaComponentManager from "../../../ro4/m/js/CAttackMethodAreaComponentManager.js";
-import * as Foot from "./foot.js";
-import * as HmCard from "./hmcard.js";
-import * as HmJob from "../../../ro4/m/js/hmjob.js";
-import * as HmRndopt from "./hmrndopt.js";
-import * as LearnedSkill from "./learnedskill.js";
-import * as SlotPager from "./slotpager.js";
 
 /**
  * ステータスや装備などを初期化して職業変更する
@@ -106,9 +99,9 @@ export function changeJobSettings(jobId) {
     for (var dmyidx = 0; dmyidx < LEARNED_SKILL_MAX_COUNT; dmyidx++) {
         n_A_LearnedSkill[dmyidx] = 0;
     }
-    OnClickSkillSWLearned();
+    LearnedSkill.OnClickSkillSWLearned();
     // 攻撃手段欄の初期化
-    CAttackMethodAreaComponentManager.CAttackMethodAreaComponentManager.RebuildControls();
+    CAttackMethodAreaComponentManager.RebuildControls();
     // 拡張表示の選択値記憶のリセット
     CExtraInfoAreaComponentManager.ClearStoredValueAll(true);
     // 拡張表示の再構築
@@ -294,7 +287,7 @@ function OnChangeArmsTypeRight(itemKind) {
     }
 
     // 攻撃手段の更新
-    CAttackMethodAreaComponentManager.CAttackMethodAreaComponentManager.RebuildControls();
+    CAttackMethodAreaComponentManager.RebuildControls();
 
     // アイテムデータ説明の更新
     CItemInfoManager.OnChangeEquip(CONST_DATA_KIND_ITEM, n_A_Equip[EQUIP_REGION_ID_ARMS]);
@@ -751,7 +744,7 @@ function OnChangeEquip(eqpRgnId, itemId) {
     LearnedSkill.UpdateLearnedSkillSettingColoring();
 
     // 攻撃手段の更新
-    CAttackMethodAreaComponentManager.CAttackMethodAreaComponentManager.RebuildControls();
+    CAttackMethodAreaComponentManager.RebuildControls();
 
 }
 
@@ -902,7 +895,7 @@ function ClearEnchantOnChangeEquip(eqpRgnId, itemId) {
 
 
 
-function UpdateStatefullDataOnChangeEquip(eqpRgnId) {
+export function UpdateStatefullDataOnChangeEquip(eqpRgnId) {
 
     var idx = 0;
     var strObjId = "";

@@ -6793,7 +6793,7 @@ export function GetStatusModifyMaxHpUp() {
 
 
     // TODO: 四次対応
-    for (idx = ITEM_SP_MAXHP_UP; idx <= ITEM_SP_MAXHP_UP; idx++) {
+    for (var idx = ITEM_SP_MAXHP_UP; idx <= ITEM_SP_MAXHP_UP; idx++) {
         val = HmJob.ApplySpecModify(idx, val);
     }
 
@@ -10384,7 +10384,7 @@ export function GetStatusModifyMdefDivPlus(bIgnoreBuff) {
 
 
     // TODO: 四次対応
-    for (idx = ITEM_SP_MDEF_PLUS; idx <= ITEM_SP_MDEF_PLUS; idx++) {
+    for (var idx = ITEM_SP_MDEF_PLUS; idx <= ITEM_SP_MDEF_PLUS; idx++) {
         val = HmJob.ApplySpecModify(idx, val);
     }
 

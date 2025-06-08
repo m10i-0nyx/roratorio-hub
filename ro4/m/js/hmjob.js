@@ -1,9 +1,4 @@
 "use strict";
-import * as Chara from "../../../roro/m/js/chara.js";
-import * as Foot from "../../../roro/m/js/foot.js";
-import * as Head from "./head.js";
-import * as HmRndopt from "../../../roro/m/js/hmrndopt.js";
-import * as LearnedSkill from "../../../roro/m/js/learnedskill.js";
 
 globalThis.g_pureStatus = [];
 globalThis.g_bonusStatus = [];
@@ -99,7 +94,7 @@ export function RebuildStatusSelect(jobId) {
 export function CalcStatusPoint(bIgnoreAutoCalc) {
 
     // ベースレベルの自動計算チェックボックスの状態を取得
-    if (BLVauto.checked == 0) {
+    if (document.calcForm.BLVauto.checked == 0) {
         bIgnoreAutoCalc = true;
     }
 
@@ -144,7 +139,7 @@ export function CalcStatusPoint(bIgnoreAutoCalc) {
     stTSPointUsed += stValCRT;
 
     // 職業の基本情報を設定する
-    InitJobInfo();
+    Foot.InitJobInfo();
 
     // ベースレベル情報の取得
     var blvMin = GetBaseLevelMin(jobId);

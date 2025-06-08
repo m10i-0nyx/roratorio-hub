@@ -4070,7 +4070,7 @@ function DecodeUrl(loadDataUrl) {
     if (SaveData[0] == 0) {
         SaveData[11] = 1;
     }
-    globalThis.BLVauto.checked = SaveData[11];
+    document.calcForm.BLVauto.checked = SaveData[11];
 
 
     //----------------------------------------------------------------

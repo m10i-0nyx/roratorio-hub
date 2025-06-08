@@ -6,19 +6,19 @@
 //
 //================================================================================================
 
-// オートスペル設定　最大数
-AUTO_SPELL_SETTING_COUNT = 20;
+// オートスペル設定　最大export export 数
+export const AUTO_SPELL_SETTING_COUNT = 20;
 
 
 // オートスペル系スキル　最大数
-AUTO_SPELL_SKILL_COUNT_MAX = 40;
+export const AUTO_SPELL_SKILL_COUNT_MAX = 40;
 
 
 // オートスペル発動率（千分率）
-AUTO_SPELL_PROB_ARRAY = [
+export const AUTO_SPELL_PROB_ARRAY = [
 ];
 
-for (idx = 0, inc = 1; idx <= 1000; idx += inc) {
+for (var idx = 0, inc = 1; idx <= 1000; idx += inc) {
     AUTO_SPELL_PROB_ARRAY.push(idx);
 
     if (idx == 10) {
@@ -37,13 +37,13 @@ for (idx = 0, inc = 1; idx <= 1000; idx += inc) {
 //
 //================================================================================================
 
-n_AS_SKILL = new Array();
+globalThis.n_AS_SKILL = new Array();
 
-n_AS_DMG = new Array();
-n_AS_DMG_OverHP = new Array();
+globalThis.n_AS_DMG = new Array();
+globalThis.n_AS_DMG_OverHP = new Array();
 for (var idx = 0; idx < AUTO_SPELL_SKILL_COUNT_MAX; idx++) {
-    n_AS_DMG[idx] = new Array();
-    n_AS_DMG_OverHP[idx] = new Array();
+    globalThis.n_AS_DMG[idx] = new Array();
+    globalThis.n_AS_DMG_OverHP[idx] = new Array();
 }
 
 
@@ -59,7 +59,7 @@ for (var idx = 0; idx < AUTO_SPELL_SKILL_COUNT_MAX; idx++) {
 /**
  * オートスペルの計算.
  */
-function AS_Calc(charaData, specData, mobData, attackMethodConfArray, battleCalcInfo) {
+export function AS_Calc(charaData, specData, mobData, attackMethodConfArray, battleCalcInfo) {
 
     var idx = 0;
 
@@ -98,13 +98,13 @@ function AS_Calc(charaData, specData, mobData, attackMethodConfArray, battleCalc
     // 三段掌発動率の取得（三弾掌発動時はASは発動しない）
     //----------------------------------------------------------------
     var wAS_3dan = 0;
-    wAS_3dan = GetActRateSandansho(n_A_ActiveSkill, mobData);
+    wAS_3dan = Head.GetActRateSandansho(n_A_ActiveSkill, mobData);
 
 
     //----------------------------------------------------------------
     // 通常攻撃時の、デュプレライト追撃効果
     //----------------------------------------------------------------
-    skillLv = UsedSkillSearch(SKILL_ID_DUPLELIGHT);
+    skillLv = Head.UsedSkillSearch(SKILL_ID_DUPLELIGHT);
 
     if ((n_A_ActiveSkill == SKILL_ID_TUZYO_KOGEKI) && (n_Enekyori == 0) && (skillLv > 0)) {
 
@@ -131,7 +131,7 @@ function AS_Calc(charaData, specData, mobData, attackMethodConfArray, battleCalc
         n_AS_SKILL[idx][3] = 0;
 
         // カーディナルスキル「ペティティオ」を習得している場合、「ペティティオ」も追加
-        skillLvSub = UsedSkillSearch(SKILL_ID_PETITIO_LEARNED);
+        skillLvSub = Head.UsedSkillSearch(SKILL_ID_PETITIO_LEARNED);
         if (skillLvSub > 0) {
 
             // 鈍器、本のみ発動可能
@@ -158,8 +158,8 @@ function AS_Calc(charaData, specData, mobData, attackMethodConfArray, battleCalc
     //----------------------------------------------------------------
     // 通常攻撃時の、オートシャドウスペル追撃効果
     //----------------------------------------------------------------
-    skillLv = UsedSkillSearch(SKILL_ID_AUTO_SHADOW_SPELL);
-    skillKind = UsedSkillSearch(SKILL_ID_MAGIC_SETTING_FOR_AUTO_SHADOW_SPELL);
+    skillLv = Head.UsedSkillSearch(SKILL_ID_AUTO_SHADOW_SPELL);
+    skillKind = Head.UsedSkillSearch(SKILL_ID_MAGIC_SETTING_FOR_AUTO_SHADOW_SPELL);
 
     if ((n_A_ActiveSkill == SKILL_ID_TUZYO_KOGEKI) && (n_Enekyori == 0) && (skillLv > 0) && (skillKind != 0)) {
 
@@ -205,7 +205,7 @@ function AS_Calc(charaData, specData, mobData, attackMethodConfArray, battleCalc
     // 通常攻撃時の、サーヴァントウェポン追撃効果
     // 公式サイトでは「武器体攻撃」と表記
     //----------------------------------------------------------------
-    skillLv = UsedSkillSearch(SKILL_ID_SERVANT_WEAPON);
+    skillLv = Head.UsedSkillSearch(SKILL_ID_SERVANT_WEAPON);
 
     if ((n_A_ActiveSkill == SKILL_ID_TUZYO_KOGEKI) && (skillLv > 0)) {
 
@@ -225,7 +225,7 @@ function AS_Calc(charaData, specData, mobData, attackMethodConfArray, battleCalc
     // 四次精霊パッシブモード召喚中
     // 通常攻撃時の、属性ボルト効果
     //----------------------------------------------------------------
-    skillKind = UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL)
+    skillKind = Head.UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL)
     const SERE_SUPPORT_SKILL_TO_BOLT_SKILL = new Map([
         [SERE_SUPPORT_SKILL_ID_FLAME_TECHNIQUE, SKILL_ID_FIRE_BOLT],
         [SERE_SUPPORT_SKILL_ID_COLD_FORCE, SKILL_ID_COLD_BOLT],
@@ -237,7 +237,7 @@ function AS_Calc(charaData, specData, mobData, attackMethodConfArray, battleCalc
     if (boltSkillId && n_A_ActiveSkill == SKILL_ID_TUZYO_KOGEKI) {
         funcAddAS();
         n_AS_SKILL[idx][0] = boltSkillId;
-        n_AS_SKILL[idx][1] = Math.max(1, LearnedSkillSearch(boltSkillId)); // 最低保障スキルLv = 1
+        n_AS_SKILL[idx][1] = Math.max(1, LearnedSkill.LearnedSkillSearch(boltSkillId)); // 最低保障スキルLv = 1
         n_AS_SKILL[idx][2] = 25 * 10; // 属性ボルトの発動率（千分率）
         if (wAS_3dan > 0) {
             // ＡＳ三段掌が設定されている場合は、発動率を補正
@@ -250,7 +250,7 @@ function AS_Calc(charaData, specData, mobData, attackMethodConfArray, battleCalc
     // 通常攻撃時の、フロムジアビス追撃効果
     // 公式サイトでは「アビス球体攻撃」と表記される
     //----------------------------------------------------------------
-    skillLv = UsedSkillSearch(SKILL_ID_FROM_THE_ABYSS);
+    skillLv = Head.UsedSkillSearch(SKILL_ID_FROM_THE_ABYSS);
     if ((n_A_ActiveSkill == SKILL_ID_TUZYO_KOGEKI) && (skillLv > 0)) {
         // オートスペルに、フロムジアビスを設定
         funcAddAS();
@@ -263,7 +263,7 @@ function AS_Calc(charaData, specData, mobData, attackMethodConfArray, battleCalc
         }
         n_AS_SKILL[idx][3] = 0;
         // アビススクエア習得時、習得レベルで発動
-        skillLvSub = Math.max(LearnedSkillSearch(SKILL_ID_ABYSS_SQUARE), UsedSkillSearch(SKILL_ID_ABYSS_SQUARE_LEARNED_LEVEL));
+        skillLvSub = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_ABYSS_SQUARE), Head.UsedSkillSearch(SKILL_ID_ABYSS_SQUARE_LEARNED_LEVEL));
         if (skillLvSub > 0) {
             // オートスペルに、アビススクエアを設定
             funcAddAS();
@@ -281,10 +281,10 @@ function AS_Calc(charaData, specData, mobData, attackMethodConfArray, battleCalc
     //----------------------------------------------------------------
     // 通常攻撃時の、オートファイアリングランチャー追撃効果
     //----------------------------------------------------------------
-    skillLv = UsedSkillSearch(SKILL_ID_AUTO_FIRING_LAUNCHER);
+    skillLv = Head.UsedSkillSearch(SKILL_ID_AUTO_FIRING_LAUNCHER);
     if ((n_A_ActiveSkill == SKILL_ID_TUZYO_KOGEKI) && (skillLv > 0)) {
         // オートスペルに、ベーシックグレネードを設定
-        skillLvSub = Math.max(LearnedSkillSearch(SKILL_ID_BASIC_GRENADE), UsedSkillSearch(SKILL_ID_BASIC_GRENADE_LEARNED_LEVEL));
+        skillLvSub = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_BASIC_GRENADE), Head.UsedSkillSearch(SKILL_ID_BASIC_GRENADE_LEARNED_LEVEL));
         if (skillLvSub > 0) {
             funcAddAS();
             n_AS_SKILL[idx][0] = SKILL_ID_BASIC_GRENADE;
@@ -297,7 +297,7 @@ function AS_Calc(charaData, specData, mobData, attackMethodConfArray, battleCalc
             n_AS_SKILL[idx][3] = 0;
         }
         // オートスペルに、ヘイスティファイアインザホールを設定
-        skillLvSub = Math.max(LearnedSkillSearch(SKILL_ID_HASTY_FIRE_IN_THE_HOLE), UsedSkillSearch(SKILL_ID_HASTY_FIRE_IN_THE_HOLE_LEARNED_LEVEL));
+        skillLvSub = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_HASTY_FIRE_IN_THE_HOLE), Head.UsedSkillSearch(SKILL_ID_HASTY_FIRE_IN_THE_HOLE_LEARNED_LEVEL));
         if (skillLvSub > 0) {
             funcAddAS();
             n_AS_SKILL[idx][0] = SKILL_ID_HASTY_FIRE_IN_THE_HOLE;
@@ -310,7 +310,7 @@ function AS_Calc(charaData, specData, mobData, attackMethodConfArray, battleCalc
             n_AS_SKILL[idx][3] = 0;
         }
         // オートスペルに、グレネーズドロッピングを設定
-        skillLvSub = Math.max(LearnedSkillSearch(SKILL_ID_GRENADES_DROPPING), UsedSkillSearch(SKILL_ID_GRENADES_DROPPING_LEARNED_LEVEL));
+        skillLvSub = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_GRENADES_DROPPING), Head.UsedSkillSearch(SKILL_ID_GRENADES_DROPPING_LEARNED_LEVEL));
         if (skillLvSub > 0) {
             funcAddAS();
             n_AS_SKILL[idx][0] = SKILL_ID_GRENADES_DROPPING;
@@ -341,7 +341,7 @@ function AS_Calc(charaData, specData, mobData, attackMethodConfArray, battleCalc
     // ハンドレッドスピア時の、スピアブーメラン追撃効果
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_HANDRED_SPEAR) {
-        const spear_boomerang_lv = Math.max(LearnedSkillSearch(SKILL_ID_SPEAR_BOOMERANG), attackMethodConfArray[0].GetOptionValue(1));
+        const spear_boomerang_lv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_SPEAR_BOOMERANG), attackMethodConfArray[0].GetOptionValue(1));
         if (spear_boomerang_lv > 0) {
             funcAddAS();
             n_AS_SKILL[idx][0] = SKILL_ID_SPEAR_BOOMERANG;
@@ -387,8 +387,8 @@ function AS_Calc(charaData, specData, mobData, attackMethodConfArray, battleCalc
     // 通常攻撃時の、ブリッツビート追撃効果
     // （※二者択一。どちらかしか発動させられない）
     //----------------------------------------------------------------
-    skillLvWug = UsedSkillSearch(SKILL_ID_AUTO_WUG);
-    skillLvBlitz = UsedSkillSearch(SKILL_ID_BLITZ_BEAT);
+    var skillLvWug = Head.UsedSkillSearch(SKILL_ID_AUTO_WUG);
+    var skillLvBlitz = Head.UsedSkillSearch(SKILL_ID_BLITZ_BEAT);
 
     // 自動狼の場合
     if ((n_A_ActiveSkill == SKILL_ID_TUZYO_KOGEKI) && (skillLvWug > 0)) {
@@ -435,9 +435,9 @@ function AS_Calc(charaData, specData, mobData, attackMethodConfArray, battleCalc
     //----------------------------------------------------------------
     // 通常攻撃時の、ブリッツビート追撃効果（装備セットによるもの）
     //----------------------------------------------------------------
-    skillLvBlitz = UsedSkillSearch(SKILL_ID_BLITZ_BEAT);
-    skillLvWug = UsedSkillSearch(SKILL_ID_AUTO_WUG);
-    itemCount = EquipNumSearch(ITEM_ID_TORIKAINO_YOBIKO);
+    skillLvBlitz = Head.UsedSkillSearch(SKILL_ID_BLITZ_BEAT);
+    skillLvWug = Head.UsedSkillSearch(SKILL_ID_AUTO_WUG);
+    var itemCount = Chara.EquipNumSearch(ITEM_ID_TORIKAINO_YOBIKO);
 
     if ((n_A_ActiveSkill == 0) && (skillLvWug == 0) && (skillLvBlitz > 0) && (itemCount > 0)) {
 
@@ -452,9 +452,9 @@ function AS_Calc(charaData, specData, mobData, attackMethodConfArray, battleCalc
     //----------------------------------------------------------------
     // 通常攻撃時の、ブリッツビート追撃効果（装備セットによるもの）
     //----------------------------------------------------------------
-    skillLvBlitz = UsedSkillSearch(SKILL_ID_BLITZ_BEAT);
-    skillLvWug = UsedSkillSearch(SKILL_ID_AUTO_WUG);
-    itemCount = EquipNumSearch(ITEM_ID_SORATOBU_GARAPAGO);
+    skillLvBlitz = Head.UsedSkillSearch(SKILL_ID_BLITZ_BEAT);
+    skillLvWug = Head.UsedSkillSearch(SKILL_ID_AUTO_WUG);
+    itemCount = Chara.EquipNumSearch(ITEM_ID_SORATOBU_GARAPAGO);
 
     if ((n_A_ActiveSkill == 0) && (skillLvWug == 0) && (skillLvBlitz > 0) && (itemCount > 0)) {
 
@@ -469,8 +469,8 @@ function AS_Calc(charaData, specData, mobData, attackMethodConfArray, battleCalc
     //----------------------------------------------------------------
     // 「古びた迷彩ウサギフード」の、＋９以上精錬による、自動狼の発動
     //----------------------------------------------------------------
-    skillLvWug = UsedSkillSearch(SKILL_ID_AUTO_WUG);
-    itemCount = EquipNumSearch(ITEM_ID_FURUBITA_MEISAIUSAGI);
+    skillLvWug = Head.UsedSkillSearch(SKILL_ID_AUTO_WUG);
+    itemCount = Chara.EquipNumSearch(ITEM_ID_FURUBITA_MEISAIUSAGI);
     if ((n_A_ActiveSkill == SKILL_ID_TUZYO_KOGEKI) && (skillLvWug > 0)) {
         if ((itemCount > 0) && (n_A_HEAD_DEF_PLUS >= 9)) {
             funcAddAS();
@@ -489,8 +489,8 @@ function AS_Calc(charaData, specData, mobData, attackMethodConfArray, battleCalc
     //----------------------------------------------------------------
     // 通常攻撃時の、クイックドロー追撃効果
     //----------------------------------------------------------------
-    skillLvQuickDraw = UsedSkillSearch(SKILL_ID_AS_QUICKDRAW);
-    skillLvChainAction = Math.max(LearnedSkillSearch(SKILL_ID_CHAIN_ACTION), UsedSkillSearch(SKILL_ID_CHAIN_ACTION));
+    var skillLvQuickDraw = Head.UsedSkillSearch(SKILL_ID_AS_QUICKDRAW);
+    var skillLvChainAction = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_CHAIN_ACTION), Head.UsedSkillSearch(SKILL_ID_CHAIN_ACTION));
 
     if ((n_A_ActiveSkill == SKILL_ID_TUZYO_KOGEKI) && (skillLvQuickDraw > 0)
         && (n_A_WeaponType == ITEM_KIND_HANDGUN) && (skillLvChainAction > 0)) {
@@ -514,8 +514,8 @@ function AS_Calc(charaData, specData, mobData, attackMethodConfArray, battleCalc
     //----------------------------------------------------------------
     // 通常攻撃時の、クイックドロー追撃効果
     //----------------------------------------------------------------
-    skillLvQuickDraw = UsedSkillSearch(SKILL_ID_AS_QUICKDRAW);
-    skillLvEternalChain = UsedSkillSearch(SKILL_ID_ETERNAL_CHAIN);
+    var skillLvQuickDraw = Head.UsedSkillSearch(SKILL_ID_AS_QUICKDRAW);
+    var skillLvEternalChain = Head.UsedSkillSearch(SKILL_ID_ETERNAL_CHAIN);
 
     if ((n_A_ActiveSkill == SKILL_ID_TUZYO_KOGEKI) && (skillLvQuickDraw > 0)
         && (ITEM_KIND_HANDGUN <= n_A_WeaponType) && (n_A_WeaponType <= ITEM_KIND_GRENADEGUN)
@@ -540,7 +540,7 @@ function AS_Calc(charaData, specData, mobData, attackMethodConfArray, battleCalc
     //----------------------------------------------------------------
     // 通常攻撃時の、流星落下追撃効果
     //----------------------------------------------------------------
-    var skillLvRyuseRakka = UsedSkillSearch(SKILL_ID_RYUSE_RAKKA);
+    var skillLvRyuseRakka = Head.UsedSkillSearch(SKILL_ID_RYUSE_RAKKA);
     if ((n_A_ActiveSkill == SKILL_ID_TUZYO_KOGEKI) && (skillLvRyuseRakka > 0)) {
         // 流星落下の初撃を設定
         funcAddAS();
@@ -613,8 +613,8 @@ function AS_Calc(charaData, specData, mobData, attackMethodConfArray, battleCalc
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_HESPERUS_SLIT) {
         var w = 1;
-        if (UsedSkillSearch(SKILL_ID_INSPIRATION)) w += 2;
-        if ((UsedSkillSearch(SKILL_ID_COUNT_OF_RG_FOR_BANDING) + w) == 6) {
+        if (Head.UsedSkillSearch(SKILL_ID_INSPIRATION)) w += 2;
+        if ((Head.UsedSkillSearch(SKILL_ID_COUNT_OF_RG_FOR_BANDING) + w) == 6) {
             funcAddAS();
             n_AS_SKILL[idx][0] = SKILL_ID_PINGPOINT_ATTACK;
             n_AS_SKILL[idx][1] = 1;
@@ -666,7 +666,7 @@ function AS_Calc(charaData, specData, mobData, attackMethodConfArray, battleCalc
 
         funcAddAS();
         n_AS_SKILL[idx][0] = SKILL_ID_SANDANSHO;
-        n_AS_SKILL[idx][1] = Math.max(LearnedSkillSearch(SKILL_ID_SANDANSHO), UsedSkillSearch(SKILL_ID_SANDANSHO));
+        n_AS_SKILL[idx][1] = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_SANDANSHO), Head.UsedSkillSearch(SKILL_ID_SANDANSHO));
         n_AS_SKILL[idx][2] = 1000;
         n_AS_SKILL[idx][3] = -4;
 
@@ -832,8 +832,8 @@ function AS_Calc(charaData, specData, mobData, attackMethodConfArray, battleCalc
     //----------------------------------------------------------------
     // 通常攻撃、スペルフィストにおける、精霊効果
     //----------------------------------------------------------------
-    sereKind = UsedSkillSearch(SKILL_ID_SERE);
-    sereMode = UsedSkillSearch(SKILL_ID_SERE_MODE);
+    var sereKind = Head.UsedSkillSearch(SKILL_ID_SERE);
+    var sereMode = Head.UsedSkillSearch(SKILL_ID_SERE_MODE);
 
     if (n_A_ActiveSkill == SKILL_ID_TUZYO_KOGEKI || n_A_ActiveSkill == SKILL_ID_SPELL_FIST) {
 
@@ -898,7 +898,7 @@ function AS_Calc(charaData, specData, mobData, attackMethodConfArray, battleCalc
                             case SKILL_ID_COLD_BOLT:
                             case SKILL_ID_LIGHTNING_BOLT:
 
-                                skillLvDoubleCasting = UsedSkillSearch(SKILL_ID_DOUBLE_CASTING);
+                                skillLvDoubleCasting = Head.UsedSkillSearch(SKILL_ID_DOUBLE_CASTING);
 
                                 if (skillLvDoubleCasting > 0) {
                                     funcAddAS();
@@ -984,7 +984,7 @@ function AS_Calc(charaData, specData, mobData, attackMethodConfArray, battleCalc
                 case SKILL_ID_COLD_BOLT:
                 case SKILL_ID_LIGHTNING_BOLT:
 
-                    skillLvDoubleCasting = UsedSkillSearch(SKILL_ID_DOUBLE_CASTING);
+                    skillLvDoubleCasting = Head.UsedSkillSearch(SKILL_ID_DOUBLE_CASTING);
 
                     if (skillLvDoubleCasting > 0) {
                         funcAddAS();
@@ -1016,7 +1016,7 @@ function AS_Calc(charaData, specData, mobData, attackMethodConfArray, battleCalc
         case SKILL_ID_COLD_BOLT:
         case SKILL_ID_LIGHTNING_BOLT:
 
-            skillLvDoubleCasting = UsedSkillSearch(SKILL_ID_DOUBLE_CASTING);
+            skillLvDoubleCasting = Head.UsedSkillSearch(SKILL_ID_DOUBLE_CASTING);
 
             if (skillLvDoubleCasting > 0) {
                 funcAddAS();
@@ -1040,8 +1040,8 @@ function AS_Calc(charaData, specData, mobData, attackMethodConfArray, battleCalc
     //----------------------------------------------------------------
     // 通常攻撃、スペルフィストにおける、スキルオートスペル効果
     //----------------------------------------------------------------
-    skillLv = UsedSkillSearch(SKILL_ID_AUTO_MAGICIAN_SPELL);
-    skillKind = UsedSkillSearch(SKILL_ID_MAGIC_SETTING_FOR_AUTO_SPELL);
+    skillLv = Head.UsedSkillSearch(SKILL_ID_AUTO_MAGICIAN_SPELL);
+    skillKind = Head.UsedSkillSearch(SKILL_ID_MAGIC_SETTING_FOR_AUTO_SPELL);
 
     if ((n_A_ActiveSkill == SKILL_ID_TUZYO_KOGEKI) || (n_A_ActiveSkill == SKILL_ID_SPELL_FIST)) {
 
@@ -1070,7 +1070,7 @@ function AS_Calc(charaData, specData, mobData, attackMethodConfArray, battleCalc
 
             // 発動レベルの設定
             n_AS_SKILL[idx][1] = 3;
-            skillLvEffectOfSagenoTamashi = UsedSkillSearch(SKILL_ID_SAGENO_TAMASHI_MAHONO_SHUTOKU_LEVEL);
+            skillLvEffectOfSagenoTamashi = Head.UsedSkillSearch(SKILL_ID_SAGENO_TAMASHI_MAHONO_SHUTOKU_LEVEL);
             if (skillLvEffectOfSagenoTamashi > 0) {
                 n_AS_SKILL[idx][1] = skillLvEffectOfSagenoTamashi;
             }
@@ -1089,7 +1089,7 @@ function AS_Calc(charaData, specData, mobData, attackMethodConfArray, battleCalc
                 case SKILL_ID_COLD_BOLT:
                 case SKILL_ID_LIGHTNING_BOLT:
 
-                    skillLvDoubleCasting = UsedSkillSearch(SKILL_ID_DOUBLE_CASTING);
+                    skillLvDoubleCasting = Head.UsedSkillSearch(SKILL_ID_DOUBLE_CASTING);
 
                     if (skillLvDoubleCasting > 0) {
                         funcAddAS();
@@ -1226,7 +1226,7 @@ function AS_Calc(charaData, specData, mobData, attackMethodConfArray, battleCalc
         if (n_AS_SKILL[i][3] >= 0) {
             if (n_AS_SKILL[i][2] != 0) {
                 if (n_AS_SKILL[i][3] == 11) {
-                    if (EquipNumSearch(2513)) str_bSUBname += SkillObjNew[n_AS_SKILL[i][0]][SKILL_DATA_INDEX_NAME] + "Lv" + n_AS_SKILL[i][1] + "(ガラパゴ)<BR>";
+                    if (Chara.EquipNumSearch(2513)) str_bSUBname += SkillObjNew[n_AS_SKILL[i][0]][SKILL_DATA_INDEX_NAME] + "Lv" + n_AS_SKILL[i][1] + "(ガラパゴ)<BR>";
                     else str_bSUBname += SkillObjNew[n_AS_SKILL[i][0]][SKILL_DATA_INDEX_NAME] + "Lv" + n_AS_SKILL[i][1] + "(呼子)<BR>";
                 }
                 else str_bSUBname += SkillObjNew[n_AS_SKILL[i][0]][SKILL_DATA_INDEX_NAME] + "Lv" + n_AS_SKILL[i][1] + "<BR>";
@@ -1256,7 +1256,7 @@ function AS_Calc(charaData, specData, mobData, attackMethodConfArray, battleCalc
                 n_AS_DMG[i][2] = 0;
             }
         } else if (n_AS_SKILL[i][3] == -1) {
-            if (UsedSkillSearch(SKILL_ID_SAGENO_TAMASHI_MAHONO_SHUTOKU_LEVEL) == 0) {
+            if (Head.UsedSkillSearch(SKILL_ID_SAGENO_TAMASHI_MAHONO_SHUTOKU_LEVEL) == 0) {
                 str_bSUBname += SkillObjNew[n_AS_SKILL[i][0]][SKILL_DATA_INDEX_NAME] + "Lv1-3<BR>";
                 str_bSUB += __DIG3(wDMG[0] / 3) + "～" + __DIG3(wDMG[2]) + "(" + (Math.floor(n_AS_SKILL[i][2]) / 10) + "％)<BR>";
                 n_AS_SKILL[i][2] = n_AS_SKILL[i][2] / 10;
@@ -1265,7 +1265,7 @@ function AS_Calc(charaData, specData, mobData, attackMethodConfArray, battleCalc
                 n_AS_DMG_OverHP[i][1] = (mobData[3] / 3 * 50 + mobData[3] * 2 / 3 * 35 + mobData[3] * 15) / 100 * n_AS_SKILL[i][2] / 100;
                 n_AS_DMG[i][2] = wDMG[2];
             } else {
-                str_bSUBname += SkillObjNew[n_AS_SKILL[i][0]][SKILL_DATA_INDEX_NAME] + "Lv" + UsedSkillSearch(SKILL_ID_SAGENO_TAMASHI_MAHONO_SHUTOKU_LEVEL) + "<BR>";
+                str_bSUBname += SkillObjNew[n_AS_SKILL[i][0]][SKILL_DATA_INDEX_NAME] + "Lv" + Head.UsedSkillSearch(SKILL_ID_SAGENO_TAMASHI_MAHONO_SHUTOKU_LEVEL) + "<BR>";
                 str_bSUB += __DIG3(wDMG[0]) + "～" + __DIG3(wDMG[2]) + "(" + (Math.floor(n_AS_SKILL[i][2]) / 10) + "％)<BR>";
                 n_AS_SKILL[i][2] = n_AS_SKILL[i][2] / 10;
                 n_AS_DMG[i][0] = 0;
@@ -1340,7 +1340,7 @@ function AS_Calc(charaData, specData, mobData, attackMethodConfArray, battleCalc
     n_Enekyori = BK_ENKYORI;
     for (var i = 0; i <= 7; i++) n_Delay[i] = BK_DELAY[i];
     n_AS_MODE = false;
-    if (n_A_ActiveSkill == 0 && n_AS_SKILL[0][0] != 0 && (UsedSkillSearch(SKILL_ID_SANDANSHO) || GetActRateDA(n_A_ActiveSkill, mobData))) {
+    if (n_A_ActiveSkill == 0 && n_AS_SKILL[0][0] != 0 && (Head.UsedSkillSearch(SKILL_ID_SANDANSHO) || GetActRateDA(n_A_ActiveSkill, mobData))) {
         str_bSUBname += "<B><Font size=2>通常</Font></B><BR>";
         str_bSUB += "<BR>";
     }
@@ -1350,7 +1350,7 @@ function AS_Calc(charaData, specData, mobData, attackMethodConfArray, battleCalc
 
 
 
-function AS_PLUS() {
+export function AS_PLUS() {
 
     w_DMG_AS_OverHP = w_DMG[1];
 
@@ -1401,9 +1401,9 @@ function AS_PLUS() {
 // 定数定義
 //
 //================================================================================================
-OBJID_OFFSET_AS_SKILL_ID = 100;			// オブジェクトＩＤのオフセット（オートスペル　スキルＩＤ）
-OBJID_OFFSET_AS_SKILL_LV = 200;			// オブジェクトＩＤのオフセット（オートスペル　スキルレベル）
-OBJID_OFFSET_AS_SKILL_PROB = 300;		// オブジェクトＩＤのオフセット（オートスペル　スキル発動率）
+export const OBJID_OFFSET_AS_SKILL_ID = 100;			// オブジェクトＩＤのオフセット（オートスペル　スキルＩＤ）
+export const OBJID_OFFSET_AS_SKILL_LV = 200;			// オブジェクトＩＤのオフセット（オートスペル　スキルレベル）
+export const OBJID_OFFSET_AS_SKILL_PROB = 300;		// オブジェクトＩＤのオフセット（オートスペル　スキル発動率）
 
 
 
@@ -1430,7 +1430,7 @@ OBJID_OFFSET_AS_SKILL_PROB = 300;		// オブジェクトＩＤのオフセット
  * オートスペル設定欄の展開（再構築）.
  *
  ************************************************************************************************/
-function OnClickExtractSettingAutoSpell() {
+export function OnClickExtractSettingAutoSpell() {
 
     var objRoot = null;
     var objTable = null;
@@ -1873,8 +1873,8 @@ function OnClickEasySetUpAutoSpell() {
     // 「マジカルブレード」の、精錬値による効果
     //----------------------------------------------------------------
     var refined = -1;
-    var itemCountRight = EquipNumSearch(ITEM_ID_MAGICAL_BLADE, EQUIP_REGION_ID_ARMS);
-    var itemCountLeft = EquipNumSearch(ITEM_ID_MAGICAL_BLADE, EQUIP_REGION_ID_ARMS_LEFT);
+    var itemCountRight = Chara.EquipNumSearch(ITEM_ID_MAGICAL_BLADE, EQUIP_REGION_ID_ARMS);
+    var itemCountLeft = Chara.EquipNumSearch(ITEM_ID_MAGICAL_BLADE, EQUIP_REGION_ID_ARMS_LEFT);
     // 装備状況によって、参照する精錬値を切り替える
     if ((itemCountRight > 0) && (itemCountLeft > 0)) {
         if (n_A_Weapon_ATKplus >= n_A_Weapon2_ATKplus) {
@@ -1916,8 +1916,8 @@ function OnClickEasySetUpAutoSpell() {
     //----------------------------------------------------------------
     // 「死神の名簿」の、職業による効果
     //----------------------------------------------------------------
-    var itemCountRight = EquipNumSearch(ITEM_ID_SHINIGAMINO_MEIBO, EQUIP_REGION_ID_ARMS);
-    var itemCountLeft = EquipNumSearch(ITEM_ID_SHINIGAMINO_MEIBO, EQUIP_REGION_ID_ARMS_LEFT);
+    var itemCountRight = Chara.EquipNumSearch(ITEM_ID_SHINIGAMINO_MEIBO, EQUIP_REGION_ID_ARMS);
+    var itemCountLeft = Chara.EquipNumSearch(ITEM_ID_SHINIGAMINO_MEIBO, EQUIP_REGION_ID_ARMS_LEFT);
     if ((itemCountRight > 0) || (itemCountLeft > 0)) {
         if (GetHigherJobSeriesID(n_A_JOB) == JOB_SERIES_ID_SAGE) {
             asIdArray[asidx] = 138;
@@ -1929,8 +1929,8 @@ function OnClickEasySetUpAutoSpell() {
     //----------------------------------------------------------------
     // 「グロリアスクロー」の、精錬による効果
     //----------------------------------------------------------------
-    var itemCountRight = EquipNumSearch(ITEM_ID_GLORIOUS_CLAW, EQUIP_REGION_ID_ARMS);
-    var itemCountLeft = EquipNumSearch(ITEM_ID_GLORIOUS_CLAW, EQUIP_REGION_ID_ARMS_LEFT);
+    var itemCountRight = Chara.EquipNumSearch(ITEM_ID_GLORIOUS_CLAW, EQUIP_REGION_ID_ARMS);
+    var itemCountLeft = Chara.EquipNumSearch(ITEM_ID_GLORIOUS_CLAW, EQUIP_REGION_ID_ARMS_LEFT);
     if (((itemCountRight > 0) && (n_A_Weapon_ATKplus >= 9))
         || ((itemCountLeft > 0) && (n_A_Weapon2_ATKplus >= 9))) {
         asIdArray[asidx] = 108;
@@ -1941,8 +1941,8 @@ function OnClickEasySetUpAutoSpell() {
     //----------------------------------------------------------------
     // 「女王フェイスワームの足」の、効果
     //----------------------------------------------------------------
-    var itemCountRight = EquipNumSearch(ITEM_ID_ZYOO_FACEWORMNO_ASHI, EQUIP_REGION_ID_ARMS);
-    var itemCountLeft = EquipNumSearch(ITEM_ID_ZYOO_FACEWORMNO_ASHI, EQUIP_REGION_ID_ARMS_LEFT);
+    var itemCountRight = Chara.EquipNumSearch(ITEM_ID_ZYOO_FACEWORMNO_ASHI, EQUIP_REGION_ID_ARMS);
+    var itemCountLeft = Chara.EquipNumSearch(ITEM_ID_ZYOO_FACEWORMNO_ASHI, EQUIP_REGION_ID_ARMS_LEFT);
     if ((itemCountRight > 0) || (itemCountLeft > 0)) {
         asIdArray[asidx] = 154;
         asidx++;

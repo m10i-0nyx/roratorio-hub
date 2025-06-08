@@ -1,6 +1,4 @@
 "use strict";
-import * as Chara from "../../../roro/m/js/chara.js";
-import * as Foot from "../../../roro/m/js/foot.js";
 
 // データ収集用
 // バトルデータインデックス
@@ -438,7 +436,7 @@ function BattleCalc999(battleCalcInfo, charaData, specData, mobData, attackMetho
                 cloned.actRate = 100;
                 cloned.criRate = battleCalcInfo.criRate;
                 // ダメージ倍率を計算
-                dmgRate = 0.01 + (0.02 * Math.max(LearnedSkillSearch(SKILL_ID_DOUBLE_ATTACK), UsedSkillSearch(SKILL_ID_DOUBLE_ATTACK, true)));
+                dmgRate = 0.01 + (0.02 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_DOUBLE_ATTACK), UsedSkillSearch(SKILL_ID_DOUBLE_ATTACK, true)));
                 // ダメージを調整
                 for (idx = 0; idx < cloned.dmgUnitArray.length; idx++) {
                     cloned.dmgUnitArray[idx][0] = Math.floor(cloned.dmgUnitArray[idx][0] * dmgRate);
@@ -485,7 +483,7 @@ function BattleCalc999(battleCalcInfo, charaData, specData, mobData, attackMetho
             if (actRate > 0) {
                 cloned = battleCalcInfo.Clone();
                 cloned.skillId = SKILL_ID_SANDANSHO;
-                cloned.skillLv = Math.max(LearnedSkillSearch(SKILL_ID_SANDANSHO), UsedSkillSearch(SKILL_ID_SANDANSHO))
+                cloned.skillLv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_SANDANSHO), UsedSkillSearch(SKILL_ID_SANDANSHO))
                 cloned.actRate = actRate;
                 battleCalcResultAll.AddPassiveResult(undefined, BattleCalc999Body(cloned, charaData, specData, mobData, attackMethodConfArray, false));
             }
@@ -543,7 +541,7 @@ function BattleCalc999(battleCalcInfo, charaData, specData, mobData, attackMetho
                 cloned = battleCalcResultAll.GetPassiveResult(0).Clone();
                 // スキル情報の設定
                 // チェーンリアクション習得Lv
-                const chain_action_lv = Math.max(LearnedSkillSearch(SKILL_ID_CHAIN_ACTION), UsedSkillSearch(SKILL_ID_CHAIN_ACTION));
+                const chain_action_lv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_CHAIN_ACTION), UsedSkillSearch(SKILL_ID_CHAIN_ACTION));
                 if ((n_A_WeaponType == ITEM_KIND_HANDGUN) && (chain_action_lv > 0)) {
                     cloned.skillId = SKILL_ID_CHAIN_ACTION;
                 } else if (IsGunSeriesArms(n_A_WeaponType) && (UsedSkillSearch(SKILL_ID_ETERNAL_CHAIN) > 0)) {
@@ -551,7 +549,7 @@ function BattleCalc999(battleCalcInfo, charaData, specData, mobData, attackMetho
                 } else {
                     cloned.skillId = SKILL_ID_DOUBLE_ATTACK;
                 }
-                cloned.skillLv = Math.max(LearnedSkillSearch(SKILL_ID_DOUBLE_ATTACK), UsedSkillSearch(SKILL_ID_DOUBLE_ATTACK));
+                cloned.skillLv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_DOUBLE_ATTACK), UsedSkillSearch(SKILL_ID_DOUBLE_ATTACK));
                 cloned.actRate = actRate;
                 // ダメージをすべて倍にする
                 for (idx = 0; idx < cloned.dmgUnitArray.length; idx++) {
@@ -641,7 +639,7 @@ function BattleCalc999(battleCalcInfo, charaData, specData, mobData, attackMetho
     // オートスペル計算
     // （主撃が通常攻撃、または、スペルフィストの場合のみ）
     //
-    // 別の場所（通常の呼び出しフロー直前）で、特定処理実施済み（AS_Calc()）
+    // 別の場所（通常の呼び出しフロー直前）で、特定処理実施済み（CalcAutoSpell.AS_Calc()）
     // グローバル変数 n_AS_SKILL に、多次元配列データが入っているので、ここから計算処理を呼び出す
     //----------------------------------------------------------------
     if (n_AS_SKILL.length > 0) {
@@ -817,7 +815,7 @@ function BattleCalc999Body(battleCalcInfo, charaData, specData, mobData, attackM
     //----------------------------------------------------------------
     for (idxUnit = 0; idxUnit < dmgUnitArray.length; idxUnit++) {
         for (idx = 0; idx < dmgUnitArray[idxUnit].length; idx++) {
-            dmgUnitArray[idxUnit][idx] = ApplyPAtkAmplify(dmgUnitArray[idxUnit][idx]);
+            dmgUnitArray[idxUnit][idx] = HmJob.ApplyPAtkAmplify(dmgUnitArray[idxUnit][idx]);
         }
     }
 
@@ -986,7 +984,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
         console.log("[ERROR] BattleCalc999Core reaches a old flow.");
     }
     // 修練が乗らないスキルには、錐効果が適用されない
-    if ((NumSearch(n_A_ActiveSkill, n_SP_SKILL) != 0) && (n_A_ActiveSkill != SKILL_ID_HAKKEI)) {
+    if ((Foot.NumSearch(n_A_ActiveSkill, n_SP_SKILL) != 0) && (n_A_ActiveSkill != SKILL_ID_HAKKEI)) {
         if (!n_AS_MODE && (n_A_QUAKE_KIRI != 0)) {
             alert("想定外の錐効果演算。\nお手数ですが、投稿フォームから、URL出力のURLを添えて、お知らせください。");
         }
@@ -1429,7 +1427,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
 
             case SKILL_ID_PHANTOM_SLAST:	// ファントムスラスト
                 n_Enekyori = 1;
-                wbairitu = 50 * n_A_ActiveSkillLV + 10 * Math.max(LearnedSkillSearch(SKILL_ID_YARI_SHUREN), UsedSkillSearch(SKILL_ID_YARI_SHUREN));
+                wbairitu = 50 * n_A_ActiveSkillLV + 10 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_YARI_SHUREN), UsedSkillSearch(SKILL_ID_YARI_SHUREN));
                 wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 150);
                 break;
 
@@ -1449,7 +1447,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 wCast = 1000;
                 n_KoteiCast = 1000;
                 n_Delay[7] = 8000;
-                const rune_mastery = Math.max(LearnedSkillSearch(SKILL_ID_RUNE_MASTERY), UsedSkillSearch(SKILL_ID_RUNE_MASTERY));
+                const rune_mastery = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_RUNE_MASTERY), UsedSkillSearch(SKILL_ID_RUNE_MASTERY));
                 wbairitu = 100 * rune_mastery + Foot.ROUNDDOWN(n_A_INT / 8) * 100;
                 break;
             }
@@ -1541,7 +1539,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 }
                 wbairitu = 800 + 200 * n_A_ActiveSkillLV;
                 if (!n_AS_MODE) {
-                    const tooth_of_wug_lv = Math.max(LearnedSkillSearch(SKILL_ID_TOOTH_OF_WUG), UsedSkillSearch(SKILL_ID_TOOTH_OF_WUG));
+                    const tooth_of_wug_lv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_TOOTH_OF_WUG), UsedSkillSearch(SKILL_ID_TOOTH_OF_WUG));
                     const w = 50 + 10 * n_A_ActiveSkillLV - Math.floor(mobData[8] / 4) + tooth_of_wug_lv * 2;
                     if (w < 50) w = 50;
                     if (w > 100) w = 100;
@@ -1690,7 +1688,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
             case SKILL_ID_BANISHING_POINT:
                 n_Enekyori = 1;
                 // バッシュ習得Lv補正
-                let w_BN = 30 * Math.max(LearnedSkillSearch(SKILL_ID_BASH), attackMethodConfArray[0].GetOptionValue(0));
+                let w_BN = 30 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_BASH), attackMethodConfArray[0].GetOptionValue(0));
                 // 基本倍率
                 wbairitu = 50 * n_A_ActiveSkillLV + w_BN;
                 /*
@@ -1729,7 +1727,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
 
             case SKILL_ID_MOON_SLUSHER:
                 // オーバーブランドの習得Lv補正
-                var w_OB = 80 * Math.max(LearnedSkillSearch(SKILL_ID_OVER_BLAND), attackMethodConfArray[0].GetOptionValue(0));
+                var w_OB = 80 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_OVER_BLAND), attackMethodConfArray[0].GetOptionValue(0));
                 wCast = 2000;
                 n_Delay[7] = 5500 - 500 * n_A_ActiveSkillLV;
                 wbairitu = 120 * n_A_ActiveSkillLV + w_OB;
@@ -1974,7 +1972,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 // ウドゥンウォリアー補正
                 wbairitu += 100 * n_A_ActiveSkillLV * attackMethodConfArray[0].GetOptionValue(1);
                 // 修練補正
-                const cart_kaizo_lv = Math.max(LearnedSkillSearch(SKILL_ID_CART_KAIZO), UsedSkillSearch(SKILL_ID_CART_KAIZO));
+                const cart_kaizo_lv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_CART_KAIZO), UsedSkillSearch(SKILL_ID_CART_KAIZO));
                 wbairitu += 50 * cart_kaizo_lv;
                 // カート重量・純粋STR補正
                 wbairitu += Math.floor(attackMethodConfArray[0].GetOptionValue(0) / (150 - SU_STR));;
@@ -2110,7 +2108,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
             case SKILL_ID_FIRE_DANCE: {	// ファイヤーダンス
                 wbairitu = 1000 + 100 * n_A_ActiveSkillLV;
                 // デスペラード習得Lv補正
-                let deathperad_lv = Math.max(LearnedSkillSearch(SKILL_ID_DEATHPERAD), attackMethodConfArray[0].GetOptionValue(0));
+                let deathperad_lv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_DEATHPERAD), attackMethodConfArray[0].GetOptionValue(0));
                 wbairitu += 20 * deathperad_lv;
                 wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 100);
                 n_Enekyori = 1;
@@ -2222,7 +2220,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 //----------------------------------------------------------------
                 // 「サモナー　生命の魂効果<BR>(残りHP)」の、「アニマル系スキル」強化
                 //----------------------------------------------------------------
-                if (Math.max(LearnedSkillSearch(SKILL_ID_SEIMEINO_TAMASHI), UsedSkillSearch(SKILL_ID_SEIMEINO_TAMASHI)) > 0) {
+                if (Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_SEIMEINO_TAMASHI), UsedSkillSearch(SKILL_ID_SEIMEINO_TAMASHI)) > 0) {
                     switch (UsedSkillSearch(SKILL_ID_SEIMEINO_TAMASHI_KOKA_NOKORI_HP)) {
                         case SKILL_LEVEL_VALUE_SEIMEINO_TAMASHI_KOKA_NOKORI_HP_OVER_100:
                             wbairitu = Foot.ROUNDDOWN(wbairitu * 2);
@@ -2262,7 +2260,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 //----------------------------------------------------------------
                 // 「サモナー　生命の魂効果<BR>(残りHP)」の、「アニマル系スキル」強化
                 //----------------------------------------------------------------
-                if (Math.max(LearnedSkillSearch(SKILL_ID_SEIMEINO_TAMASHI), UsedSkillSearch(SKILL_ID_SEIMEINO_TAMASHI)) > 0) {
+                if (Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_SEIMEINO_TAMASHI), UsedSkillSearch(SKILL_ID_SEIMEINO_TAMASHI)) > 0) {
                     switch (UsedSkillSearch(SKILL_ID_SEIMEINO_TAMASHI_KOKA_NOKORI_HP)) {
                         case SKILL_LEVEL_VALUE_SEIMEINO_TAMASHI_KOKA_NOKORI_HP_OVER_100:
                             wbairitu = Foot.ROUNDDOWN(wbairitu * 2);
@@ -2316,7 +2314,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 //----------------------------------------------------------------
                 // 「サモナー　生命の魂効果<BR>(残りHP)」の、「アニマル系スキル」強化
                 //----------------------------------------------------------------
-                if (Math.max(LearnedSkillSearch(SKILL_ID_SEIMEINO_TAMASHI), UsedSkillSearch(SKILL_ID_SEIMEINO_TAMASHI)) > 0) {
+                if (Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_SEIMEINO_TAMASHI), UsedSkillSearch(SKILL_ID_SEIMEINO_TAMASHI)) > 0) {
                     switch (UsedSkillSearch(SKILL_ID_SEIMEINO_TAMASHI_KOKA_NOKORI_HP)) {
                         case SKILL_LEVEL_VALUE_SEIMEINO_TAMASHI_KOKA_NOKORI_HP_OVER_100:
                             wbairitu = Foot.ROUNDDOWN(wbairitu * 2);
@@ -2350,7 +2348,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 //----------------------------------------------------------------
                 // 「サモナー　生命の魂効果<BR>(残りHP)」の、「アニマル系スキル」強化
                 //----------------------------------------------------------------
-                if (Math.max(LearnedSkillSearch(SKILL_ID_SEIMEINO_TAMASHI), UsedSkillSearch(SKILL_ID_SEIMEINO_TAMASHI)) > 0) {
+                if (Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_SEIMEINO_TAMASHI), UsedSkillSearch(SKILL_ID_SEIMEINO_TAMASHI)) > 0) {
                     switch (UsedSkillSearch(SKILL_ID_SEIMEINO_TAMASHI_KOKA_NOKORI_HP)) {
                         case SKILL_LEVEL_VALUE_SEIMEINO_TAMASHI_KOKA_NOKORI_HP_OVER_100:
                             wbairitu = Foot.ROUNDDOWN(wbairitu * 2);
@@ -2724,7 +2722,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 // CON補正
                 wbairitu += 5 * GetTotalSpecStatus(MIG_PARAM_ID_CON);
                 // 自然親和補正
-                const shizen_shinwa_lv = Math.max(LearnedSkillSearch(SKILL_ID_SHIZEN_SHINWA), UsedSkillSearch(SKILL_ID_SHIZEN_SHINWA));
+                const shizen_shinwa_lv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_SHIZEN_SHINWA), UsedSkillSearch(SKILL_ID_SHIZEN_SHINWA));
                 wbairitu *= (1 + 0.2 * shizen_shinwa_lv);
                 // ベースレベル補正
                 wbairitu = Math.floor(wbairitu * n_A_BaseLV / 100);
@@ -2750,7 +2748,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 // CON補正
                 wbairitu += 5 * GetTotalSpecStatus(MIG_PARAM_ID_CON);
                 // 自然親和補正
-                const shizen_shinwa_lv = Math.max(LearnedSkillSearch(SKILL_ID_SHIZEN_SHINWA), UsedSkillSearch(SKILL_ID_SHIZEN_SHINWA));
+                const shizen_shinwa_lv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_SHIZEN_SHINWA), UsedSkillSearch(SKILL_ID_SHIZEN_SHINWA));
                 wbairitu *= (1 + 0.2 * shizen_shinwa_lv);
                 // ベースレベル補正
                 wbairitu = Math.floor(wbairitu * n_A_BaseLV / 100);
@@ -2829,7 +2827,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 wbairitu = wbairitu * n_A_BaseLV / 100;
                 // アドバンスドトラップ研究は小数点以下にも掛かる
                 // アドバンスドトラップ研究補正
-                const advanced_trap_lv = Math.max(LearnedSkillSearch(SKILL_ID_ADVANCED_TRAP), UsedSkillSearch(SKILL_ID_ADVANCED_TRAP));
+                const advanced_trap_lv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_ADVANCED_TRAP), UsedSkillSearch(SKILL_ID_ADVANCED_TRAP));
                 wbairitu = Math.floor(wbairitu * (1 + 0.2 * advanced_trap_lv));
                 break;
             }
@@ -2987,7 +2985,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 // 基本倍率
                 wbairitu = 600 + 800 * n_A_ActiveSkillLV;
                 // 修練補正
-                wbairitu += 40 * n_A_ActiveSkillLV * Math.max(LearnedSkillSearch(SKILL_ID_TATE_SHUREN), UsedSkillSearch(SKILL_ID_TATE_SHUREN));
+                wbairitu += 40 * n_A_ActiveSkillLV * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_TATE_SHUREN), UsedSkillSearch(SKILL_ID_TATE_SHUREN));
                 // 盾の精錬値・重量補正
                 wbairitu += n_A_SHIELD_DEF_PLUS * 200 + ItemObjNew[n_A_Equip[EQUIP_REGION_ID_SHIELD]][ITEM_DATA_INDEX_WEIGHT];
                 // POW補正
@@ -3017,7 +3015,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 // 基本倍率
                 wbairitu = 70 * n_A_ActiveSkillLV;
                 // 修練補正
-                wbairitu += 8 * n_A_ActiveSkillLV * Math.max(LearnedSkillSearch(SKILL_ID_YARI_KATATE_KEN_SHUREN), UsedSkillSearch(SKILL_ID_YARI_KATATE_KEN_SHUREN));
+                wbairitu += 8 * n_A_ActiveSkillLV * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_YARI_KATATE_KEN_SHUREN), UsedSkillSearch(SKILL_ID_YARI_KATATE_KEN_SHUREN));
                 // POW補正
                 wbairitu += 5 * GetTotalSpecStatus(MIG_PARAM_ID_POW);
                 // ベースレベル補正
@@ -3494,7 +3492,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 // POW補正
                 wbairitu += 5 * GetTotalSpecStatus(MIG_PARAM_ID_POW);
                 // 天気修練 補正
-                wbairitu += 5 * n_A_ActiveSkillLV * Math.max(LearnedSkillSearch(SKILL_ID_TENKI_SHUREN), UsedSkillSearch(SKILL_ID_TENKI_SHUREN));
+                wbairitu += 5 * n_A_ActiveSkillLV * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_TENKI_SHUREN), UsedSkillSearch(SKILL_ID_TENKI_SHUREN));
                 // ベースレベル補正
                 wbairitu = Math.floor(wbairitu * n_A_BaseLV / 100);
                 // 分割ヒット
@@ -3525,7 +3523,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 // POW補正
                 wbairitu += 5 * GetTotalSpecStatus(MIG_PARAM_ID_POW);
                 // 天気修練 補正
-                wbairitu += 5 * n_A_ActiveSkillLV * Math.max(LearnedSkillSearch(SKILL_ID_TENKI_SHUREN), UsedSkillSearch(SKILL_ID_TENKI_SHUREN));
+                wbairitu += 5 * n_A_ActiveSkillLV * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_TENKI_SHUREN), UsedSkillSearch(SKILL_ID_TENKI_SHUREN));
                 // ベースレベル補正
                 wbairitu = Math.floor(wbairitu * n_A_BaseLV / 100);
                 // 正午 or 天気の身 のときだけクリが乗る仕様は CSkillManager.js 側で対処済み
@@ -3557,7 +3555,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 // POW補正
                 wbairitu += 5 * GetTotalSpecStatus(MIG_PARAM_ID_POW);
                 // 天気修練 補正
-                wbairitu += 5 * n_A_ActiveSkillLV * Math.max(LearnedSkillSearch(SKILL_ID_TENKI_SHUREN), UsedSkillSearch(SKILL_ID_TENKI_SHUREN));
+                wbairitu += 5 * n_A_ActiveSkillLV * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_TENKI_SHUREN), UsedSkillSearch(SKILL_ID_TENKI_SHUREN));
                 // ベースレベル補正
                 wbairitu = Math.floor(wbairitu * n_A_BaseLV / 100);
                 // 日没 or 天気の身 のときだけクリが乗る仕様は CSkillManager.js 側で対処済み
@@ -3579,7 +3577,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 // POW補正
                 wbairitu += 3 * GetTotalSpecStatus(MIG_PARAM_ID_POW);
                 // 天気修練 補正
-                wbairitu += 5 * n_A_ActiveSkillLV * Math.max(LearnedSkillSearch(SKILL_ID_TENKI_SHUREN), UsedSkillSearch(SKILL_ID_TENKI_SHUREN));
+                wbairitu += 5 * n_A_ActiveSkillLV * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_TENKI_SHUREN), UsedSkillSearch(SKILL_ID_TENKI_SHUREN));
                 // ベースレベル補正
                 wbairitu = Math.floor(wbairitu * n_A_BaseLV / 100);
                 // 分割ヒット
@@ -3613,7 +3611,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 // POW補正
                 wbairitu += 5 * GetTotalSpecStatus(MIG_PARAM_ID_POW);
                 // 天気修練 補正
-                wbairitu += 5 * n_A_ActiveSkillLV * Math.max(LearnedSkillSearch(SKILL_ID_TENKI_SHUREN), UsedSkillSearch(SKILL_ID_TENKI_SHUREN));
+                wbairitu += 5 * n_A_ActiveSkillLV * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_TENKI_SHUREN), UsedSkillSearch(SKILL_ID_TENKI_SHUREN));
                 // ベースレベル補正
                 wbairitu = Math.floor(wbairitu * n_A_BaseLV / 100);
                 // 分割ヒット
@@ -3649,7 +3647,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 // POW補正
                 wbairitu += 5 * GetTotalSpecStatus(MIG_PARAM_ID_POW);
                 // 天気修練 補正
-                wbairitu += 5 * n_A_ActiveSkillLV * Math.max(LearnedSkillSearch(SKILL_ID_TENKI_SHUREN), UsedSkillSearch(SKILL_ID_TENKI_SHUREN));
+                wbairitu += 5 * n_A_ActiveSkillLV * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_TENKI_SHUREN), UsedSkillSearch(SKILL_ID_TENKI_SHUREN));
                 // ベースレベル補正
                 wbairitu = Math.floor(wbairitu * n_A_BaseLV / 100);
                 // 分割ヒット
@@ -3675,7 +3673,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 // POW補正
                 wbairitu += 3 * GetTotalSpecStatus(MIG_PARAM_ID_POW);
                 // 天気修練 補正
-                wbairitu += 3 * n_A_ActiveSkillLV * Math.max(LearnedSkillSearch(SKILL_ID_TENKI_SHUREN), UsedSkillSearch(SKILL_ID_TENKI_SHUREN));
+                wbairitu += 3 * n_A_ActiveSkillLV * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_TENKI_SHUREN), UsedSkillSearch(SKILL_ID_TENKI_SHUREN));
                 // ベースレベル補正
                 wbairitu = Math.floor(wbairitu * n_A_BaseLV / 100);
                 // 分割ヒット
@@ -3702,7 +3700,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 // POW補正
                 wbairitu += 3 * GetTotalSpecStatus(MIG_PARAM_ID_POW);
                 // 天気修練 補正
-                wbairitu += 5 * n_A_ActiveSkillLV * Math.max(LearnedSkillSearch(SKILL_ID_TENKI_SHUREN), UsedSkillSearch(SKILL_ID_TENKI_SHUREN));
+                wbairitu += 5 * n_A_ActiveSkillLV * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_TENKI_SHUREN), UsedSkillSearch(SKILL_ID_TENKI_SHUREN));
                 // ベースレベル補正
                 wbairitu = Math.floor(wbairitu * n_A_BaseLV / 100);
                 // 分割ヒット
@@ -3727,7 +3725,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 // 基本倍率
                 wbairitu = 750 + (100 * n_A_ActiveSkillLV);
                 // 天気修練 補正
-                wbairitu += 5 * n_A_ActiveSkillLV * Math.max(LearnedSkillSearch(SKILL_ID_TENKI_SHUREN), UsedSkillSearch(SKILL_ID_TENKI_SHUREN));
+                wbairitu += 5 * n_A_ActiveSkillLV * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_TENKI_SHUREN), UsedSkillSearch(SKILL_ID_TENKI_SHUREN));
                 // POW補正
                 wbairitu += 5 * GetTotalSpecStatus(MIG_PARAM_ID_POW);
                 // ベースレベル補正
@@ -3947,15 +3945,15 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 n_Enekyori = 1;
                 if (UsedSkillSearch(SKILL_ID_SANREI_ITTAI) > 0
                     || UsedSkillSearch(SKILL_ID_NYANTOMO_TEKKO) > 0
-                    || LearnedSkillSearch(SKILL_ID_NYANTOMO_TEKKO) > 0
+                    || LearnedSkill.LearnedSkillSearch(SKILL_ID_NYANTOMO_TEKKO) > 0
                 ) {
                     // 基礎倍率
                     wbairitu = 3000 + 500 * n_A_ActiveSkillLV;
-                    wbairitu += 150 * Math.max(LearnedSkillSearch(SKILL_ID_SPIRIT_MASTERY), UsedSkillSearch(SKILL_ID_SPIRIT_MASTERY));
+                    wbairitu += 150 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_SPIRIT_MASTERY), UsedSkillSearch(SKILL_ID_SPIRIT_MASTERY));
                 } else {
                     // 基礎倍率
                     wbairitu = 2050 + 350 * n_A_ActiveSkillLV;
-                    wbairitu += 100 * Math.max(LearnedSkillSearch(SKILL_ID_SPIRIT_MASTERY), UsedSkillSearch(SKILL_ID_SPIRIT_MASTERY));
+                    wbairitu += 100 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_SPIRIT_MASTERY), UsedSkillSearch(SKILL_ID_SPIRIT_MASTERY));
                     // クリティカル無し
                     bCri = false;
                 }
@@ -3981,15 +3979,15 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 n_Enekyori = 1;
                 if (UsedSkillSearch(SKILL_ID_SANREI_ITTAI) > 0
                     || UsedSkillSearch(SKILL_ID_NYANTOMO_TEKKO) > 0
-                    || LearnedSkillSearch(SKILL_ID_NYANTOMO_TEKKO) > 0
+                    || LearnedSkill.LearnedSkillSearch(SKILL_ID_NYANTOMO_TEKKO) > 0
                 ) {
                     // 基礎倍率
                     wbairitu = 2400 + 300 * n_A_ActiveSkillLV;
-                    wbairitu += 100 * Math.max(LearnedSkillSearch(SKILL_ID_SPIRIT_MASTERY), UsedSkillSearch(SKILL_ID_SPIRIT_MASTERY));
+                    wbairitu += 100 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_SPIRIT_MASTERY), UsedSkillSearch(SKILL_ID_SPIRIT_MASTERY));
                 } else {
                     // 基礎倍率
                     wbairitu = 1600 + 200 * n_A_ActiveSkillLV;
-                    wbairitu += 50 * Math.max(LearnedSkillSearch(SKILL_ID_SPIRIT_MASTERY), UsedSkillSearch(SKILL_ID_SPIRIT_MASTERY));
+                    wbairitu += 50 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_SPIRIT_MASTERY), UsedSkillSearch(SKILL_ID_SPIRIT_MASTERY));
                 }
                 // POW補正
                 wbairitu += 5 * GetTotalSpecStatus(MIG_PARAM_ID_POW);
@@ -4015,15 +4013,15 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 wHITsuu = 3;
                 if (UsedSkillSearch(SKILL_ID_SANREI_ITTAI) > 0
                     || UsedSkillSearch(SKILL_ID_NYANTOMO_TEKKO) > 0
-                    || LearnedSkillSearch(SKILL_ID_NYANTOMO_TEKKO) > 0
+                    || LearnedSkill.LearnedSkillSearch(SKILL_ID_NYANTOMO_TEKKO) > 0
                 ) {
                     // 基礎倍率
                     wbairitu = 450 + (150 * n_A_ActiveSkillLV);
-                    wbairitu += 20 * Math.max(LearnedSkillSearch(SKILL_ID_SPIRIT_MASTERY), UsedSkillSearch(SKILL_ID_SPIRIT_MASTERY));
+                    wbairitu += 20 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_SPIRIT_MASTERY), UsedSkillSearch(SKILL_ID_SPIRIT_MASTERY));
                 } else {
                     // 基礎倍率
                     wbairitu = 300 + (100 * n_A_ActiveSkillLV);
-                    wbairitu += 10 * Math.max(LearnedSkillSearch(SKILL_ID_SPIRIT_MASTERY), UsedSkillSearch(SKILL_ID_SPIRIT_MASTERY));
+                    wbairitu += 10 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_SPIRIT_MASTERY), UsedSkillSearch(SKILL_ID_SPIRIT_MASTERY));
                 }
                 // POW補正
                 wbairitu += 5 * GetTotalSpecStatus(MIG_PARAM_ID_POW);
@@ -4158,7 +4156,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 option_count = attackMethodConfArray[0].GetOptionValue(0);								// 巻き込み数補正
                 wHITsuu = [3, 4, 5][option_count];
                 // 基本倍率
-                let sentogaku = Math.max(LearnedSkillSearch(SKILL_ID_DOKUGAKU_SENTOGAKU), UsedSkillSearch(SKILL_ID_DOKUGAKU_SENTOGAKU));
+                let sentogaku = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_DOKUGAKU_SENTOGAKU), UsedSkillSearch(SKILL_ID_DOKUGAKU_SENTOGAKU));
                 wbairitu = 850;																			// 基礎倍率
                 wbairitu += 3 * n_A_ActiveSkillLV * sentogaku;		// 習得済みスキル条件
                 wbairitu += 2 * GetTotalSpecStatus(MIG_PARAM_ID_POW);									// 特性ステータス補正
@@ -4181,7 +4179,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 // 分割ヒット数
                 wActiveHitNum = 8;
                 // 基本倍率
-                let sentogaku = Math.max(LearnedSkillSearch(SKILL_ID_DOKUGAKU_SENTOGAKU), UsedSkillSearch(SKILL_ID_DOKUGAKU_SENTOGAKU));
+                let sentogaku = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_DOKUGAKU_SENTOGAKU), UsedSkillSearch(SKILL_ID_DOKUGAKU_SENTOGAKU));
                 wbairitu = 1650 + (50 * n_A_ActiveSkillLV);												// 基礎倍率
                 wbairitu += 5 * n_A_ActiveSkillLV * sentogaku;		// 習得済みスキル条件
                 wbairitu += 4 * GetTotalSpecStatus(MIG_PARAM_ID_POW);									// 特性ステータス補正
@@ -4290,7 +4288,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
 
             // 「ドラゴンナイト」スキル「ドラゴニックブレス」
             case SKILL_ID_DRAGONIC_BREATH: {
-                // トレーニング未習得でもドラゴンに乗れるので LearnedSkillSearch に置き換えられない
+                // トレーニング未習得でもドラゴンに乗れるので LearnedSkill.LearnedSkillSearch に置き換えられない
                 if (UsedSkillSearch(SKILL_ID_DRAGON_TRAINING) == 0) {
                     n_Buki_Muri = true
                     wbairitu = 0;
@@ -4347,7 +4345,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 wbairitu = 3000 + 600 * n_A_ActiveSkillLV;					// 基本
                 wbairitu += 5 * GetTotalSpecStatus(MIG_PARAM_ID_CON);		// 特性ステータス補正
                 // グレネードマスタリー補正
-                const grenade_mastery_lv = Math.max(LearnedSkillSearch(SKILL_ID_GRENADE_MASTERY), UsedSkillSearch(SKILL_ID_GRENADE_MASTERY));
+                const grenade_mastery_lv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_GRENADE_MASTERY), UsedSkillSearch(SKILL_ID_GRENADE_MASTERY));
                 wbairitu += 50 * grenade_mastery_lv;
                 wbairitu = Math.floor(wbairitu * n_A_BaseLV / 100);			// BaseLv補正
                 break;
@@ -4372,7 +4370,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 wbairitu = 3000 + 600 * n_A_ActiveSkillLV;					// 基本
                 wbairitu += 3 * GetTotalSpecStatus(MIG_PARAM_ID_CON);		// 特性ステータス補正
                 // グレネードマスタリー補正
-                const grenade_mastery_lv = Math.max(LearnedSkillSearch(SKILL_ID_GRENADE_MASTERY), UsedSkillSearch(SKILL_ID_GRENADE_MASTERY));
+                const grenade_mastery_lv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_GRENADE_MASTERY), UsedSkillSearch(SKILL_ID_GRENADE_MASTERY));
                 wbairitu += 20 * grenade_mastery_lv;					 	// グレネードマスタリー補正
                 wbairitu = Math.floor(wbairitu * n_A_BaseLV / 100);			// BaseLv補正
                 break;
@@ -4399,7 +4397,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 wbairitu = 1350 + 300 * n_A_ActiveSkillLV;					// 基本
                 wbairitu += 3 * GetTotalSpecStatus(MIG_PARAM_ID_CON);		// 特性ステータス補正
                 // グレネードマスタリー補正
-                const grenade_mastery_lv = Math.max(LearnedSkillSearch(SKILL_ID_GRENADE_MASTERY), UsedSkillSearch(SKILL_ID_GRENADE_MASTERY));
+                const grenade_mastery_lv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_GRENADE_MASTERY), UsedSkillSearch(SKILL_ID_GRENADE_MASTERY));
                 wbairitu += 30 * grenade_mastery_lv;					 	// グレネードマスタリー補正
                 wbairitu = Math.floor(wbairitu * n_A_BaseLV / 100);			// BaseLv補正
                 break;
@@ -4415,7 +4413,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 // 遠距離フラグ
                 n_Enekyori = 1;
                 // グレネードマスタリー補正
-                const grenade_mastery_lv = Math.max(LearnedSkillSearch(SKILL_ID_GRENADE_MASTERY), UsedSkillSearch(SKILL_ID_GRENADE_MASTERY));
+                const grenade_mastery_lv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_GRENADE_MASTERY), UsedSkillSearch(SKILL_ID_GRENADE_MASTERY));
                 if (attackMethodConfArray[0].GetOptionValue(1) === 0) {
                     // 初撃
                     // ダメージ倍率
@@ -4643,7 +4641,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 n_Delay[2] = g_skillManager.GetDelayTimeCommon(battleCalcInfo.skillId, battleCalcInfo.skillLv, charaData);
                 n_Delay[7] = g_skillManager.GetCoolTime(battleCalcInfo.skillId, battleCalcInfo.skillLv, charaData);
                 // 基本倍率
-                let sentogaku = Math.max(LearnedSkillSearch(SKILL_ID_DOKUGAKU_SENTOGAKU), UsedSkillSearch(SKILL_ID_DOKUGAKU_SENTOGAKU));
+                let sentogaku = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_DOKUGAKU_SENTOGAKU), UsedSkillSearch(SKILL_ID_DOKUGAKU_SENTOGAKU));
                 wbairitu = 3050 + (175 * n_A_ActiveSkillLV);											// 基礎倍率
                 wbairitu += 3 * n_A_ActiveSkillLV * sentogaku;											// 習得済みスキル条件
                 wbairitu += 3 * GetTotalSpecStatus(MIG_PARAM_ID_POW);									// 特性ステータス補正
@@ -4668,7 +4666,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 n_Delay[2] = g_skillManager.GetDelayTimeCommon(battleCalcInfo.skillId, battleCalcInfo.skillLv, charaData);
                 n_Delay[7] = g_skillManager.GetCoolTime(battleCalcInfo.skillId, battleCalcInfo.skillLv, charaData);
                 // 基本倍率
-                let sentogaku = Math.max(LearnedSkillSearch(SKILL_ID_DOKUGAKU_SENTOGAKU), UsedSkillSearch(SKILL_ID_DOKUGAKU_SENTOGAKU));
+                let sentogaku = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_DOKUGAKU_SENTOGAKU), UsedSkillSearch(SKILL_ID_DOKUGAKU_SENTOGAKU));
                 wbairitu = 4475 + (125 * n_A_ActiveSkillLV);											// 基礎倍率
                 wbairitu += 3 * n_A_ActiveSkillLV * sentogaku;		// 習得済みスキル条件
                 switch (mobData[MONSTER_DATA_INDEX_SIZE]) {												// サイズ補正 (POWには掛からない)
@@ -5215,7 +5213,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 n_PerfectHIT_DMG = 0;
                 n_A_Weapon_zokusei = 0;
                 n_Enekyori = 1;
-                const steel_crow_lv = Math.max(LearnedSkillSearch(SKILL_ID_STEEL_CROW), UsedSkillSearch(SKILL_ID_STEEL_CROW));
+                const steel_crow_lv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_STEEL_CROW), UsedSkillSearch(SKILL_ID_STEEL_CROW));
                 let wBT = 80 + Math.floor(n_A_DEX / 10) * 2 + Math.floor(n_A_INT / 2) * 2 + steel_crow_lv * 6;
                 if (n_A_ActiveSkill == SKILL_ID_FALCON_ASSALT) {
                     wBT = Math.floor(wBT * (150 + 70 * n_A_ActiveSkillLV) / 100);
@@ -5503,7 +5501,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                     n_A_GX_HANDO = false;
                     var wGXbai3 = 0;
                     if (Chara.EquipNumSearch(2495)) wGXbai3 += n_A_BaseLV;
-                    w_DMG[i] = Foot.ROUNDDOWN(w_DMG[i] * (100 + GetEquippedTotalSPEquip(5000 + n_A_ActiveSkill) + GetEquippedTotalSPCardAndElse(5000 + n_A_ActiveSkill) + wGXbai3) / 100);
+                    w_DMG[i] = Foot.ROUNDDOWN(w_DMG[i] * (100 + Foot.GetEquippedTotalSPEquip(5000 + n_A_ActiveSkill) + Foot.GetEquippedTotalSPCardAndElse(5000 + n_A_ActiveSkill) + wGXbai3) / 100);
                 }
                 if (!n_AS_MODE) myInnerHtml("CRInum", '<Font color="#FF0000">' + __DIG3(w_DMG[0]) + "×3hit～" + __DIG3(w_DMG[2]) + "×3hit</Font>", 0);
                 wCast = 3000;
@@ -5558,7 +5556,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
             case SKILL_ID_CART_REVOLUTION: {
                 w_HIT = 100;
                 w_HIT_HYOUJI = 100;
-                const cart_kaizo_lv = Math.max(LearnedSkillSearch(SKILL_ID_CART_KAIZO), UsedSkillSearch(SKILL_ID_CART_KAIZO));
+                const cart_kaizo_lv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_CART_KAIZO), UsedSkillSearch(SKILL_ID_CART_KAIZO));
                 const CRbai = attackMethodConfArray[0].GetOptionValue(0) / (8000 + 500 * cart_kaizo_lv) * 100;
 
                 for (var i = 0; i <= 2; i++) {
@@ -5965,7 +5963,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                     n_Delay[0] = 1;
                     n_Delay[2] = 500;
                     // アシッドデモンストレーションの習得Lvに応じたヒット数
-                    const acid_demonstration_lv = LearnedSkillSearch(SKILL_ID_ACID_DEMONSTRATION);
+                    const acid_demonstration_lv = LearnedSkill.LearnedSkillSearch(SKILL_ID_ACID_DEMONSTRATION);
                     wHITsuu = Math.max(acid_demonstration_lv, attackMethodConfArray[0].GetOptionValue(0));
                     if (wHITsuu < 5) wHITsuu = 5;
                 }
@@ -6027,7 +6025,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 }
                 w_DMG[1] = n_A_DEX * (3 + n_A_BaseLV / 100) * (1 + n_A_INT / 35) * n_A_ActiveSkillLV;
                 // トラップ研究習得Lv補正
-                const trap_kenkyu_lv = Math.max(LearnedSkillSearch(SKILL_ID_TRAP_KENKYU), UsedSkillSearch(SKILL_ID_TRAP_KENKYU));
+                const trap_kenkyu_lv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_TRAP_KENKYU), UsedSkillSearch(SKILL_ID_TRAP_KENKYU));
                 w_DMG[1] += 40 * trap_kenkyu_lv;
                 w_DMG[1] = ApplyElementRatio(mobData, w_DMG[1], n_A_Weapon_zokusei);
                 w_DMG[0] = Math.floor(w_DMG[1] * 90 / 100);
@@ -6194,8 +6192,8 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 w_DMG[2] = 500 + 100 * n_A_ActiveSkillLV;		// 固定ダメージ計算式
                 // 固定ダメージ増加
                 var damup = 0;
-                damup += GetEquippedTotalSPEquip(ITEM_SP_SKILL_DAMAGE_OFFSET + SKILL_ID_GRAVITATION_FIELD);
-                damup += GetEquippedTotalSPCardAndElse(ITEM_SP_SKILL_DAMAGE_OFFSET + SKILL_ID_GRAVITATION_FIELD);
+                damup += Foot.GetEquippedTotalSPEquip(ITEM_SP_SKILL_DAMAGE_OFFSET + SKILL_ID_GRAVITATION_FIELD);
+                damup += Foot.GetEquippedTotalSPCardAndElse(ITEM_SP_SKILL_DAMAGE_OFFSET + SKILL_ID_GRAVITATION_FIELD);
                 w_DMG[2] = w_DMG[2] * (100 + damup) / 100;
                 w_DMG[2] = Math.floor(w_DMG[2]);
                 // 草・エンペリウム相手は 1 ダメージ
@@ -6240,7 +6238,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
             // 「ルーンナイト」スキル「ウォータードラゴンブレス」
             case SKILL_ID_FIRE_DRAGON_BREATH:
             case SKILL_ID_WATER_DRAGON_BREATH: {
-                // トレーニング未習得でもドラゴンに乗れるので LearnedSkillSearch に置き換えられない
+                // トレーニング未習得でもドラゴンに乗れるので LearnedSkill.LearnedSkillSearch に置き換えられない
                 if (UsedSkillSearch(SKILL_ID_DRAGON_TRAINING) == 0) {
                     n_Buki_Muri = true;
                     break;
@@ -6268,7 +6266,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 // スキルLv補正
                 w *= n_A_ActiveSkillLV;
                 // ドラゴントレーニング補正. UsedSkillSearch の方は'Lv0'の前に'未騎乗'が挿入されているのでオフセットを合わせている
-                const dragon_training_lv = Math.max(LearnedSkillSearch(SKILL_ID_DRAGON_TRAINING), UsedSkillSearch(SKILL_ID_DRAGON_TRAINING) - 1);
+                const dragon_training_lv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_DRAGON_TRAINING), UsedSkillSearch(SKILL_ID_DRAGON_TRAINING) - 1);
                 w *= [100, 100, 105, 110, 115, 120][dragon_training_lv] / 100;
                 // Lv補正
                 w *= n_A_BaseLV / 100;
@@ -6602,18 +6600,18 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                         break;
                 }
                 wbairitu = Foot.ROUNDDOWN(wbairitu * n_A_BaseLV / 120);
-                wMADO += 2 * Math.max(LearnedSkillSearch(SKILL_ID_BUKI_KENKYU), UsedSkillSearch(SKILL_ID_BUKI_KENKYU));
+                wMADO += 2 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_BUKI_KENKYU), UsedSkillSearch(SKILL_ID_BUKI_KENKYU));
                 if (n_A_WeaponType == 6 || n_A_WeaponType == 7) {
-                    wMADO += 5 * Math.max(LearnedSkillSearch(SKILL_ID_ONO_SHUREN_MECHANIC), UsedSkillSearch(SKILL_ID_ONO_SHUREN_MECHANIC));
+                    wMADO += 5 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_ONO_SHUREN_MECHANIC), UsedSkillSearch(SKILL_ID_ONO_SHUREN_MECHANIC));
                 }
                 if (n_A_WeaponType == 8) {
-                    wMADO += 4 * Math.max(LearnedSkillSearch(SKILL_ID_ONO_SHUREN_MECHANIC), UsedSkillSearch(SKILL_ID_ONO_SHUREN_MECHANIC));
+                    wMADO += 4 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_ONO_SHUREN_MECHANIC), UsedSkillSearch(SKILL_ID_ONO_SHUREN_MECHANIC));
                 }
                 if ((20 <= mobData[18] && mobData[18] <= 29) || (30 <= mobData[18] && mobData[18] <= 39)) {
-                    wMADO += 10 * Math.max(LearnedSkillSearch(SKILL_ID_HITO_DAICHINO_KENKYU), UsedSkillSearch(SKILL_ID_HITO_DAICHINO_KENKYU));
+                    wMADO += 10 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_HITO_DAICHINO_KENKYU), UsedSkillSearch(SKILL_ID_HITO_DAICHINO_KENKYU));
                 }
                 if (UsedSkillSearch(SKILL_ID_MADOGEAR)) {
-                    wMADO += 20 * Math.max(LearnedSkillSearch(SKILL_ID_MADOGEAR_LICENSE), UsedSkillSearch(SKILL_ID_MADOGEAR_LICENSE));
+                    wMADO += 20 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_MADOGEAR_LICENSE), UsedSkillSearch(SKILL_ID_MADOGEAR_LICENSE));
                 }
                 if (UsedSkillSearch(SKILL_ID_ABR_DUAL_CANNON)) {
                     wHITsuu = 2;
@@ -6653,17 +6651,17 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 // 基本倍率
                 wbairitu = 60 * n_A_ActiveSkillLV;
                 // カート改造補正
-                const cart_kaizo_lv = Math.max(LearnedSkillSearch(SKILL_ID_CART_KAIZO), UsedSkillSearch(SKILL_ID_CART_KAIZO));
+                const cart_kaizo_lv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_CART_KAIZO), UsedSkillSearch(SKILL_ID_CART_KAIZO));
                 wbairitu += Math.floor(cart_kaizo_lv * 50 * n_A_INT / 40);
                 // 倍率補正
                 var wMADO = 0;
                 // 斧修練
                 if ([ITEM_KIND_SWORD, ITEM_KIND_AXE, ITEM_KIND_AXE_2HAND].includes(n_A_WeaponType)) {
-                    wMADO += 3 * Math.max(LearnedSkillSearch(SKILL_ID_ONO_SHUREN), UsedSkillSearch(SKILL_ID_ONO_SHUREN));
+                    wMADO += 3 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_ONO_SHUREN), UsedSkillSearch(SKILL_ID_ONO_SHUREN));
                 }
                 // 剣修練
                 if ([ITEM_KIND_KNIFE, ITEM_KIND_SWORD].includes(n_A_WeaponType)) {
-                    wMADO += 10 * Math.max(LearnedSkillSearch(SKILL_ID_KEN_SHUREN_GENETIC), UsedSkillSearch(SKILL_ID_KEN_SHUREN_GENETIC));
+                    wMADO += 10 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_KEN_SHUREN_GENETIC), UsedSkillSearch(SKILL_ID_KEN_SHUREN_GENETIC));
                 }
                 // 改造カートブースト補正
                 wMADO += 10 * UsedSkillSearch(SKILL_ID_CART_BOOST_GENETIC);
@@ -6720,7 +6718,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                     w_HP = charaData[CHARA_DATA_INDEX_MAXHP];
                     w_SP = charaData[CHARA_DATA_INDEX_MAXSP];
                 }
-                var mainF = Math.max(LearnedSkillSearch(SKILL_ID_MAINFRAME_KAIZO), UsedSkillSearch(SKILL_ID_MAINFRAME_KAIZO));
+                var mainF = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_MAINFRAME_KAIZO), UsedSkillSearch(SKILL_ID_MAINFRAME_KAIZO));
                 if (mainF < 2) mainF = 2;
                 n_A_Weapon_zokusei = 0;
                 var w = (n_A_ActiveSkillLV + 1) * (mainF + 8) * (w_SP + n_A_VIT);
@@ -6771,7 +6769,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 wLAch = true;
                 var w3HIT = attackMethodConfArray[0].GetOptionValue(0);
                 // スピアクイッケン習得Lv補正
-                var wSQ = Math.max(LearnedSkillSearch(SKILL_ID_SPEAR_QUICKEN), attackMethodConfArray[0].GetOptionValue(1));
+                var wSQ = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_SPEAR_QUICKEN), attackMethodConfArray[0].GetOptionValue(1));
                 var wBai = new Array();
                 wBai[0] = n_A_ActiveSkillLV * 400 + 50 * wSQ;
                 wBai[0] = Math.floor(wBai[0] * n_A_BaseLV / 150);
@@ -7106,7 +7104,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 w = n_A_ActiveSkillLV * mobData[2] * 10;
                 w += Math.floor(n_A_INT * 7 / 2) * Math.floor(18 + n_A_JobLV / 4);
                 // バイオプラント習得Lv補正
-                const bioplant_lv = LearnedSkillSearch(SKILL_ID_BIOPLANT);
+                const bioplant_lv = LearnedSkill.LearnedSkillSearch(SKILL_ID_BIOPLANT);
                 w *= (5 / (10 - Math.max(bioplant_lv, attackMethodConfArray[0].GetOptionValue(0))));
                 w = ApplyElementRatio(mobData, w, 0);
                 w = ApplyPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, mobData, w);
@@ -7472,7 +7470,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                     w_MATK[i] = ApplyMagicalSpecializeMonster(charaData, specData, mobData, w_MATK[i]);
                     w_MATK[i] = ApplyResistElement(mobData, w_MATK[i]);
                     w_MATK[i] = ApplyRegistPVPNormal(mobData, w_MATK[i]);
-                    w_MATK[i] = Math.floor(w_MATK[i] * (100 + GetEquippedTotalSPEquip(5122) + GetEquippedTotalSPCardAndElse(5122)) / 100);
+                    w_MATK[i] = Math.floor(w_MATK[i] * (100 + Foot.GetEquippedTotalSPEquip(5122) + Foot.GetEquippedTotalSPCardAndElse(5122)) / 100);
                 }
                 wbairitu += GetBattlerMatkPercentUp();
                 for (var b = 0; b <= 2; b++) {
@@ -9233,13 +9231,13 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 if (UsedSkillSearch(SKILL_ID_HOLY_SHIELD) > 0) {
                     // ホーリーシールド有り
                     wbairitu = 150 * n_A_ActiveSkillLV;
-                    wbairitu += 15 * n_A_ActiveSkillLV * Math.max(LearnedSkillSearch(SKILL_ID_YARI_KATATE_KEN_SHUREN), UsedSkillSearch(SKILL_ID_YARI_KATATE_KEN_SHUREN));
+                    wbairitu += 15 * n_A_ActiveSkillLV * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_YARI_KATATE_KEN_SHUREN), UsedSkillSearch(SKILL_ID_YARI_KATATE_KEN_SHUREN));
                     wbairitu += 10 * GetTotalSpecStatus(MIG_PARAM_ID_SPL);
                 }
                 else {
                     // 通常時
                     wbairitu = 120 * n_A_ActiveSkillLV;
-                    wbairitu += 12 * n_A_ActiveSkillLV * Math.max(LearnedSkillSearch(SKILL_ID_YARI_KATATE_KEN_SHUREN), UsedSkillSearch(SKILL_ID_YARI_KATATE_KEN_SHUREN));
+                    wbairitu += 12 * n_A_ActiveSkillLV * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_YARI_KATATE_KEN_SHUREN), UsedSkillSearch(SKILL_ID_YARI_KATATE_KEN_SHUREN));
                     wbairitu += 8 * GetTotalSpecStatus(MIG_PARAM_ID_SPL);
                 }
                 // ベースレベル補正
@@ -9303,7 +9301,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 // SPL補正
                 wbairitu += 5 * GetTotalSpecStatus(MIG_PARAM_ID_SPL);
                 // 魔法剣修練補正
-                const mahoken_shuren_lv = Math.max(LearnedSkillSearch(SKILL_ID_MAHOKEN_SHUREN), UsedSkillSearch(SKILL_ID_MAHOKEN_SHUREN));
+                const mahoken_shuren_lv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_MAHOKEN_SHUREN), UsedSkillSearch(SKILL_ID_MAHOKEN_SHUREN));
                 wbairitu += 15 * n_A_ActiveSkillLV * mahoken_shuren_lv;
                 // ベースレベル補正
                 wbairitu = Math.floor(wbairitu * n_A_BaseLV / 100);
@@ -9601,7 +9599,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 n_Delay[2] = g_skillManager.GetDelayTimeCommon(battleCalcInfo.skillId, battleCalcInfo.skillLv, charaData);
                 n_Delay[7] = g_skillManager.GetCoolTime(battleCalcInfo.skillId, battleCalcInfo.skillLv, charaData);
                 // 基本倍率
-                let madogaku = Math.max(LearnedSkillSearch(SKILL_ID_DOKUGAKU_MADOGAKU), UsedSkillSearch(SKILL_ID_DOKUGAKU_MADOGAKU));
+                let madogaku = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_DOKUGAKU_MADOGAKU), UsedSkillSearch(SKILL_ID_DOKUGAKU_MADOGAKU));
                 wbairitu = 2700 + (150 * n_A_ActiveSkillLV);
                 wbairitu += 3 * n_A_ActiveSkillLV * madogaku;			// 習得済みスキル条件
                 wbairitu += 3 * GetTotalSpecStatus(MIG_PARAM_ID_SPL);	// 特性ステータス補正
@@ -9625,7 +9623,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 // 分割Hit数
                 wActiveHitNum = 3;
                 // 基本倍率
-                let madogaku = Math.max(LearnedSkillSearch(SKILL_ID_DOKUGAKU_MADOGAKU), UsedSkillSearch(SKILL_ID_DOKUGAKU_MADOGAKU));
+                let madogaku = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_DOKUGAKU_MADOGAKU), UsedSkillSearch(SKILL_ID_DOKUGAKU_MADOGAKU));
                 wbairitu = 2600 + (150 * n_A_ActiveSkillLV);			// 基礎倍率
                 wbairitu += 4 * n_A_ActiveSkillLV * madogaku;			// 習得済みスキル条件
                 wbairitu += 3 * GetTotalSpecStatus(MIG_PARAM_ID_SPL);	// 特性ステータス補正
@@ -9650,7 +9648,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 // 分割Hit数
                 wActiveHitNum = 7;
                 // 基本倍率
-                let madogaku = Math.max(LearnedSkillSearch(SKILL_ID_DOKUGAKU_MADOGAKU), UsedSkillSearch(SKILL_ID_DOKUGAKU_MADOGAKU));
+                let madogaku = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_DOKUGAKU_MADOGAKU), UsedSkillSearch(SKILL_ID_DOKUGAKU_MADOGAKU));
                 wbairitu = 2600 + (150 * n_A_ActiveSkillLV);			// 基礎倍率
                 wbairitu += 4 * n_A_ActiveSkillLV * madogaku;			// 習得済みスキル条件
                 wbairitu += 3 * GetTotalSpecStatus(MIG_PARAM_ID_SPL);	// 特性ステータス補正
@@ -9674,7 +9672,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 g_bDefinedDamageIntervals = true;
                 n_Delay[5] = 500; // ダメージ発生間隔
                 n_Delay[6] = [0, 1500, 2000, 2000, 2500, 2500, 3000, 3000, 3500, 3500, 4000][n_A_ActiveSkillLV];	// オブジェクト生存期間
-                let madogaku = Math.max(LearnedSkillSearch(SKILL_ID_DOKUGAKU_MADOGAKU), UsedSkillSearch(SKILL_ID_DOKUGAKU_MADOGAKU));
+                let madogaku = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_DOKUGAKU_MADOGAKU), UsedSkillSearch(SKILL_ID_DOKUGAKU_MADOGAKU));
                 // 隕石
                 if (battleCalcInfo.parentSkillId === undefined) {
                     wActiveHitNum = 3;	// 隕石 1 つあたり見た目 3 Hit
@@ -9725,17 +9723,17 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 };
                 if (UsedSkillSearch(SKILL_ID_SANREI_ITTAI) > 0
                     || UsedSkillSearch(SKILL_ID_NYANTOMO_KENROKU) > 0
-                    || LearnedSkillSearch(SKILL_ID_NYANTOMO_KENROKU) > 0
+                    || LearnedSkill.LearnedSkillSearch(SKILL_ID_NYANTOMO_KENROKU) > 0
                 ) {
                     // 基礎倍率
                     wbairitu = 5200 + 800 * n_A_ActiveSkillLV;
                     // スピリットマスタリー補正
-                    wbairitu += 300 * Math.max(LearnedSkillSearch(SKILL_ID_SPIRIT_MASTERY), UsedSkillSearch(SKILL_ID_SPIRIT_MASTERY));
+                    wbairitu += 300 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_SPIRIT_MASTERY), UsedSkillSearch(SKILL_ID_SPIRIT_MASTERY));
                 } else {
                     // 基礎倍率
                     wbairitu = 2400 + 300 * n_A_ActiveSkillLV;
                     // スピリットマスタリー補正
-                    wbairitu += 125 * Math.max(LearnedSkillSearch(SKILL_ID_SPIRIT_MASTERY), UsedSkillSearch(SKILL_ID_SPIRIT_MASTERY));
+                    wbairitu += 125 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_SPIRIT_MASTERY), UsedSkillSearch(SKILL_ID_SPIRIT_MASTERY));
                 }
                 // SPL補正
                 wbairitu += 5 * GetTotalSpecStatus(MIG_PARAM_ID_SPL);
@@ -9766,17 +9764,17 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 };
                 if (UsedSkillSearch(SKILL_ID_SANREI_ITTAI) > 0
                     || UsedSkillSearch(SKILL_ID_NYANTOMO_KENROKU) > 0
-                    || LearnedSkillSearch(SKILL_ID_NYANTOMO_KENROKU) > 0
+                    || LearnedSkill.LearnedSkillSearch(SKILL_ID_NYANTOMO_KENROKU) > 0
                 ) {
                     // 基礎倍率
                     wbairitu = 1600 + 200 * n_A_ActiveSkillLV;
                     // スピリットマスタリー補正
-                    wbairitu += 40 * Math.max(LearnedSkillSearch(SKILL_ID_SPIRIT_MASTERY), UsedSkillSearch(SKILL_ID_SPIRIT_MASTERY));
+                    wbairitu += 40 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_SPIRIT_MASTERY), UsedSkillSearch(SKILL_ID_SPIRIT_MASTERY));
                 } else {
                     // 基礎倍率
                     wbairitu = 800 + 100 * n_A_ActiveSkillLV;
                     // スピリットマスタリー補正
-                    wbairitu += 20 * Math.max(LearnedSkillSearch(SKILL_ID_SPIRIT_MASTERY), UsedSkillSearch(SKILL_ID_SPIRIT_MASTERY));
+                    wbairitu += 20 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_SPIRIT_MASTERY), UsedSkillSearch(SKILL_ID_SPIRIT_MASTERY));
                 }
                 // SPL補正
                 wbairitu += 5 * GetTotalSpecStatus(MIG_PARAM_ID_SPL);
@@ -9903,7 +9901,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 n_Delay[2] = g_skillManager.GetDelayTimeCommon(battleCalcInfo.skillId, battleCalcInfo.skillLv, charaData);
                 n_Delay[7] = g_skillManager.GetCoolTime(battleCalcInfo.skillId, battleCalcInfo.skillLv, charaData);
                 // ダメージ計算
-                let madogaku = Math.max(LearnedSkillSearch(SKILL_ID_DOKUGAKU_MADOGAKU), UsedSkillSearch(SKILL_ID_DOKUGAKU_MADOGAKU));
+                let madogaku = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_DOKUGAKU_MADOGAKU), UsedSkillSearch(SKILL_ID_DOKUGAKU_MADOGAKU));
                 if (attackMethodConfArray[0].GetOptionValue(0) === 0) {
                     // 初撃ダメージ計算が指定された場合 (独学補正は掛からない)
                     wbairitu = 100 + (20 * n_A_ActiveSkillLV);											// 基礎倍率
@@ -9942,7 +9940,7 @@ function BattleCalc999Core(battleCalcInfo, charaData, specData, mobData, attackM
                 n_Delay[2] = g_skillManager.GetDelayTimeCommon(battleCalcInfo.skillId, battleCalcInfo.skillLv, charaData);
                 n_Delay[7] = g_skillManager.GetCoolTime(battleCalcInfo.skillId, battleCalcInfo.skillLv, charaData);
                 // ダメージ計算
-                let madogaku = Math.max(LearnedSkillSearch(SKILL_ID_DOKUGAKU_MADOGAKU), UsedSkillSearch(SKILL_ID_DOKUGAKU_MADOGAKU));
+                let madogaku = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_DOKUGAKU_MADOGAKU), UsedSkillSearch(SKILL_ID_DOKUGAKU_MADOGAKU));
                 if (attackMethodConfArray[0].GetOptionValue(0) === 0) {
                     // 初撃ダメージ計算が指定された場合 (独学補正は掛からない)
                     wbairitu = 600 + (50 * n_A_ActiveSkillLV);											// 基礎倍率
@@ -10256,7 +10254,7 @@ function GetBattlerAtkPercentUp(charaData, specData, mobData, attackMethodConfAr
     }
 
     // ＡＴＫ％ＵＰ
-    if (GetEquippedTotalSPEquip(87)) w += GetEquippedTotalSPEquip(87);
+    if (Foot.GetEquippedTotalSPEquip(87)) w += Foot.GetEquippedTotalSPEquip(87);
 
     // TODO : 謎補正
     if (n_A_IJYOU[3]) w -= 25;
@@ -10590,7 +10588,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     // マヌク特化
     //--------------------------------
     if (n_A_PassSkill7[30]) {
-        if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MANUKU]) == 1) {
+        if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MANUKU]) == 1) {
             wX += 10;
         }
     }
@@ -10599,7 +10597,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     // スプレンディッド特化
     //--------------------------------
     if (n_A_PassSkill7[33]) {
-        if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SPRENDED]) == 1) {
+        if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SPRENDED]) == 1) {
             wX += 10;
         }
     }
@@ -10625,7 +10623,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
         case 2433:		// 杖
         case 2434:		// ハンマ－
         case 2435:		// 弓
-            if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MOROC]) == 1) {
+            if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MOROC]) == 1) {
                 if (n_A_Weapon_ATKplus >= 5) wX += 40;
                 if (n_A_Weapon_ATKplus >= 7) wX += 60;
                 if (n_A_Weapon_ATKplus >= 9) wX += 80;
@@ -10638,7 +10636,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     switch (n_A_Equip[EQUIP_REGION_ID_ARMS]) {
         case 2436:		// 短剣
-            if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MOROC]) == 1) {
+            if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MOROC]) == 1) {
                 if (n_A_Weapon_ATKplus >= 5) wX += 20;
                 if (n_A_Weapon_ATKplus >= 7) wX += 30;
                 if (n_A_Weapon_ATKplus >= 9) wX += 40;
@@ -10647,7 +10645,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     }
     switch (n_A_Equip[EQUIP_REGION_ID_ARMS_LEFT]) {
         case 2436:		// 短剣
-            if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MOROC]) == 1) {
+            if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MOROC]) == 1) {
                 if (n_A_Weapon2_ATKplus >= 5) wX += 20;
                 if (n_A_Weapon2_ATKplus >= 7) wX += 30;
                 if (n_A_Weapon2_ATKplus >= 9) wX += 40;
@@ -10680,7 +10678,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     // 英雄エンチャント特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_EIYUENCHANT]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_EIYUENCHANT]) == 1) {
         if (Chara.CardNumSearch(CARD_ID_ENCHANT_MANPASHIKUZYOKUNO_GENZYU)) {
             wX += 20;
         }
@@ -10693,7 +10691,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
         case ITEM_ID_REQUIEM_SWORD:			// レクイエムソード
         case ITEM_ID_REQUIEM_ARCWAND:		// レクイエムアークワンド
         case ITEM_ID_REQUIEM_WIZARDSTUFF:	// レクイエムウィザードスタッフ
-            if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SEITAI]) == 1) {
+            if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SEITAI]) == 1) {
                 wX += 40;
                 if (n_A_Weapon_ATKplus >= 5) wX += 20;
                 if (n_A_Weapon_ATKplus >= 6) wX += 15 * (n_A_Weapon_ATKplus - 5);
@@ -10702,7 +10700,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     }
     switch (n_A_Equip[EQUIP_REGION_ID_ARMS_LEFT]) {
         case ITEM_ID_REQUIEM_SWORD:			// レクイエムソード
-            if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SEITAI]) == 1) {
+            if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SEITAI]) == 1) {
                 wX += 40;
                 if (n_A_Weapon2_ATKplus >= 5) wX += 20;
                 if (n_A_Weapon2_ATKplus >= 6) wX += 15 * (n_A_Weapon2_ATKplus - 5);
@@ -10715,7 +10713,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     switch (n_A_Equip[EQUIP_REGION_ID_ARMS]) {
         case ITEM_ID_REQUIEM_DAGGER:		// レクイエムダガー
-            if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SEITAI]) == 1) {
+            if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SEITAI]) == 1) {
                 wX += 20;
                 if (n_A_Weapon_ATKplus >= 5) wX += 20;
                 if (n_A_Weapon_ATKplus >= 6) wX += 15 * (n_A_Weapon_ATKplus - 5);
@@ -10724,7 +10722,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     }
     switch (n_A_Equip[EQUIP_REGION_ID_ARMS_LEFT]) {
         case ITEM_ID_REQUIEM_DAGGER:		// レクイエムダガー
-            if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SEITAI]) == 1) {
+            if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SEITAI]) == 1) {
                 wX += 20;
                 if (n_A_Weapon2_ATKplus >= 5) wX += 20;
                 if (n_A_Weapon2_ATKplus >= 6) wX += 15 * (n_A_Weapon2_ATKplus - 5);
@@ -10735,7 +10733,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     // タナトス特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_THANATOS]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_THANATOS]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_USUDUKIYONO_BOSHI)) {
             wX += 5;
             if (n_A_HEAD_DEF_PLUS >= 5) wX += 10;
@@ -10747,7 +10745,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     // 地下排水路特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_CHIKA_HAISUIRO]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_CHIKA_HAISUIRO]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_NEKORYOTEKEN_TACHIUO)) wX += 50;
         if (Chara.EquipNumSearch(ITEM_ID_NEKOKATAR_TSUNA)) wX += 50;
         if (Chara.EquipNumSearch(ITEM_ID_NEKORYOTETSUE_KAZIKI)) wX += 50;
@@ -10765,7 +10763,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     // 暴屈折王の洞窟特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_BOKUTSUONO_DOKUTSU]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_BOKUTSUONO_DOKUTSU]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_NEKORYOTEKEN_TACHIUO)) wX += 50;
         if (Chara.EquipNumSearch(ITEM_ID_NEKOKATAR_TSUNA)) wX += 50;
         if (Chara.EquipNumSearch(ITEM_ID_NEKORYOTETSUE_KAZIKI)) wX += 50;
@@ -10783,7 +10781,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     // 時計塔特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_TOKEITO]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_TOKEITO]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_NIZIIRONO_TSUBASA) > 0) {
             wX += 15;
             if (n_A_HEAD_DEF_PLUS >= 7) wX += 15;
@@ -10794,7 +10792,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     // ハートハンター軍事基地特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_HEARTHUNTER]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_HEARTHUNTER]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_GOOGLE_HAT) > 0) {
             wX += 15;
             if (n_A_HEAD_DEF_PLUS >= 7) wX += 15;
@@ -10805,7 +10803,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     // ロックリッジ特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_ROCKRIDGE]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_ROCKRIDGE]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_TAURUS_HAT) > 0) {
             wX += 15;
             if (n_A_HEAD_DEF_PLUS >= 7) wX += 15;
@@ -10816,7 +10814,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     // ヴェルナー研究所特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_VERNAR]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_VERNAR]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_ZIKKEN_SEITAI_GOATGATA_CAP) > 0) {
             wX += 15;
             if (n_A_HEAD_DEF_PLUS >= 7) wX += 15;
@@ -10827,7 +10825,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     // メロリン特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MELORIN]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MELORIN]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_OKYU_MINI_MELON) > 0) {
             wX += 20 * n_A_HEAD_DEF_PLUS;
         }
@@ -10836,7 +10834,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     // ２５０ページ特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_PAGE250]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_PAGE250]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_BLACK_VEIL) > 0) {
             wX += 15;
             if (n_A_HEAD_DEF_PLUS >= 7) wX += 15;
@@ -10847,7 +10845,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     // 魔神殿特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MAZINDEN]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MAZINDEN]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_DIAVOLOS_WING) > 0) {
             wX += 30;
         }
@@ -10871,7 +10869,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     // スクロールストール特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SCROLL_STOLE]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SCROLL_STOLE]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_SCROLL_STOLE) > 0) {
             wX += 30;
         }
@@ -10880,7 +10878,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     // オース二次捜索特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_OS_NIZI_SOSAKU]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_OS_NIZI_SOSAKU]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_KETTONO_RYU_BOSHI) > 0) {
             wX += 15;
             if (n_A_HEAD_DEF_PLUS >= 7) wX += 15;
@@ -10891,7 +10889,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     // ミグエル特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MIGEL]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MIGEL]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_KETTONO_RYU_BOSHI) > 0) {
             if (n_A_HEAD_DEF_PLUS >= 10) {
                 wX += 100;
@@ -10902,7 +10900,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     // ノーグロード３層特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_NOGUE_ROAD_03]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_NOGUE_ROAD_03]) == 1) {
         if ((cardCount = Chara.CardNumSearch(CARD_ID_KOKA_RAVA_GOLEM)) > 0) {
             wX += 30 * cardCount;
         }
@@ -10911,7 +10909,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     // フローズンメモリー特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_FROZEN_MEMORY]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_FROZEN_MEMORY]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_FROZEN_SCALE_SHAWL) > 0) {
             wX += 30;
         }
@@ -10920,8 +10918,8 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     // 紫色の深海洞窟特化
     //--------------------------------
-    if ((NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MURASAKI_IRONO_SHINKAI_DOKUTSU_ZYOSO]) == 1)
-        || (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MURASAKI_IRONO_SHINKAI_DOKUTSU_KASO]) == 1)) {
+    if ((Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MURASAKI_IRONO_SHINKAI_DOKUTSU_ZYOSO]) == 1)
+        || (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MURASAKI_IRONO_SHINKAI_DOKUTSU_KASO]) == 1)) {
 
         if ((cardCount = Chara.CardNumSearch(CARD_ID_SHINKAINO_HANGYOZIN)) > 0) {
             wX += 30 * cardCount;
@@ -10935,7 +10933,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     // ネジリアン帝国特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_NEZIRIAN_TEKOKU]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_NEZIRIAN_TEKOKU]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_KIGURUMI_BEARDOLL) > 0) {
             wX += 30;
         }
@@ -10944,7 +10942,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     // 幻想の北洞窟ルワンダ特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_GENSONO_KITA_DOKUTSU_RUWANDA]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_GENSONO_KITA_DOKUTSU_RUWANDA]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_ANCIENT_MEGALIS_MANT) > 0) {
             wX += 30;
         }
@@ -10953,7 +10951,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     // 歪んだ迷宮の森特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_YUGANDA_MEIKYUNO_MORI]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_YUGANDA_MEIKYUNO_MORI]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_YAGIGENO_MUFFLER) > 0) {
             wX += 30;
         }
@@ -10962,7 +10960,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     // 認識の庭特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_NINSHIKINO_NIWA]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_NINSHIKINO_NIWA]) == 1) {
         if ((cardCount = Chara.CardNumSearch(CARD_ID_MAZIMENA_HETAI_ANDRE)) > 0) {
             wX += 30 * cardCount;
         }
@@ -10971,7 +10969,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     // 鉱山ダンジョン03特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_KOZAN_DUNGEON_03]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_KOZAN_DUNGEON_03]) == 1) {
         if ((cardCount = Chara.CardNumSearch(CARD_ID_NEO_MINERAL)) > 0) {
             wX += 30 * cardCount;
         }
@@ -10980,7 +10978,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     // アビスレイク地下洞窟04特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_ABYSS_LAKE_CHIKA_DOKUTSU_04]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_ABYSS_LAKE_CHIKA_DOKUTSU_04]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_DRAGON_SCALE_SHAWL) > 0) {
             wX += 30;
         }
@@ -10992,7 +10990,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     // 廃棄実験体遊技場ルドゥス4階特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_HAIKI_ZIKKENTAI_YUGIZYO_RUDUS_4F]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_HAIKI_ZIKKENTAI_YUGIZYO_RUDUS_4F]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_DISCARDED_CAPE) > 0) {
             wX += 30;
         }
@@ -11004,7 +11002,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     // 崩れたオペラハウス特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_NIFLHEIM_DUNGEON_KUZURETA_OPERA_HOUSE]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_NIFLHEIM_DUNGEON_KUZURETA_OPERA_HOUSE]) == 1) {
         if ((cardCount = Chara.CardNumSearch(CARD_ID_PIERROT_ZOIST)) > 0) {
             wX += 30 * cardCount;
         }
@@ -11013,7 +11011,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     // 大浴場メディタティオ特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_BALMUNT_TE_DAIYOKUZYO_MEDITATIO]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_BALMUNT_TE_DAIYOKUZYO_MEDITATIO]) == 1) {
         if ((cardCount = Chara.CardNumSearch(CARD_ID_NETTO_PHEN)) > 0) {
             wX += 30 * cardCount;
         }
@@ -11022,7 +11020,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     // 貯蔵庫タルタロス特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_BALMUNT_TE_CHOZOKO_TARUTAROS]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_BALMUNT_TE_CHOZOKO_TARUTAROS]) == 1) {
         if ((cardCount = Chara.CardNumSearch(CARD_ID_KOSHOSHITA_KEBIGATA_BETA)) > 0) {
             wX += 30 * cardCount;
         }
@@ -11031,7 +11029,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     // 第2魔力発電所特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_BALMUNT_TE_DAI2_MARYOKU_HATSUDENSHO]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_BALMUNT_TE_DAI2_MARYOKU_HATSUDENSHO]) == 1) {
         if ((cardCount = Chara.CardNumSearch(CARD_ID_KYORYOKUNA_MARYOKU)) > 0) {
             wX += 30 * cardCount;
         }
@@ -11040,7 +11038,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     // 灰色狼の森特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_HAIIRO_OKAMINO_MORI]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_HAIIRO_OKAMINO_MORI]) == 1) {
         if ((cardCount = Chara.CardNumSearch(CARD_ID_GRAY_WOLF)) > 0) {
             wX += 30 * cardCount;
         }
@@ -11049,7 +11047,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     // オズの迷路特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_OZNO_MEIRO]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_OZNO_MEIRO]) == 1) {
         if ((cardCount = Chara.CardNumSearch(CARD_ID_VALTY)) > 0) {
             wX += 30 * cardCount;
         }
@@ -11058,7 +11056,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     // 廃棄実験所アミシティア特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_HAIKI_ZIKKENZYO_AMISITIA]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_HAIKI_ZIKKENZYO_AMISITIA]) == 1) {
         if ((cardCount = Chara.CardNumSearch(CARD_ID_HENI_CHIMERA_VANILAQUS)) > 0) {
             wX += 30 * cardCount;
         }
@@ -11067,7 +11065,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     // 捨てられた穴01特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SUTERARETA_ANA_01]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SUTERARETA_ANA_01]) == 1) {
         if ((cardCount = Chara.CardNumSearch(CARD_ID_DOKUTSU_CALMARING)) > 0) {
             wX += 30 * cardCount;
         }
@@ -11076,7 +11074,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     // 捨てられた穴02特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SUTERARETA_ANA_02]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SUTERARETA_ANA_02]) == 1) {
         if ((cardCount = Chara.CardNumSearch(CARD_ID_TANGAN_DOLLOCARIS)) > 0) {
             wX += 30 * cardCount;
         }
@@ -11085,7 +11083,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     // 蛇神の温もり特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_HEBIGAMINO_NUKUMORI]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_HEBIGAMINO_NUKUMORI]) == 1) {
         if ((cardCount = Chara.CardNumSearch(CARD_ID_SAIKAKYU_RGAN)) > 0) {
             wX += 30 * cardCount;
         }
@@ -11094,7 +11092,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     // アルデバラン時計塔地下 未知の空間特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_TOKEITO_MICHI_NO_KUUKAN]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_TOKEITO_MICHI_NO_KUUKAN]) == 1) {
         if ((cardCount = Chara.CardNumSearch(CARD_ID_GENERAL_ORK)) > 0) {
             wX += 30 * cardCount;
         }
@@ -11103,7 +11101,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     // 魔力が歪んだ平原 特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_PLAINS_DISTORTED_BY_MAGIC]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_PLAINS_DISTORTED_BY_MAGIC]) == 1) {
         if ((cardCount = Chara.CardNumSearch(CARD_ID_HARD_ROCK_TITAN)) > 0) {
             wX += 30 * cardCount;
         }
@@ -11115,7 +11113,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     // ミョルニール地下洞窟 特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MIOLNIR_UNDERGROUND_CAVE]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MIOLNIR_UNDERGROUND_CAVE]) == 1) {
         if ((cardCount = Chara.CardNumSearch(CARD_ID_PUNCH_BUG)) > 0) {
             wX += 30 * cardCount;
         }
@@ -11124,7 +11122,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     // イスガルド北部（凍て付いた鱗の海辺、古代の氷の峡谷 東部、古代の氷の峡谷 西部） 特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_ISGARD_NORTH_FIELD]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_ISGARD_NORTH_FIELD]) == 1) {
         if ((cardCount = Chara.CardNumSearch(CARD_ID_FAKE_IWIN_SOLDIERS)) > 0) {
             wX += 30 * cardCount;
         }
@@ -11133,7 +11131,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
     //--------------------------------
     // 蛇神の根源 特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_JOR_ROOT]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_JOR_ROOT]) == 1) {
         if ((cardCount = Chara.CardNumSearch(CARD_ID_JOR_MUNGANDR_GUARDIAN)) > 0) {
             wX += 30 * cardCount;
         }
@@ -11190,7 +11188,7 @@ function ApplyMagicalSpecializeMonsterMod20211014SubSpecializeMap(charaData, spe
         //--------------------------------
         // グラストヘイムアビス特化
         //--------------------------------
-        if (NumSearch(mobData[MONSTER_DATA_INDEX_ID], MonsterGroupObj[MONSTER_GROUP_ID_GLASTHEIM_ABYSS]) == 1) {
+        if (Foot.NumSearch(mobData[MONSTER_DATA_INDEX_ID], MonsterGroupObj[MONSTER_GROUP_ID_GLASTHEIM_ABYSS]) == 1) {
             if (Chara.EquipNumSearch(ITEM_ID_SHIROKISHINO_MANT) > 0) {
                 wX += 10;
                 if (n_A_SHOULDER_DEF_PLUS >= 5) {
@@ -11547,7 +11545,7 @@ function BaiTaisei_E(mobData, w_Tai_DMG) {
  * @param ptmCount PT人数
  */
 function HealCalc(HealLv, HealType, wMinMax, w_WHO, ptmCount) {
-    const learnedHealLv = Math.max(1, LearnedSkillSearch(SKILL_ID_HEAL));
+    const learnedHealLv = Math.max(1, LearnedSkill.LearnedSkillSearch(SKILL_ID_HEAL));
     var wHeal = 0;
     // H.Plus
     var valHPlus = GetHPlus();
@@ -11570,13 +11568,13 @@ function HealCalc(HealLv, HealType, wMinMax, w_WHO, ptmCount) {
             wHeal = Math.floor((n_A_BaseLV + n_A_INT) / 5) * 7.5;
             break;
         case HEALTYPE_TURTLE_SPRINKLER:
-            wHeal = Math.floor((n_A_BaseLV + n_A_INT) / 5) * 3 * Math.max(1, LearnedSkillSearch(SKILL_ID_TURTLE_SPRINKLER));
+            wHeal = Math.floor((n_A_BaseLV + n_A_INT) / 5) * 3 * Math.max(1, LearnedSkill.LearnedSkillSearch(SKILL_ID_TURTLE_SPRINKLER));
             break;
         case HEALTYPE_SHUGO_FU:
-            wHeal = Math.floor((n_A_BaseLV + n_A_INT) / 5) * 3 * Math.max(1, LearnedSkillSearch(SKILL_ID_SHUGO_FU));
+            wHeal = Math.floor((n_A_BaseLV + n_A_INT) / 5) * 3 * Math.max(1, LearnedSkill.LearnedSkillSearch(SKILL_ID_SHUGO_FU));
             break;
         case HEALTYPE_ZYOKODO:
-            wHeal = Math.floor((n_A_BaseLV + n_A_INT) / 5) * 3 * Math.max(1, LearnedSkillSearch(SKILL_ID_ZYOKODO));
+            wHeal = Math.floor((n_A_BaseLV + n_A_INT) / 5) * 3 * Math.max(1, LearnedSkill.LearnedSkillSearch(SKILL_ID_ZYOKODO));
             break;
     }
     // 他者へ使用したときの回復量増強効果の算出
@@ -11619,7 +11617,7 @@ function HealCalc(HealLv, HealType, wMinMax, w_WHO, ptmCount) {
         case HEALTYPE_SHINSENNA_EBI:
             wHeal = wHeal * healUp / 100 + wHealMatk / 2;
             // 海の魂習得による増強効果
-            if (Math.max(LearnedSkillSearch(SKILL_ID_UMINO_TAMASHI), UsedSkillSearch(SKILL_ID_UMINO_TAMASHI)) > 0) {
+            if (Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_UMINO_TAMASHI), UsedSkillSearch(SKILL_ID_UMINO_TAMASHI)) > 0) {
                 // なぜか１．６倍の効果がある
                 wHeal = wHeal * 1.6;
             }
@@ -11633,9 +11631,9 @@ function HealCalc(HealLv, HealType, wMinMax, w_WHO, ptmCount) {
         case HEALTYPE_TURTLE_SPRINKLER:
             // TODO これは暫定計算式であって誤差が解消できていません
             wHeal = wHeal * (healUp + valHPlus) / 100 + wHealMatk;	// 基礎回復量
-            wHeal += 19 * LearnedSkillSearch(SKILL_ID_SPIRIT_MASTERY) * GetTotalSpecStatus(MIG_PARAM_ID_CRT);	// 修練と特性ステータスの補正
+            wHeal += 19 * LearnedSkill.LearnedSkillSearch(SKILL_ID_SPIRIT_MASTERY) * GetTotalSpecStatus(MIG_PARAM_ID_CRT);	// 修練と特性ステータスの補正
             // 固定値に対するBaseLv補正
-            if (UsedSkillSearch(SKILL_ID_SANREI_ITTAI) > 0 || LearnedSkillSearch(SKILL_ID_NYANTOMO_KAMESETSU) > 0) {
+            if (UsedSkillSearch(SKILL_ID_SANREI_ITTAI) > 0 || LearnedSkill.LearnedSkillSearch(SKILL_ID_NYANTOMO_KAMESETSU) > 0) {
                 // 強化状態
                 wHeal += (4500 + 1500 * HealLv) * n_A_BaseLV / 100;
             } else {
@@ -11646,7 +11644,7 @@ function HealCalc(HealLv, HealType, wMinMax, w_WHO, ptmCount) {
         case HEALTYPE_SHUGO_FU:
             // TODO これは暫定計算式であって実測できていません
             wHeal = wHeal * (healUp + valHPlus) / 100 + wHealMatk;	// 基礎回復量
-            wHeal += 19 * LearnedSkillSearch(SKILL_ID_GOFU_SHUREN) * GetTotalSpecStatus(MIG_PARAM_ID_CRT);	// 修練と特性ステータスの補正
+            wHeal += 19 * LearnedSkill.LearnedSkillSearch(SKILL_ID_GOFU_SHUREN) * GetTotalSpecStatus(MIG_PARAM_ID_CRT);	// 修練と特性ステータスの補正
             // 固定値に対するBaseLv補正
             wHeal += (1000 + 500 * HealLv) * n_A_BaseLV / 100;
             wHeal = Math.floor(wHeal);
@@ -11654,7 +11652,7 @@ function HealCalc(HealLv, HealType, wMinMax, w_WHO, ptmCount) {
         case HEALTYPE_ZYOKODO:
             // TODO これは暫定計算式であって実測できていません
             wHeal = wHeal * (healUp + valHPlus) / 100 + wHealMatk;	// 基礎回復量
-            wHeal += 19 * LearnedSkillSearch(SKILL_ID_GOFU_SHUREN) * GetTotalSpecStatus(MIG_PARAM_ID_CRT);	// 修練と特性ステータスの補正
+            wHeal += 19 * LearnedSkill.LearnedSkillSearch(SKILL_ID_GOFU_SHUREN) * GetTotalSpecStatus(MIG_PARAM_ID_CRT);	// 修練と特性ステータスの補正
             // 固定値に対するBaseLv補正
             wHeal += [0, 5500, 9000, 13000, 17000, 21000][HealLv] * n_A_BaseLV / 100;
             wHeal = Math.floor(wHeal);
@@ -12678,7 +12676,7 @@ function BuildBattleResultHtmlMIG(charaData, specData, mobData, attackMethodConf
         HtmlCreateTextNode(funcDIG3PXSecond(battleCalcResult.castFixed, 2), objCell);
 
         let castFixedText = funcDIG3PXSecondCompact(battleCalcResult.castFixed, 2);
-        castFixedText += `(${(100 - GetCastScalingOfSkillForCastTimeFixed(n_A_ActiveSkill)) > n_A_Kotei_Cast_Keigen ? GetCastScalingOfSkillForCastTimeFixed(n_A_ActiveSkill) : (100 - n_A_Kotei_Cast_Keigen)}%)`;
+        castFixedText += `(${(100 - Foot.GetCastScalingOfSkillForCastTimeFixed(n_A_ActiveSkill)) > n_A_Kotei_Cast_Keigen ? Foot.GetCastScalingOfSkillForCastTimeFixed(n_A_ActiveSkill) : (100 - n_A_Kotei_Cast_Keigen)}%)`;
         funcRenderResultTinyHtml(objGridTiny, "固定", castFixedText);
 
         //----------------
@@ -13761,14 +13759,14 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
 
     var wBHD;
 
-    wBHD = GetEquippedTotalSPCardAndElse(3000 + mobData[0]);
-    wBHD += GetEquippedTotalSPEquip(3000 + mobData[0]);
+    wBHD = Foot.GetEquippedTotalSPCardAndElse(3000 + mobData[0]);
+    wBHD += Foot.GetEquippedTotalSPEquip(3000 + mobData[0]);
 
     //--------------------------------
     // マヌク耐性
     //--------------------------------
     if (n_A_PassSkill7[31]) {
-        if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MANUKU]) == 1) {
+        if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MANUKU]) == 1) {
             wBHD += 10;
         }
     }
@@ -13777,7 +13775,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     // スプレンディッド耐性
     //--------------------------------
     if (n_A_PassSkill7[34]) {
-        if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SPRENDED]) == 1) {
+        if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SPRENDED]) == 1) {
             wBHD += 10;
         }
     }
@@ -13791,7 +13789,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
         case 2433:		// 杖
         case 2434:		// ハンマ－
         case 2435:		// 弓
-            if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MOROC]) == 1) {
+            if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MOROC]) == 1) {
                 if (n_A_Weapon_ATKplus >= 5) wBHD += 10;
                 if (n_A_Weapon_ATKplus >= 7) wBHD += 20;
                 if (n_A_Weapon_ATKplus >= 9) wBHD += 40;
@@ -13804,7 +13802,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     //--------------------------------
     switch (n_A_Equip[EQUIP_REGION_ID_ARMS]) {
         case 2436:		// 短剣
-            if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MOROC]) == 1) {
+            if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MOROC]) == 1) {
                 if (n_A_Weapon_ATKplus >= 5) wBHD += 5;
                 if (n_A_Weapon_ATKplus >= 7) wBHD += 10;
                 if (n_A_Weapon_ATKplus >= 9) wBHD += 20;
@@ -13813,7 +13811,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     }
     switch (n_A_Equip[EQUIP_REGION_ID_ARMS_LEFT]) {
         case 2436:		// 短剣
-            if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MOROC]) == 1) {
+            if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MOROC]) == 1) {
                 if (n_A_Weapon2_ATKplus >= 5) wBHD += 5;
                 if (n_A_Weapon2_ATKplus >= 7) wBHD += 10;
                 if (n_A_Weapon2_ATKplus >= 9) wBHD += 20;
@@ -13853,7 +13851,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
         case ITEM_ID_REQUIEM_WIZARDSTUFF:		// レクイエムウィザードスタッフ
         case ITEM_ID_REQUIEM_GREATBOW:			// レクイエムグレイトボウ
         case ITEM_ID_REQUIEM_KATAR:				// レクイエムカタール
-            if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SEITAI]) == 1) {
+            if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SEITAI]) == 1) {
                 wBHD += 5;
                 if (n_A_Weapon_ATKplus >= 5) wBHD += 5;
                 if (n_A_Weapon_ATKplus >= 6) wBHD += 1 * (n_A_Weapon_ATKplus - 5);
@@ -13864,7 +13862,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     //--------------------------------
     // 英雄エンチャント耐性
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_EIYUENCHANT]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_EIYUENCHANT]) == 1) {
         if (Chara.CardNumSearch(CARD_ID_ENCHANT_UCHUKONGEN_GENZYU)) {
             wBHD += 20;
         }
@@ -13875,7 +13873,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     //--------------------------------
     // レクイエムスーツ、または、レクイエムローブ
     if (Chara.EquipNumSearch(ITEM_ID_REQUIEM_SUIT) || Chara.EquipNumSearch(ITEM_ID_REQUIEM_ROBE)) {
-        if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SEITAI]) == 1) {
+        if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SEITAI]) == 1) {
             wBHD += 3;
             if (n_A_BODY_DEF_PLUS >= 6) wBHD += 2;
             if (n_A_BODY_DEF_PLUS >= 8) wBHD += 2;
@@ -13883,7 +13881,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     }
     // レクイエムシールド
     if (Chara.EquipNumSearch(ITEM_ID_REQUIEM_SHIELD)) {
-        if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SEITAI]) == 1) {
+        if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SEITAI]) == 1) {
             wBHD += 10;
             if (n_A_SHIELD_DEF_PLUS >= 6) wBHD += 7;
             if (n_A_SHIELD_DEF_PLUS >= 8) wBHD += 7;
@@ -13891,7 +13889,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     }
     // レクイエムマント
     if (Chara.EquipNumSearch(ITEM_ID_REQUIEM_MANT)) {
-        if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SEITAI]) == 1) {
+        if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SEITAI]) == 1) {
             wBHD += 3;
             if (n_A_SHOULDER_DEF_PLUS >= 6) wBHD += 1;
             if (n_A_SHOULDER_DEF_PLUS >= 8) wBHD += 1;
@@ -13899,7 +13897,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     }
     // レクイエムブーツ
     if (Chara.EquipNumSearch(ITEM_ID_REQUIEM_BOOTS)) {
-        if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SEITAI]) == 1) {
+        if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SEITAI]) == 1) {
             wBHD += 3;
             if (n_A_SHOES_DEF_PLUS >= 6) wBHD += 1;
             if (n_A_SHOES_DEF_PLUS >= 8) wBHD += 1;
@@ -13909,7 +13907,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     //--------------------------------
     // タナトス耐性
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_THANATOS]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_THANATOS]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_USUDUKIYONO_BOSHI)) {
             wBHD += 5;
             if (n_A_HEAD_DEF_PLUS >= 5) wBHD += 10;
@@ -13921,7 +13919,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     //--------------------------------
     // 地下排水路耐性
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_CHIKA_HAISUIRO]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_CHIKA_HAISUIRO]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_NEKORYOTEKEN_TACHIUO)) wBHD += 30;
         if (Chara.EquipNumSearch(ITEM_ID_NEKOKATAR_TSUNA)) wBHD += 30;
         if (Chara.EquipNumSearch(ITEM_ID_NEKORYOTETSUE_KAZIKI)) wBHD += 30;
@@ -13939,7 +13937,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     //--------------------------------
     // 暴屈折王の洞窟耐性
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_BOKUTSUONO_DOKUTSU]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_BOKUTSUONO_DOKUTSU]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_NEKORYOTEKEN_TACHIUO)) wBHD += 30;
         if (Chara.EquipNumSearch(ITEM_ID_NEKOKATAR_TSUNA)) wBHD += 30;
         if (Chara.EquipNumSearch(ITEM_ID_NEKORYOTETSUE_KAZIKI)) wBHD += 30;
@@ -13957,7 +13955,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     //--------------------------------
     // 時計塔耐性
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_TOKEITO]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_TOKEITO]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_NIZIIRONO_TSUBASA) > 0) {
             wBHD += 15;
             if (n_A_HEAD_DEF_PLUS >= 7) wBHD += 15;
@@ -13968,7 +13966,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     //--------------------------------
     // ハートハンター軍事基地耐性
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_HEARTHUNTER]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_HEARTHUNTER]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_GOOGLE_HAT) > 0) {
             wBHD += 15;
             if (n_A_HEAD_DEF_PLUS >= 7) wBHD += 15;
@@ -13979,7 +13977,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     //--------------------------------
     // ロックリッジ耐性
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_ROCKRIDGE]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_ROCKRIDGE]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_TAURUS_HAT) > 0) {
             wBHD += 15;
             if (n_A_HEAD_DEF_PLUS >= 7) wBHD += 15;
@@ -13990,7 +13988,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     //--------------------------------
     // ヴェルナー耐性
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_VERNAR]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_VERNAR]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_ZIKKEN_SEITAI_GOATGATA_CAP) > 0) {
             wBHD += 15;
             if (n_A_HEAD_DEF_PLUS >= 7) wBHD += 15;
@@ -14001,7 +13999,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     //--------------------------------
     // ２５０ページ耐性
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_PAGE250]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_PAGE250]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_BLACK_VEIL) > 0) {
             wBHD += 15;
             if (n_A_HEAD_DEF_PLUS >= 7) wBHD += 15;
@@ -14012,7 +14010,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     //--------------------------------
     // 魔神殿耐性
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MAZINDEN]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MAZINDEN]) == 1) {
         if (Chara.EquipNumSearch(ITEM_SET_ID_DIAVOLOS_WING_DIAVOLOS_ARMOR) > 0) {
             wBHD += 5;
         }
@@ -14033,7 +14031,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     //--------------------------------
     // オース二次捜索耐性
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_OS_NIZI_SOSAKU]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_OS_NIZI_SOSAKU]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_KETTONO_RYU_BOSHI) > 0) {
             wBHD += 15;
             if (n_A_HEAD_DEF_PLUS >= 7) wBHD += 15;
@@ -14044,7 +14042,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     //--------------------------------
     // フローズンメモリー耐性
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_FROZEN_MEMORY]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_FROZEN_MEMORY]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_FROZEN_SCALE_SHAWL) > 0) {
             wBHD += 60;
         }
@@ -14053,7 +14051,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     //--------------------------------
     // ネジリアン帝国耐性
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_NEZIRIAN_TEKOKU]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_NEZIRIAN_TEKOKU]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_KIGURUMI_BEARDOLL) > 0) {
             wBHD += 60;
         }
@@ -14062,7 +14060,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     //--------------------------------
     // 幻想の北洞窟ルワンダ耐性
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_GENSONO_KITA_DOKUTSU_RUWANDA]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_GENSONO_KITA_DOKUTSU_RUWANDA]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_ANCIENT_MEGALIS_MANT) > 0) {
             wBHD += 60;
         }
@@ -14071,7 +14069,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     //--------------------------------
     // 歪んだ迷宮の森耐性
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_YUGANDA_MEIKYUNO_MORI]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_YUGANDA_MEIKYUNO_MORI]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_YAGIGENO_MUFFLER) > 0) {
             wBHD += 60;
         }
@@ -14080,8 +14078,8 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     //--------------------------------
     // 紫色の深海洞窟耐性
     //--------------------------------
-    if ((NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MURASAKI_IRONO_SHINKAI_DOKUTSU_ZYOSO]) == 1)
-        || (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MURASAKI_IRONO_SHINKAI_DOKUTSU_KASO]) == 1)) {
+    if ((Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MURASAKI_IRONO_SHINKAI_DOKUTSU_ZYOSO]) == 1)
+        || (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MURASAKI_IRONO_SHINKAI_DOKUTSU_KASO]) == 1)) {
 
         if (Chara.EquipNumSearch(ITEM_ID_SHINKAI_SEIBUTSUNO_MANT) > 0) {
             wBHD += 60;
@@ -14091,7 +14089,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     //--------------------------------
     // アビスレイク地下洞窟04耐性
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_ABYSS_LAKE_CHIKA_DOKUTSU_04]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_ABYSS_LAKE_CHIKA_DOKUTSU_04]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_DRAGON_SCALE_SHAWL) > 0) {
             wBHD += 60;
         }
@@ -14100,7 +14098,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     //--------------------------------
     // 廃棄実験体遊技場ルドゥス4階耐性
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_HAIKI_ZIKKENTAI_YUGIZYO_RUDUS_4F]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_HAIKI_ZIKKENTAI_YUGIZYO_RUDUS_4F]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_DISCARDED_CAPE) > 0) {
             wBHD += 60;
         }
@@ -14109,7 +14107,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     //--------------------------------
     // 魔力が歪んだ平原 耐性
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_PLAINS_DISTORTED_BY_MAGIC]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_PLAINS_DISTORTED_BY_MAGIC]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_DISTORTED_MAGIC_HOOD) > 0) {
             wBHD += 60;
         }
@@ -14131,7 +14129,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     //----------------------------------------------------------------
     // 「性能カスタマイズ欄」の、地域耐性効果
     //----------------------------------------------------------------
-    confval = g_objCharaConfCustomDef.GetConf(CCharaConfCustomDef.CONF_ID_RESIST_GROUP);
+    var confval = g_objCharaConfCustomDef.GetConf(CCharaConfCustomDef.CONF_ID_RESIST_GROUP);
     if (confval != 0) {
         wBHD += confval;
     }
@@ -14336,7 +14334,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
     if ((GetMonseterElmBasicType(mobData[MONSTER_DATA_INDEX_ELEMENT]) == ELM_ID_UNDEAD)
         || (mobData[MONSTER_DATA_INDEX_RACE] == RACE_ID_DEMON)) {
 
-        wBHD = Math.round((3 + 4 / 100 * n_A_BaseLV) * Math.max(LearnedSkillSearch(SKILL_ID_DIVINE_PROTECTION), UsedSkillSearch(SKILL_ID_DIVINE_PROTECTION)));
+        wBHD = Math.round((3 + 4 / 100 * n_A_BaseLV) * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_DIVINE_PROTECTION), UsedSkillSearch(SKILL_ID_DIVINE_PROTECTION)));
 
         for (i = 0; i <= 6; i++) {
             w_HiDam[i] -= wBHD;
@@ -14351,7 +14349,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
         case RACE_ID_PLANT:
         case RACE_ID_FISH:
             for (i = 0; i <= 6; i++) {
-                const ranger_main_lv = Math.max(LearnedSkillSearch(SKILL_ID_RANGER_MAIN), UsedSkillSearch(SKILL_ID_RANGER_MAIN));
+                const ranger_main_lv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_RANGER_MAIN), UsedSkillSearch(SKILL_ID_RANGER_MAIN));
                 w_HiDam[i] -= 5 * ranger_main_lv;
             }
     }
@@ -14363,7 +14361,7 @@ function BattleHiDam(charaData, specData, mobData, attackMethodConfArray, objCel
         || (GetMonseterElmBasicType(mobData[MONSTER_DATA_INDEX_ELEMENT]) == ELM_ID_FIRE)) {
 
         for (i = 0; i <= 6; i++) {
-            w_HiDam[i] -= 10 * Math.max(LearnedSkillSearch(SKILL_ID_HITO_DAICHINO_KENKYU), UsedSkillSearch(SKILL_ID_HITO_DAICHINO_KENKYU));
+            w_HiDam[i] -= 10 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_HITO_DAICHINO_KENKYU), UsedSkillSearch(SKILL_ID_HITO_DAICHINO_KENKYU));
         }
 
     }
@@ -14590,8 +14588,8 @@ function BattleHiDamMaxPain(charaData, specData, mobData, attackMethodConfArray,
     for (var i = 0; i <= 6; i++) w_HiDam[i] = painATK;
 
     var wBHD;
-    wBHD = GetEquippedTotalSPCardAndElse(3000 + mobData[0]);
-    wBHD += GetEquippedTotalSPEquip(3000 + mobData[0]);
+    wBHD = Foot.GetEquippedTotalSPCardAndElse(3000 + mobData[0]);
+    wBHD += Foot.GetEquippedTotalSPEquip(3000 + mobData[0]);
 
     // TODO: データ移行過渡処理
     // 計算したSP効果を、移行前のデータ形式に変換して、加算する
@@ -14782,7 +14780,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     // ファイアーピラー以外の場合、装備固定効果、カード固定効果を適用
     //----------------------------------------------------------------
     if (n_A_ActiveSkill != 122) {
-        wX = GetEquippedTotalSPEquip(5000 + n_A_ActiveSkill) + GetEquippedTotalSPCardAndElse(5000 + n_A_ActiveSkill);
+        wX = Foot.GetEquippedTotalSPEquip(5000 + n_A_ActiveSkill) + Foot.GetEquippedTotalSPCardAndElse(5000 + n_A_ActiveSkill);
     }
 
     //----------------------------------------------------------------
@@ -14818,7 +14816,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
         }
 
         if (Chara.EquipNumSearch(2394)) {
-            wX += 80 * LearnedSkillSearch(SKILL_ID_IMPOSITIO_MANUS);
+            wX += 80 * LearnedSkill.LearnedSkillSearch(SKILL_ID_IMPOSITIO_MANUS);
         }
     }
 
@@ -14921,7 +14919,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 528) {
         if (Chara.EquipNumSearch(ITEM_ID_SHADOW_STUFF)) {
-            if (LearnedSkillSearch(SKILL_ID_HELL_INFERNO) >= 5) {
+            if (LearnedSkill.LearnedSkillSearch(SKILL_ID_HELL_INFERNO) >= 5) {
                 wX += 100;
                 wX += 10 * n_A_Weapon_ATKplus;
             }
@@ -15039,7 +15037,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
         if (Chara.EquipNumSearch(ITEM_SET_ID_POROROCA_SHOES_LACRYMA_STICK)) {
 
             // ウォーターボール習得レベルによる強化
-            wX += 30 * LearnedSkillSearch(SKILL_ID_WATER_BALL);
+            wX += 30 * LearnedSkill.LearnedSkillSearch(SKILL_ID_WATER_BALL);
 
             // ラクリマスティックの精錬による強化
             wX += 20 * n_A_Weapon_ATKplus;
@@ -15129,9 +15127,9 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
 
             // ラウダアグヌス等の習得レベルによる強化
             var sklLv = 0;
-            sklLv += LearnedSkillSearch(SKILL_ID_CLEARANCE);
-            sklLv += LearnedSkillSearch(SKILL_ID_LAUDAAGNUS);
-            sklLv += LearnedSkillSearch(SKILL_ID_LAUDARAMUS);
+            sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_CLEARANCE);
+            sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_LAUDAAGNUS);
+            sklLv += LearnedSkill.LearnedSkillSearch(SKILL_ID_LAUDARAMUS);
 
             wX += 10 * sklLv;
 
@@ -15149,7 +15147,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_RYUENZIN) {
         if ((itemCount = Chara.EquipNumSearch(ITEM_ID_ZYONINNO_KOSHIOBI)) > 0) {
-            wX += 10 * LearnedSkillSearch(SKILL_ID_KOUENKA) * itemCount;
+            wX += 10 * LearnedSkill.LearnedSkillSearch(SKILL_ID_KOUENKA) * itemCount;
         }
     }
 
@@ -15158,7 +15156,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_TSURARAOTOSHI) {
         if ((itemCount = Chara.EquipNumSearch(ITEM_ID_ZYONINNO_KOSHIOBI)) > 0) {
-            wX += 20 * LearnedSkillSearch(SKILL_ID_HYOSENSO) * itemCount;
+            wX += 20 * LearnedSkill.LearnedSkillSearch(SKILL_ID_HYOSENSO) * itemCount;
         }
     }
 
@@ -15167,7 +15165,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_SAKUFU) {
         if ((itemCount = Chara.EquipNumSearch(ITEM_ID_ZYONINNO_KOSHIOBI)) > 0) {
-            wX += 10 * LearnedSkillSearch(SKILL_ID_FUZIN) * itemCount;
+            wX += 10 * LearnedSkill.LearnedSkillSearch(SKILL_ID_FUZIN) * itemCount;
         }
     }
 
@@ -15362,7 +15360,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_ZYUTSUSHIKI_KAIHO) {
         if ((itemCount = Chara.EquipNumSearch(ITEM_ID_YOZINBONO_SCARF)) > 0) {
-            if (LearnedSkillSearch(SKILL_ID_ZYUTSUSHIKI_KAIHO) >= 1) {
+            if (LearnedSkill.LearnedSkillSearch(SKILL_ID_ZYUTSUSHIKI_KAIHO) >= 1) {
                 wX += 40 * itemCount;
             }
 
@@ -15402,7 +15400,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_METALIC_SOUND) {
         if ((itemCount = Chara.EquipNumSearch(ITEM_ID_TRAVELER_SHOES)) > 0) {
-            wX += 10 * LearnedSkillSearch(SKILL_ID_MELANCHOLY) * itemCount;
+            wX += 10 * LearnedSkill.LearnedSkillSearch(SKILL_ID_MELANCHOLY) * itemCount;
         }
     }
 
@@ -15420,7 +15418,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
         || n_A_ActiveSkill == SKILL_ID_EARTH_SPIKE) {
 
         if ((itemCount = Chara.EquipNumSearch(ITEM_ID_STUFF_OF_PUFFY)) > 0) {
-            if (LearnedSkillSearch(SKILL_ID_SPELL_FIST) >= 5) {
+            if (LearnedSkill.LearnedSkillSearch(SKILL_ID_SPELL_FIST) >= 5) {
                 wX += 3 * n_A_Weapon_ATKplus * itemCount;
             }
         }
@@ -15499,7 +15497,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_METALIC_SOUND) {
         if ((itemCount = Chara.EquipNumSearch(ITEM_ID_NIZIIRONO_MUFFLER)) > 0) {
-            wX += 4 * LearnedSkillSearch(SKILL_ID_MELANCHOLY) * itemCount;
+            wX += 4 * LearnedSkill.LearnedSkillSearch(SKILL_ID_MELANCHOLY) * itemCount;
         }
     }
 
@@ -15521,7 +15519,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_DIAMOND_DUST) {
         if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_NIZIIRONO_NEKOZYARASHI_STORM_KNIGHT_CARD)) > 0) {
-            if (LearnedSkillSearch(SKILL_ID_NYAN_TAMASHI) >= 1) {
+            if (LearnedSkill.LearnedSkillSearch(SKILL_ID_NYAN_TAMASHI) >= 1) {
                 wX += 10 * n_A_Weapon_ATKplus * itemCount;
             }
         }
@@ -15547,8 +15545,8 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_MATATABI_LANCE) {
         if ((itemCount = Chara.EquipNumSearch(ITEM_ID_FUWAFUWA_TANPOPO_SHOES)) > 0) {
-            if (LearnedSkillSearch(SKILL_ID_DAICHINO_TAMASHI) >= 1) {
-                if (LearnedSkillSearch(SKILL_ID_INUHAKKA_METEOR) >= 5) {
+            if (LearnedSkill.LearnedSkillSearch(SKILL_ID_DAICHINO_TAMASHI) >= 1) {
+                if (LearnedSkill.LearnedSkillSearch(SKILL_ID_INUHAKKA_METEOR) >= 5) {
                     wX += 20 * itemCount;
                 }
             }
@@ -15562,7 +15560,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_INUHAKKA_METEOR) {
         if ((itemCount = Chara.EquipNumSearch(ITEM_ID_FUWAFUWA_TANPOPO_SHOES)) > 0) {
-            wX += 15 * LearnedSkillSearch(SKILL_ID_MYAUMYAU) * itemCount;
+            wX += 15 * LearnedSkill.LearnedSkillSearch(SKILL_ID_MYAUMYAU) * itemCount;
         }
     }
 
@@ -15584,7 +15582,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_COMMET) {
         if ((itemCount = Chara.EquipNumSearch(ITEM_ID_GEFFENIA_KORINO_MADOGU)) > 0) {
-            if (LearnedSkillSearch(SKILL_ID_JACK_FROST) >= 5) {
+            if (LearnedSkill.LearnedSkillSearch(SKILL_ID_JACK_FROST) >= 5) {
                 wX += 50 * itemCount;
             }
         }
@@ -15597,7 +15595,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_FROST_MISTY) {
         if ((itemCount = Chara.EquipNumSearch(ITEM_ID_GEFFENIA_KORINO_MADOGU)) > 0) {
-            if (LearnedSkillSearch(SKILL_ID_STASIS) >= 5) {
+            if (LearnedSkill.LearnedSkillSearch(SKILL_ID_STASIS) >= 5) {
                 wX += 50 * itemCount;
             }
         }
@@ -15610,7 +15608,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_JACK_FROST) {
         if ((itemCount = Chara.EquipNumSearch(ITEM_ID_GEFFENIA_KORINO_MADOGU)) > 0) {
-            if (LearnedSkillSearch(SKILL_ID_STASIS) >= 5) {
+            if (LearnedSkill.LearnedSkillSearch(SKILL_ID_STASIS) >= 5) {
                 wX += 50 * itemCount;
             }
         }
@@ -15720,7 +15718,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_CRYMSON_ROCK) {
         if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_FUSHICHONO_NEKOZYARASHI_BOITATA_CARD)) > 0) {
-            if (LearnedSkillSearch(SKILL_ID_NYAN_TAMASHI) >= 1) {
+            if (LearnedSkill.LearnedSkillSearch(SKILL_ID_NYAN_TAMASHI) >= 1) {
                 wX += 10 * n_A_Weapon_ATKplus * itemCount;
             }
         }
@@ -15733,7 +15731,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_INUHAKKA_METEOR) {
         if ((itemCount = Chara.EquipNumSearchMIG(ITEM_ID_AZATOI_KEROKERO_KAPPA)) > 0) {
-            wX += 10 * LearnedSkillSearch(SKILL_ID_MYAUMYAU) * itemCount;
+            wX += 10 * LearnedSkill.LearnedSkillSearch(SKILL_ID_MYAUMYAU) * itemCount;
         }
     }
 
@@ -15744,20 +15742,20 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_MATATABI_LANCE) {
         if ((itemCount = Chara.EquipNumSearch(ITEM_ID_KIRAKIRA_NYANNYAN_CHOKER)) > 0) {
-            if (LearnedSkillSearch(SKILL_ID_DAICHINO_TAMASHI) >= 1) {
+            if (LearnedSkill.LearnedSkillSearch(SKILL_ID_DAICHINO_TAMASHI) >= 1) {
 
                 // アイテム効果なので、「習得スキル」欄で設定しても、「パッシブ持続系」で設定してもＯＫとする
                 // （大きい方を採用）
 
                 valueWork = 0;
 
-                valueWork += LearnedSkillSearch(SKILL_ID_MATATABI_LANCE);
-                valueWork += LearnedSkillSearch(SKILL_ID_MATATABINO_NEKKO);
-                valueWork += LearnedSkillSearch(SKILL_ID_INUHAKKA_METEOR);
-                valueWork += LearnedSkillSearch(SKILL_ID_INUHAKKA_SHOWER);
-                valueWork += LearnedSkillSearch(SKILL_ID_CHATTERING);
-                valueWork += LearnedSkillSearch(SKILL_ID_MYAUMYAU);
-                valueWork += LearnedSkillSearch(SKILL_ID_NYAN_GRASS);
+                valueWork += LearnedSkill.LearnedSkillSearch(SKILL_ID_MATATABI_LANCE);
+                valueWork += LearnedSkill.LearnedSkillSearch(SKILL_ID_MATATABINO_NEKKO);
+                valueWork += LearnedSkill.LearnedSkillSearch(SKILL_ID_INUHAKKA_METEOR);
+                valueWork += LearnedSkill.LearnedSkillSearch(SKILL_ID_INUHAKKA_SHOWER);
+                valueWork += LearnedSkill.LearnedSkillSearch(SKILL_ID_CHATTERING);
+                valueWork += LearnedSkill.LearnedSkillSearch(SKILL_ID_MYAUMYAU);
+                valueWork += LearnedSkill.LearnedSkillSearch(SKILL_ID_NYAN_GRASS);
 
                 valueWork = Math.max(valueWork, UsedSkillSearch(SKILL_ID_PLANT_KEI_SHUTOKU_LEVEL_GOKEI));
 
@@ -15774,7 +15772,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     if (n_A_ActiveSkill == SKILL_ID_CRYMSON_ROCK) {
         itemCount = Chara.EquipNumSearch(ITEM_ID_IMPERIAL_PUNISHMENT_ROBE);
         if (itemCount > 0) {
-            if (LearnedSkillSearch(SKILL_ID_DRAIN_LIFE) >= 5) {
+            if (LearnedSkill.LearnedSkillSearch(SKILL_ID_DRAIN_LIFE) >= 5) {
                 wX += 1 * Math.floor(n_A_BaseLV / 6) * itemCount;
             }
         }
@@ -15788,7 +15786,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     if (n_A_ActiveSkill == SKILL_ID_CRYMSON_ROCK) {
         itemCount = Chara.EquipNumSearch(ITEM_ID_GRACE_PUNISHMENT_ROBE);
         if (itemCount > 0) {
-            if (LearnedSkillSearch(SKILL_ID_DRAIN_LIFE) >= 5) {
+            if (LearnedSkill.LearnedSkillSearch(SKILL_ID_DRAIN_LIFE) >= 5) {
                 wX += 1 * Math.floor(n_A_BaseLV / 2) * itemCount;
             }
         }
@@ -15802,15 +15800,15 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     if (n_A_ActiveSkill == SKILL_ID_MATATABI_LANCE) {
         itemCount = Chara.EquipNumSearch(ITEM_ID_POKAPOKA_TANPOPO_CAPE);
         if (itemCount > 0) {
-            if (LearnedSkillSearch(SKILL_ID_DAICHINO_TAMASHI) >= 1) {
+            if (LearnedSkill.LearnedSkillSearch(SKILL_ID_DAICHINO_TAMASHI) >= 1) {
                 let vartmp = 0;
-                vartmp += LearnedSkillSearch(SKILL_ID_MATATABI_LANCE);
-                vartmp += LearnedSkillSearch(SKILL_ID_MATATABINO_NEKKO);
-                vartmp += LearnedSkillSearch(SKILL_ID_INUHAKKA_METEOR);
-                vartmp += LearnedSkillSearch(SKILL_ID_INUHAKKA_SHOWER);
-                vartmp += LearnedSkillSearch(SKILL_ID_CHATTERING);
-                vartmp += LearnedSkillSearch(SKILL_ID_MYAUMYAU);
-                vartmp += LearnedSkillSearch(SKILL_ID_NYAN_GRASS);
+                vartmp += LearnedSkill.LearnedSkillSearch(SKILL_ID_MATATABI_LANCE);
+                vartmp += LearnedSkill.LearnedSkillSearch(SKILL_ID_MATATABINO_NEKKO);
+                vartmp += LearnedSkill.LearnedSkillSearch(SKILL_ID_INUHAKKA_METEOR);
+                vartmp += LearnedSkill.LearnedSkillSearch(SKILL_ID_INUHAKKA_SHOWER);
+                vartmp += LearnedSkill.LearnedSkillSearch(SKILL_ID_CHATTERING);
+                vartmp += LearnedSkill.LearnedSkillSearch(SKILL_ID_MYAUMYAU);
+                vartmp += LearnedSkill.LearnedSkillSearch(SKILL_ID_NYAN_GRASS);
 
                 wX += 1 * vartmp * itemCount;
             }
@@ -15823,7 +15821,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     if (n_A_ActiveSkill == SKILL_ID_INUHAKKA_METEOR) {
         itemCount = Chara.EquipNumSearch(ITEM_ID_POKAPOKA_TANPOPO_CAPE);
         if (itemCount > 0) {
-            wX += 10 * LearnedSkillSearch(SKILL_ID_NYAN_GRASS) * itemCount;
+            wX += 10 * LearnedSkill.LearnedSkillSearch(SKILL_ID_NYAN_GRASS) * itemCount;
         }
     }
 
@@ -15874,7 +15872,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_DIAMOND_DUST) {
         if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_NIZIIRONO_NEKOZYARASHI_FUINSARETA_STORM_KNIGHT)) > 0) {
-            if (LearnedSkillSearch(SKILL_ID_NYAN_TAMASHI) >= 1) {
+            if (LearnedSkill.LearnedSkillSearch(SKILL_ID_NYAN_TAMASHI) >= 1) {
                 wX += 3 * n_A_Weapon_ATKplus * itemCount;
             }
         }
@@ -15887,7 +15885,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_CRYMSON_ROCK) {
         if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_FUSHICHONO_NEKOZYARASHI_FUINSARETA_BOITATA)) > 0) {
-            if (LearnedSkillSearch(SKILL_ID_NYAN_TAMASHI) >= 1) {
+            if (LearnedSkill.LearnedSkillSearch(SKILL_ID_NYAN_TAMASHI) >= 1) {
                 wX += 3 * n_A_Weapon_ATKplus * itemCount;
             }
         }
@@ -15900,7 +15898,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_ESPA) {
         if ((itemCount = Chara.EquipNumSearch(ITEM_ID_DIA_DE_MUERTOS)) > 0) {
-            wX += 5 * LearnedSkillSearch(SKILL_ID_TAMASHINO_SHUKAKU) * itemCount;
+            wX += 5 * LearnedSkill.LearnedSkillSearch(SKILL_ID_TAMASHINO_SHUKAKU) * itemCount;
         }
     }
 
@@ -15909,7 +15907,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_ESFU) {
         if ((itemCount = Chara.EquipNumSearch(ITEM_ID_DIA_DE_MUERTOS)) > 0) {
-            wX += 25 * LearnedSkillSearch(SKILL_ID_TAMASHINO_SHUKAKU) * itemCount;
+            wX += 25 * LearnedSkill.LearnedSkillSearch(SKILL_ID_TAMASHINO_SHUKAKU) * itemCount;
         }
     }
 
@@ -15938,7 +15936,7 @@ function GetMagicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, m
         || (n_A_ActiveSkill == SKILL_ID_LIGHTNING_BOLT)
         || (n_A_ActiveSkill == SKILL_ID_EARTH_SPIKE)) {
         if ((itemCount = Chara.EquipNumSearch(ITEM_ID_MAGIC_COMPRESSION)) > 0) {
-            wX += 20 * LearnedSkillSearch(SKILL_ID_STRIKING) * itemCount;
+            wX += 20 * LearnedSkill.LearnedSkillSearch(SKILL_ID_STRIKING) * itemCount;
         }
     }
 
@@ -16293,7 +16291,7 @@ export function Click_PassSkillSW() {
             var w = passiveSkillIdArray[j];
             var w2 = [12, 68, 74, 152, 153, 155, 196, 253, 258, 301, 309, 310, 322, 345, 364, 365, 383, 379, 385, 386, 389, 390, 392, 420, 421, 422, 450, 453, 522, 750, 752];
             var wOBJ = document.getElementById("A_skill" + j);
-            if (NumSearch(w, w2)) {
+            if (Foot.NumSearch(w, w2)) {
                 wOBJ.options[0] = new Option("off", 0);
                 wOBJ.options[1] = new Option("on", 1);
             }
@@ -16310,7 +16308,7 @@ export function Click_PassSkillSW() {
                 wOBJ.setAttribute("onClick", "RefreshSuperNoviceFullWeapon(parseInt(this.value) == 1)");
             }
         }
-        var w = NumSearch2(58, passiveSkillIdArray);
+        var w = Foot.NumSearch2(58, passiveSkillIdArray);
         if (w != -1) {
             var wOBJ = document.getElementById("A_skill" + w);
             for (i = 10; i >= 0; i--) wOBJ.options[i] = null;
@@ -16318,7 +16316,7 @@ export function Click_PassSkillSW() {
             for (i = 1; i <= 5; i++) w_ECname[i] += "カット";
             for (i = 0; i <= 5; i++) wOBJ.options[i] = new Option(w_ECname[i], i);
         }
-        var w = NumSearch2(78, passiveSkillIdArray);
+        var w = Foot.NumSearch2(78, passiveSkillIdArray);
         if (w != -1) {
             var wOBJ = document.getElementById("A_skill" + w);
             for (i = 10; i >= 0; i--) wOBJ.options[i] = null;
@@ -16327,7 +16325,7 @@ export function Click_PassSkillSW() {
             for (i = 1; i <= 6; i++) w_name[i] = "修練" + (i - 1);
             for (i = 0; i <= 6; i++) wOBJ.options[i] = new Option(w_name[i], i);
         }
-        var w = NumSearch2(446, passiveSkillIdArray);
+        var w = Foot.NumSearch2(446, passiveSkillIdArray);
         if (w != -1) {
             var wOBJ = document.getElementById("A_skill" + w);
             for (i = 10; i >= 0; i--) wOBJ.options[i] = null;
@@ -16336,7 +16334,7 @@ export function Click_PassSkillSW() {
             for (i = 1; i <= 6; i++) w_name[i] = "Lv" + (i - 1);
             for (i = 0; i <= 6; i++) wOBJ.options[i] = new Option(w_name[i], i);
         }
-        var w = NumSearch2(SKILL_ID_FIGHTING_SPIRIT, passiveSkillIdArray);
+        var w = Foot.NumSearch2(SKILL_ID_FIGHTING_SPIRIT, passiveSkillIdArray);
         if (w != -1) {
             var wOBJ = document.getElementById("A_skill" + w);
             for (i = 10; i >= 0; i--) wOBJ.options[i] = null;
@@ -16344,7 +16342,7 @@ export function Click_PassSkillSW() {
             wOBJ.options[1] = new Option("on(ソロ)", 1);
             for (i = 2; i <= 12; i++) wOBJ.options[i] = new Option(i + "人PT", i);
         }
-        var w = NumSearch2(SKILL_ID_DRAGONIC_AURA_STATE, passiveSkillIdArray);
+        var w = Foot.NumSearch2(SKILL_ID_DRAGONIC_AURA_STATE, passiveSkillIdArray);
         if (w != -1) {
             var wOBJ = document.getElementById("A_skill" + w);
             for (i = 10; i >= 0; i--) wOBJ.options[i] = null;
@@ -16352,14 +16350,14 @@ export function Click_PassSkillSW() {
             wOBJ.options[1] = new Option("未使用", 1);
             for (i = 1; i <= 10; i++) wOBJ.options[i + 1] = new Option("Lv" + i, i + 1);
         }
-        var w = NumSearch2(367, passiveSkillIdArray);
+        var w = Foot.NumSearch2(367, passiveSkillIdArray);
         if (w != -1) {
             var wOBJ = document.getElementById("A_skill" + w);
             for (i = 10; i >= 0; i--) wOBJ.options[i] = null;
             var w_name = [0, 1, 2, 3, 4, 5, 6, 8, 10];
             for (i = 0; i <= 8; i++) wOBJ.options[i] = new Option((w_name[i] * 10) + "%", w_name[i]);
         }
-        var w = NumSearch2(185, passiveSkillIdArray);
+        var w = Foot.NumSearch2(185, passiveSkillIdArray);
         if (w != -1) {
             if ((n_A_JOB != JOB_ID_MONK) && (n_A_JOB != JOB_ID_CHAMPION)) {
                 var wOBJ = document.getElementById("A_skill" + w);
@@ -16367,21 +16365,21 @@ export function Click_PassSkillSW() {
                 for (i = 0; i <= 15; i++) wOBJ.options[i] = new Option(i, i);
             }
         }
-        var w = NumSearch2(496, passiveSkillIdArray);
+        var w = Foot.NumSearch2(496, passiveSkillIdArray);
         if (w != -1) {
             var wOBJ = document.getElementById("A_skill" + w);
             for (i = 10; i >= 0; i--) wOBJ.options[i] = null;
             wOBJ.options[0] = new Option("off", 0);
             for (i = 1; i <= 10; i++) wOBJ.options[i] = new Option(i + "秒", i);
         }
-        var w = NumSearch2(739, passiveSkillIdArray);
+        var w = Foot.NumSearch2(739, passiveSkillIdArray);
         if (w != -1) {
             var wOBJ = document.getElementById("A_skill" + w);
             for (i = 10; i >= 0; i--) wOBJ.options[i] = null;
             wOBJ.options[0] = new Option("未搭乗", 0);
             wOBJ.options[1] = new Option("搭乗中", 1);
         }
-        var w = NumSearch2(743, passiveSkillIdArray);
+        var w = Foot.NumSearch2(743, passiveSkillIdArray);
         if (w != -1) {
             var wOBJ = document.getElementById("A_skill" + w);
             for (i = 10; i >= 0; i--) wOBJ.options[i] = null;
@@ -16390,7 +16388,7 @@ export function Click_PassSkillSW() {
             wOBJ.options[2] = new Option("CB3", 2);
             wOBJ.options[3] = new Option("LB3", 3);
         }
-        var w = NumSearch2(SKILL_ID_ABR_DUAL_CANNON, passiveSkillIdArray);
+        var w = Foot.NumSearch2(SKILL_ID_ABR_DUAL_CANNON, passiveSkillIdArray);
         if (w != -1) {
             var wOBJ = document.getElementById("A_skill" + w);
             for (i = 10; i >= 0; i--) wOBJ.options[i] = null;
@@ -16399,7 +16397,7 @@ export function Click_PassSkillSW() {
         }
 
         // シールドスペル(ATK+)
-        var w = NumSearch2(744, passiveSkillIdArray);
+        var w = Foot.NumSearch2(744, passiveSkillIdArray);
         if (w != -1) {
             var wOBJ = document.getElementById("A_skill" + w);
             for (i = 10; i >= 0; i--) wOBJ.options[i] = null;
@@ -16409,7 +16407,7 @@ export function Click_PassSkillSW() {
         }
 
         // シールドスペル(反射)
-        var w = NumSearch2(756, passiveSkillIdArray);
+        var w = Foot.NumSearch2(756, passiveSkillIdArray);
         if (w != -1) {
             var wOBJ = document.getElementById("A_skill" + w);
             for (i = 10; i >= 0; i--) wOBJ.options[i] = null;
@@ -16419,7 +16417,7 @@ export function Click_PassSkillSW() {
         }
 
         // シールドスペル(DEF+)
-        var w = NumSearch2(745, passiveSkillIdArray);
+        var w = Foot.NumSearch2(745, passiveSkillIdArray);
         if (w != -1) {
             var wOBJ = document.getElementById("A_skill" + w);
             for (i = 10; i >= 0; i--) wOBJ.options[i] = null;
@@ -16427,7 +16425,7 @@ export function Click_PassSkillSW() {
             wOBJ.options[1] = new Option("装備盾", 1);
             for (i = 2; i <= 11; i++) wOBJ.options[i] = new Option("(+" + (i - 1) + ")", i);
         }
-        var w = NumSearch2(747, passiveSkillIdArray);
+        var w = Foot.NumSearch2(747, passiveSkillIdArray);
         if (w != -1) {
             var wOBJ = document.getElementById("A_skill" + w);
             for (i = 10; i >= 0; i--) wOBJ.options[i] = null;
@@ -16435,7 +16433,7 @@ export function Click_PassSkillSW() {
             wOBJ.options[0] = new Option("-", 0);
             for (i = 0; i < wASSname.length; i++) wOBJ.options[i] = new Option(wASSname[i], i);
         }
-        var w = NumSearch2(749, passiveSkillIdArray);
+        var w = Foot.NumSearch2(749, passiveSkillIdArray);
         if (w != -1) {
             var wOBJ = document.getElementById("A_skill" + w);
             for (i = 10; i >= 0; i--) wOBJ.options[i] = null;
@@ -16456,21 +16454,21 @@ export function Click_PassSkillSW() {
             HtmlCreateTextNode("[説明]", objAnchor)
         }
 
-        var w = NumSearch2(754, passiveSkillIdArray);
+        var w = Foot.NumSearch2(754, passiveSkillIdArray);
         if (w != -1) {
             var wOBJ = document.getElementById("A_skill" + w);
             for (i = 10; i >= 0; i--) wOBJ.options[i] = null;
             wOBJ.options[0] = new Option("ソロ", 0);
             for (i = 1; i <= 11; i++) wOBJ.options[i] = new Option((i + 1) + "人", i);
         }
-        var w = NumSearch2(761, passiveSkillIdArray);
+        var w = Foot.NumSearch2(761, passiveSkillIdArray);
         if (w != -1) {
             var wOBJ = document.getElementById("A_skill" + w);
             for (i = 10; i >= 0; i--) wOBJ.options[i] = null;
             wOBJ.options[0] = new Option(0, 0);
             for (i = 1; i <= 5; i++) wOBJ.options[i] = new Option("+" + (20 * i), i);
         }
-        var w = NumSearch2(791, passiveSkillIdArray);
+        var w = Foot.NumSearch2(791, passiveSkillIdArray);
         if (w != -1) {
             var wOBJ = document.getElementById("A_skill" + w);
             for (i = 10; i >= 0; i--) wOBJ.options[i] = null;
@@ -16480,7 +16478,7 @@ export function Click_PassSkillSW() {
             wOBJ.options[1] = new Option("火符", 3);
             wOBJ.options[3] = new Option("風符", 4);
         }
-        var w = NumSearch2(793, passiveSkillIdArray);
+        var w = Foot.NumSearch2(793, passiveSkillIdArray);
         if (w != -1) {
             var wOBJ = document.getElementById("A_skill" + w);
             for (i = 10; i >= 0; i--) wOBJ.options[i] = null;
@@ -16493,7 +16491,7 @@ export function Click_PassSkillSW() {
         //----------------------------------------------------------------
         // エレメンタルマスター系列　召喚中の精霊
         //----------------------------------------------------------------
-        var sklIdx = NumSearch2(SKILL_ID_SERE, passiveSkillIdArray);
+        var sklIdx = Foot.NumSearch2(SKILL_ID_SERE, passiveSkillIdArray);
         if (sklIdx != -1) {
 
             // 一度、選択肢を全削除
@@ -16522,7 +16520,7 @@ export function Click_PassSkillSW() {
         // -------------------------------------------------------
         // エレメンタルマスター系列　精霊のモード
         // -------------------------------------------------------
-        var w = NumSearch2(SKILL_ID_SERE_MODE, passiveSkillIdArray);
+        var w = Foot.NumSearch2(SKILL_ID_SERE_MODE, passiveSkillIdArray);
         if (w != -1) {
             var wOBJ = document.getElementById("A_skill" + w);
             for (i = 10; i >= 0; i--) wOBJ.options[i] = null;
@@ -16533,7 +16531,7 @@ export function Click_PassSkillSW() {
         // -------------------------------------------------------
         // エレメンタルマスター系列　精霊のスキル
         // -------------------------------------------------------
-        var w = NumSearch2(SKILL_ID_SERE_SUPPORT_SKILL, passiveSkillIdArray);
+        var w = Foot.NumSearch2(SKILL_ID_SERE_SUPPORT_SKILL, passiveSkillIdArray);
         if (w != -1) {
             // i に設定可能な最大値は 64 (=6bit)
             // 旧バージョンのセーブ処理に含まれており拡張が容易ではない
@@ -16575,7 +16573,7 @@ export function Click_PassSkillSW() {
             }
         }
 
-        var w = NumSearch2(SKILL_ID_HOMLV_FOR_PYROCLASTIC, passiveSkillIdArray);
+        var w = Foot.NumSearch2(SKILL_ID_HOMLV_FOR_PYROCLASTIC, passiveSkillIdArray);
         if (w != -1) {
             var wOBJ = document.getElementById("A_skill" + w);
             for (i = 10; i >= 0; i--) wOBJ.options[i] = null;
@@ -16586,7 +16584,7 @@ export function Click_PassSkillSW() {
         //----------------------------------------------------------------
         // 修羅：閃光連撃終了直後状態
         //----------------------------------------------------------------
-        var sklIdx = NumSearch2(SKILL_ID_ATK_PLUS_AFTER_SENKO_RENGEKI, passiveSkillIdArray);
+        var sklIdx = Foot.NumSearch2(SKILL_ID_ATK_PLUS_AFTER_SENKO_RENGEKI, passiveSkillIdArray);
         if (sklIdx != -1) {
             // 一度、選択肢を全削除
             var objSelect = document.getElementById("A_skill" + sklIdx);
@@ -16604,7 +16602,7 @@ export function Click_PassSkillSW() {
         //----------------------------------------------------------------
         // リベリオン：クイックドロー全追撃
         //----------------------------------------------------------------
-        var sklIdx = NumSearch2(SKILL_ID_AS_QUICKDRAW, passiveSkillIdArray);
+        var sklIdx = Foot.NumSearch2(SKILL_ID_AS_QUICKDRAW, passiveSkillIdArray);
         if (sklIdx != -1) {
             // 一度、選択肢を全削除
             var objSelect = document.getElementById("A_skill" + sklIdx);
@@ -16618,7 +16616,7 @@ export function Click_PassSkillSW() {
         //----------------------------------------------------------------
         // サモナー：大地の魂効果(ﾏﾀﾀﾋﾞの根っこ使用後のMATK＋)
         //----------------------------------------------------------------
-        var sklIdx = NumSearch2(SKILL_ID_DAICHINO_TAMASHI_KOKA_MATATABINO_NEKKO, passiveSkillIdArray);
+        var sklIdx = Foot.NumSearch2(SKILL_ID_DAICHINO_TAMASHI_KOKA_MATATABINO_NEKKO, passiveSkillIdArray);
         if (sklIdx != -1) {
             // 一度、選択肢を全削除
             var objSelect = document.getElementById("A_skill" + sklIdx);
@@ -16632,7 +16630,7 @@ export function Click_PassSkillSW() {
         //----------------------------------------------------------------
         // サモナー：大地の魂効果(ｲﾇﾊｯｶｼｬﾜｰ使用後の完全回避＋)
         //----------------------------------------------------------------
-        var sklIdx = NumSearch2(SKILL_ID_DAICHINO_TAMASHI_KOKA_INUHAKKA_SHOWER, passiveSkillIdArray);
+        var sklIdx = Foot.NumSearch2(SKILL_ID_DAICHINO_TAMASHI_KOKA_INUHAKKA_SHOWER, passiveSkillIdArray);
         if (sklIdx != -1) {
             // 一度、選択肢を全削除
             var objSelect = document.getElementById("A_skill" + sklIdx);
@@ -16646,7 +16644,7 @@ export function Click_PassSkillSW() {
         //----------------------------------------------------------------
         // サモナー：大地の魂効果(ニャングラス使用後のMATK＋)
         //----------------------------------------------------------------
-        var sklIdx = NumSearch2(SKILL_ID_DAICHINO_TAMASHI_KOKA_NYAN_GRASS, passiveSkillIdArray);
+        var sklIdx = Foot.NumSearch2(SKILL_ID_DAICHINO_TAMASHI_KOKA_NYAN_GRASS, passiveSkillIdArray);
         if (sklIdx != -1) {
             // 一度、選択肢を全削除
             var objSelect = document.getElementById("A_skill" + sklIdx);
@@ -16660,7 +16658,7 @@ export function Click_PassSkillSW() {
         //----------------------------------------------------------------
         // サモナー：生命の魂効果(残りHP)
         //----------------------------------------------------------------
-        var sklIdx = NumSearch2(SKILL_ID_SEIMEINO_TAMASHI_KOKA_NOKORI_HP, passiveSkillIdArray);
+        var sklIdx = Foot.NumSearch2(SKILL_ID_SEIMEINO_TAMASHI_KOKA_NOKORI_HP, passiveSkillIdArray);
         if (sklIdx != -1) {
             // 一度、選択肢を全削除
             var objSelect = document.getElementById("A_skill" + sklIdx);
@@ -16678,7 +16676,7 @@ export function Click_PassSkillSW() {
         //----------------------------------------------------------------
         // 星帝：流星落下の計算方法
         //----------------------------------------------------------------
-        var sklIdx = NumSearch2(SKILL_ID_RYUSE_RAKKA_MODE, passiveSkillIdArray);
+        var sklIdx = Foot.NumSearch2(SKILL_ID_RYUSE_RAKKA_MODE, passiveSkillIdArray);
         if (sklIdx != -1) {
             // 一度、選択肢を全削除
             var objSelect = document.getElementById("A_skill" + sklIdx);
@@ -16693,7 +16691,7 @@ export function Click_PassSkillSW() {
         //----------------------------------------------------------------
         // 天帝：運行の状態
         //----------------------------------------------------------------
-        var sklIdx = NumSearch2(SKILL_ID_UNKONO_ZYOTAI, passiveSkillIdArray);
+        var sklIdx = Foot.NumSearch2(SKILL_ID_UNKONO_ZYOTAI, passiveSkillIdArray);
         if (sklIdx != -1) {
             // 一度、選択肢を全削除
             var objSelect = document.getElementById("A_skill" + sklIdx);
@@ -16712,7 +16710,7 @@ export function Click_PassSkillSW() {
         //----------------------------------------------------------------
         // 拳聖・星帝・天帝：太陽と月と星の日
         //----------------------------------------------------------------
-        var sklIdx = NumSearch2(SKILL_ID_TAIYOTO_TSUKITO_HOSHINO_HI, passiveSkillIdArray);
+        var sklIdx = Foot.NumSearch2(SKILL_ID_TAIYOTO_TSUKITO_HOSHINO_HI, passiveSkillIdArray);
         if (sklIdx != -1) {
             // 一度、選択肢を全削除
             var objSelect = document.getElementById("A_skill" + sklIdx);
@@ -16729,7 +16727,7 @@ export function Click_PassSkillSW() {
         //----------------------------------------------------------------
         // ソウルアセティック：四方符の状態
         //----------------------------------------------------------------
-        var sklIdx = NumSearch2(SKILL_ID_SHIHO_FU_ZYOTAI, passiveSkillIdArray);
+        var sklIdx = Foot.NumSearch2(SKILL_ID_SHIHO_FU_ZYOTAI, passiveSkillIdArray);
         if (sklIdx != -1) {
             // 一度、選択肢を全削除
             var objSelect = document.getElementById("A_skill" + sklIdx);
@@ -17231,18 +17229,18 @@ export function Click_Skill4SW() {
         const name_CS4SW_SKILL = ["臨戦体勢", "偉大なる指導力", "栄光の傷", "冷静な心", "鋭い視線", "ステータスALL+20", "HP+100%", "SP+100%", "ATK+100%", "HIT+50＆FLEE+50", "被ダメージ半減"];
         let html_CS4SW_SKILL = new Array();
         for (let i = 0; i <= 10; i++) myInnerHtml("EN4" + i + "_1", name_CS4SW_SKILL[i], 0);
-        html_CS4SW_SKILL[0] = '<input type="checkbox" name="A4_Skill0"onClick="StAllCalc() | Click_A4(1)">';
-        html_CS4SW_SKILL[1] = '<select name="A4_Skill1"onChange="StAllCalc() | Click_A4(1)"></select>';
-        html_CS4SW_SKILL[2] = '<select name="A4_Skill2"onChange="StAllCalc() | Click_A4(1)"></select>';
-        html_CS4SW_SKILL[3] = '<select name="A4_Skill3"onChange="StAllCalc() | Click_A4(1)"></select>';
-        html_CS4SW_SKILL[4] = '<select name="A4_Skill4"onChange="StAllCalc() | Click_A4(1)"></select>';
-        html_CS4SW_SKILL[5] = '<input type="checkbox" name="A4_Skill5"onClick="StAllCalc() | Click_A4(1)">';
-        html_CS4SW_SKILL[6] = '<input type="checkbox" name="A4_Skill6"onClick="StAllCalc() | Click_A4(1)">';
-        html_CS4SW_SKILL[7] = '<input type="checkbox" name="A4_Skill7"onClick="StAllCalc() | Click_A4(1)">';
-        html_CS4SW_SKILL[8] = '<input type="checkbox" name="A4_Skill8"onClick="StAllCalc() | Click_A4(1)">';
-        html_CS4SW_SKILL[9] = '<input type="checkbox" name="A4_Skill9"onClick="StAllCalc() | Click_A4(1)">';
-        html_CS4SW_SKILL[10] = '<input type="checkbox" name="A4_Skill10"onClick="StAllCalc() | Click_A4(1)">';
-        html_CS4SW_SKILL[11] = '<select name="A4_Skill11"onChange="StAllCalc() | Click_A4(1)"></select>';
+        html_CS4SW_SKILL[0] = '<input type="checkbox" name="A4_Skill0"onClick="Foot.StAllCalc() | Click_A4(1)">';
+        html_CS4SW_SKILL[1] = '<select name="A4_Skill1"onChange="Foot.StAllCalc() | Click_A4(1)"></select>';
+        html_CS4SW_SKILL[2] = '<select name="A4_Skill2"onChange="Foot.StAllCalc() | Click_A4(1)"></select>';
+        html_CS4SW_SKILL[3] = '<select name="A4_Skill3"onChange="Foot.StAllCalc() | Click_A4(1)"></select>';
+        html_CS4SW_SKILL[4] = '<select name="A4_Skill4"onChange="Foot.StAllCalc() | Click_A4(1)"></select>';
+        html_CS4SW_SKILL[5] = '<input type="checkbox" name="A4_Skill5"onClick="Foot.StAllCalc() | Click_A4(1)">';
+        html_CS4SW_SKILL[6] = '<input type="checkbox" name="A4_Skill6"onClick="Foot.StAllCalc() | Click_A4(1)">';
+        html_CS4SW_SKILL[7] = '<input type="checkbox" name="A4_Skill7"onClick="Foot.StAllCalc() | Click_A4(1)">';
+        html_CS4SW_SKILL[8] = '<input type="checkbox" name="A4_Skill8"onClick="Foot.StAllCalc() | Click_A4(1)">';
+        html_CS4SW_SKILL[9] = '<input type="checkbox" name="A4_Skill9"onClick="Foot.StAllCalc() | Click_A4(1)">';
+        html_CS4SW_SKILL[10] = '<input type="checkbox" name="A4_Skill10"onClick="Foot.StAllCalc() | Click_A4(1)">';
+        html_CS4SW_SKILL[11] = '<select name="A4_Skill11"onChange="Foot.StAllCalc() | Click_A4(1)"></select>';
         for (let i = 0; i <= 11; i++) myInnerHtml("EN4" + i + "_2", html_CS4SW_SKILL[i], 0);
         myInnerHtml("EN430_1", "STR", 0);
         myInnerHtml("EN431_1", "AGI", 0);
@@ -17250,12 +17248,12 @@ export function Click_Skill4SW() {
         myInnerHtml("EN433_1", "INT", 0);
         myInnerHtml("EN434_1", "DEX", 0);
         myInnerHtml("EN435_1", "LUK", 0);
-        html_CS4SW_SKILL[30] = '<select name="A4_Skill30"onChange="StAllCalc() | Click_A4(1)"></select>';
-        html_CS4SW_SKILL[31] = '<select name="A4_Skill31"onChange="StAllCalc() | Click_A4(1)"></select>';
-        html_CS4SW_SKILL[32] = '<select name="A4_Skill32"onChange="StAllCalc() | Click_A4(1)"></select>';
-        html_CS4SW_SKILL[33] = '<select name="A4_Skill33"onChange="StAllCalc() | Click_A4(1)"></select>';
-        html_CS4SW_SKILL[34] = '<select name="A4_Skill34"onChange="StAllCalc() | Click_A4(1)"></select>';
-        html_CS4SW_SKILL[35] = '<select name="A4_Skill35"onChange="StAllCalc() | Click_A4(1)"></select>';
+        html_CS4SW_SKILL[30] = '<select name="A4_Skill30"onChange="Foot.StAllCalc() | Click_A4(1)"></select>';
+        html_CS4SW_SKILL[31] = '<select name="A4_Skill31"onChange="Foot.StAllCalc() | Click_A4(1)"></select>';
+        html_CS4SW_SKILL[32] = '<select name="A4_Skill32"onChange="Foot.StAllCalc() | Click_A4(1)"></select>';
+        html_CS4SW_SKILL[33] = '<select name="A4_Skill33"onChange="Foot.StAllCalc() | Click_A4(1)"></select>';
+        html_CS4SW_SKILL[34] = '<select name="A4_Skill34"onChange="Foot.StAllCalc() | Click_A4(1)"></select>';
+        html_CS4SW_SKILL[35] = '<select name="A4_Skill35"onChange="Foot.StAllCalc() | Click_A4(1)"></select>';
         for (let i = 30; i <= 35; i++) myInnerHtml("EN4" + i + "_2", html_CS4SW_SKILL[i], 0);
         for (let i = 0; i <= 5; i++) {
             document.calcForm.A4_Skill1.options[i] = new Option(i, i);
@@ -17499,7 +17497,7 @@ export function Click_Skill7SW() {
 
                     objSelect = HtmlCreateElement("select", objTd);
                     objSelect.setAttribute("name", "A7_Skill" + subInfoArray[idxKind][0]);
-                    objSelect.setAttribute("onchange", "StAllCalc() | Click_A7(1)");
+                    objSelect.setAttribute("onchange", "Foot.StAllCalc() | Click_A7(1)");
 
                     HtmlCreateElementOption(0, subInfoArray[idxKind][1] + "+食品", objSelect);
                     for (idxValue = 1; idxValue <= 10; idxValue++) {
@@ -17515,7 +17513,7 @@ export function Click_Skill7SW() {
                 objInput.setAttribute("type", "button");
                 objInput.setAttribute("id", "FOODOFF");
                 objInput.setAttribute("value", "全解除");
-                objInput.setAttribute("onclick", "Click_Food_Off() | StAllCalc()");
+                objInput.setAttribute("onclick", "Click_Food_Off() | Foot.StAllCalc()");
 
                 HtmlCreateTextNode(" ", objTd);
 
@@ -17523,7 +17521,7 @@ export function Click_Skill7SW() {
                 objInput.setAttribute("type", "button");
                 objInput.setAttribute("name", "NETCAFE3");
                 objInput.setAttribute("value", "ALL＋10");
-                objInput.setAttribute("onclick", "Click_NetCafe3() | StAllCalc()");
+                objInput.setAttribute("onclick", "Click_NetCafe3() | Foot.StAllCalc()");
 
                 HtmlCreateElement("br", objTd);
 
@@ -17541,7 +17539,7 @@ export function Click_Skill7SW() {
                 objInput.setAttribute("type", "checkbox");
                 objInput.setAttribute("id", "OBJID_CHECK_A7_Skill15");
                 objInput.setAttribute("name", "A7_Skill15");
-                objInput.setAttribute("onclick", "StAllCalc() | Click_A7(1) | CAttackMethodAreaComponentManager.RebuildControls()");
+                objInput.setAttribute("onclick", "Foot.StAllCalc() | Click_A7(1) | CAttackMethodAreaComponentManager.RebuildControls()");
 
                 objLabel = HtmlCreateElement("label", objTd);
                 objLabel.setAttribute("for", "OBJID_CHECK_A7_Skill15");
@@ -17572,7 +17570,7 @@ export function Click_Skill7SW() {
                     objInput.setAttribute("type", "checkbox");
                     objInput.setAttribute("id", "OBJID_CHECK_A7_Skill" + subInfoArray[idxKind][0]);
                     objInput.setAttribute("name", "A7_Skill" + subInfoArray[idxKind][0]);
-                    objInput.setAttribute("onclick", "StAllCalc() | Click_A7(1)");
+                    objInput.setAttribute("onclick", "Foot.StAllCalc() | Click_A7(1)");
 
                     objLabel = HtmlCreateElement("label", objTd);
                     objLabel.setAttribute("for", "OBJID_CHECK_A7_Skill" + subInfoArray[idxKind][0]);
@@ -17608,7 +17606,7 @@ export function Click_Skill7SW() {
                 objInput.setAttribute("type", "checkbox");
                 objInput.setAttribute("id", "OBJID_CHECK_A7_Skill" + buildInfo[0]);
                 objInput.setAttribute("name", "A7_Skill" + buildInfo[0]);
-                objInput.setAttribute("onclick", "StAllCalc() | Click_A7(1)");
+                objInput.setAttribute("onclick", "Foot.StAllCalc() | Click_A7(1)");
 
                 objLabel = HtmlCreateElement("label", objTd);
                 objLabel.setAttribute("for", "OBJID_CHECK_A7_Skill" + buildInfo[0]);
@@ -17628,7 +17626,7 @@ export function Click_Skill7SW() {
 
                 objSelect = HtmlCreateElement("select", objTd);
                 objSelect.setAttribute("name", "A7_Skill" + buildInfo[0]);
-                objSelect.setAttribute("onchange", "StAllCalc() | Click_A7(1)");
+                objSelect.setAttribute("onchange", "Foot.StAllCalc() | Click_A7(1)");
 
                 for (idxValue = 0; idxValue < buildInfo[2].length; idxValue++) {
                     HtmlCreateElementOption(idxValue, buildInfo[2][idxValue], objSelect);
@@ -17652,7 +17650,7 @@ export function Click_Skill7SW() {
 
         objSelect = HtmlCreateElement("select", objTd);
         objSelect.setAttribute("name", "A7_Skill" + subInfoArray[idxKind][0]);
-        objSelect.setAttribute("onchange", "StAllCalc() | Click_A7(1)");
+        objSelect.setAttribute("onchange", "Foot.StAllCalc() | Click_A7(1)");
 
         HtmlCreateElementOption(0, "期間限定系[" + subInfoArray[idxKind][1] + "] なし", objSelect);
         for (idxValue = 1; idxValue <= 50; idxValue++) {
@@ -17812,7 +17810,7 @@ export function Click_Skill8SW() {
     if (n_Skill8SW) {
         let str;
         str = '<TABLE Border style="white-space:nowrap;"><TR><TD id="A8TD" Colspan="2" class="title"><input id="OBJID_CHECK_A8_SKILLSW" type="checkbox" name="A8_SKILLSW"onClick="Click_Skill8SW()"><label for="OBJID_CHECK_A8_SKILLSW">その他の支援/設定 (暫定追加機能)</label><SPAN id="A8used"></SPAN></TD></TR>';
-        str += '<TR><TD>ペット：<select id="OBJID_SELECT_PET" name="A8_Skill0" onchange="StAllCalc() | OnChangePetSelect()"></select></TD><TD>親密度：<select id="OBJID_SELECT_PET_FRIENDLITY" name="A8_Skill17" onChange="StAllCalc() | Click_A8(1)"></select></TD></TR>';
+        str += '<TR><TD>ペット：<select id="OBJID_SELECT_PET" name="A8_Skill0" onchange="Foot.StAllCalc() | OnChangePetSelect()"></select></TD><TD>親密度：<select id="OBJID_SELECT_PET_FRIENDLITY" name="A8_Skill17" onChange="StAllCalc() | Click_A8(1)"></select></TD></TR>';
         str += '<TR><TD colspan="2"><SPAN id="OBJID_SPAN_PET_EXPLAIN"></SPAN></TD></TR>';
         str += '<TR><TD id="EN801"></TD><TD id="EN802"></TD></TR>';
         str += '<TR><TD id="EN803"></TD><TD id="EN804"></TD></TR>';
@@ -17854,80 +17852,80 @@ export function Click_Skill8SW() {
         for (idx = FRIENDLITY_ID_AUTO; idx < FRIENDLITY_ID_COUNT; idx++) {
             HtmlCreateElementOption(idx, GetFriendlityText(idx), objSelect);
         }
-        myInnerHtml("EN801", '戦闘教範系<select name="A8_Skill1" onChange="StAllCalc() | Click_A8(1)"></select>', 0);
+        myInnerHtml("EN801", '戦闘教範系<select name="A8_Skill1" onChange="Foot.StAllCalc() | Click_A8(1)"></select>', 0);
         let w_name = ["なし", "25", "50", "75", "100", "(125)", "(150)"];
         for (let i = 0; i <= 6; i++) document.calcForm.A8_Skill1.options[i] = new Option(w_name[i], i);
-        myInnerHtml("EN802", 'Job教範系<select name="A8_Skill2" onChange="StAllCalc() | Click_A8(1)"></select>', 0);
+        myInnerHtml("EN802", 'Job教範系<select name="A8_Skill2" onChange="Foot.StAllCalc() | Click_A8(1)"></select>', 0);
         w_name = ["なし", "50", "(75)", "(100)"];
         for (let i = 0; i <= 3; i++) document.calcForm.A8_Skill2.options[i] = new Option(w_name[i], i);
-        myInnerHtml("EN803", 'ネットカフェ経験値UP<select name="A8_Skill3" onChange="StAllCalc() | Click_A8(1)"></select>', 0);
+        myInnerHtml("EN803", 'ネットカフェ経験値UP<select name="A8_Skill3" onChange="Foot.StAllCalc() | Click_A8(1)"></select>', 0);
         document.calcForm.A8_Skill3.options[0] = new Option("-", 0);
         for (let i = 1; i <= 2; i++) {
             var wy = 50 * i;
             var wx = (100 + wy) / 100;
             document.calcForm.A8_Skill3.options[i] = new Option("+" + wy + "%(" + wx + "倍)", i);
         }
-        myInnerHtml("EN804", '経験値増加キャンペーン<select name="A8_Skill7" onChange="StAllCalc() | Click_A8(1)"></select>', 0);
+        myInnerHtml("EN804", '経験値増加キャンペーン<select name="A8_Skill7" onChange="Foot.StAllCalc() | Click_A8(1)"></select>', 0);
         document.calcForm.A8_Skill7.options[0] = new Option("-", 0);
         for (let i = 1; i <= 8; i++) {
             var wy = 25 * i;
             var wx = (100 + wy) / 100;
             document.calcForm.A8_Skill7.options[i] = new Option(wx + "倍(+" + (25 * i) + "%)", i);
         }
-        myInnerHtml("EN822", 'OTP<select name="A8_Skill22" onChange="StAllCalc() | Click_A8(1)"></select>', 0);
+        myInnerHtml("EN822", 'OTP<select name="A8_Skill22" onChange="Foot.StAllCalc() | Click_A8(1)"></select>', 0);
         document.calcForm.A8_Skill22.options[0] = new Option("ログインボーナスなし", 0);
         document.calcForm.A8_Skill22.options[1] = new Option("ブロンズ(Exp+5%)", 1);
         document.calcForm.A8_Skill22.options[2] = new Option("シルバー(↑＋スピードポーション)", 2);
         document.calcForm.A8_Skill22.options[3] = new Option("ゴールド(↑＋Hit+10/Flee+10)", 3);
         document.calcForm.A8_Skill22.options[4] = new Option("レインボー(↑＋MaxHP+20%/MaxSP+20%)", 4);
         myInnerHtml("EN823", '←ジョンダパスはOTPレインボーです', 0);
-        myInnerHtml("EN805", '公平PT人数<select name="A8_Skill5" onChange="StAllCalc() | Click_A8(1)"></select>', 0);
+        myInnerHtml("EN805", '公平PT人数<select name="A8_Skill5" onChange="Foot.StAllCalc() | Click_A8(1)"></select>', 0);
         document.calcForm.A8_Skill5.options[0] = new Option("-", 0);
         for (let i = 1; i <= 11; i++) document.calcForm.A8_Skill5.options[i] = new Option((i + 1) + "人", i);
-        myInnerHtml("EN806", '共闘ボーナス<select name="A8_Skill6" onChange="StAllCalc() | Click_A8(1)"></select>', 0);
+        myInnerHtml("EN806", '共闘ボーナス<select name="A8_Skill6" onChange="Foot.StAllCalc() | Click_A8(1)"></select>', 0);
         document.calcForm.A8_Skill6.options[0] = new Option("-", 0);
         for (let i = 1; i <= 20; i++) document.calcForm.A8_Skill6.options[i] = new Option("+" + (i * 25) + "%", i);
-        myInnerHtml("EN821", '討伐クエストのExpを加算(1匹あたりの値)<select name="A8_Skill21" disabled="disabled" onChange="StAllCalc() | Click_A8(1)"></select>', 0);
+        myInnerHtml("EN821", '討伐クエストのExpを加算(1匹あたりの値)<select name="A8_Skill21" disabled="disabled" onChange="Foot.StAllCalc() | Click_A8(1)"></select>', 0);
         document.calcForm.A8_Skill21.options[0] = new Option("-", 0);
         document.calcForm.A8_Skill21.options[1] = new Option("BaseExpで受け取る", 1);
         document.calcForm.A8_Skill21.options[2] = new Option("JobExpで受け取る", 2);
-        myInnerHtml("EN807", '<input id="OBJID_CHECK_A8_Skill4" type="checkbox" name="A8_Skill4"onClick="StAllCalc() | Click_A8(1)"><label for="OBJID_CHECK_A8_Skill4">結婚スパノビステータスALL+1付与</label>', 0);
-        myInnerHtml("EN808", '<input id="OBJID_CHECK_A8_Skill13" type="checkbox" name="A8_Skill13"onClick="StAllCalc() | Click_A8(1)||RebuildStatusSelect()||CalcStatusPoint(true)"><label for="OBJID_CHECK_A8_Skill13">養子状態にする</label>', 0);
+        myInnerHtml("EN807", '<input id="OBJID_CHECK_A8_Skill4" type="checkbox" name="A8_Skill4"onClick="Foot.StAllCalc() | Click_A8(1)"><label for="OBJID_CHECK_A8_Skill4">結婚スパノビステータスALL+1付与</label>', 0);
+        myInnerHtml("EN808", '<input id="OBJID_CHECK_A8_Skill13" type="checkbox" name="A8_Skill13"onClick="Foot.StAllCalc() | Click_A8(1)||RebuildStatusSelect()||CalcStatusPoint(true)"><label for="OBJID_CHECK_A8_Skill13">養子状態にする</label>', 0);
         myInnerHtml("EN809", '<font size="2" color="red">（時限性補助効果の設定は、「アイテム時限効果」設定欄へ移動しました）</font><input type="button" value="設定欄を表示" onclick="CTimeItemAreaComponentManager.FocusArea(0, true)">', 0);
-        myInnerHtml("EN810", '囲んでいる敵の数<select name="A8_Skill12" onChange="StAllCalc() | Click_A8(1)"></select>', 0);
+        myInnerHtml("EN810", '囲んでいる敵の数<select name="A8_Skill12" onChange="Foot.StAllCalc() | Click_A8(1)"></select>', 0);
         for (let i = 0; i <= 22; i++) document.calcForm.A8_Skill12.options[i] = new Option(i + "匹", i);
         myInnerHtml("EN812", '<Font size=2><B>攻城戦の設定は[対人プレイヤー設定]欄に移動</B></Font>', 0);
-        myInnerHtml("EN813", '防衛値<select name="A8_Skill15" onChange="StAllCalc() | Click_A8(1)"></select><Font size=2>(攻城戦モード時のみ有効)</Font>', 0);
+        myInnerHtml("EN813", '防衛値<select name="A8_Skill15" onChange="Foot.StAllCalc() | Click_A8(1)"></select><Font size=2>(攻城戦モード時のみ有効)</Font>', 0);
         document.calcForm.A8_Skill15.options[0] = new Option("-", 0);
         for (let i = 1; i <= 20; i++) document.calcForm.A8_Skill15.options[i] = new Option(i * 5, i);
-        myInnerHtml("EN814", '<input id="OBJID_CHECK_A8_Skill16" type="checkbox" name="A8_Skill16"onClick="StAllCalc() | Click_A8(1)"><label for="OBJID_CHECK_A8_Skill16">クリティカル率を0にする</label>', 0);
-        if (41 <= n_A_JOB && n_A_JOB <= 43) myInnerHtml("EN819", '<input id="OBJID_CHECK_A8_Skill19" type="checkbox" name="A8_Skill19"onClick="StAllCalc() | Click_A8(1)"><label for="OBJID_CHECK_A8_Skill19"><Font size=2>暖かい風欄を他職からの武器属性付与にする<BR>　（素手Atk部分には武器属性付与が適用されない）</Font></label>', 0);
-        else myInnerHtml("EN819", '<input id="OBJID_CHECK_A8_Skill19" type="checkbox" name="A8_Skill19"onClick="StAllCalc() | Click_A8(1)"><label for="OBJID_CHECK_A8_Skill19"><Font size=2>武器属性付与をアカデミーの看板型付与にする<BR>　（素手Atk部分にも武器属性付与が適用される）</Font></label>', 0);
+        myInnerHtml("EN814", '<input id="OBJID_CHECK_A8_Skill16" type="checkbox" name="A8_Skill16"onClick="Foot.StAllCalc() | Click_A8(1)"><label for="OBJID_CHECK_A8_Skill16">クリティカル率を0にする</label>', 0);
+        if (41 <= n_A_JOB && n_A_JOB <= 43) myInnerHtml("EN819", '<input id="OBJID_CHECK_A8_Skill19" type="checkbox" name="A8_Skill19"onClick="Foot.StAllCalc() | Click_A8(1)"><label for="OBJID_CHECK_A8_Skill19"><Font size=2>暖かい風欄を他職からの武器属性付与にする<BR>　（素手Atk部分には武器属性付与が適用されない）</Font></label>', 0);
+        else myInnerHtml("EN819", '<input id="OBJID_CHECK_A8_Skill19" type="checkbox" name="A8_Skill19"onClick="Foot.StAllCalc() | Click_A8(1)"><label for="OBJID_CHECK_A8_Skill19"><Font size=2>武器属性付与をアカデミーの看板型付与にする<BR>　（素手Atk部分にも武器属性付与が適用される）</Font></label>', 0);
 
-        myInnerHtml("EN830", 'クァグマイア<select name="A_IJYOU0" onChange="StAllCalc() | Click_A8(1)"></select>', 0);
+        myInnerHtml("EN830", 'クァグマイア<select name="A_IJYOU0" onChange="Foot.StAllCalc() | Click_A8(1)"></select>', 0);
         document.calcForm.A_IJYOU0.options[0] = new Option("-", 0);
         for (let i = 1; i <= 5; i++) document.calcForm.A_IJYOU0.options[i] = new Option("Lv" + i + "(モンスターが使用)", i);
         for (let i = 6; i <= 10; i++) document.calcForm.A_IJYOU0.options[i] = new Option("Lv" + (i - 5) + "(プレイヤーが使用)", i);
 
-        myInnerHtml("EN831", '速度減少<select name="A_IJYOU1" onChange="StAllCalc() | Click_A8(1)"></select>', 0);
+        myInnerHtml("EN831", '速度減少<select name="A_IJYOU1" onChange="Foot.StAllCalc() | Click_A8(1)"></select>', 0);
         document.calcForm.A_IJYOU1.options[0] = new Option("-", 0);
         for (let i = 1; i <= 10; i++) document.calcForm.A_IJYOU1.options[i] = new Option("Lv" + i, i);
         document.calcForm.A_IJYOU1.options[11] = new Option("Lv46", 46);
         document.calcForm.A_IJYOU1.options[12] = new Option("Lv48", 48);
 
-        myInnerHtml("EN832", '<input id="OBJID_CHECK_A_IJYOU2" type="checkbox" name="A_IJYOU2"onClick="StAllCalc() | Click_A8(1)"><label for="OBJID_CHECK_A_IJYOU2">毒</label>', 0);
+        myInnerHtml("EN832", '<input id="OBJID_CHECK_A_IJYOU2" type="checkbox" name="A_IJYOU2"onClick="Foot.StAllCalc() | Click_A8(1)"><label for="OBJID_CHECK_A_IJYOU2">毒</label>', 0);
 
-        myInnerHtml("EN833", '<input id="OBJID_CHECK_A_IJYOU3" type="checkbox" name="A_IJYOU3"onClick="StAllCalc() | Click_A8(1)"><label for="OBJID_CHECK_A_IJYOU3">呪い</label>', 0);
+        myInnerHtml("EN833", '<input id="OBJID_CHECK_A_IJYOU3" type="checkbox" name="A_IJYOU3"onClick="Foot.StAllCalc() | Click_A8(1)"><label for="OBJID_CHECK_A_IJYOU3">呪い</label>', 0);
 
-        myInnerHtml("EN834", 'スローキャスト<select name="A_IJYOU4" onChange="StAllCalc() | Click_A8(1)"></select>', 0);
+        myInnerHtml("EN834", 'スローキャスト<select name="A_IJYOU4" onChange="Foot.StAllCalc() | Click_A8(1)"></select>', 0);
         document.calcForm.A_IJYOU4.options[0] = new Option("-", 0);
         for (let i = 1; i <= 5; i++) document.calcForm.A_IJYOU4.options[i] = new Option("Lv" + i, i);
 
-        myInnerHtml("EN835", '<input id="OBJID_CHECK_A_IJYOU5" type="checkbox" name="A_IJYOU5"onClick="StAllCalc() | Click_A8(1)"><label for="OBJID_CHECK_A_IJYOU5">氷結<Font size=2>(ASPD-30%/DEF-10%/固定詠唱+50%)</Font></label>', 0);
+        myInnerHtml("EN835", '<input id="OBJID_CHECK_A_IJYOU5" type="checkbox" name="A_IJYOU5"onClick="Foot.StAllCalc() | Click_A8(1)"><label for="OBJID_CHECK_A_IJYOU5">氷結<Font size=2>(ASPD-30%/DEF-10%/固定詠唱+50%)</Font></label>', 0);
 
-        myInnerHtml("EN836", '<input id="OBJID_CHECK_A_IJYOU6" type="checkbox" name="A_IJYOU6"onClick="StAllCalc() | Click_A8(1)"><label for="OBJID_CHECK_A_IJYOU6">(×)イヌハッカシャワー</label>', 0);
+        myInnerHtml("EN836", '<input id="OBJID_CHECK_A_IJYOU6" type="checkbox" name="A_IJYOU6"onClick="Foot.StAllCalc() | Click_A8(1)"><label for="OBJID_CHECK_A_IJYOU6">(×)イヌハッカシャワー</label>', 0);
 
-        myInnerHtml("EN837", '<input id="OBJID_CHECK_A_IJYOU7" type="checkbox" name="A_IJYOU7"onClick="StAllCalc() | Click_A8(1)"><label for="OBJID_CHECK_A_IJYOU7">(×)ニャングラス</label>', 0);
+        myInnerHtml("EN837", '<input id="OBJID_CHECK_A_IJYOU7" type="checkbox" name="A_IJYOU7"onClick="Foot.StAllCalc() | Click_A8(1)"><label for="OBJID_CHECK_A_IJYOU7">(×)ニャングラス</label>', 0);
 
         document.calcForm.A8_Skill0.value = n_A_PassSkill8[0];
         document.calcForm.A8_Skill1.value = n_A_PassSkill8[1];
@@ -18006,7 +18004,7 @@ function GetSizeModify(mobData, wSC_Size) {
         }
     }
     // ドラゴン搭乗時の、槍装備による、全型１００％補正
-    // トレーニング未習得でもドラゴンに乗れるので LearnedSkillSearch に置き換えられない
+    // トレーニング未習得でもドラゴンに乗れるので LearnedSkill.LearnedSkillSearch に置き換えられない
     if (UsedSkillSearch(SKILL_ID_DRAGON_TRAINING) > 0) {
         if (n_A_WeaponType == 4 || n_A_WeaponType == 5) {
             wSC_Size = 1;
@@ -18043,7 +18041,7 @@ function GetSizeModify(mobData, wSC_Size) {
     if (n_A_HEAD_DEF_PLUS >= 9 && Chara.EquipNumSearch(2512)) wSC_Size = 1;
 
     // 騎兵修練【未習得】時の、セイヴザキング装備時による、全型１００％補正
-    if (Math.max(LearnedSkillSearch(SKILL_ID_KIHE_SHUREN), UsedSkillSearch(SKILL_ID_KIHE_SHUREN)) == 0) {
+    if (Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_KIHE_SHUREN), UsedSkillSearch(SKILL_ID_KIHE_SHUREN)) == 0) {
         if (Chara.EquipNumSearch(ITEM_ID_SAVE_THE_KING)) wSC_Size = 1;
     }
 
@@ -18057,8 +18055,9 @@ function GetSizeModify(mobData, wSC_Size) {
     if (Chara.EquipNumSearch(ITEM_SET_ID_TENBINKYU_SET)) wSC_Size = 1;
 
     // 「スナイピングシューズ」の、スキル習得による、全型１００％補正
+    var itemCount = 0;
     if ((itemCount = Chara.EquipNumSearch(ITEM_ID_SNIPING_SHOES)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_AIMED_BOLT) >= 10) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_AIMED_BOLT) >= 10) {
             wSC_Size = 1;
         }
     }
@@ -18109,7 +18108,7 @@ function GetSizeModify(mobData, wSC_Size) {
 
     // 「追撃者のシューズ」の、スキル習得による、全型１００％補正
     if ((itemCount = Chara.EquipNumSearch(ITEM_ID_TSUIGEKISHANO_SHOES)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_FAINT_BOMB) >= 10) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_FAINT_BOMB) >= 10) {
             wSC_Size = 1;
         }
     }
@@ -18165,14 +18164,14 @@ function GetSizeModify(mobData, wSC_Size) {
 
     // 「インペリアルクルシフォームスーツ」の、スキル習得による、全型１００％補正
     if ((itemCount = Chara.EquipNumSearchMIG(ITEM_ID_IMPERIAL_CRUCIFORM_SUIT)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_MUCHANAGE) >= 10) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_MUCHANAGE) >= 10) {
             wSC_Size = 1;
         }
     }
 
     // 「グレースクルシフォームスーツ」の、スキル習得による、全型１００％補正
     if ((itemCount = Chara.EquipNumSearchMIG(ITEM_ID_GRACE_CRUCIFORM_SUIT)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_MUCHANAGE) >= 10) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_MUCHANAGE) >= 10) {
             wSC_Size = 1;
         }
     }
@@ -18189,7 +18188,7 @@ function GetSizeModify(mobData, wSC_Size) {
 
     // 「鬼神の盟友」の、スキル習得による、全型１００％補正
     if ((itemCount = Chara.EquipNumSearchMIG(ITEM_ID_KISHINNO_MEIYU)) > 0) {
-        if (LearnedSkillSearch(SKILL_ID_TENKETSU_HAN) >= 5) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_TENKETSU_HAN) >= 5) {
             wSC_Size = 1;
         }
     }
@@ -18248,7 +18247,7 @@ function GetSizeModify(mobData, wSC_Size) {
 function GetBaseRateSandansho(mobData) {
     let sklLv = 0;
     let rate = 0;
-    sklLv = Math.max(LearnedSkillSearch(SKILL_ID_SANDANSHO), UsedSkillSearch(SKILL_ID_SANDANSHO));
+    sklLv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_SANDANSHO), UsedSkillSearch(SKILL_ID_SANDANSHO));
     if (sklLv > 0) {
         rate = Math.max(rate, 30 - sklLv);
     }
@@ -18294,7 +18293,7 @@ function GetBaseRateDA(mobData) {
     }
 
     // スキル習得による効果
-    rate = Math.max(rate, 5 * Math.max(LearnedSkillSearch(SKILL_ID_DOUBLE_ATTACK), UsedSkillSearch(SKILL_ID_DOUBLE_ATTACK)));
+    rate = Math.max(rate, 5 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_DOUBLE_ATTACK), UsedSkillSearch(SKILL_ID_DOUBLE_ATTACK)));
 
 
     return rate;
@@ -18306,7 +18305,7 @@ function GetBaseRateDA(mobData) {
  * @param {*} mobData
  * @returns
  */
-function GetActRateSandansho(skillId, mobData) {
+export function GetActRateSandansho(skillId, mobData) {
 
     switch (skillId) {
         case SKILL_ID_TUZYO_KOGEKI:
@@ -18407,7 +18406,7 @@ function GetActHitRateDA(skillId, mobData) {
  * @param {*} mobData
  * @returns
  */
-function GetActRateCritical(skillId, mobData) {
+export function GetActRateCritical(skillId, mobData) {
 
     var rate = 0;
 
@@ -18511,7 +18510,7 @@ function GetIkariPow(mobData) {
     // 複数の怒り系をパッシブで設定できるようにするため、適切な怒りを検索する
     while (true) {
         // 星の怒り
-        if ((lvWork = Math.max(LearnedSkillSearch(SKILL_ID_HOSHINO_IKARI), UsedSkillSearch(SKILL_ID_HOSHINO_IKARI))) > 0) {
+        if ((lvWork = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_HOSHINO_IKARI), UsedSkillSearch(SKILL_ID_HOSHINO_IKARI))) > 0) {
             bEffective = true;
             if (UsedSkillSearch(SKILL_ID_TAIYOTO_TSUKITO_HOSHINO_KISEKI) > 0) {
                 // 太陽と月と星の奇跡発動中は、条件不問
@@ -18528,7 +18527,7 @@ function GetIkariPow(mobData) {
             }
         }
         // 月の怒り
-        if ((lvWork = Math.max(LearnedSkillSearch(SKILL_ID_TSUKINO_IKARI), UsedSkillSearch(SKILL_ID_TSUKINO_IKARI))) > 0) {
+        if ((lvWork = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_TSUKINO_IKARI), UsedSkillSearch(SKILL_ID_TSUKINO_IKARI))) > 0) {
             bEffective = true;
             if (mobData[MONSTER_DATA_INDEX_ID] !== MONSTER_ID_PLAYER) {
                 // 対プレイヤーではない場合は、サイズ・HP条件チェック
@@ -18543,7 +18542,7 @@ function GetIkariPow(mobData) {
             }
         }
         // 太陽の怒り
-        if ((lvWork = Math.max(LearnedSkillSearch(SKILL_ID_TAIYONO_IKARI), UsedSkillSearch(SKILL_ID_TAIYONO_IKARI))) > 0) {
+        if ((lvWork = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_TAIYONO_IKARI), UsedSkillSearch(SKILL_ID_TAIYONO_IKARI))) > 0) {
             bEffective = true;
             if (mobData[MONSTER_DATA_INDEX_ID] !== MONSTER_ID_PLAYER) {
                 // 対プレイヤーではない場合は、サイズ条件チェック
@@ -18659,7 +18658,7 @@ export function calc() {
 
     // ステータス等の計算（foot.js で定義しているアレ）
     var retValArray = null;
-    retValArray = StAllCalc();
+    retValArray = Foot.StAllCalc();
 
     // データの取りだし
     charaData = retValArray[0];
@@ -18721,7 +18720,7 @@ export function calc() {
         w_HIT = Math.min(100, Math.max(5, w_HIT));
 
         // ○○％の確率で必中　効果の適用
-        //var wkHit = GetEquippedTotalSPEquip(86) + GetEquippedTotalSPCardAndElse(86);
+        //var wkHit = Foot.GetEquippedTotalSPEquip(86) + Foot.GetEquippedTotalSPCardAndElse(86);
         var wkHit = n_tok[ITEM_SP_PERFECT_ATTACK_UP];
 
         // シールドチェーンの特殊補正
@@ -18854,11 +18853,11 @@ export function calc() {
     // 通常攻撃の場合は、武器の遠距離属性を適用
     if (n_A_ActiveSkill == 0) {
         // 武器の遠距離属性を検査
-        if (IsLongRange(n_A_Equip[EQUIP_REGION_ID_ARMS])) {
+        if (Equip.IsLongRange(n_A_Equip[EQUIP_REGION_ID_ARMS])) {
             n_Enekyori = 1;
         }
         // サモナースキル　ソウルアタックの効果
-        else if (Math.max(LearnedSkillSearch(SKILL_ID_SOUL_ATTACK), UsedSkillSearch(SKILL_ID_SOUL_ATTACK)) > 0) {
+        else if (Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_SOUL_ATTACK), UsedSkillSearch(SKILL_ID_SOUL_ATTACK)) > 0) {
             n_Enekyori = 1;
         }
     }
@@ -18982,7 +18981,7 @@ export function calc() {
         //--------------------------------
         // 「トゥースオブウォーグ」の攻撃力増加
         //--------------------------------
-        BK_n_A_DMG_Wolf[idx] += 10 * Math.max(LearnedSkillSearch(SKILL_ID_TOOTH_OF_WUG), UsedSkillSearch(SKILL_ID_TOOTH_OF_WUG));
+        BK_n_A_DMG_Wolf[idx] += 10 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_TOOTH_OF_WUG), UsedSkillSearch(SKILL_ID_TOOTH_OF_WUG));
         //--------------------------------
         // 演奏スキル「ダンスウィズウォーグ」の攻撃力増加
         //--------------------------------
@@ -19091,8 +19090,8 @@ export function calc() {
     //
     //----------------------------------------------------------------
     var wCH_AS_QUAKE = 0;
-    for (idx = 0; idx < AUTO_SPELL_SETTING_COUNT; idx++) {
-        var asId = n_A_PassSkill5[OBJID_OFFSET_AS_SKILL_ID + idx];
+    for (idx = 0; idx < CalcAutoSpell.AUTO_SPELL_SETTING_COUN; idx++) {
+        var asId = n_A_PassSkill5[CalcAutoSpell.OBJID_OFFSET_AS_SKILL_ID + idx];
         if (asId == undefined) {
             continue;
         }
@@ -19217,7 +19216,7 @@ export function calc() {
     // 【ダメージ計算】オートスペルダメージ計算
     //
     //----------------------------------------------------------------
-    AS_Calc(charaData, specData, mobData, attackMethodConfArray, battleCalcInfo);
+    CalcAutoSpell.AS_Calc(charaData, specData, mobData, attackMethodConfArray, battleCalcInfo);
 
     //----------------------------------------------------------------
     //
@@ -19590,7 +19589,7 @@ function GetWeaponAtk(strdex, strBonus, armsType, armsLv, armsAtk, sizeModify,
     //----------------------------------------------------------------
     if ((itemCount = Chara.EquipNumSearch(ITEM_ID_SHIKKOUSHANO_SHOES)) > 0) {
         for (idx = 0; idx < wpnAtkArray.length; idx++) {
-            effectValue = 4 * LearnedSkillSearch(SKILL_ID_WEAPON_CRUSH) * itemCount;
+            effectValue = 4 * LearnedSkill.LearnedSkillSearch(SKILL_ID_WEAPON_CRUSH) * itemCount;
             wpnAtkArray[idx] = Math.floor((wpnAtkArray[idx] * (100 + effectValue)) / 100);
         }
     }
@@ -19817,7 +19816,7 @@ function _SUB_ApplyMonsterDefence(mobData, dmg) {
 
     // 特性ステータス対応
     // RES減衰の適用
-    dmg = ApplyResResist(mobData, dmg);
+    dmg = HmJob.ApplyResResist(mobData, dmg);
 
     // 減算DEFの適用
     if (!bPenetrate) {
@@ -19880,60 +19879,60 @@ function ApplyMonsterDefence(mobData, dmg, lefthand) {
  * @returns
  */
 function TYPE_SYUUREN(mobData, attackMethodConfArray, bArmsLeft) {
-    if (NumSearch(n_A_ActiveSkill, n_SP_SKILL) != 0) return 0;
+    if (Foot.NumSearch(n_A_ActiveSkill, n_SP_SKILL) != 0) return 0;
     var w = 0;
     //----------------------------------------------------------------
     // 「武器ごとの一般修練系」の効果
     //----------------------------------------------------------------
     switch (n_A_WeaponType) {
         case ITEM_KIND_NONE:
-            w += 3 * Math.max(LearnedSkillSearch(SKILL_ID_TEKKEN), UsedSkillSearch(SKILL_ID_TEKKEN));
+            w += 3 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_TEKKEN), UsedSkillSearch(SKILL_ID_TEKKEN));
             w += 10 * UsedSkillSearch(SKILL_ID_TAIRIGI);
             break;
 
         case ITEM_KIND_KNIFE:
-            w += 4 * Math.max(LearnedSkillSearch(SKILL_ID_KEN_SHUREN), UsedSkillSearch(SKILL_ID_KEN_SHUREN));
-            w += 10 * Math.max(LearnedSkillSearch(SKILL_ID_KEN_SHUREN_GENETIC), UsedSkillSearch(SKILL_ID_KEN_SHUREN_GENETIC));
+            w += 4 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_KEN_SHUREN), UsedSkillSearch(SKILL_ID_KEN_SHUREN));
+            w += 10 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_KEN_SHUREN_GENETIC), UsedSkillSearch(SKILL_ID_KEN_SHUREN_GENETIC));
             break;
 
         case ITEM_KIND_SWORD:
-            w += 4 * Math.max(LearnedSkillSearch(SKILL_ID_KEN_SHUREN), UsedSkillSearch(SKILL_ID_KEN_SHUREN));
-            w += 3 * Math.max(LearnedSkillSearch(SKILL_ID_ONO_SHUREN), UsedSkillSearch(SKILL_ID_ONO_SHUREN));
-            w += 10 * Math.max(LearnedSkillSearch(SKILL_ID_KEN_SHUREN_GENETIC), UsedSkillSearch(SKILL_ID_KEN_SHUREN_GENETIC));
+            w += 4 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_KEN_SHUREN), UsedSkillSearch(SKILL_ID_KEN_SHUREN));
+            w += 3 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_ONO_SHUREN), UsedSkillSearch(SKILL_ID_ONO_SHUREN));
+            w += 10 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_KEN_SHUREN_GENETIC), UsedSkillSearch(SKILL_ID_KEN_SHUREN_GENETIC));
             break;
 
         case ITEM_KIND_SWORD_2HAND:
-            w += 4 * Math.max(LearnedSkillSearch(SKILL_ID_RYOUTKEN_SHUREN), UsedSkillSearch(SKILL_ID_RYOUTKEN_SHUREN));
+            w += 4 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_RYOUTKEN_SHUREN), UsedSkillSearch(SKILL_ID_RYOUTKEN_SHUREN));
             break;
 
         case ITEM_KIND_SPEAR:
         case ITEM_KIND_SPEAR_2HAND:
             if (IsSameJobClass(JOB_ID_RUNEKNIGHT)) {
-                // トレーニング未習得でもドラゴンに乗れるので LearnedSkillSearch に置き換えられない
+                // トレーニング未習得でもドラゴンに乗れるので LearnedSkill.LearnedSkillSearch に置き換えられない
                 if (UsedSkillSearch(SKILL_ID_DRAGON_TRAINING) == 0) {
-                    w += 4 * Math.max(LearnedSkillSearch(SKILL_ID_YARI_SHUREN), UsedSkillSearch(SKILL_ID_YARI_SHUREN));
+                    w += 4 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_YARI_SHUREN), UsedSkillSearch(SKILL_ID_YARI_SHUREN));
                 } else {
                     // ドラゴン搭乗時に槍修練の効果が増強される
-                    w += 10 * Math.max(LearnedSkillSearch(SKILL_ID_YARI_SHUREN), UsedSkillSearch(SKILL_ID_YARI_SHUREN));
+                    w += 10 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_YARI_SHUREN), UsedSkillSearch(SKILL_ID_YARI_SHUREN));
                 }
             } else {
-                if (Math.max(LearnedSkillSearch(SKILL_ID_KIHE_SHUREN), UsedSkillSearch(SKILL_ID_KIHE_SHUREN)) == 0) {
-                    w += 4 * Math.max(LearnedSkillSearch(SKILL_ID_YARI_SHUREN), UsedSkillSearch(SKILL_ID_YARI_SHUREN));
+                if (Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_KIHE_SHUREN), UsedSkillSearch(SKILL_ID_KIHE_SHUREN)) == 0) {
+                    w += 4 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_YARI_SHUREN), UsedSkillSearch(SKILL_ID_YARI_SHUREN));
                 } else {
-                    w += 5 * Math.max(LearnedSkillSearch(SKILL_ID_YARI_SHUREN), UsedSkillSearch(SKILL_ID_YARI_SHUREN));
+                    w += 5 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_YARI_SHUREN), UsedSkillSearch(SKILL_ID_YARI_SHUREN));
                 }
             }
             break;
 
         case ITEM_KIND_AXE:
         case ITEM_KIND_AXE_2HAND:
-            w += 3 * Math.max(LearnedSkillSearch(SKILL_ID_ONO_SHUREN), UsedSkillSearch(SKILL_ID_ONO_SHUREN));
-            w += 5 * Math.max(LearnedSkillSearch(SKILL_ID_ONO_SHUREN_MECHANIC), UsedSkillSearch(SKILL_ID_ONO_SHUREN_MECHANIC));
+            w += 3 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_ONO_SHUREN), UsedSkillSearch(SKILL_ID_ONO_SHUREN));
+            w += 5 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_ONO_SHUREN_MECHANIC), UsedSkillSearch(SKILL_ID_ONO_SHUREN_MECHANIC));
             break;
 
         case ITEM_KIND_CLUB:
             w += 3 * UsedSkillSearch(SKILL_ID_MACE_SHUREN);
-            w += 4 * Math.max(LearnedSkillSearch(SKILL_ID_ONO_SHUREN_MECHANIC), UsedSkillSearch(SKILL_ID_ONO_SHUREN_MECHANIC));
+            w += 4 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_ONO_SHUREN_MECHANIC), UsedSkillSearch(SKILL_ID_ONO_SHUREN_MECHANIC));
 
         case ITEM_KIND_KATAR:
             w += 3 * UsedSkillSearch(SKILL_ID_KATAR_SHUREN);
@@ -19944,7 +19943,7 @@ function TYPE_SYUUREN(mobData, attackMethodConfArray, bArmsLeft) {
             break;
 
         case ITEM_KIND_FIST:
-            w += 3 * Math.max(LearnedSkillSearch(SKILL_ID_TEKKEN), UsedSkillSearch(SKILL_ID_TEKKEN));
+            w += 3 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_TEKKEN), UsedSkillSearch(SKILL_ID_TEKKEN));
             break;
 
         case ITEM_KIND_MUSICAL:
@@ -19965,12 +19964,12 @@ function TYPE_SYUUREN(mobData, attackMethodConfArray, bArmsLeft) {
     //----------------------------------------------------------------
     // 「ブラックスミス　武器研究」の効果
     //----------------------------------------------------------------
-    w += 2 * Math.max(LearnedSkillSearch(SKILL_ID_BUKI_KENKYU), UsedSkillSearch(SKILL_ID_BUKI_KENKYU));
+    w += 2 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_BUKI_KENKYU), UsedSkillSearch(SKILL_ID_BUKI_KENKYU));
 
     //----------------------------------------------------------------
     // 「ブラックスミス　ヒルトバインディング」の効果
     //----------------------------------------------------------------
-    if (Math.max(LearnedSkillSearch(SKILL_ID_HILT_BINDING), UsedSkillSearch(SKILL_ID_HILT_BINDING)) > 0) {
+    if (Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_HILT_BINDING), UsedSkillSearch(SKILL_ID_HILT_BINDING)) > 0) {
         w += 4;
     }
 
@@ -19979,14 +19978,14 @@ function TYPE_SYUUREN(mobData, attackMethodConfArray, bArmsLeft) {
     //----------------------------------------------------------------
     if ((GetMonseterElmBasicType(mobData[MONSTER_DATA_INDEX_ELEMENT]) == ELM_ID_EARTH)
         || (GetMonseterElmBasicType(mobData[MONSTER_DATA_INDEX_ELEMENT]) == ELM_ID_FIRE)) {
-        w += 10 * Math.max(LearnedSkillSearch(SKILL_ID_HITO_DAICHINO_KENKYU), UsedSkillSearch(SKILL_ID_HITO_DAICHINO_KENKYU));
+        w += 10 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_HITO_DAICHINO_KENKYU), UsedSkillSearch(SKILL_ID_HITO_DAICHINO_KENKYU));
     }
 
     //----------------------------------------------------------------
     // 「メカニック　魔導ギアライセンス」の効果
     //----------------------------------------------------------------
     if (UsedSkillSearch(SKILL_ID_MADOGEAR) > 0) {
-        w += 20 * Math.max(LearnedSkillSearch(SKILL_ID_MADOGEAR_LICENSE), UsedSkillSearch(SKILL_ID_MADOGEAR_LICENSE));
+        w += 20 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_MADOGEAR_LICENSE), UsedSkillSearch(SKILL_ID_MADOGEAR_LICENSE));
     }
 
     //----------------------------------------------------------------
@@ -19994,14 +19993,14 @@ function TYPE_SYUUREN(mobData, attackMethodConfArray, bArmsLeft) {
     //----------------------------------------------------------------
     if ((mobData[MONSTER_DATA_INDEX_RACE] == RACE_ID_DEMON)
         || (GetMonseterElmBasicType(mobData[MONSTER_DATA_INDEX_ELEMENT]) == ELM_ID_UNDEAD)) {
-        w += Math.floor((3 + 5 / 100 * n_A_BaseLV) * Math.max(LearnedSkillSearch(SKILL_ID_DEMON_BANE), UsedSkillSearch(SKILL_ID_DEMON_BANE)));
+        w += Math.floor((3 + 5 / 100 * n_A_BaseLV) * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_DEMON_BANE), UsedSkillSearch(SKILL_ID_DEMON_BANE)));
     }
 
     //----------------------------------------------------------------
     // 「ハンター　ビーストベイン」の効果
     //----------------------------------------------------------------
     if (mobData[MONSTER_DATA_INDEX_RACE] == RACE_ID_ANIMAL || mobData[MONSTER_DATA_INDEX_RACE] == RACE_ID_INSECT) {
-        w += 4 * Math.max(LearnedSkillSearch(SKILL_ID_BEAST_BANE), UsedSkillSearch(SKILL_ID_BEAST_BANE));
+        w += 4 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_BEAST_BANE), UsedSkillSearch(SKILL_ID_BEAST_BANE));
         if (UsedSkillSearch(SKILL_ID_HUNTERNO_TAMASHI_KOKA)) {
             w += n_A_STR;
         }
@@ -20013,7 +20012,7 @@ function TYPE_SYUUREN(mobData, attackMethodConfArray, bArmsLeft) {
     if (mobData[MONSTER_DATA_INDEX_RACE] == RACE_ID_ANIMAL
         || mobData[MONSTER_DATA_INDEX_RACE] == RACE_ID_PLANT
         || mobData[MONSTER_DATA_INDEX_RACE] == RACE_ID_FISH) {
-        w += 5 * Math.max(LearnedSkillSearch(SKILL_ID_RANGER_MAIN), UsedSkillSearch(SKILL_ID_RANGER_MAIN));
+        w += 5 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_RANGER_MAIN), UsedSkillSearch(SKILL_ID_RANGER_MAIN));
     }
 
     //----------------------------------------------------------------
@@ -20526,7 +20525,7 @@ function GetHitModify() {
 
 
     // 武器研究の効果
-    value += 2 * Math.max(LearnedSkillSearch(SKILL_ID_BUKI_KENKYU), UsedSkillSearch(SKILL_ID_BUKI_KENKYU));
+    value += 2 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_BUKI_KENKYU), UsedSkillSearch(SKILL_ID_BUKI_KENKYU));
 
 
 
@@ -20609,7 +20608,7 @@ function GetPerfectHitDamage(charaData, specData, mobData, attackMethodConfArray
         // クラスターボム
         case 505: {
             // トラップ研究習得Lv補正
-            const trap_kenkyu_lv = Math.max(LearnedSkillSearch(SKILL_ID_TRAP_KENKYU), UsedSkillSearch(SKILL_ID_TRAP_KENKYU));
+            const trap_kenkyu_lv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_TRAP_KENKYU), UsedSkillSearch(SKILL_ID_TRAP_KENKYU));
             w999 += Math.floor(Math.floor(((n_A_ActiveSkillLV * n_A_DEX) + (n_A_INT * 5)) * (1.5 + n_A_BaseLV / 100)) * (trap_kenkyu_lv * 20 / 50));
             w999 += 40 * trap_kenkyu_lv;
             break;
@@ -20619,7 +20618,7 @@ function GetPerfectHitDamage(charaData, specData, mobData, attackMethodConfArray
         case 507:
         case 508: {
             // トラップ研究習得Lv補正
-            const trap_kenkyu_lv = Math.max(LearnedSkillSearch(SKILL_ID_TRAP_KENKYU), UsedSkillSearch(SKILL_ID_TRAP_KENKYU));
+            const trap_kenkyu_lv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_TRAP_KENKYU), UsedSkillSearch(SKILL_ID_TRAP_KENKYU));
             w999 += Math.floor(Math.floor(((n_A_ActiveSkillLV * n_A_DEX) + (n_A_INT * 5)) * (1.5 + n_A_BaseLV / 100)) * (trap_kenkyu_lv * 20 / 100));
             w999 += 40 * trap_kenkyu_lv;
             break;
@@ -20914,7 +20913,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     // マヌク特化
     //--------------------------------
     if (n_A_PassSkill7[29]) {
-        if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MANUKU]) == 1) {
+        if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MANUKU]) == 1) {
             w += 10;
         }
     }
@@ -20923,7 +20922,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     // スプレンディッド特化
     //--------------------------------
     if (n_A_PassSkill7[32]) {
-        if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SPRENDED]) == 1) {
+        if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SPRENDED]) == 1) {
             w += 10;
         }
     }
@@ -20959,7 +20958,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
         case 2433:		// 杖
         case 2434:		// ハンマ－
         case 2435:		// 弓
-            if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MOROC]) == 1) {
+            if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MOROC]) == 1) {
                 if (n_A_Weapon_ATKplus >= 5) w += 40;
                 if (n_A_Weapon_ATKplus >= 7) w += 60;
                 if (n_A_Weapon_ATKplus >= 9) w += 80;
@@ -20972,7 +20971,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     switch (n_A_Equip[EQUIP_REGION_ID_ARMS]) {
         case 2436:		// 短剣
-            if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MOROC]) == 1) {
+            if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MOROC]) == 1) {
                 if (n_A_Weapon_ATKplus >= 5) w += 20;
                 if (n_A_Weapon_ATKplus >= 7) w += 30;
                 if (n_A_Weapon_ATKplus >= 9) w += 40;
@@ -20981,7 +20980,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     }
     switch (n_A_Equip[EQUIP_REGION_ID_ARMS_LEFT]) {
         case 2436:		// 短剣
-            if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MOROC]) == 1) {
+            if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MOROC]) == 1) {
                 if (n_A_Weapon2_ATKplus >= 5) w += 20;
                 if (n_A_Weapon2_ATKplus >= 7) w += 30;
                 if (n_A_Weapon2_ATKplus >= 9) w += 40;
@@ -21014,7 +21013,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     // 英雄エンチャント特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_EIYUENCHANT]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_EIYUENCHANT]) == 1) {
         if (Chara.CardNumSearch(CARD_ID_ENCHANT_RYUBIRYUNO_GENZYU)) {
             w += 20;
         }
@@ -21032,7 +21031,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
         case ITEM_ID_REQUIEM_KNUCKLE:		// レクイエムナックル
         case ITEM_ID_REQUIEM_VIOLIN:		// レクイエムバイオリン
         case ITEM_ID_REQUIEM_BLADEWHIP:		// レクイエムブレイドウィップ
-            if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SEITAI]) == 1) {
+            if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SEITAI]) == 1) {
                 w += 40;
                 if (n_A_Weapon_ATKplus >= 5) w += 20;
                 if (n_A_Weapon_ATKplus >= 6) w += 15 * (n_A_Weapon_ATKplus - 5);
@@ -21041,7 +21040,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     }
     switch (n_A_Equip[EQUIP_REGION_ID_ARMS_LEFT]) {
         case ITEM_ID_REQUIEM_SWORD:			// レクイエムソード
-            if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SEITAI]) == 1) {
+            if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SEITAI]) == 1) {
                 w += 40;
                 if (n_A_Weapon2_ATKplus >= 5) w += 20;
                 if (n_A_Weapon2_ATKplus >= 6) w += 15 * (n_A_Weapon2_ATKplus - 5);
@@ -21054,7 +21053,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     switch (n_A_Equip[EQUIP_REGION_ID_ARMS]) {
         case ITEM_ID_REQUIEM_DAGGER:		// レクイエムダガー
-            if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SEITAI]) == 1) {
+            if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SEITAI]) == 1) {
                 w += 20;
                 if (n_A_Weapon_ATKplus >= 5) w += 20;
                 if (n_A_Weapon_ATKplus >= 6) w += 15 * (n_A_Weapon_ATKplus - 5);
@@ -21063,7 +21062,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     }
     switch (n_A_Equip[EQUIP_REGION_ID_ARMS_LEFT]) {
         case ITEM_ID_REQUIEM_DAGGER:		// レクイエムダガー
-            if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SEITAI]) == 1) {
+            if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SEITAI]) == 1) {
                 w += 20;
                 if (n_A_Weapon2_ATKplus >= 5) w += 20;
                 if (n_A_Weapon2_ATKplus >= 6) w += 15 * (n_A_Weapon2_ATKplus - 5);
@@ -21078,7 +21077,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
         case ITEM_ID_REQUIEM_CLAYMORE:			// レクイエムクレイモア
         case ITEM_ID_REQUIEM_LANCE:				// レクイエムランス
         case ITEM_ID_REQUIEM_TWOHANDAXE:		// レクイエムツーハンドアックス
-            if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SEITAI]) == 1) {
+            if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SEITAI]) == 1) {
                 w += 40;
                 if (n_A_Weapon_ATKplus >= 5) w += 30;
                 if (n_A_Weapon_ATKplus >= 6) w += 15 * (n_A_Weapon_ATKplus - 5);
@@ -21089,7 +21088,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     // タナトス特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_THANATOS]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_THANATOS]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_USUDUKIYONO_BOSHI)) {
             w += 5;
             if (n_A_HEAD_DEF_PLUS >= 5) w += 10;
@@ -21101,7 +21100,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     // 地下排水路特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_CHIKA_HAISUIRO]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_CHIKA_HAISUIRO]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_NEKORYOTEKEN_TACHIUO)) w += 50;
         if (Chara.EquipNumSearch(ITEM_ID_NEKOKATAR_TSUNA)) w += 50;
         if (Chara.EquipNumSearch(ITEM_ID_NEKORYOTETSUE_KAZIKI)) w += 50;
@@ -21119,7 +21118,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     // 暴屈王の洞窟特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_BOKUTSUONO_DOKUTSU]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_BOKUTSUONO_DOKUTSU]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_NEKORYOTEKEN_TACHIUO)) w += 50;
         if (Chara.EquipNumSearch(ITEM_ID_NEKOKATAR_TSUNA)) w += 50;
         if (Chara.EquipNumSearch(ITEM_ID_NEKORYOTETSUE_KAZIKI)) w += 50;
@@ -21137,7 +21136,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     // 時計塔特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_TOKEITO]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_TOKEITO]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_NIZIIRONO_TSUBASA) > 0) {
             w += 15;
             if (n_A_HEAD_DEF_PLUS >= 7) w += 15;
@@ -21148,7 +21147,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     // ハートハンター軍事基地特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_HEARTHUNTER]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_HEARTHUNTER]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_GOOGLE_HAT) > 0) {
             w += 15;
             if (n_A_HEAD_DEF_PLUS >= 7) w += 15;
@@ -21159,7 +21158,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     // ロックリッジ特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_ROCKRIDGE]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_ROCKRIDGE]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_TAURUS_HAT) > 0) {
             w += 15;
             if (n_A_HEAD_DEF_PLUS >= 7) w += 15;
@@ -21170,7 +21169,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     // ヴェルナー研究所特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_VERNAR]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_VERNAR]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_ZIKKEN_SEITAI_GOATGATA_CAP) > 0) {
             w += 15;
             if (n_A_HEAD_DEF_PLUS >= 7) w += 15;
@@ -21181,7 +21180,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     // メロリン特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MELORIN]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MELORIN]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_OKYU_MINI_MELON) > 0) {
             w += 20 * n_A_HEAD_DEF_PLUS;
         }
@@ -21190,7 +21189,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     // ２５０ページ特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_PAGE250]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_PAGE250]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_BLACK_VEIL) > 0) {
             w += 15;
             if (n_A_HEAD_DEF_PLUS >= 7) w += 15;
@@ -21201,7 +21200,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     // 魔神殿特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MAZINDEN]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MAZINDEN]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_DIAVOLOS_WING) > 0) {
             w += 30;
         }
@@ -21225,7 +21224,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     // スクロールストール特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SCROLL_STOLE]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SCROLL_STOLE]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_SCROLL_STOLE) > 0) {
             w += 30;
         }
@@ -21234,7 +21233,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     // オース二次捜索特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_OS_NIZI_SOSAKU]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_OS_NIZI_SOSAKU]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_KETTONO_RYU_BOSHI) > 0) {
             w += 15;
             if (n_A_HEAD_DEF_PLUS >= 7) w += 15;
@@ -21245,7 +21244,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     // ミグエル特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MIGEL]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MIGEL]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_KETTONO_RYU_BOSHI) > 0) {
             if (n_A_HEAD_DEF_PLUS >= 10) {
                 w += 100;
@@ -21256,7 +21255,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     // ノーグロード３層特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_NOGUE_ROAD_03]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_NOGUE_ROAD_03]) == 1) {
         if ((cardCount = Chara.CardNumSearch(CARD_ID_KOKA_RAVA_GOLEM)) > 0) {
             w += 30 * cardCount;
         }
@@ -21265,7 +21264,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     // フローズンメモリー特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_FROZEN_MEMORY]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_FROZEN_MEMORY]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_FROZEN_SCALE_SHAWL) > 0) {
             w += 30;
         }
@@ -21274,8 +21273,8 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     // 紫色の深海洞窟特化
     //--------------------------------
-    if ((NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MURASAKI_IRONO_SHINKAI_DOKUTSU_ZYOSO]) == 1)
-        || (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MURASAKI_IRONO_SHINKAI_DOKUTSU_KASO]) == 1)) {
+    if ((Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MURASAKI_IRONO_SHINKAI_DOKUTSU_ZYOSO]) == 1)
+        || (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MURASAKI_IRONO_SHINKAI_DOKUTSU_KASO]) == 1)) {
 
         if ((cardCount = Chara.CardNumSearch(CARD_ID_SHINKAINO_HANGYOZIN)) > 0) {
             w += 30 * cardCount;
@@ -21289,7 +21288,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     // ネジリアン帝国特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_NEZIRIAN_TEKOKU]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_NEZIRIAN_TEKOKU]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_KIGURUMI_BEARDOLL) > 0) {
             w += 30;
         }
@@ -21298,7 +21297,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     // 幻想の北洞窟ルワンダ特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_GENSONO_KITA_DOKUTSU_RUWANDA]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_GENSONO_KITA_DOKUTSU_RUWANDA]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_ANCIENT_MEGALIS_MANT) > 0) {
             w += 30;
         }
@@ -21307,7 +21306,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     // 歪んだ迷宮の森耐性
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_YUGANDA_MEIKYUNO_MORI]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_YUGANDA_MEIKYUNO_MORI]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_YAGIGENO_MUFFLER) > 0) {
             w += 30;
         }
@@ -21316,7 +21315,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     // 認識の庭特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_NINSHIKINO_NIWA]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_NINSHIKINO_NIWA]) == 1) {
         if ((cardCount = Chara.CardNumSearch(CARD_ID_MAZIMENA_HETAI_ANDRE)) > 0) {
             w += 30 * cardCount;
         }
@@ -21325,7 +21324,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     // 鉱山ダンジョン03特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_KOZAN_DUNGEON_03]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_KOZAN_DUNGEON_03]) == 1) {
         if ((cardCount = Chara.CardNumSearch(CARD_ID_NEO_MINERAL)) > 0) {
             w += 30 * cardCount;
         }
@@ -21334,7 +21333,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     // アビスレイク地下洞窟04特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_ABYSS_LAKE_CHIKA_DOKUTSU_04]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_ABYSS_LAKE_CHIKA_DOKUTSU_04]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_DRAGON_SCALE_SHAWL) > 0) {
             w += 30;
         }
@@ -21346,7 +21345,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     // 廃棄実験体遊技場ルドゥス4階特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_HAIKI_ZIKKENTAI_YUGIZYO_RUDUS_4F]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_HAIKI_ZIKKENTAI_YUGIZYO_RUDUS_4F]) == 1) {
         if (Chara.EquipNumSearch(ITEM_ID_DISCARDED_CAPE) > 0) {
             w += 30;
         }
@@ -21358,7 +21357,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     // 崩れたオペラハウス特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_NIFLHEIM_DUNGEON_KUZURETA_OPERA_HOUSE]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_NIFLHEIM_DUNGEON_KUZURETA_OPERA_HOUSE]) == 1) {
         if ((cardCount = Chara.CardNumSearch(CARD_ID_PIERROT_ZOIST)) > 0) {
             w += 30 * cardCount;
         }
@@ -21367,7 +21366,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     // 大浴場メディタティオ特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_BALMUNT_TE_DAIYOKUZYO_MEDITATIO]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_BALMUNT_TE_DAIYOKUZYO_MEDITATIO]) == 1) {
         if ((cardCount = Chara.CardNumSearch(CARD_ID_NETTO_PHEN)) > 0) {
             w += 30 * cardCount;
         }
@@ -21376,7 +21375,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     // 貯蔵庫タルタロス特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_BALMUNT_TE_CHOZOKO_TARUTAROS]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_BALMUNT_TE_CHOZOKO_TARUTAROS]) == 1) {
         if ((cardCount = Chara.CardNumSearch(CARD_ID_KOSHOSHITA_KEBIGATA_BETA)) > 0) {
             w += 30 * cardCount;
         }
@@ -21385,7 +21384,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     // 第2魔力発電所特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_BALMUNT_TE_DAI2_MARYOKU_HATSUDENSHO]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_BALMUNT_TE_DAI2_MARYOKU_HATSUDENSHO]) == 1) {
         if ((cardCount = Chara.CardNumSearch(CARD_ID_KYORYOKUNA_MARYOKU)) > 0) {
             w += 30 * cardCount;
         }
@@ -21394,7 +21393,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     // 灰色狼の森特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_HAIIRO_OKAMINO_MORI]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_HAIIRO_OKAMINO_MORI]) == 1) {
         if ((cardCount = Chara.CardNumSearch(CARD_ID_GRAY_WOLF)) > 0) {
             w += 30 * cardCount;
         }
@@ -21403,7 +21402,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     // オズの迷路特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_OZNO_MEIRO]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_OZNO_MEIRO]) == 1) {
         if ((cardCount = Chara.CardNumSearch(CARD_ID_VALTY)) > 0) {
             w += 30 * cardCount;
         }
@@ -21412,7 +21411,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     // 廃棄実験所アミシティア特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_HAIKI_ZIKKENZYO_AMISITIA]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_HAIKI_ZIKKENZYO_AMISITIA]) == 1) {
         if ((cardCount = Chara.CardNumSearch(CARD_ID_HENI_CHIMERA_VANILAQUS)) > 0) {
             w += 30 * cardCount;
         }
@@ -21421,7 +21420,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     // 捨てられた穴01特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SUTERARETA_ANA_01]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SUTERARETA_ANA_01]) == 1) {
         if ((cardCount = Chara.CardNumSearch(CARD_ID_DOKUTSU_CALMARING)) > 0) {
             w += 30 * cardCount;
         }
@@ -21430,7 +21429,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     // 捨てられた穴02特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SUTERARETA_ANA_02]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_SUTERARETA_ANA_02]) == 1) {
         if ((cardCount = Chara.CardNumSearch(CARD_ID_TANGAN_DOLLOCARIS)) > 0) {
             w += 30 * cardCount;
         }
@@ -21439,7 +21438,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     // 蛇神の温もり特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_HEBIGAMINO_NUKUMORI]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_HEBIGAMINO_NUKUMORI]) == 1) {
         if ((cardCount = Chara.CardNumSearch(CARD_ID_SAIKAKYU_RGAN)) > 0) {
             w += 30 * cardCount;
         }
@@ -21448,7 +21447,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     // アルデバラン時計塔地下 未知の空間特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_TOKEITO_MICHI_NO_KUUKAN]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_TOKEITO_MICHI_NO_KUUKAN]) == 1) {
         if ((cardCount = Chara.CardNumSearch(CARD_ID_GENERAL_ORK)) > 0) {
             w += 30 * cardCount;
         }
@@ -21457,7 +21456,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     // 魔力が歪んだ平原 特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_PLAINS_DISTORTED_BY_MAGIC]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_PLAINS_DISTORTED_BY_MAGIC]) == 1) {
         if ((cardCount = Chara.CardNumSearch(CARD_ID_HARD_ROCK_TITAN)) > 0) {
             w += 30 * cardCount;
         }
@@ -21469,7 +21468,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     // ミョルニール地下洞窟 特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MIOLNIR_UNDERGROUND_CAVE]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_MIOLNIR_UNDERGROUND_CAVE]) == 1) {
         if ((cardCount = Chara.CardNumSearch(CARD_ID_PUNCH_BUG)) > 0) {
             w += 30 * cardCount;
         }
@@ -21478,7 +21477,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     // イスガルド北部（凍て付いた鱗の海辺、古代の氷の峡谷 東部、古代の氷の峡谷 西部） 特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_ISGARD_NORTH_FIELD]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_ISGARD_NORTH_FIELD]) == 1) {
         if ((cardCount = Chara.CardNumSearch(CARD_ID_FAKE_IWIN_SOLDIERS)) > 0) {
             w += 30 * cardCount;
         }
@@ -21487,7 +21486,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     // 蛇神の根源 特化
     //--------------------------------
-    if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_JOR_ROOT]) == 1) {
+    if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_JOR_ROOT]) == 1) {
         if ((cardCount = Chara.CardNumSearch(CARD_ID_JOR_MUNGANDR_GUARDIAN)) > 0) {
             w += 30 * cardCount;
         }
@@ -21496,12 +21495,12 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //--------------------------------
     // その他の装備によるモンスター特化
     //--------------------------------
-    w += GetEquippedTotalSPEquip(1000 + mobData[0]);
+    w += Foot.GetEquippedTotalSPEquip(1000 + mobData[0]);
 
     //--------------------------------
     // その他のカードによるモンスター特化
     //--------------------------------
-    w += GetEquippedTotalSPCardAndElse(1000 + mobData[0]);
+    w += Foot.GetEquippedTotalSPCardAndElse(1000 + mobData[0]);
 
 
 
@@ -21523,7 +21522,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
     //----------------------------------------------------------------
     // 「性能カスタマイズ欄」の、地域特化効果
     //----------------------------------------------------------------
-    confval = g_objCharaConfCustomAtk.GetConf(CCharaConfCustomAtk.CONF_ID_GROUP_DAMAGE_UP);
+    var confval = g_objCharaConfCustomAtk.GetConf(CCharaConfCustomAtk.CONF_ID_GROUP_DAMAGE_UP);
     if (confval != 0) {
         w += confval;
     }
@@ -21578,7 +21577,7 @@ function ApplyPhysicalSpecializeMonster(charaData, specData, mobData, dmg) {
         //--------------------------------
         // グラストヘイムアビス特化
         //--------------------------------
-        if (NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_GLASTHEIM_ABYSS]) == 1) {
+        if (Foot.NumSearch(mobData[0], MonsterGroupObj[MONSTER_GROUP_ID_GLASTHEIM_ABYSS]) == 1) {
             if (Chara.EquipNumSearch(ITEM_ID_SHIROKISHINO_MANT) > 0) {
                 w += 10;
                 if (n_A_SHOULDER_DEF_PLUS >= 5) {
@@ -21738,9 +21737,9 @@ function ApplyPhysicalDamageRatio(battleCalcInfo, charaData, specData, mobData, 
         criDmgUp = g_skillManager.CriDamageRate(battleCalcInfo.skillId, battleCalcInfo.skillLv, charaData, specData, mobData);
         dmg = Math.floor(dmg * (100 + criDmgUp) / 100);
     }
-    if (Math.max(LearnedSkillSearch(SKILL_ID_FIGHT), UsedSkillSearch(SKILL_ID_FIGHT)) > 0) {
+    if (Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_FIGHT), UsedSkillSearch(SKILL_ID_FIGHT)) > 0) {
         // ファイトによる、ダメージ強化
-        let w = 20 * Math.max(LearnedSkillSearch(SKILL_ID_FIGHT), UsedSkillSearch(SKILL_ID_FIGHT));
+        let w = 20 * Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_FIGHT), UsedSkillSearch(SKILL_ID_FIGHT));
         dmg = Math.floor(dmg * (100 + w) / 100);
     }
     if (n_B_KYOUKA[8]) {
@@ -21864,7 +21863,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「チャクラム」の、「メテオアサルト」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 264) {
-        if (Chara.EquipNumSearch(1176) && LearnedSkillSearch(SKILL_ID_KATAR_SHUREN) == 10) w1 += 20;
+        if (Chara.EquipNumSearch(1176) && LearnedSkill.LearnedSkillSearch(SKILL_ID_KATAR_SHUREN) == 10) w1 += 20;
     }
 
     //----------------------------------------------------------------
@@ -21955,8 +21954,8 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「楽園の鳥かごセット」の、「ブリッツビート」強化
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == 118) {
-        if (Chara.EquipNumSearch(2187)) w1 += 10 * LearnedSkillSearch(SKILL_ID_STEEL_CROW) * Chara.EquipNumSearch(2187);
-        if (Chara.EquipNumSearch(2513)) w1 += 40 * LearnedSkillSearch(SKILL_ID_STEEL_CROW);
+        if (Chara.EquipNumSearch(2187)) w1 += 10 * LearnedSkill.LearnedSkillSearch(SKILL_ID_STEEL_CROW) * Chara.EquipNumSearch(2187);
+        if (Chara.EquipNumSearch(2513)) w1 += 40 * LearnedSkill.LearnedSkillSearch(SKILL_ID_STEEL_CROW);
         if (IsSameJobClass(JOB_ID_RANGER) && Chara.EquipNumSearch(2396)) w1 += 5 * n_A_HEAD_DEF_PLUS;
         if (IsSameJobClass(JOB_ID_RANGER) && Chara.EquipNumSearch(2398)) w1 += 5 * n_A_Weapon_ATKplus;
         if (IsSameJobClass(JOB_ID_RANGER) && Chara.EquipNumSearch(ITEM_ID_RAKUENNO_TORIKAGO_EXSIONNO_HANE_S2)) w1 += 5 * n_A_Weapon_ATKplus;
@@ -22074,7 +22073,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 	 	 187 SKILL_ID_SANDANSHO
     // false がセットされるコードが存在しないようで、到達不可能コードに見える
     if (!TyouEnkakuSousa3dan) {
-        w1 += GetEquippedTotalSPEquip(5187) + GetEquippedTotalSPCardAndElse(5187);
+        w1 += Foot.GetEquippedTotalSPEquip(5187) + Foot.GetEquippedTotalSPCardAndElse(5187);
     }
 
     //----------------------------------------------------------------
@@ -22282,7 +22281,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     if (n_A_ActiveSkill == SKILL_ID_GRIM_TOOTH) {
         if (Chara.EquipNumSearch(ITEM_ID_SHIKKOSHANO_MANT)) {
             // スキル習得による効果
-            if (LearnedSkillSearch(SKILL_ID_GRIM_TOOTH) >= 5) {
+            if (LearnedSkill.LearnedSkillSearch(SKILL_ID_GRIM_TOOTH) >= 5) {
                 w1 += 50;
             }
 
@@ -22299,7 +22298,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     if (n_A_ActiveSkill == SKILL_ID_SOUL_BREAKER) {
         if (Chara.EquipNumSearch(ITEM_ID_SHIKKOSHANO_MANT)) {
             // スキル習得による効果
-            if (LearnedSkillSearch(SKILL_ID_SOUL_BREAKER) >= 10) {
+            if (LearnedSkill.LearnedSkillSearch(SKILL_ID_SOUL_BREAKER) >= 10) {
                 w1 += 50;
             }
 
@@ -22316,7 +22315,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     if (n_A_ActiveSkill == SKILL_ID_CROSS_IMPACT) {
         if (Chara.EquipNumSearch(ITEM_ID_SHIKKOSHANO_MANT)) {
             // スキル習得による効果
-            if (LearnedSkillSearch(SKILL_ID_CROSS_IMPACT) >= 5) {
+            if (LearnedSkill.LearnedSkillSearch(SKILL_ID_CROSS_IMPACT) >= 5) {
                 w1 += 5;
             }
 
@@ -22422,7 +22421,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
         if (Chara.EquipNumSearch(ITEM_ID_YOICHINO_KATAKAE)) {
 
             // スキル習得レベルによる効果
-            if (LearnedSkillSearch(SKILL_ID_AIMED_BOLT) >= 10) {
+            if (LearnedSkill.LearnedSkillSearch(SKILL_ID_AIMED_BOLT) >= 10) {
                 w1 += 5;
             }
 
@@ -22442,7 +22441,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
         if (Chara.EquipNumSearch(ITEM_ID_YOICHINO_KATAKAE)) {
 
             // スキル習得レベルによる効果
-            if (LearnedSkillSearch(SKILL_ID_SHARP_SHOOTING) >= 5) {
+            if (LearnedSkill.LearnedSkillSearch(SKILL_ID_SHARP_SHOOTING) >= 5) {
                 w1 += 60;
             }
 
@@ -22460,7 +22459,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
         if (Chara.EquipNumSearch(ITEM_ID_YOICHINO_KATAKAE)) {
 
             // スキル習得レベルによる効果
-            if (LearnedSkillSearch(SKILL_ID_BLITZ_BEAT) >= 5) {
+            if (LearnedSkill.LearnedSkillSearch(SKILL_ID_BLITZ_BEAT) >= 5) {
                 w1 += 15;
             }
 
@@ -22725,7 +22724,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
         || n_A_ActiveSkill == SKILL_ID_BASH
         || n_A_ActiveSkill == SKILL_ID_HOLY_CROSS) {
 
-        if (LearnedSkillSearch(SKILL_ID_KIHE_SHUREN) == 0) {
+        if (LearnedSkill.LearnedSkillSearch(SKILL_ID_KIHE_SHUREN) == 0) {
             if (Chara.EquipNumSearch(ITEM_ID_SAVE_THE_KING)) {
                 w1 += n_A_Weapon_ATKplus * 20;
             }
@@ -22740,7 +22739,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_QUICKDRAW_SHOT) {
         if ((itemCount = Chara.EquipNumSearch(ITEM_ID_HANGYAKUSHANO_SCARF)) > 0) {
-            w1 += 5 * LearnedSkillSearch(SKILL_ID_ETERNAL_CHAIN) * itemCount;
+            w1 += 5 * LearnedSkill.LearnedSkillSearch(SKILL_ID_ETERNAL_CHAIN) * itemCount;
         }
     }
 
@@ -22749,7 +22748,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_SHUTTER_STORM) {
         if ((itemCount = Chara.EquipNumSearch(ITEM_ID_HANGYAKUSHANO_SCARF)) > 0) {
-            w1 += 10 * LearnedSkillSearch(SKILL_ID_SHUTTER_STORM) * itemCount;
+            w1 += 10 * LearnedSkill.LearnedSkillSearch(SKILL_ID_SHUTTER_STORM) * itemCount;
         }
     }
 
@@ -22758,7 +22757,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_FIRE_RAIN) {
         if ((itemCount = Chara.EquipNumSearch(ITEM_ID_HANGYAKUSHANO_SCARF)) > 0) {
-            w1 += 5 * LearnedSkillSearch(SKILL_ID_FIRE_RAIN) * itemCount;
+            w1 += 5 * LearnedSkill.LearnedSkillSearch(SKILL_ID_FIRE_RAIN) * itemCount;
         }
     }
 
@@ -22767,7 +22766,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_MASS_SPIRAL) {
         if ((itemCount = Chara.EquipNumSearch(ITEM_ID_HANGYAKUSHANO_SCARF)) > 0) {
-            w1 += 5 * LearnedSkillSearch(SKILL_ID_MASS_SPIRAL) * itemCount;
+            w1 += 5 * LearnedSkill.LearnedSkillSearch(SKILL_ID_MASS_SPIRAL) * itemCount;
         }
     }
 
@@ -22832,8 +22831,8 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_BASH) {
         if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_YUSHANO_KUTSU_TATSUZINNO_KEN)) > 0) {
-            w1 += 10 * LearnedSkillSearch(SKILL_ID_ENCHANT_BLADE) * itemCount;
-            w1 += 10 * LearnedSkillSearch(SKILL_ID_AURA_BLADE) * itemCount;
+            w1 += 10 * LearnedSkill.LearnedSkillSearch(SKILL_ID_ENCHANT_BLADE) * itemCount;
+            w1 += 10 * LearnedSkill.LearnedSkillSearch(SKILL_ID_AURA_BLADE) * itemCount;
         }
     }
 
@@ -22842,8 +22841,8 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_BOWLING_BASH) {
         if ((itemCount = Chara.EquipNumSearch(ITEM_SET_ID_YUSHANO_KUTSU_TATSUZINNO_KEN)) > 0) {
-            w1 += 10 * LearnedSkillSearch(SKILL_ID_ENCHANT_BLADE) * itemCount;
-            w1 += 10 * LearnedSkillSearch(SKILL_ID_AURA_BLADE) * itemCount;
+            w1 += 10 * LearnedSkill.LearnedSkillSearch(SKILL_ID_ENCHANT_BLADE) * itemCount;
+            w1 += 10 * LearnedSkill.LearnedSkillSearch(SKILL_ID_AURA_BLADE) * itemCount;
         }
     }
 
@@ -22898,8 +22897,8 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     if (n_A_ActiveSkill == SKILL_ID_METEOR_ASSALT) {
         if (Chara.EquipNumSearch(ITEM_ID_SHIKKOUSHANO_SHOES)) {
             // スキル習得による効果
-            if (LearnedSkillSearch(SKILL_ID_POISON_REACT) > 0) {
-                w1 += 30 * LearnedSkillSearch(SKILL_ID_POISON_REACT);
+            if (LearnedSkill.LearnedSkillSearch(SKILL_ID_POISON_REACT) > 0) {
+                w1 += 30 * LearnedSkill.LearnedSkillSearch(SKILL_ID_POISON_REACT);
             }
 
             // 過剰精錬による効果
@@ -23366,7 +23365,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_FUMASHURIKEN_NAGE) {
         if ((itemCount = Chara.EquipNumSearch(ITEM_ID_YOZINBONO_SCARF)) > 0) {
-            if (LearnedSkillSearch(SKILL_ID_FUMASHURIKEN_NAGE) >= 5) {
+            if (LearnedSkill.LearnedSkillSearch(SKILL_ID_FUMASHURIKEN_NAGE) >= 5) {
                 w1 += 50 * itemCount;
             }
 
@@ -23381,7 +23380,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_FUMASHURIKEN_RANKA) {
         if ((itemCount = Chara.EquipNumSearch(ITEM_ID_YOZINBONO_SCARF)) > 0) {
-            if (LearnedSkillSearch(SKILL_ID_FUMASHURIKEN_RANKA) >= 5) {
+            if (LearnedSkill.LearnedSkillSearch(SKILL_ID_FUMASHURIKEN_RANKA) >= 5) {
                 w1 += 30 * itemCount;
             }
 
@@ -23531,7 +23530,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_ARROW_STORM) {
         if ((itemCount = Chara.EquipNumSearch(ITEM_ID_NIZIIRONO_SCARF)) > 0) {
-            w1 += 1 * LearnedSkillSearch(SKILL_ID_AIMED_BOLT) * itemCount;
+            w1 += 1 * LearnedSkill.LearnedSkillSearch(SKILL_ID_AIMED_BOLT) * itemCount;
         }
     }
 
@@ -23605,7 +23604,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_BANISHING_POINT) {
         if ((itemCount = Chara.EquipNumSearch(ITEM_ID_IMPERIAL_BOOTS)) > 0) {
-            w1 += 10 * LearnedSkillSearch(SKILL_ID_CANNON_SPEAR) * itemCount;
+            w1 += 10 * LearnedSkill.LearnedSkillSearch(SKILL_ID_CANNON_SPEAR) * itemCount;
         }
     }
 
@@ -23745,7 +23744,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_FUMASHURIKEN_NAGE) {
         if ((itemCount = Chara.EquipNumSearch(ITEM_ID_RASEN_FUMANO_HOZYU)) > 0) {
-            if (LearnedSkillSearch(SKILL_ID_GENZYUTSU_KAGEMUSHA) >= 5) {
+            if (LearnedSkill.LearnedSkillSearch(SKILL_ID_GENZYUTSU_KAGEMUSHA) >= 5) {
                 w1 += 2 * Math.floor(n_A_BaseLV / 4) * itemCount;
             }
         }
@@ -23758,7 +23757,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_FUMASHURIKEN_RANKA) {
         if ((itemCount = Chara.EquipNumSearch(ITEM_ID_RASEN_FUMANO_HOZYU)) > 0) {
-            if (LearnedSkillSearch(SKILL_ID_GENZYUTSU_KAGEMUSHA) >= 5) {
+            if (LearnedSkill.LearnedSkillSearch(SKILL_ID_GENZYUTSU_KAGEMUSHA) >= 5) {
                 w1 += 1 * Math.floor(n_A_BaseLV / 4) * itemCount;
             }
         }
@@ -23806,7 +23805,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_SISIKO) {
         if ((itemCount = Chara.EquipNumSearch(ITEM_ID_AKKI_RASETSUNO_YUBIWA)) > 0) {
-            if (LearnedSkillSearch(SKILL_ID_BAKKISANDAN) >= 5) {
+            if (LearnedSkill.LearnedSkillSearch(SKILL_ID_BAKKISANDAN) >= 5) {
                 w1 += 30 * itemCount;
             }
         }
@@ -23817,7 +23816,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_SHURASHINDAN) {
         if ((itemCount = Chara.EquipNumSearch(ITEM_ID_AKKI_RASETSUNO_YUBIWA)) > 0) {
-            if (LearnedSkillSearch(SKILL_ID_BAKKISANDAN) >= 5) {
+            if (LearnedSkill.LearnedSkillSearch(SKILL_ID_BAKKISANDAN) >= 5) {
                 w1 += 100 * itemCount;
             }
         }
@@ -23828,7 +23827,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_BUNISHING_BASTER) {
         if ((itemCount = Chara.EquipNumSearch(ITEM_ID_JAGUAR_NOTE)) > 0) {
-            w1 += 60 * LearnedSkillSearch(SKILL_ID_BUNISHING_BASTER) * itemCount;
+            w1 += 60 * LearnedSkill.LearnedSkillSearch(SKILL_ID_BUNISHING_BASTER) * itemCount;
         }
     }
 
@@ -23837,7 +23836,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_FIRE_RAIN) {
         if ((itemCount = Chara.EquipNumSearch(ITEM_ID_JAGUAR_NOTE)) > 0) {
-            w1 += 50 * LearnedSkillSearch(SKILL_ID_FIRE_RAIN) * itemCount;
+            w1 += 50 * LearnedSkill.LearnedSkillSearch(SKILL_ID_FIRE_RAIN) * itemCount;
         }
     }
 
@@ -23847,7 +23846,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     if ((n_A_ActiveSkill == SKILL_ID_HOWLING_MINE)
         || (n_A_ActiveSkill == SKILL_ID_HOWLING_MINE_APPEND)) {
         if ((itemCount = Chara.EquipNumSearch(ITEM_ID_JAGUAR_NOTE)) > 0) {
-            w1 += 40 * LearnedSkillSearch(SKILL_ID_HOWLING_MINE) * itemCount;
+            w1 += 40 * LearnedSkill.LearnedSkillSearch(SKILL_ID_HOWLING_MINE) * itemCount;
         }
     }
 
@@ -24048,7 +24047,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     if (n_A_ActiveSkill == SKILL_ID_AXE_TORNADE) {
         itemCount = Chara.EquipNumSearch(ITEM_ID_ILLUSION_MILITARY_BOOTS);
         if (itemCount > 0) {
-            w1 += 30 * LearnedSkillSearch(SKILL_ID_AXE_BOOMERANG) * itemCount;
+            w1 += 30 * LearnedSkill.LearnedSkillSearch(SKILL_ID_AXE_BOOMERANG) * itemCount;
         }
     }
 
@@ -24060,7 +24059,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     if (n_A_ActiveSkill == SKILL_ID_AXE_BOOMERANG) {
         itemCount = Chara.EquipNumSearch(ITEM_ID_ILLUSION_MILITARY_BOOTS);
         if (itemCount > 0) {
-            w1 += 20 * LearnedSkillSearch(SKILL_ID_AXE_BOOMERANG) * itemCount;
+            w1 += 20 * LearnedSkill.LearnedSkillSearch(SKILL_ID_AXE_BOOMERANG) * itemCount;
         }
     }
 
@@ -24071,12 +24070,12 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     //----------------------------------------------------------------
     if (n_A_ActiveSkill == SKILL_ID_SEVERE_RAINSTORM) {
         if ((itemCount = Chara.EquipNumSearchMIG(ITEM_ID_BOINO_MUFFLER)) > 0) {
-            w1 += 2 * LearnedSkillSearch(SKILL_ID_FRIGNO_UTA) * itemCount;
+            w1 += 2 * LearnedSkill.LearnedSkillSearch(SKILL_ID_FRIGNO_UTA) * itemCount;
         }
     }
     if (n_A_ActiveSkill == SKILL_ID_SEVERE_RAINSTORM_EX) {
         if ((itemCount = Chara.EquipNumSearchMIG(ITEM_ID_BOINO_MUFFLER)) > 0) {
-            w1 += 2 * LearnedSkillSearch(SKILL_ID_FRIGNO_UTA) * itemCount;
+            w1 += 2 * LearnedSkill.LearnedSkillSearch(SKILL_ID_FRIGNO_UTA) * itemCount;
         }
     }
 
@@ -24128,8 +24127,8 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     if (n_A_ActiveSkill == SKILL_ID_FATAL_MENUS) {
         itemCount = Chara.EquipNumSearch(ITEM_ID_TSUIGEKISHANO_SHOES);
         if (itemCount > 0) {
-            w1 += 10 * LearnedSkillSearch(SKILL_ID_KEN_SHUREN) * itemCount;
-            w1 += 10 * LearnedSkillSearch(SKILL_ID_KEN_SHUREN_GENETIC) * itemCount;
+            w1 += 10 * LearnedSkill.LearnedSkillSearch(SKILL_ID_KEN_SHUREN) * itemCount;
+            w1 += 10 * LearnedSkill.LearnedSkillSearch(SKILL_ID_KEN_SHUREN_GENETIC) * itemCount;
         }
     }
 
@@ -24144,7 +24143,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
         || (n_A_ActiveSkill == SKILL_ID_SAVAGENO_TAMASHI)
     ) {
         if ((itemCount = Chara.EquipNumSearch(ITEM_ID_YOCHIYOCHI_URIBO_SUTAI)) > 0) {
-            w1 += 15 * LearnedSkillSearch(SKILL_ID_SAVAGENO_TAMASHI) * itemCount;
+            w1 += 15 * LearnedSkill.LearnedSkillSearch(SKILL_ID_SAVAGENO_TAMASHI) * itemCount;
         }
     }
 
@@ -24156,7 +24155,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     if (n_A_ActiveSkill == SKILL_ID_CART_TORNADO) {
         itemCount = Chara.EquipNumSearch(ITEM_ID_SHIKENKAN_BOOTS);
         if (itemCount > 0) {
-            w1 += 10 * LearnedSkillSearch(SKILL_ID_CRAZY_WEED) * itemCount;
+            w1 += 10 * LearnedSkill.LearnedSkillSearch(SKILL_ID_CRAZY_WEED) * itemCount;
         }
     }
 
@@ -24168,7 +24167,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     if (n_A_ActiveSkill == SKILL_ID_AXE_TORNADE) {
         itemCount = Chara.EquipNumSearch(ITEM_ID_YOGANNO_MANT);
         if (itemCount > 0) {
-            w1 += 20 * LearnedSkillSearch(SKILL_ID_AXE_BOOMERANG) * itemCount;
+            w1 += 20 * LearnedSkill.LearnedSkillSearch(SKILL_ID_AXE_BOOMERANG) * itemCount;
         }
     }
 
@@ -24178,7 +24177,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     if (n_A_ActiveSkill == SKILL_ID_POWER_SWING) {
         itemCount = Chara.EquipNumSearch(ITEM_ID_YOGANNO_MANT);
         if (itemCount > 0) {
-            w1 += 20 * LearnedSkillSearch(SKILL_ID_AXE_BOOMERANG) * itemCount;
+            w1 += 20 * LearnedSkill.LearnedSkillSearch(SKILL_ID_AXE_BOOMERANG) * itemCount;
         }
     }
 
@@ -24191,7 +24190,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     if (n_A_ActiveSkill == SKILL_ID_FIRE_DRAGON_BREATH) {
         itemCount = Chara.EquipNumSearch(ITEM_ID_FAFNIR_BREATH);
         if (itemCount > 0) {
-            w1 += 20 * LearnedSkillSearch(SKILL_ID_DRAGON_HOWLING) * itemCount;
+            w1 += 20 * LearnedSkill.LearnedSkillSearch(SKILL_ID_DRAGON_HOWLING) * itemCount;
         }
     }
 
@@ -24201,7 +24200,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     if (n_A_ActiveSkill == SKILL_ID_WATER_DRAGON_BREATH) {
         itemCount = Chara.EquipNumSearch(ITEM_ID_FAFNIR_BREATH);
         if (itemCount > 0) {
-            w1 += 20 * LearnedSkillSearch(SKILL_ID_DRAGON_HOWLING) * itemCount;
+            w1 += 20 * LearnedSkill.LearnedSkillSearch(SKILL_ID_DRAGON_HOWLING) * itemCount;
         }
     }
 
@@ -24223,7 +24222,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     if (n_A_ActiveSkill == SKILL_ID_SISIKO) {
         itemCount = Chara.EquipNumSearch(ITEM_ID_TENMA_GEDONO_GAITO);
         if (itemCount > 0) {
-            w1 += 15 * LearnedSkillSearch(SKILL_ID_BAKKISANDAN) * itemCount;
+            w1 += 15 * LearnedSkill.LearnedSkillSearch(SKILL_ID_BAKKISANDAN) * itemCount;
         }
     }
 
@@ -24235,7 +24234,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     if (n_A_ActiveSkill == SKILL_ID_SPIRAL_PIERCE) {
         itemCount = Chara.EquipNumSearch(ITEM_ID_RUNE_GREEVE);
         if (itemCount > 0) {
-            w1 += 40 * LearnedSkillSearch(SKILL_ID_DRAGON_HOWLING) * itemCount;
+            w1 += 40 * LearnedSkill.LearnedSkillSearch(SKILL_ID_DRAGON_HOWLING) * itemCount;
         }
     }
 
@@ -24245,7 +24244,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     if (n_A_ActiveSkill == SKILL_ID_HANDRED_SPEAR) {
         itemCount = Chara.EquipNumSearch(ITEM_ID_RUNE_GREEVE);
         if (itemCount > 0) {
-            w1 += 40 * LearnedSkillSearch(SKILL_ID_DRAGON_HOWLING) * itemCount;
+            w1 += 40 * LearnedSkill.LearnedSkillSearch(SKILL_ID_DRAGON_HOWLING) * itemCount;
         }
     }
 
@@ -24271,7 +24270,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     if (n_A_ActiveSkill == SKILL_ID_SPORE_EXPLOSION) {
         itemCount = Chara.EquipNumSearch(ITEM_ID_KAGAKUSHANO_MANT);
         if (itemCount > 0) {
-            w1 += 20 * LearnedSkillSearch(SKILL_ID_FIRE_EXPANSION) * itemCount;
+            w1 += 20 * LearnedSkill.LearnedSkillSearch(SKILL_ID_FIRE_EXPANSION) * itemCount;
         }
     }
 
@@ -24312,7 +24311,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     if (n_A_ActiveSkill == SKILL_ID_ARMS_CANNON) {
         itemCount = Chara.EquipNumSearchMIG(ITEM_ID_POWERED_WING);
         if (itemCount > 0) {
-            w1 += 25 * LearnedSkillSearch(SKILL_ID_PILE_BUNKER) * itemCount;
+            w1 += 25 * LearnedSkill.LearnedSkillSearch(SKILL_ID_PILE_BUNKER) * itemCount;
         }
     }
 
@@ -24322,7 +24321,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     if (n_A_ActiveSkill == SKILL_ID_COLD_THROWER) {
         itemCount = Chara.EquipNumSearchMIG(ITEM_ID_POWERED_WING);
         if (itemCount > 0) {
-            w1 += 25 * LearnedSkillSearch(SKILL_ID_PILE_BUNKER) * itemCount;
+            w1 += 25 * LearnedSkill.LearnedSkillSearch(SKILL_ID_PILE_BUNKER) * itemCount;
         }
     }
 
@@ -24332,7 +24331,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     if (n_A_ActiveSkill == SKILL_ID_FLAME_THROWER) {
         itemCount = Chara.EquipNumSearchMIG(ITEM_ID_POWERED_WING);
         if (itemCount > 0) {
-            w1 += 25 * LearnedSkillSearch(SKILL_ID_PILE_BUNKER) * itemCount;
+            w1 += 25 * LearnedSkill.LearnedSkillSearch(SKILL_ID_PILE_BUNKER) * itemCount;
         }
     }
 
@@ -24344,7 +24343,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     if (n_A_ActiveSkill == SKILL_ID_ARROW_STORM) {
         itemCount = Chara.EquipNumSearchMIG(ITEM_ID_ERYMANTHNO_KAWA);
         if (itemCount > 0) {
-            w1 += 1 * LearnedSkillSearch(SKILL_ID_AIMED_BOLT) * itemCount;
+            w1 += 1 * LearnedSkill.LearnedSkillSearch(SKILL_ID_AIMED_BOLT) * itemCount;
         }
     }
 
@@ -24356,7 +24355,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     if (n_A_ActiveSkill == SKILL_ID_FIRE_RAIN) {
         itemCount = Chara.EquipNumSearchMIG(ITEM_ID_IMPERIAL_GATLING_SUIT);
         if (itemCount > 0) {
-            w1 += 20 * LearnedSkillSearch(SKILL_ID_HEAT_BARREL) * itemCount;
+            w1 += 20 * LearnedSkill.LearnedSkillSearch(SKILL_ID_HEAT_BARREL) * itemCount;
         }
     }
 
@@ -24366,7 +24365,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     if (n_A_ActiveSkill == SKILL_ID_FIRE_RAIN) {
         itemCount = Chara.EquipNumSearchMIG(ITEM_ID_GRACE_GATLING_SUIT);
         if (itemCount > 0) {
-            w1 += 50 * LearnedSkillSearch(SKILL_ID_HEAT_BARREL) * itemCount;
+            w1 += 50 * LearnedSkill.LearnedSkillSearch(SKILL_ID_HEAT_BARREL) * itemCount;
         }
     }
 
@@ -24378,7 +24377,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     if (n_A_ActiveSkill == SKILL_ID_ZYUMONZIGIRI) {
         itemCount = Chara.EquipNumSearchMIG(ITEM_ID_IMPERIAL_CRUCIFORM_SUIT);
         if (itemCount > 0) {
-            w1 += 15 * Math.floor(LearnedSkillSearch(SKILL_ID_ZYUMONZIGIRI) / 5) * itemCount;
+            w1 += 15 * Math.floor(LearnedSkill.LearnedSkillSearch(SKILL_ID_ZYUMONZIGIRI) / 5) * itemCount;
         }
     }
 
@@ -24388,7 +24387,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     if (n_A_ActiveSkill == SKILL_ID_ZYUMONZIGIRI) {
         itemCount = Chara.EquipNumSearchMIG(ITEM_ID_GRACE_CRUCIFORM_SUIT);
         if (itemCount > 0) {
-            w1 += 15 * Math.floor(LearnedSkillSearch(SKILL_ID_ZYUMONZIGIRI) / 2) * itemCount;
+            w1 += 15 * Math.floor(LearnedSkill.LearnedSkillSearch(SKILL_ID_ZYUMONZIGIRI) / 2) * itemCount;
         }
     }
 
@@ -24400,7 +24399,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     if (n_A_ActiveSkill == SKILL_ID_TRIANGLE_SHOT) {
         itemCount = Chara.EquipNumSearchMIG(ITEM_ID_GLOTONERIA);
         if (itemCount > 0) {
-            w1 += 50 * LearnedSkillSearch(SKILL_ID_MAELSTORM) * itemCount;
+            w1 += 50 * LearnedSkill.LearnedSkillSearch(SKILL_ID_MAELSTORM) * itemCount;
         }
     }
 
@@ -24412,7 +24411,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     if (n_A_ActiveSkill == SKILL_ID_FAINT_BOMB) {
         itemCount = Chara.EquipNumSearchMIG(ITEM_ID_GLOTONERIA);
         if (itemCount > 0) {
-            w1 += 15 * LearnedSkillSearch(SKILL_ID_MAELSTORM) * itemCount;
+            w1 += 15 * LearnedSkill.LearnedSkillSearch(SKILL_ID_MAELSTORM) * itemCount;
         }
     }
 
@@ -24435,7 +24434,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     if (n_A_ActiveSkill == SKILL_ID_BOWLING_BASH) {
         itemCount = Chara.EquipNumSearchMIG(ITEM_ID_IMPERIAL_ARTIS_SUIT);
         if (itemCount > 0) {
-            if (LearnedSkillSearch(SKILL_ID_ONO_SHUREN) >= 10) {
+            if (LearnedSkill.LearnedSkillSearch(SKILL_ID_ONO_SHUREN) >= 10) {
                 w1 += 2 * Math.floor(n_A_BaseLV / 3) * itemCount;
             }
         }
@@ -24449,7 +24448,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     if (n_A_ActiveSkill == SKILL_ID_BOWLING_BASH) {
         itemCount = Chara.EquipNumSearchMIG(ITEM_ID_GRACE_ARTIS_SUIT);
         if (itemCount > 0) {
-            if (LearnedSkillSearch(SKILL_ID_ONO_SHUREN) >= 10) {
+            if (LearnedSkill.LearnedSkillSearch(SKILL_ID_ONO_SHUREN) >= 10) {
                 w1 += 2 * n_A_BaseLV * itemCount;
             }
         }
@@ -24463,7 +24462,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     if (n_A_ActiveSkill == SKILL_ID_SONIC_WAVE) {
         itemCount = Chara.EquipNumSearch(ITEM_ID_IMPERIAL_CONFIDENCIAL_MAIL);
         if (itemCount > 0) {
-            if (LearnedSkillSearch(SKILL_ID_DEATH_BOUND) >= 10) {
+            if (LearnedSkill.LearnedSkillSearch(SKILL_ID_DEATH_BOUND) >= 10) {
                 w1 += 1 * Math.floor(n_A_BaseLV / 3) * itemCount;
             }
         }
@@ -24477,7 +24476,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     if (n_A_ActiveSkill == SKILL_ID_SONIC_WAVE) {
         itemCount = Chara.EquipNumSearch(ITEM_ID_GRACE_CONFIDENCIAL_MAIL);
         if (itemCount > 0) {
-            if (LearnedSkillSearch(SKILL_ID_DEATH_BOUND) >= 10) {
+            if (LearnedSkill.LearnedSkillSearch(SKILL_ID_DEATH_BOUND) >= 10) {
                 w1 += 1 * n_A_BaseLV * itemCount;
             }
         }
@@ -24491,7 +24490,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     if (n_A_ActiveSkill == SKILL_ID_COUNTER_SLASH) {
         itemCount = Chara.EquipNumSearch(ITEM_ID_AVARECO);
         if (itemCount > 0) {
-            w1 += 6 * LearnedSkillSearch(SKILL_ID_CROSS_IMPACT) * itemCount;
+            w1 += 6 * LearnedSkill.LearnedSkillSearch(SKILL_ID_CROSS_IMPACT) * itemCount;
         }
     }
 
@@ -24501,7 +24500,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     if (n_A_ActiveSkill == SKILL_ID_CROSS_IMPACT) {
         itemCount = Chara.EquipNumSearch(ITEM_ID_AVARECO);
         if (itemCount > 0) {
-            w1 += 30 * LearnedSkillSearch(SKILL_ID_CROSS_IMPACT) * itemCount;
+            w1 += 30 * LearnedSkill.LearnedSkillSearch(SKILL_ID_CROSS_IMPACT) * itemCount;
         }
     }
 
@@ -24513,7 +24512,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     if (n_A_ActiveSkill == SKILL_ID_CART_CANNON) {
         itemCount = Chara.EquipNumSearch(ITEM_ID_PARACELSUS_COAT);
         if (itemCount > 0) {
-            if (LearnedSkillSearch(SKILL_ID_FIRE_EXPANSION) >= 5) {
+            if (LearnedSkill.LearnedSkillSearch(SKILL_ID_FIRE_EXPANSION) >= 5) {
                 w1 += 2 * n_A_BaseLV * itemCount;
             }
         }
@@ -24525,7 +24524,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     if (n_A_ActiveSkill == SKILL_ID_CART_TORNADO) {
         itemCount = Chara.EquipNumSearch(ITEM_ID_PARACELSUS_COAT);
         if (itemCount > 0) {
-            if (LearnedSkillSearch(SKILL_ID_FIRE_EXPANSION) >= 5) {
+            if (LearnedSkill.LearnedSkillSearch(SKILL_ID_FIRE_EXPANSION) >= 5) {
                 w1 += 1 * n_A_BaseLV * itemCount;
             }
         }
@@ -24545,11 +24544,11 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     if (n_A_ActiveSkill == SKILL_ID_WATER_DRAGON_BREATH) {
         itemCount = Chara.EquipNumSearch(ITEM_ID_TWIN_HEAD_DRAGON_MAIL);
         if (itemCount > 0) {
-            w1 += 10 * LearnedSkillSearch(SKILL_ID_WATER_DRAGON_BREATH) * itemCount;
+            w1 += 10 * LearnedSkill.LearnedSkillSearch(SKILL_ID_WATER_DRAGON_BREATH) * itemCount;
         }
         itemCount = Chara.EquipNumSearch(ITEM_ID_TWIN_HEAD_DRAGON_BOOTS);
         if (itemCount > 0) {
-            w1 += 10 * LearnedSkillSearch(SKILL_ID_WATER_DRAGON_BREATH) * itemCount;
+            w1 += 10 * LearnedSkill.LearnedSkillSearch(SKILL_ID_WATER_DRAGON_BREATH) * itemCount;
         }
     }
 
@@ -24559,11 +24558,11 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     if (n_A_ActiveSkill == SKILL_ID_FIRE_DRAGON_BREATH) {
         itemCount = Chara.EquipNumSearch(ITEM_ID_TWIN_HEAD_DRAGON_MAIL);
         if (itemCount > 0) {
-            w1 += 10 * LearnedSkillSearch(SKILL_ID_FIRE_DRAGON_BREATH) * itemCount;
+            w1 += 10 * LearnedSkill.LearnedSkillSearch(SKILL_ID_FIRE_DRAGON_BREATH) * itemCount;
         }
         itemCount = Chara.EquipNumSearch(ITEM_ID_TWIN_HEAD_DRAGON_BOOTS);
         if (itemCount > 0) {
-            w1 += 10 * LearnedSkillSearch(SKILL_ID_FIRE_DRAGON_BREATH) * itemCount;
+            w1 += 10 * LearnedSkill.LearnedSkillSearch(SKILL_ID_FIRE_DRAGON_BREATH) * itemCount;
         }
     }
 
@@ -24655,7 +24654,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     if (n_A_ActiveSkill == SKILL_ID_COUNTER_SLASH) {
         itemCount = Chara.EquipNumSearch(ITEM_ID_END_OF_THE_WORLD);
         if (itemCount > 0) {
-            w1 += 6 * LearnedSkillSearch(SKILL_ID_ROLLING_CUTTER) * itemCount;
+            w1 += 6 * LearnedSkill.LearnedSkillSearch(SKILL_ID_ROLLING_CUTTER) * itemCount;
         }
     }
 
@@ -24665,7 +24664,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     if (n_A_ActiveSkill == SKILL_ID_ROLLING_CUTTER) {
         itemCount = Chara.EquipNumSearch(ITEM_ID_END_OF_THE_WORLD);
         if (itemCount > 0) {
-            w1 += 100 * LearnedSkillSearch(SKILL_ID_ROLLING_CUTTER) * itemCount;
+            w1 += 100 * LearnedSkill.LearnedSkillSearch(SKILL_ID_ROLLING_CUTTER) * itemCount;
         }
     }
 
@@ -24689,7 +24688,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     if (n_A_ActiveSkill == SKILL_ID_RAIKODAN) {
         itemCount = Chara.EquipNumSearchMIG(ITEM_ID_KOKI);
         if (itemCount > 0) {
-            if (LearnedSkillSearch(SKILL_ID_SENDENPO) >= 5) {
+            if (LearnedSkill.LearnedSkillSearch(SKILL_ID_SENDENPO) >= 5) {
                 w1 += 2 * n_A_BaseLV * itemCount;
             }
         }
@@ -24703,7 +24702,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     if (n_A_ActiveSkill == SKILL_ID_CANNON_SPEAR) {
         itemCount = Chara.EquipNumSearchMIG(ITEM_ID_PLATINUM_ARBITRATOR);
         if (itemCount > 0) {
-            if (LearnedSkillSearch(SKILL_ID_CANNON_SPEAR) >= 5) {
+            if (LearnedSkill.LearnedSkillSearch(SKILL_ID_CANNON_SPEAR) >= 5) {
                 w1 += 1 * Math.floor(n_A_BaseLV / 2) * itemCount;
             }
         }
@@ -24715,7 +24714,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     if (n_A_ActiveSkill == SKILL_ID_BANISHING_POINT) {
         itemCount = Chara.EquipNumSearchMIG(ITEM_ID_PLATINUM_ARBITRATOR);
         if (itemCount > 0) {
-            if (LearnedSkillSearch(SKILL_ID_CANNON_SPEAR) >= 5) {
+            if (LearnedSkill.LearnedSkillSearch(SKILL_ID_CANNON_SPEAR) >= 5) {
                 w1 += 2 * Math.floor(n_A_BaseLV / 2) * itemCount;
             }
         }
@@ -24906,7 +24905,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
     // 「性能カスタマイズ欄」の、「○○スキルで攻撃時ダメージ上昇」強化
     //----------------------------------------------------------------
     const confBaseLvBy = g_objCharaConfCustomSkill.GetConf(CCharaConfCustomSkill.CONF_ID_SKILL_DAMAGE_UP_BASE_LEVEL_BY);
-    confval = g_objCharaConfCustomSkill.GetConf(CCharaConfCustomSkill.CONF_ID_SKILL_DAMAGE_UP);
+    var confval = g_objCharaConfCustomSkill.GetConf(CCharaConfCustomSkill.CONF_ID_SKILL_DAMAGE_UP);
     if (n_A_ActiveSkill != 0) {
         if (confval != 0) {
             if (confBaseLvBy > 0) {
@@ -24928,7 +24927,7 @@ function GetPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData, 
 
 
     // 装備自体の当該スキル強化値、カード自体の当該スキル強化値を適用する
-    w1 += GetEquippedTotalSPEquip(5000 + n_A_ActiveSkill) + GetEquippedTotalSPCardAndElse(5000 + n_A_ActiveSkill)
+    w1 += Foot.GetEquippedTotalSPEquip(5000 + n_A_ActiveSkill) + Foot.GetEquippedTotalSPCardAndElse(5000 + n_A_ActiveSkill)
 
     // TODO: データ移行過渡処理
     // 計算したSP効果を、移行前のデータ形式に変換して、加算する
@@ -25434,6 +25433,7 @@ export function UsedSkillSearch(sklId, bOnlyUsed = false) {
 
         // 集中力向上
         case SKILL_ID_SHUCHURYOKU_KOZYO:
+            var bufLv = 0;
             if (Chara.TimeItemNumSearch(TIME_ITEM_ID_VNDER_CANMER_SHUCHURYOKU_KOZYO) > 0) {
                 effectivLvArray.push(5);
             }
@@ -25597,7 +25597,7 @@ export function UsedSkillSearch(sklId, bOnlyUsed = false) {
             }
 
             // 「チェーンアクション」スキルの効果
-            sklLv = Math.max(LearnedSkillSearch(SKILL_ID_CHAIN_ACTION), UsedSkillSearch(SKILL_ID_CHAIN_ACTION));
+            sklLv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_CHAIN_ACTION), UsedSkillSearch(SKILL_ID_CHAIN_ACTION));
             if ((n_A_WeaponType == ITEM_KIND_HANDGUN) && (sklLv > 0)) {
                 effectivLvArray.push(sklLv);
             }
@@ -25609,7 +25609,7 @@ export function UsedSkillSearch(sklId, bOnlyUsed = false) {
             }
 
             // 「ダブルアタック」スキルの効果
-            sklLv = Math.max(LearnedSkillSearch(SKILL_ID_DOUBLE_ATTACK), UsedSkillSearch(SKILL_ID_DOUBLE_ATTACK, true));
+            sklLv = Math.max(LearnedSkill.LearnedSkillSearch(SKILL_ID_DOUBLE_ATTACK), UsedSkillSearch(SKILL_ID_DOUBLE_ATTACK, true));
             if ((n_A_WeaponType == ITEM_KIND_KNIFE) && (sklLv > 0)) {
                 effectivLvArray.push(sklLv);
             }
@@ -25693,7 +25693,7 @@ function GetFixedAppendAtk(skillId, charaData, specData, mobData, w_DAM, ch_MAXM
         // ・アイスバウンドトラップ
         var EBcheck = [0, 507, 508];
 
-        if (NumSearch(n_A_ActiveSkill, EBcheck) == 1) {
+        if (Foot.NumSearch(n_A_ActiveSkill, EBcheck) == 1) {
 
             // 固定上昇分
             var w_EB = 0;
@@ -25759,12 +25759,12 @@ function BuildCastAndDelayHtmlMIG(mobData) {
     //----------------------------------------------------------------
 
     // 詠唱時間短縮効果（±○○秒）の適用
-    wCast += GetCastFixOfSkillForCastTimeVary(n_A_ActiveSkill);
+    wCast += Foot.GetCastFixOfSkillForCastTimeVary(n_A_ActiveSkill);
 
     if (wCast < 0) wCast = 0;
 
     // 詠唱時間短縮効果（±○○％）の適用
-    scaling = GetCastScalingOfSkillForCastTimeVary(n_A_ActiveSkill);
+    scaling = Foot.GetCastScalingOfSkillForCastTimeVary(n_A_ActiveSkill);
 
     if (scaling < 0) scaling = 0;
     wCast = wCast * scaling / 100;
@@ -25783,12 +25783,12 @@ function BuildCastAndDelayHtmlMIG(mobData) {
 
     // 詠唱時間短縮効果（±○○秒）の適用
     n_KoteiCast -= n_tok[ITEM_SP_SKILL_FIXED_MINUS];
-    n_KoteiCast += GetCastFixOfSkillForCastTimeFixed(n_A_ActiveSkill);
+    n_KoteiCast += Foot.GetCastFixOfSkillForCastTimeFixed(n_A_ActiveSkill);
 
     if (n_KoteiCast < 0) n_KoteiCast = 0;
 
     // 詠唱時間短縮効果（±○○％）の適用
-    scaling = GetCastScalingOfSkillForCastTimeFixed(n_A_ActiveSkill);
+    scaling = Foot.GetCastScalingOfSkillForCastTimeFixed(n_A_ActiveSkill);
 
     if (scaling < 0) scaling = 0;
     wCastFixed = n_KoteiCast * scaling / 100;
@@ -25918,7 +25918,7 @@ function BuildCastAndDelayHtmlMIG(mobData) {
             }
 
             // クールタイムが最長ディレイの場合、全体ディレイとして採用（ケース７）
-            n_Delay[7] += GetCoolFixOfSkill(n_A_ActiveSkill);
+            n_Delay[7] += Foot.GetCoolFixOfSkill(n_A_ActiveSkill);
 
             if (n_Delay[7] < 0) {
                 n_Delay[7] = 0;
@@ -25949,7 +25949,7 @@ function BuildResistElementTinyHtml() {
     bodyElmRatioArray = [];     // 属性倍率  100
     finalRatioArray = [];       // 最終倍率  5
     resistValueArrayOver = [];  // (超過値)  3
-    for (idx = 0; idx < ELM_ID_COUNT; idx++) {
+    for (var idx = 0; idx < ELM_ID_COUNT; idx++) {
         resistValueArray[idx] = n_tok[ITEM_SP_RESIST_ELM_VANITY + idx];
         resistValueArrayOver[idx] = Math.max(0, n_tok_no_limit[ITEM_SP_RESIST_ELM_VANITY + idx] - n_tok[ITEM_SP_RESIST_ELM_VANITY + idx]);
         bodyElmRatioArray[idx] = zokusei[n_A_BodyZokusei * 10 + 1][idx] + 100;
@@ -26074,7 +26074,7 @@ function ApplyAttackDamageAmplify(mobData, dmg) {
             // ・イクシードブレイク
             var SES_kantuu = [456, 578];
 
-            if (NumSearch(n_A_ActiveSkill, SES_kantuu) == 0) {
+            if (Foot.NumSearch(n_A_ActiveSkill, SES_kantuu) == 0) {
 
                 // シーズ補正貫通スキルでない、かつ、シーズ補正適用の場合
                 if (n_SiegeMode) {
@@ -26105,7 +26105,7 @@ function ApplyAttackDamageAmplify(mobData, dmg) {
     if (n_A_ActiveSkill === SKILL_ID_FATAL_SHADOW_CRAW) {
         // フェイタルシャドウクローの個別処理
         // 習得Lvのダーククロー適用後にダメージ計算される
-        dmg += Math.floor(dmg * 30 * LearnedSkillSearch(SKILL_ID_DARK_CRAW) / 100);
+        dmg += Math.floor(dmg * 30 * LearnedSkill.LearnedSkillSearch(SKILL_ID_DARK_CRAW) / 100);
     } else if (n_B_IJYOU[MOB_CONF_DEBUF_ID_DARK_CRAW_EFFECT] && n_Enekyori == 0) {
         if (!n_NitouCalc) {
             // 特定の戦闘エリアでの補正
@@ -26137,7 +26137,7 @@ function ApplyAttackDamageAmplify(mobData, dmg) {
         if (n_Enekyori == 1) w_DF_hantei = 1;
         if (n_A_ActiveSkill == 616 || n_A_ActiveSkill == 617) if (n_A_ActiveSkillLV >= 5) w_DF_hantei = 1;
         var DF_kantuu = [22, 118, 159, 162, 244, 248, 263, 271, 324, 328, 384, 738];
-        if (NumSearch(n_A_ActiveSkill, DF_kantuu)) w_DF_hantei = 0;
+        if (Foot.NumSearch(n_A_ActiveSkill, DF_kantuu)) w_DF_hantei = 0;
         if (w_DF_hantei == 1) {
             if (n_B_KYOUKA[10] == 6) dmg = Math.floor(dmg * 12.5 / 100);
             else dmg -= Math.floor(dmg * (5 + 15 * n_B_KYOUKA[10]) / 100);
@@ -26147,7 +26147,7 @@ function ApplyAttackDamageAmplify(mobData, dmg) {
     // TODO : 謎判定
     if (dmg > 0 && 5 <= mobData[21] && mobData[21] <= 9) {
         var kantuu = [19, 22, 88, 106, 112, 113, 118, 264, 271, 302, 398, 505, 603];
-        if (NumSearch(n_A_ActiveSkill, kantuu) == 0) {
+        if (Foot.NumSearch(n_A_ActiveSkill, kantuu) == 0) {
             if (dmg >= 1) dmg = 1;
         }
         if (mobData[21] == 7) dmg = 1;

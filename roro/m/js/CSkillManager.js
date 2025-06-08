@@ -1,4 +1,6 @@
-"use strict";
+// 影響度デカいのでimportは中止
+//import * as Head from "../../../ro4/m/js/head.js";
+
 /**
  * 各スキルの実質的な抽象クラスとして用いられるコンストラクタ関数.
  * CSkillManager.dataArray にインスタンスが格納され
@@ -93,7 +95,7 @@ function CSkillData() {
     // クリティカル発生率を取得（0:発生しない、100:等倍、etc...）
     this.CriActRate = function (skillLv, charaData, specData, mobData) {
 
-        if (UsedSkillSearch(SKILL_ID_TAIYOTO_TSUKITO_HOSHINO_YUGO) > 0) {
+        if (Head.UsedSkillSearch(SKILL_ID_TAIYOTO_TSUKITO_HOSHINO_YUGO) > 0) {
             return this._CriActRate100(skillLv, charaData, specData, mobData);
         }
 
@@ -102,19 +104,19 @@ function CSkillData() {
 
     this._CriActRate100 = function (skillLv, charaData, specData, mobData) {
 
-        if (UsedSkillSearch(SKILL_ID_TAIYOTO_TSUKITO_HOSHINO_YUGO) > 0) {
+        if (Head.UsedSkillSearch(SKILL_ID_TAIYOTO_TSUKITO_HOSHINO_YUGO) > 0) {
             if ((this.type & CSkillData.TYPE_PHYSICAL) == CSkillData.TYPE_PHYSICAL) {
                 return 100;
             }
         }
 
-        return GetActRateCritical(mobData);
+        return Head.GetActRateCritical(mobData);
     };
 
     // クリティカルダメージ上昇特性効果量を取得（0:無効、100:等倍、etc...）
     this.CriDamageRate = function (skillLv, charaData, specData, mobData) {
 
-        if (UsedSkillSearch(SKILL_ID_TAIYOTO_TSUKITO_HOSHINO_YUGO) > 0) {
+        if (Head.UsedSkillSearch(SKILL_ID_TAIYOTO_TSUKITO_HOSHINO_YUGO) > 0) {
             return this._CriDamageRate100(skillLv, charaData, specData, mobData);
         }
 
@@ -123,7 +125,7 @@ function CSkillData() {
 
     this._CriDamageRate100 = function (skillLv, charaData, specData, mobData) {
 
-        if (UsedSkillSearch(SKILL_ID_TAIYOTO_TSUKITO_HOSHINO_YUGO) > 0) {
+        if (Head.UsedSkillSearch(SKILL_ID_TAIYOTO_TSUKITO_HOSHINO_YUGO) > 0) {
             if ((this.type & CSkillData.TYPE_PHYSICAL) == CSkillData.TYPE_PHYSICAL) {
                 return specData[ITEM_SP_CRITICAL_DAMAGE_UP] / 2;
             }
@@ -1722,7 +1724,7 @@ function CSkillManager() {
                 pow = 100;
 
                 // 「ソーサラー 精霊スキル」の効果
-                seirei = charaDataManger.UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL);
+                seirei = charaDataManger.Head.UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL);
                 if (seirei == 1) {
                     pow += Math.floor(charaDataManger.GetCharaJobLv() / 3);
                 }
@@ -1810,7 +1812,7 @@ function CSkillManager() {
                 pow = 50;
 
                 // 「ソーサラー 精霊スキル」の効果
-                seirei = charaDataManger.UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL);
+                seirei = charaDataManger.Head.UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL);
                 if (seirei == 1) {
                     pow += Math.floor(charaDataManger.GetCharaJobLv() / 3);
                 }
@@ -1866,7 +1868,7 @@ function CSkillManager() {
                 pow = 100;
 
                 // 「ソーサラー 精霊スキル」の効果
-                seirei = charaDataManger.UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL);
+                seirei = charaDataManger.Head.UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL);
                 if (seirei == 10) {
                     pow += Math.floor(charaDataManger.GetCharaJobLv() / 3);
                 }
@@ -1918,7 +1920,7 @@ function CSkillManager() {
                 pow = 100 + 10 * skillLv;
 
                 // 「ソーサラー 精霊スキル」の効果
-                seirei = charaDataManger.UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL);
+                seirei = charaDataManger.Head.UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL);
                 if (seirei == 10) {
                     pow += Math.floor(charaDataManger.GetCharaJobLv() / 3);
                 }
@@ -1966,7 +1968,7 @@ function CSkillManager() {
                 pow = 100;
 
                 // 「ソーサラー 精霊スキル」の効果
-                seirei = charaDataManger.UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL);
+                seirei = charaDataManger.Head.UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL);
                 if (seirei == 19) {
                     pow += Math.floor(charaDataManger.GetCharaJobLv() / 3);
                 }
@@ -2018,7 +2020,7 @@ function CSkillManager() {
                 pow = 100;
 
                 // 「ソーサラー 精霊スキル」の効果
-                seirei = charaDataManger.UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL);
+                seirei = charaDataManger.Head.UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL);
                 if (seirei == 19) {
                     pow += Math.floor(charaDataManger.GetCharaJobLv() / 3);
                 }
@@ -2691,7 +2693,7 @@ function CSkillManager() {
                 pow = 400 + 40 * skillLv;
 
                 // 「アサシンクロス エンチャントデッドリーポイズン」の効果（ペナルティ）
-                edp = charaDataManger.UsedSkillSearch(SKILL_ID_ENCHANT_DEADLY_POISON);
+                edp = charaDataManger.Head.UsedSkillSearch(SKILL_ID_ENCHANT_DEADLY_POISON);
                 if (edp > 0) {
                     pow = Math.floor(pow / 2);
                 }
@@ -4182,7 +4184,7 @@ function CSkillManager() {
                 pow = 100;
 
                 // 「ソーサラー 精霊スキル」の効果
-                seirei = charaDataManger.UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL);
+                seirei = charaDataManger.Head.UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL);
                 if (seirei == 28) {
                     pow += Math.floor(charaDataManger.GetCharaJobLv() / 3);
                 }
@@ -4234,7 +4236,7 @@ function CSkillManager() {
                 pow = 125;
 
                 // 「ソーサラー 精霊スキル」の効果
-                seirei = charaDataManger.UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL);
+                seirei = charaDataManger.Head.UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL);
                 if (seirei == 28) {
                     pow += Math.floor(charaDataManger.GetCharaJobLv() / 3);
                 }
@@ -5811,7 +5813,7 @@ function CSkillManager() {
                 var kidan = 0;
 
                 // モンク系の自己支援
-                kidan = charaDataManger.UsedSkillSearch(SKILL_ID_KIKO);
+                kidan = charaDataManger.Head.UsedSkillSearch(SKILL_ID_KIKO);
 
                 // 気功転移等による二次職支援
                 if (kidan == 0) {
@@ -7748,7 +7750,7 @@ function CSkillManager() {
                 pow = 300 + 50 * skillLv;
 
                 // 「アサシンクロス エンチャントデッドリーポイズン」の効果（ペナルティ）
-                edp = charaDataManger.UsedSkillSearch(SKILL_ID_ENCHANT_DEADLY_POISON);
+                edp = charaDataManger.Head.UsedSkillSearch(SKILL_ID_ENCHANT_DEADLY_POISON);
                 if (edp > 0) {
                     pow = Math.floor(pow / 2);
                 }
@@ -8979,7 +8981,7 @@ function CSkillManager() {
                 pow = 4 * charaDataManger.GetCharaBaseLv();
 
                 // 「テコンキッド スパート状態」の効果
-                spurt = charaDataManger.UsedSkillSearch(SKILL_ID_SPURT_ZYOTAI);
+                spurt = charaDataManger.Head.UsedSkillSearch(SKILL_ID_SPURT_ZYOTAI);
                 wpn = charaDataManger.GetWeaponType();
                 if ((spurt > 0) && (wpn == 0)) {
                     pow *= 2;
@@ -9358,7 +9360,7 @@ function CSkillManager() {
                 pow = 125;
 
                 // 「ソーサラー 精霊スキル」の効果
-                seirei = charaDataManger.UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL);
+                seirei = charaDataManger.Head.UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL);
                 if (seirei == 28) {
                     pow += Math.floor(charaDataManger.GetCharaJobLv() / 3);
                 }
@@ -11228,7 +11230,7 @@ function CSkillManager() {
                 pow = 400 + 40 * skillLv;
 
                 // 「アサシンクロス エンチャントデッドリーポイズン」の効果（ペナルティ）
-                edp = charaDataManger.UsedSkillSearch(SKILL_ID_ENCHANT_DEADLY_POISON);
+                edp = charaDataManger.Head.UsedSkillSearch(SKILL_ID_ENCHANT_DEADLY_POISON);
                 if (edp > 0) {
                     pow = Math.floor(pow / 2);
                 }
@@ -11803,8 +11805,8 @@ function CSkillManager() {
                 pow = 90;
 
                 // 「影狼・朧 火符：炎天」の効果
-                if (charaDataManger.UsedSkillSearch(SKILL_ID_FU_ELEMENT_OF_FU) == ELM_ID_FIRE) {
-                    pow += 20 * charaDataManger.UsedSkillSearch(SKILL_ID_FU_COUNT_OF_FU);
+                if (charaDataManger.Head.UsedSkillSearch(SKILL_ID_FU_ELEMENT_OF_FU) == ELM_ID_FIRE) {
+                    pow += 20 * charaDataManger.Head.UsedSkillSearch(SKILL_ID_FU_COUNT_OF_FU);
                 }
 
                 return pow;
@@ -11850,8 +11852,8 @@ function CSkillManager() {
                 pow = 50;
 
                 // 「影狼・朧 火符：炎天」の効果
-                if (charaDataManger.UsedSkillSearch(SKILL_ID_FU_ELEMENT_OF_FU) == ELM_ID_FIRE) {
-                    pow += 20 * charaDataManger.UsedSkillSearch(SKILL_ID_FU_COUNT_OF_FU);
+                if (charaDataManger.Head.UsedSkillSearch(SKILL_ID_FU_ELEMENT_OF_FU) == ELM_ID_FIRE) {
+                    pow += 20 * charaDataManger.Head.UsedSkillSearch(SKILL_ID_FU_COUNT_OF_FU);
                 }
 
                 return pow;
@@ -11901,8 +11903,8 @@ function CSkillManager() {
                 pow = 150 + 150 * skillLv;
 
                 // 「影狼・朧 火符：炎天」の効果
-                if (charaDataManger.UsedSkillSearch(SKILL_ID_FU_ELEMENT_OF_FU) == ELM_ID_FIRE) {
-                    pow += 100 * charaDataManger.UsedSkillSearch(SKILL_ID_FU_COUNT_OF_FU);
+                if (charaDataManger.Head.UsedSkillSearch(SKILL_ID_FU_ELEMENT_OF_FU) == ELM_ID_FIRE) {
+                    pow += 100 * charaDataManger.Head.UsedSkillSearch(SKILL_ID_FU_COUNT_OF_FU);
                 }
 
                 return pow;
@@ -11951,8 +11953,8 @@ function CSkillManager() {
                 pow = 70;
 
                 // 「影狼・朧 氷符：吹雪」の効果
-                if (charaDataManger.UsedSkillSearch(SKILL_ID_FU_ELEMENT_OF_FU) == ELM_ID_WATER) {
-                    pow += 20 * charaDataManger.UsedSkillSearch(SKILL_ID_FU_COUNT_OF_FU);
+                if (charaDataManger.Head.UsedSkillSearch(SKILL_ID_FU_ELEMENT_OF_FU) == ELM_ID_WATER) {
+                    pow += 20 * charaDataManger.Head.UsedSkillSearch(SKILL_ID_FU_COUNT_OF_FU);
                 }
 
                 return pow;
@@ -12029,8 +12031,8 @@ function CSkillManager() {
                 pow = 150 + 150 * skillLv;
 
                 // 「影狼・朧 氷符：吹雪」の効果
-                if (charaDataManger.UsedSkillSearch(SKILL_ID_FU_ELEMENT_OF_FU) == ELM_ID_WATER) {
-                    pow += 100 * charaDataManger.UsedSkillSearch(SKILL_ID_FU_COUNT_OF_FU);
+                if (charaDataManger.Head.UsedSkillSearch(SKILL_ID_FU_ELEMENT_OF_FU) == ELM_ID_WATER) {
+                    pow += 100 * charaDataManger.Head.UsedSkillSearch(SKILL_ID_FU_COUNT_OF_FU);
                 }
 
                 return pow;
@@ -12075,8 +12077,8 @@ function CSkillManager() {
                 pow = 150;
 
                 // 「影狼・朧 風符：青嵐」の効果
-                if (charaDataManger.UsedSkillSearch(SKILL_ID_FU_ELEMENT_OF_FU) == ELM_ID_WIND) {
-                    pow += 20 * charaDataManger.UsedSkillSearch(SKILL_ID_FU_COUNT_OF_FU);
+                if (charaDataManger.Head.UsedSkillSearch(SKILL_ID_FU_ELEMENT_OF_FU) == ELM_ID_WIND) {
+                    pow += 20 * charaDataManger.Head.UsedSkillSearch(SKILL_ID_FU_COUNT_OF_FU);
                 }
 
                 return pow;
@@ -12121,8 +12123,8 @@ function CSkillManager() {
                 pow = 100 + 100 * skillLv;
 
                 // 「影狼・朧 風符：青嵐」の効果
-                if (charaDataManger.UsedSkillSearch(SKILL_ID_FU_ELEMENT_OF_FU) == ELM_ID_WIND) {
-                    pow += 20 * charaDataManger.UsedSkillSearch(SKILL_ID_FU_COUNT_OF_FU);
+                if (charaDataManger.Head.UsedSkillSearch(SKILL_ID_FU_ELEMENT_OF_FU) == ELM_ID_WIND) {
+                    pow += 20 * charaDataManger.Head.UsedSkillSearch(SKILL_ID_FU_COUNT_OF_FU);
                 }
 
                 return pow;
@@ -12163,8 +12165,8 @@ function CSkillManager() {
                 pow = 100 + 100 * skillLv;
 
                 // 「影狼・朧 風符：青嵐」の効果
-                if (charaDataManger.UsedSkillSearch(SKILL_ID_FU_ELEMENT_OF_FU) == ELM_ID_WIND) {
-                    pow += 100 * charaDataManger.UsedSkillSearch(SKILL_ID_FU_COUNT_OF_FU);
+                if (charaDataManger.Head.UsedSkillSearch(SKILL_ID_FU_ELEMENT_OF_FU) == ELM_ID_WIND) {
+                    pow += 100 * charaDataManger.Head.UsedSkillSearch(SKILL_ID_FU_COUNT_OF_FU);
                 }
 
                 return pow;
@@ -13043,7 +13045,7 @@ function CSkillManager() {
             this.element = CSkillData.ELEMENT_VOID;
             this.Power = function (skillLv, charaData, option) {
                 let ratio = 0;
-                if (UsedSkillSearch(SKILL_ID_DRAGONIC_AURA_STATE) > 1) {
+                if (Head.UsedSkillSearch(SKILL_ID_DRAGONIC_AURA_STATE) > 1) {
                     // ドラゴニックオーラ状態の場合はダメージ倍率が増加する
                     ratio = 700 + 200 * skillLv;
                 }
@@ -13152,7 +13154,7 @@ function CSkillManager() {
 
                 // 基本式
                 pow = 50 * skillLv;
-                pow += 10 * Math.max(LearnedSkillSearch(SKILL_ID_YARI_SHUREN), UsedSkillSearch(SKILL_ID_YARI_SHUREN));
+                pow += 10 * Math.max(LearnedSkillSearch(SKILL_ID_YARI_SHUREN), Head.UsedSkillSearch(SKILL_ID_YARI_SHUREN));
 
                 // ベースレベル補正
                 pow = Math.floor(pow * charaDataManger.GetCharaBaseLv() / 150);
@@ -13380,7 +13382,7 @@ function CSkillManager() {
             this.Power = function (skillLv, charaDataManger) {
                 let pow = 0;
                 // 基本式
-                const sklLvRuneMastery = Math.max(LearnedSkillSearch(SKILL_ID_RUNE_MASTERY), UsedSkillSearch(SKILL_ID_RUNE_MASTERY));
+                const sklLvRuneMastery = Math.max(LearnedSkillSearch(SKILL_ID_RUNE_MASTERY), Head.UsedSkillSearch(SKILL_ID_RUNE_MASTERY));
                 pow += 100 * sklLvRuneMastery;
                 pow += 100 * Math.floor(charaDataManger.GetCharaInt() / 8);
                 return pow;
@@ -13650,7 +13652,7 @@ function CSkillManager() {
                 pow = Math.floor(pow * charaDataManger.GetCharaBaseLv() / 120);
 
                 // 「アサシンクロス エンチャントデッドリーポイズン」の効果（ペナルティ）
-                edp = charaDataManger.UsedSkillSearch(SKILL_ID_ENCHANT_DEADLY_POISON);
+                edp = charaDataManger.Head.UsedSkillSearch(SKILL_ID_ENCHANT_DEADLY_POISON);
                 if (edp > 0) {
                     pow = Math.floor(pow / 2);
                 }
@@ -13952,7 +13954,7 @@ function CSkillManager() {
                 pow += 4 * charaDataManger.GetCharaJobLv();
 
                 // 「アサシンクロス エンチャントデッドリーポイズン」の効果（ペナルティ）
-                edp = charaDataManger.UsedSkillSearch(SKILL_ID_ENCHANT_DEADLY_POISON);
+                edp = charaDataManger.Head.UsedSkillSearch(SKILL_ID_ENCHANT_DEADLY_POISON);
                 if (edp > 0) {
                     pow = Math.floor(pow / 2);
                 }
@@ -14128,7 +14130,7 @@ function CSkillManager() {
                 pow = Math.floor(pow * charaDataManger.GetCharaBaseLv() / 100);
 
                 // 「アサシンクロス エンチャントデッドリーポイズン」の効果（ペナルティ）
-                edp = charaDataManger.UsedSkillSearch(SKILL_ID_ENCHANT_DEADLY_POISON);
+                edp = charaDataManger.Head.UsedSkillSearch(SKILL_ID_ENCHANT_DEADLY_POISON);
                 if (edp > 0) {
                     pow = Math.floor(pow / 2);
                 }
@@ -20214,7 +20216,7 @@ function CSkillManager() {
                 pow = 120 * skillLv;
 
                 // 「ミンストレル・ワンダラー レッスン」の習得レベルによる補正
-                pow += 60 * charaDataManger.UsedSkillSearch(SKILL_ID_LESSON);
+                pow += 60 * charaDataManger.Head.UsedSkillSearch(SKILL_ID_LESSON);
 
                 // ベースレベル補正
                 pow = Math.floor(pow * charaDataManger.GetCharaBaseLv() / 100);
@@ -20892,7 +20894,7 @@ function CSkillManager() {
                 pow = Math.floor(pow * charaDataManger.GetCharaBaseLv() / 100);
 
                 // 「ソーサラー 精霊スキル」の効果
-                seirei = charaDataManger.UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL);
+                seirei = charaDataManger.Head.UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL);
                 if (seirei == 4) {
                     pow += Math.floor(charaDataManger.GetCharaJobLv() / 2);
                 }
@@ -20948,7 +20950,7 @@ function CSkillManager() {
                 pow = Math.floor(pow * charaDataManger.GetCharaBaseLv() / 100);
 
                 // 「ソーサラー 精霊スキル」の効果
-                seirei = charaDataManger.UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL);
+                seirei = charaDataManger.Head.UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL);
                 if (seirei == 22) {
                     pow += Math.floor(charaDataManger.GetCharaJobLv() / 2);
                 }
@@ -21174,7 +21176,7 @@ function CSkillManager() {
                 pow = Math.floor(pow * charaDataManger.GetCharaBaseLv() / 120);
 
                 // 「ソーサラー 精霊スキル」の効果
-                seirei = charaDataManger.UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL);
+                seirei = charaDataManger.Head.UsedSkillSearch(SKILL_ID_SERE_SUPPORT_SKILL);
                 if (seirei == 31) {
                     pow += Math.floor(charaDataManger.GetCharaJobLv() * 5);
                 }
@@ -22650,7 +22652,7 @@ function CSkillManager() {
 
                 // 基本式
                 pow = 60 * skillLv;
-                powCart = 50 * Math.max(LearnedSkillSearch(SKILL_ID_CART_KAIZO), UsedSkillSearch(SKILL_ID_CART_KAIZO));
+                powCart = 50 * Math.max(LearnedSkillSearch(SKILL_ID_CART_KAIZO), Head.UsedSkillSearch(SKILL_ID_CART_KAIZO));
                 powInt = charaDataManger.GetCharaInt() / 40;
                 pow += Math.floor(powCard * powInt);
 
@@ -23951,7 +23953,7 @@ function CSkillManager() {
 
                 // 基本式
                 pow = (50 + Math.floor(charaDataManger.GetCharaDex() / 4)) * skillLv;
-                pow *= 0.4 * charaDataManger.UsedSkillSearch(SKILL_ID_TOKAKU_SHUREN);
+                pow *= 0.4 * charaDataManger.Head.UsedSkillSearch(SKILL_ID_TOKAKU_SHUREN);
 
                 // ベースレベル補正
                 pow = Math.floor(pow * charaDataManger.GetCharaBaseLv() / 120);
@@ -24484,7 +24486,7 @@ function CSkillManager() {
                 var pow = 0;
 
                 // 基本式
-                pow = 200 * charaDataManger.UsedSkillSearch(SKILL_ID_FU_COUNT_OF_FU);
+                pow = 200 * charaDataManger.Head.UsedSkillSearch(SKILL_ID_FU_COUNT_OF_FU);
 
                 // ベースレベル補正
                 pow = Math.floor(pow * charaDataManger.GetCharaBaseLv() / 100);
@@ -31445,7 +31447,7 @@ function CSkillManager() {
                 let ratio = 0;
                 ratio = 500 + 100 * skillLv;
                 ratio += 5 * GetTotalSpecStatus(MIG_PARAM_ID_POW);
-                if (UsedSkillSearch(SKILL_ID_SHADOW_EXCEED) > 0) {
+                if (Head.UsedSkillSearch(SKILL_ID_SHADOW_EXCEED) > 0) {
                     ratio *= 2;
                 }
                 ratio = Math.floor(ratio * n_A_BaseLV / 100);
@@ -31507,7 +31509,7 @@ function CSkillManager() {
                 let ratio = 0;
                 ratio = 50 + 50 * skillLv;
                 ratio += 1 * GetTotalSpecStatus(MIG_PARAM_ID_POW);
-                if (UsedSkillSearch(SKILL_ID_SHADOW_EXCEED) > 0) {
+                if (Head.UsedSkillSearch(SKILL_ID_SHADOW_EXCEED) > 0) {
                     // シャドウエクシード状態時、倍率２倍
                     ratio *= 2;
                 }
@@ -32611,14 +32613,14 @@ function CSkillManager() {
                 return 500;
             }
             this.CriActRate = (skillLv, charaData, specData, mobData) => {
-                if (UsedSkillSearch(SKILL_ID_CALAMITY_GALE) > 0) {
+                if (Head.UsedSkillSearch(SKILL_ID_CALAMITY_GALE) > 0) {
                     return this._CriActRate100(skillLv, charaData, specData, mobData);
                 } else {
                     return 0;
                 }
             }
             this.CriDamageRate = (skillLv, charaData, specData, mobData) => {
-                if (UsedSkillSearch(SKILL_ID_CALAMITY_GALE) > 0) {
+                if (Head.UsedSkillSearch(SKILL_ID_CALAMITY_GALE) > 0) {
                     return this._CriDamageRate100(skillLv, charaData, specData, mobData) / 2;
                 } else {
                     return 0;
@@ -32654,7 +32656,7 @@ function CSkillManager() {
             this.LifeTime = function (skillLv, charaDataManger) {
                 var nLifeTime = ([0, 57000, 27700, 12100, 5500, 3100])[skillLv];
                 // 補助スキルレベル取得
-                var sklLvSub = Math.max(LearnedSkillSearch(SKILL_ID_ADVANCED_TRAP), UsedSkillSearch(SKILL_ID_ADVANCED_TRAP));
+                var sklLvSub = Math.max(LearnedSkillSearch(SKILL_ID_ADVANCED_TRAP), Head.UsedSkillSearch(SKILL_ID_ADVANCED_TRAP));
                 if (sklLvSub > 0) {
                     nLifeTime += 500 + (500 * sklLvSub);
                 }
@@ -32690,7 +32692,7 @@ function CSkillManager() {
             this.LifeTime = function (skillLv, charaDataManger) {
                 var nLifeTime = ([0, 57000, 27700, 12100, 5500, 3100])[skillLv];
                 // 補助スキルレベル取得
-                var sklLvSub = Math.max(LearnedSkillSearch(SKILL_ID_ADVANCED_TRAP), UsedSkillSearch(SKILL_ID_ADVANCED_TRAP));
+                var sklLvSub = Math.max(LearnedSkillSearch(SKILL_ID_ADVANCED_TRAP), Head.UsedSkillSearch(SKILL_ID_ADVANCED_TRAP));
                 if (sklLvSub > 0) {
                     nLifeTime += 500 + (500 * sklLvSub);
                 }
@@ -32726,7 +32728,7 @@ function CSkillManager() {
             this.LifeTime = function (skillLv, charaDataManger) {
                 var nLifeTime = ([0, 57000, 27700, 12100, 5500, 3100])[skillLv];
                 // 補助スキルレベル取得
-                var sklLvSub = Math.max(LearnedSkillSearch(SKILL_ID_ADVANCED_TRAP), UsedSkillSearch(SKILL_ID_ADVANCED_TRAP));
+                var sklLvSub = Math.max(LearnedSkillSearch(SKILL_ID_ADVANCED_TRAP), Head.UsedSkillSearch(SKILL_ID_ADVANCED_TRAP));
                 if (sklLvSub > 0) {
                     nLifeTime += 500 + (500 * sklLvSub);
                 }
@@ -32801,7 +32803,7 @@ function CSkillManager() {
             this.LifeTime = function (skillLv, charaDataManger) {
                 var nLifeTime = ([0, 57000, 27700, 12100, 5500, 3100])[skillLv];
                 // 補助スキルレベル取得
-                var sklLvSub = Math.max(LearnedSkillSearch(SKILL_ID_ADVANCED_TRAP), UsedSkillSearch(SKILL_ID_ADVANCED_TRAP));
+                var sklLvSub = Math.max(LearnedSkillSearch(SKILL_ID_ADVANCED_TRAP), Head.UsedSkillSearch(SKILL_ID_ADVANCED_TRAP));
                 if (sklLvSub > 0) {
                     nLifeTime += 500 + (500 * sklLvSub);
                 }
@@ -37504,9 +37506,9 @@ function CSkillManager() {
             }
             this.CriActRate = (skillLv, charaData, specData, mobData) => {
                 // 正午、天気の身状態の場合のみ
-                if (UsedSkillSearch(SKILL_ID_UNKONO_ZYOTAI) == 2) {
+                if (Head.UsedSkillSearch(SKILL_ID_UNKONO_ZYOTAI) == 2) {
                 }
-                else if (UsedSkillSearch(SKILL_ID_TENKINO_MI) >= 1) {
+                else if (Head.UsedSkillSearch(SKILL_ID_TENKINO_MI) >= 1) {
                 }
                 else {
                     return 0;
@@ -37515,9 +37517,9 @@ function CSkillManager() {
             }
             this.CriDamageRate = (skillLv, charaData, specData, mobData) => {
                 // 正午、天気の身状態の場合のみ
-                if (UsedSkillSearch(SKILL_ID_UNKONO_ZYOTAI) == 2) {
+                if (Head.UsedSkillSearch(SKILL_ID_UNKONO_ZYOTAI) == 2) {
                 }
-                else if (UsedSkillSearch(SKILL_ID_TENKINO_MI) >= 1) {
+                else if (Head.UsedSkillSearch(SKILL_ID_TENKINO_MI) >= 1) {
                 }
                 else {
                     return 0;
@@ -37559,9 +37561,9 @@ function CSkillManager() {
             }
             this.CriActRate = (skillLv, charaData, specData, mobData) => {
                 // 日没、天気の身状態の場合のみ
-                if (UsedSkillSearch(SKILL_ID_UNKONO_ZYOTAI) == 3) {
+                if (Head.UsedSkillSearch(SKILL_ID_UNKONO_ZYOTAI) == 3) {
                 }
-                else if (UsedSkillSearch(SKILL_ID_TENKINO_MI) >= 1) {
+                else if (Head.UsedSkillSearch(SKILL_ID_TENKINO_MI) >= 1) {
                 }
                 else {
                     return 0;
@@ -37570,9 +37572,9 @@ function CSkillManager() {
             }
             this.CriDamageRate = (skillLv, charaData, specData, mobData) => {
                 // 日没、天気の身状態の場合のみ
-                if (UsedSkillSearch(SKILL_ID_UNKONO_ZYOTAI) == 3) {
+                if (Head.UsedSkillSearch(SKILL_ID_UNKONO_ZYOTAI) == 3) {
                 }
-                else if (UsedSkillSearch(SKILL_ID_TENKINO_MI) >= 1) {
+                else if (Head.UsedSkillSearch(SKILL_ID_TENKINO_MI) >= 1) {
                 }
                 else {
                     return 0;
@@ -38137,7 +38139,7 @@ function CSkillManager() {
                 let ratio = 0;
                 ratio = 2000 + 200 * skillLv;
                 ratio += 3 * GetTotalSpecStatus(MIG_PARAM_ID_SPL);
-                ratio += 7 * skillLv * (UsedSkillSearch(SKILL_ID_GOFU_SHUREN) + UsedSkillSearch(SKILL_ID_REIDOZYUTSU_SHUREN));
+                ratio += 7 * skillLv * (Head.UsedSkillSearch(SKILL_ID_GOFU_SHUREN) + Head.UsedSkillSearch(SKILL_ID_REIDOZYUTSU_SHUREN));
                 ratio = Math.floor(ratio * n_A_BaseLV / 100);
                 return ratio;
             }
@@ -38182,8 +38184,8 @@ function CSkillManager() {
                     ratio = 350 + 50 * skillLv;
                 }
                 ratio += GetTotalSpecStatus(MIG_PARAM_ID_SPL);
-                ratio += 2 * UsedSkillSearch(SKILL_ID_REIDOZYUTSU_SHUREN);
-                ratio = ratio * UsedSkillSearch(SKILL_ID_COUNT_OF_SOUL_ENERGY);
+                ratio += 2 * Head.UsedSkillSearch(SKILL_ID_REIDOZYUTSU_SHUREN);
+                ratio = ratio * Head.UsedSkillSearch(SKILL_ID_COUNT_OF_SOUL_ENERGY);
                 ratio = Math.floor(ratio * n_A_BaseLV / 100);
                 return ratio;
             }
@@ -38219,13 +38221,13 @@ function CSkillManager() {
             this.element = CSkillData.ELEMENT_VOID;
             this.Power = function (skillLv, charaData, option) {			// スキル倍率
                 let ratio = 0;
-                if (UsedSkillSearch(SKILL_ID_SHIHO_FU_ZYOTAI) >= 5) {
+                if (Head.UsedSkillSearch(SKILL_ID_SHIHO_FU_ZYOTAI) >= 5) {
                     ratio = 5500 + 1000 * skillLv;
                 } else {
                     ratio = 4250 + 750 * skillLv;
                 }
                 ratio += 5 * GetTotalSpecStatus(MIG_PARAM_ID_SPL);
-                ratio += 15 * skillLv * UsedSkillSearch(SKILL_ID_GOFU_SHUREN);
+                ratio += 15 * skillLv * Head.UsedSkillSearch(SKILL_ID_GOFU_SHUREN);
                 ratio = Math.floor(ratio * n_A_BaseLV / 100);
                 return ratio;
             }
@@ -38270,14 +38272,14 @@ function CSkillManager() {
             }
             this.Power = function (skillLv, charaData, option) {       // スキル倍率
                 let ratio = 0;
-                if (UsedSkillSearch(SKILL_ID_SHIHO_FU_ZYOTAI) >= 5) {
+                if (Head.UsedSkillSearch(SKILL_ID_SHIHO_FU_ZYOTAI) >= 5) {
                     // 公式発表並びに実測確認の結果によるとLv4だけ倍率が異常なので直値で指定しています
                     ratio = [0, 4750, 5250, 5750, 6200, 6750][skillLv];
                 } else {
                     ratio = 3000 + 400 * skillLv;
                 }
                 ratio += 5 * GetTotalSpecStatus(MIG_PARAM_ID_SPL);
-                ratio += 15 * skillLv * UsedSkillSearch(SKILL_ID_GOFU_SHUREN);
+                ratio += 15 * skillLv * Head.UsedSkillSearch(SKILL_ID_GOFU_SHUREN);
                 ratio = Math.floor(ratio * n_A_BaseLV / 100);
                 return ratio;
             }
@@ -38322,13 +38324,13 @@ function CSkillManager() {
             }
             this.Power = function (skillLv, charaData, option) {       // スキル倍率
                 let ratio = 0;
-                if (UsedSkillSearch(SKILL_ID_SHIHO_FU_ZYOTAI) >= 5) {
+                if (Head.UsedSkillSearch(SKILL_ID_SHIHO_FU_ZYOTAI) >= 5) {
                     ratio = 5500 + 650 * skillLv;
                 } else {
                     ratio = 4250 + 500 * skillLv;
                 }
                 ratio += 5 * GetTotalSpecStatus(MIG_PARAM_ID_SPL);
-                ratio += 15 * skillLv * UsedSkillSearch(SKILL_ID_GOFU_SHUREN);
+                ratio += 15 * skillLv * Head.UsedSkillSearch(SKILL_ID_GOFU_SHUREN);
                 ratio = Math.floor(ratio * n_A_BaseLV / 100);
                 return ratio;
             }
@@ -38373,14 +38375,14 @@ function CSkillManager() {
             }
             this.Power = function (skillLv, charaData, option) {       // スキル倍率
                 let ratio = 0;
-                if (UsedSkillSearch(SKILL_ID_SHIHO_FU_ZYOTAI) >= 5) {
+                if (Head.UsedSkillSearch(SKILL_ID_SHIHO_FU_ZYOTAI) >= 5) {
                     // 公式発表並びに実測確認の結果によるとLv4だけ倍率が異常なので直値で指定しています
                     ratio = [0, 4750, 5250, 5750, 6200, 6750][skillLv];
                 } else {
                     ratio = 3000 + 400 * skillLv;
                 }
                 ratio += 5 * GetTotalSpecStatus(MIG_PARAM_ID_SPL);
-                ratio += 15 * skillLv * UsedSkillSearch(SKILL_ID_GOFU_SHUREN);
+                ratio += 15 * skillLv * Head.UsedSkillSearch(SKILL_ID_GOFU_SHUREN);
                 ratio = Math.floor(ratio * n_A_BaseLV / 100);
                 return ratio;
             }
@@ -38421,13 +38423,13 @@ function CSkillManager() {
             this.range = CSkillData.RANGE_LONG;
             this.element = CSkillData.ELEMENT_VOID;
             this.hitCount = function (skillLv) {
-                return 1 + Math.min(5, UsedSkillSearch(SKILL_ID_SHIHO_FU_ZYOTAI));
+                return 1 + Math.min(5, Head.UsedSkillSearch(SKILL_ID_SHIHO_FU_ZYOTAI));
             }
             this.Power = function (skillLv, charaData, option) {       // スキル倍率
                 let ratio = 0;
                 ratio = 500 + 50 * skillLv;
                 ratio += 5 * GetTotalSpecStatus(MIG_PARAM_ID_SPL);
-                ratio += 15 * skillLv * UsedSkillSearch(SKILL_ID_GOFU_SHUREN);
+                ratio += 15 * skillLv * Head.UsedSkillSearch(SKILL_ID_GOFU_SHUREN);
                 ratio = Math.floor(ratio * n_A_BaseLV / 100);
                 return ratio;
             }
@@ -38471,7 +38473,7 @@ function CSkillManager() {
                 let ratio = 0;
                 ratio = 2200 + 600 * skillLv;
                 ratio += 5 * GetTotalSpecStatus(MIG_PARAM_ID_SPL);
-                ratio += 15 * skillLv * (UsedSkillSearch(SKILL_ID_GOFU_SHUREN) + UsedSkillSearch(SKILL_ID_REIDOZYUTSU_SHUREN));
+                ratio += 15 * skillLv * (Head.UsedSkillSearch(SKILL_ID_GOFU_SHUREN) + Head.UsedSkillSearch(SKILL_ID_REIDOZYUTSU_SHUREN));
                 ratio = Math.floor(ratio * n_A_BaseLV / 100);
                 return ratio;
             }
@@ -39866,7 +39868,7 @@ function CSkillManager() {
             this.element = CSkillData.ELEMENT_VOID;
             this.Power = function (skillLv, charaData) {					// スキル倍率
                 let ratio = 0;
-                if (UsedSkillSearch(SKILL_ID_DRAGONIC_AURA_STATE) > 1) {
+                if (Head.UsedSkillSearch(SKILL_ID_DRAGONIC_AURA_STATE) > 1) {
                     ratio = 3500 + 400 * skillLv;
                     ratio += 25 * GetTotalSpecStatus(MIG_PARAM_ID_POW);
                 } else {
