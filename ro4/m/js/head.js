@@ -25066,7 +25066,7 @@ function ApplyPhysicalSkillDamageRatioChange(battleCalcInfo, charaData, specData
         if (!bLeft) {
 
             // 特性ステータス対応
-            var criDmgRate = ApplyCRateAmplify(140);
+            var criDmgRate = HmJob.ApplyCRateAmplify(140);
 
             dmg = Math.floor(dmg * criDmgRate / 100);
         }

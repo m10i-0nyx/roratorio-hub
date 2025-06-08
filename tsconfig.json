@@ -9,10 +9,14 @@
         "moduleResolution": "bundler",
         "strict": true, // 厳格な型チェック
         "outDir": "./ro4/m/ts-js/", // 出力先ディレクトリ
-        "types": []
+        "types": [],
+        "baseUrl": ".",
+        "paths": {}
     },
     "include": [
-        "./ro4/m/ts/*.ts"
+        "./ro4/m/ts/*.ts",
+        "./ro4/m/js/types/*.d.ts",
+        "./roro/m/js/types/*.d.ts"
     ],
     "exclude": [
         "./node_modules"

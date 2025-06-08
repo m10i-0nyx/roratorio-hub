@@ -1,10 +1,5 @@
+//@ts-ignore
 import * as pako from "pako";
-
-declare function AutoCalc(value: any): void;
-declare function CalcStatusPoint(flag: boolean): void;
-declare function changeJobSettings(job_id_num: number): void;
-declare function OnClickSkillSWLearned(): void;
-declare function StAllCalc(): void;
 
 // Base64デコード関数（URLセーフに対応）
 function base64ToUint8Array(base64: string): Uint8Array {
@@ -118,7 +113,7 @@ export async function loadRodbTranslator(fragment: string): Promise<void> {
     if (jobContainer) {
         jobContainer.textContent = jsonObject.status.job_class_localization;
     }
-    changeJobSettings(jsonObject.status.ratorio_job_id_num);
+    globalThis.Equip.changeJobSettings(jsonObject.status.ratorio_job_id_num);
 
     // Set Base Lv
     const baseLvElement = document.getElementById("OBJID_SELECT_BASE_LEVEL") as HTMLSelectElement;
@@ -143,7 +138,7 @@ export async function loadRodbTranslator(fragment: string): Promise<void> {
     // Set Skill Lv
     const skillColumnCheckbox: HTMLInputElement = document.getElementById("OBJID_SKILL_COLUMN_EXTRACT_CHECKBOX") as HTMLInputElement;
     skillColumnCheckbox.checked = true;
-    OnClickSkillSWLearned();
+    globalThis.LearnedSkill.OnClickSkillSWLearned();
 
     let seachUrls = [];
     const urlPrefix = "https://rodb.aws.0nyx.net/translator/approximate_search/skill";
@@ -176,9 +171,9 @@ export async function loadRodbTranslator(fragment: string): Promise<void> {
     });
 
     // 計算
-    CalcStatusPoint(true);
-    StAllCalc();
-    AutoCalc("");
+    globalThis.HmJob.CalcStatusPoint(true);
+    globalThis.Foot.StAllCalc();
+    globalThis.Head.AutoCalc("");
 }
 
 interface JobStatus {
@@ -229,6 +224,21 @@ interface RodbTranslatorJsonFormat {
 
 declare global {
     var loadRodbTranslator: (fragments: string) => Promise<void>;
+    var Equip: {
+        changeJobSettings: (jobId: number) => void;
+    };
+    var LearnedSkill: {
+        OnClickSkillSWLearned: () => void;
+    };
+    var HmJob: {
+        CalcStatusPoint: (flag: boolean) => void;
+    };
+    var Foot: {
+        StAllCalc: () => void;
+    };
+    var Head: {
+        AutoCalc: (arg: string) => void;
+    };
 }
 
 // グローバルに代入

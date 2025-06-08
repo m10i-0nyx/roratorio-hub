@@ -14,7 +14,7 @@ import { EnchSearch } from "../../../ro4/m/js/CEnchSearch.js";
 import { CAttackMethodAreaComponentManager } from "../../../ro4/m/js/CAttackMethodAreaComponentManager.js";
 import * as CalcAutoSpell from "../../../ro4/m/js/calcautospell.js";
 import * as Chara from "../../../roro/m/js/chara.js";
-import * as Equip from "../../../roro/m/js/equip.js"; 307
+import * as Equip from "../../../roro/m/js/equip.js";
 import * as Foot from "../../../roro/m/js/foot.js";
 import * as Global from "../../../ro4/m/js/global.js";
 import * as Head from "../../../ro4/m/js/head.js";
@@ -28923,12 +28923,12 @@ function GetEquippedSPSubEquip(spid, invalidItemIdArray, bListUp, bExact) {
         }
 
         // アイテムのＳＰ定義をループ検索
-        for (spDefIdx = 0; itemData[ITEM_DATA_INDEX_SPBEGIN + spDefIdx] != ITEM_SP_END; spDefIdx += 2) {
+        for (var spDefIdx = 0; itemData[ITEM_DATA_INDEX_SPBEGIN + spDefIdx] != ITEM_SP_END; spDefIdx += 2) {
 
             // ＳＰの定義を取得
             // spDefRemain は int の場合と BigInt の場合がある
-            spDefRemain = itemData[ITEM_DATA_INDEX_SPBEGIN + spDefIdx];
-            spDefValue = itemData[ITEM_DATA_INDEX_SPBEGIN + spDefIdx + 1];
+            var spDefRemain = itemData[ITEM_DATA_INDEX_SPBEGIN + spDefIdx];
+            var spDefValue = itemData[ITEM_DATA_INDEX_SPBEGIN + spDefIdx + 1];
 
             // 超越段階を満たさない場合は、次へ
             spDefRemain = CheckSpDefTransendenceOver(spDefRemain, eqpTranscendence);
@@ -30276,10 +30276,10 @@ function CheckSpDefRefineOver(spDefRemain, eqpRefined) {
  */
 function CheckSpDefTransendenceOver(spDefRemain, eqpTranscendence) {
     // 超越条件が指定されている場合
-    baseFlag = toSafeBigInt(ITEM_SP_TRANSCENDENCE_1);
+    let baseFlag = toSafeBigInt(ITEM_SP_TRANSCENDENCE_1);
     if (spDefRemain >= baseFlag) {
         // BigInt の場合、小数点以下が自動的に切り捨てられる
-        requireTranscendence = parseInt(spDefRemain / baseFlag);
+        let requireTranscendence = parseInt(spDefRemain / baseFlag);
         // 超越条件を満たす場合
         if (eqpTranscendence >= requireTranscendence) {
             return parseInt(spDefRemain % baseFlag);

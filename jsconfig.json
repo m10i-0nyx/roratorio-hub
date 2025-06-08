@@ -9,7 +9,12 @@
     },
     "include": [
         "ro4/m/js/*",
-        "roro/m/js/*"
+        "ro4/m/ts/*",
+        "ro4/m/ts/types/*",
+        "roro/m/js/*",
+        "roro/m/ts/types/*",
+        "ro4/m/js/types/hmjob.d.ts",
+        "ro4/m/js/types/head.d.ts"
     ],
     "exclude": [
         "node_modules",

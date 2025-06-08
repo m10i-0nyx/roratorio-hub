@@ -239,7 +239,7 @@ export function OnClickSkillSWLearned() {
 
         objSelect = document.createElement("select");
         objSelect.setAttribute("id", "OBJID_SELECT_LEARNED_SKILL_LEVEL_" + idx);
-        objSelect.setAttribute("onChange", "RefreshSkillColumnHeaderLearned(this, " + idx + ", this.value)");
+        objSelect.setAttribute("onChange", "LearnedSkill.RefreshSkillColumnHeaderLearned(this, " + idx + ", this.value)");
         objTd.appendChild(objSelect);
 
         for (var lvIdx = 0; lvIdx <= SkillObjNew[skillId][SKILL_DATA_INDEX_MAXLV]; lvIdx++) {
@@ -363,11 +363,11 @@ export function UpdateLearnedSkillSettingColoring() {
  * @param {*} changedIdx
  * @param {*} newValue
  */
-function RefreshSkillColumnHeaderLearned(objSelect, changedIdx, newValue) {
+export function RefreshSkillColumnHeaderLearned(objSelect, changedIdx, newValue) {
 
     if (0 <= changedIdx) {
         n_A_LearnedSkill[changedIdx] = parseInt(newValue);
-        AutoCalc("RefreshSkillColumnHeaderLearned");
+        Head.AutoCalc("RefreshSkillColumnHeaderLearned");
     }
 
     // 背景設定
