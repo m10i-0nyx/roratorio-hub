@@ -703,7 +703,7 @@ function OnChangeRefined() {
  * @param itemId 変更後のアイテムＩＤ
  *-----------------------------------------------------------------------------------------------
  ************************************************************************************************/
-function OnChangeEquip(eqpRgnId, itemId) {
+export function OnChangeEquip(eqpRgnId, itemId) {
 
     // エンチャント設定のクリア
     ClearEnchantOnChangeEquip(eqpRgnId, itemId);

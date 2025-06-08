@@ -18582,7 +18582,7 @@ function GetIkariPow(mobData) {
  * 		CAttackMethodAreaComponentManager.OnChangeAttackMethodOption: 攻撃手段オプション
  * 			CAttackMethodAreaComponentManager.OnChangeAttackMethod	: 自動計算のON/OFF
  */
-function AutoCalc(callFrom) {
+export function AutoCalc(callFrom) {
     // 自動設定が有効の場合のみ、再計算する
     var autoCalcFlag = HtmlGetObjectValueByIdAsInteger("OBJID_INPUT_ATTACK_METHOD_AUTO_CALC", 0);
     switch (autoCalcFlag) {

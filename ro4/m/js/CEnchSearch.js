@@ -1,6 +1,6 @@
 "use strict";
 
-class enchSearch {
+export class EnchSearch {
     //エンチャント検索
     constructor() {
         this.enchidItemidList = [];
@@ -43,7 +43,7 @@ class enchSearch {
                 enchListId = enchListIdArray[idxEnchList];
 
                 // サブ関数をコールしてデータ配列を収集
-                enchInfoArrayAllSlots = RebuildCardSelectSubCollectEnchListData(enchListId, enchInfoArrayAllSlotsResult);
+                enchInfoArrayAllSlots = HmCard.RebuildCardSelectSubCollectEnchListData(enchListId, enchInfoArrayAllSlotsResult);
 
                 // 最終結果に追記
                 for (let idxSlot = 0; idxSlot < enchInfoArrayAllSlots.length; idxSlot++) {

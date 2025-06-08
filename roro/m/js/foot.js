@@ -10,6 +10,7 @@ import { JobMap } from "../../../ro4/m/ts-js/loadJobMap.js";
 globalThis.jobMap = JobMap;
 
 // module imports
+import { EnchSearch } from "../../../ro4/m/js/CEnchSearch.js";
 import { CAttackMethodAreaComponentManager } from "../../../ro4/m/js/CAttackMethodAreaComponentManager.js";
 import * as CalcAutoSpell from "../../../ro4/m/js/calcautospell.js";
 import * as Chara from "../../../roro/m/js/chara.js";
@@ -27,6 +28,7 @@ import * as Mob from "../../../roro/m/js/mob.js";
 import * as SlotPager from "../../../roro/m/js/slotpager.js";
 
 globalThis.CalcAutoSpell = CalcAutoSpell;
+globalThis.EnchSearch = EnchSearch;
 globalThis.Chara = Chara;
 globalThis.Equip = Equip;
 globalThis.Foot = Foot;

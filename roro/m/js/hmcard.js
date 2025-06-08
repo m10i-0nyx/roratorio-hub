@@ -638,7 +638,7 @@ export function RebuildCardSelect(eqpRgnId, itemId) {
  * @param enchListId 収集対象のエンチャントリストID
  * @param enchInfoArrayBefore これまでに、収集されたデータの配列（アップグレードの判定に使用）
  */
-function RebuildCardSelectSubCollectEnchListData(enchListId, enchInfoArrayAllSlotsBefore) {
+export function RebuildCardSelectSubCollectEnchListData(enchListId, enchInfoArrayAllSlotsBefore) {
 
     var idx = 0;
     var idxSlot = 0;
@@ -788,11 +788,9 @@ function RebuildCardSelectSubCollectEnchListData(enchListId, enchInfoArrayAllSlo
 
 function RebuildCardSelectSubCollectEnchListDataSubUpgradeShinennoKairo(enchInfoArrayBefore, resultArray, enchListId, paramsObject) {
 
-    var idx = 0;
-
     var funcPushNotExist = function (cardIdF) {
 
-        for (idxF = 0; idxF < resultArray.length; idxF++) {
+        for (var idxF = 0; idxF < resultArray.length; idxF++) {
             if (resultArray[idxF][1] == cardIdF) {
                 return;
             }
@@ -802,7 +800,7 @@ function RebuildCardSelectSubCollectEnchListDataSubUpgradeShinennoKairo(enchInfo
     }
 
     // 処理開始前時点でのエンチャントデータを元に、アップグレード可能なものを特定して追加する
-    for (idx = 0; idx < enchInfoArrayBefore.length; idx++) {
+    for (var idx = 0; idx < enchInfoArrayBefore.length; idx++) {
 
         switch (enchInfoArrayBefore[idx][1]) {
 
@@ -860,11 +858,9 @@ function RebuildCardSelectSubCollectEnchListDataSubUpgradeShinennoKairo(enchInfo
 
 function RebuildCardSelectSubCollectEnchListDataSubUpgradeShinentaiBuki(enchInfoArrayBefore, resultArray, enchListId, paramsObject) {
 
-    var idx = 0;
-
     var funcPushNotExist = function (cardIdF) {
 
-        for (idxF = 0; idxF < resultArray.length; idxF++) {
+        for (var idxF = 0; idxF < resultArray.length; idxF++) {
             if (resultArray[idxF][1] == cardIdF) {
                 return;
             }
@@ -874,7 +870,7 @@ function RebuildCardSelectSubCollectEnchListDataSubUpgradeShinentaiBuki(enchInfo
     }
 
     // 処理開始前時点でのエンチャントデータを元に、アップグレード可能なものを特定して追加する
-    for (idx = 0; idx < enchInfoArrayBefore.length; idx++) {
+    for (var idx = 0; idx < enchInfoArrayBefore.length; idx++) {
 
         switch (enchInfoArrayBefore[idx][1]) {
 
@@ -908,20 +904,17 @@ function RebuildCardSelectSubCollectEnchListDataSubUpgradeShinentaiBuki(enchInfo
 
 function RebuildCardSelectSubSortCollectedEnchListData(enchInfoArrayAllSlots) {
 
-    var idx = 0;
-    var idxSlot = 0;
-
     var enchInfoArray = null;
 
 
     // 全スロットをループ処理
-    for (idxSlot = 0; idxSlot < enchInfoArrayAllSlots.length; idxSlot++) {
+    for (var idxSlot = 0; idxSlot < enchInfoArrayAllSlots.length; idxSlot++) {
 
         // 当該スロットのエンチャント情報配列を取得
         enchInfoArray = enchInfoArrayAllSlots[idxSlot];
 
         // エンチャント情報配列を全処理
-        for (idx = 0; idx < enchInfoArray.length; idx++) {
+        for (var idx = 0; idx < enchInfoArray.length; idx++) {
 
             // カードIDを元に、順序を特定
             enchInfoArray[idx][3] = g_constDataManager.enchListDataManager.sortedEnchantCardIdArray.indexOf(enchInfoArray[idx][1]);

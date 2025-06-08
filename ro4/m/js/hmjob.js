@@ -1687,7 +1687,7 @@ function migrateOtherJob(latest_job) {
             for (let dmyidx = 0; dmyidx < LEARNED_SKILL_MAX_COUNT; dmyidx++) {
                 n_A_LearnedSkill[dmyidx] = 0;
             }
-            OnClickSkillSWLearned();
+            LearnedSkill.OnClickSkillSWLearned();
             // 職固有自己支援・パッシブ持続系の初期化
             n_A_PassSkill.fill(0);
             $("#OBJID_CHECK_A1_SKILL_SW").prop("checked", true).trigger("click");
@@ -1708,13 +1708,13 @@ function migrateOtherJob(latest_job) {
  * OBJID_SELECT_JOB の状態が変更された時に呼び出されるエントリ関数
  * @param {*} jobId
  */
-function OnChangeJob(jobId) {
+export function OnChangeJob(jobId) {
     if (document.getElementById("OBJID_CHK_MIGRATE_SETTING").checked) {
         migrateOtherJob(Number(jobId));
     } else {
-        changeJobSettings(jobId);
-        StAllCalc();
+        Equip.changeJobSettings(jobId);
+        Foot.StAllCalc();
         CalcStatusPoint(false);
-        AutoCalc();
+        Head.AutoCalc();
     }
 }
