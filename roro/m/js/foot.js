@@ -1,13 +1,12 @@
 "use strict";
 
+import { JobMap } from "../../../ro4/m/ts-js/loadJobMap.js";
+
 /**
  * [WIP]
  * 負けてglobalThinに依存している変数、関数を書き出してる
  * 将来的に纏める
  */
-
-import { JobMap } from "../../../ro4/m/ts-js/loadJobMap.js";
-globalThis.jobMap = JobMap;
 
 // module imports
 import { EnchSearch } from "../../../ro4/m/js/CEnchSearch.js";
@@ -30295,14 +30294,23 @@ function CheckSpDefTransendenceOver(spDefRemain, eqpTranscendence) {
  * 職業の基本条件を設定する
  */
 export function InitJobInfo() {
+    let job_id = document.calcForm.A_JOB.value;
+    if (!job_id) {
+        return;
+    }
 
-    // 職業ＩＤ
-    n_A_JOB = eval(document.calcForm.A_JOB.value);
+    let job_data = JobMap.getById(job_id);
+    if (!job_data) {
+        return;
+    }
+
+    // (過渡期)職業IDを設定
+    globalThis.n_A_JOB = job_data._mig_id_num;
 
     // TODO: データ移行過渡処理
     // 移行後の通常処理（追加で行う）
     if (IsEnableMigrationBlockNewProcess()) {
-        g_charaDataManager.GetCharaData(MIG_CHARA_MANAGER_ID_MAIN).SetJob(n_A_JOB);
+        g_charaDataManager.GetCharaData(MIG_CHARA_MANAGER_ID_MAIN).SetJob(job_data._mig_id_num);
     }
 }
 
@@ -30411,19 +30419,11 @@ if (document.getElementById("OBJID_SAVE_BLOCK_MIG")) {
 // 職業選択セレクトボックスの構築
 JobMap.getAll().forEach((job_array, idx) => {
     var job_data = job_array[1];
-    if (!job_data.name_ja) return; //日本語名がない場合はskip
-    //document.calcForm.A_JOB.options[idx] = new Option(job_data.name_ja, job_data.id_name);
-    document.calcForm.A_JOB.options[idx] = new Option(job_data.name_ja, job_data._mig_id_num); // 移行中設定
+    if (!job_data.name_ja) {
+        return; //日本語名がない場合はskip
+    }
+    document.calcForm.A_JOB.options[idx] = new Option(job_data.name_ja, job_data.id_name);
 });
-/*
-// 旧式の職業選択セレクトボックスの構築
-// 廃止予定
-let jobIdArray = g_constDataManager.GetDataManger(CONST_DATA_KIND_JOB).EnumId();
-for (var idx = 0; idx < jobIdArray.length; idx++) {
-    document.calcForm.A_JOB.options[idx] = new Option(GetJobName(jobIdArray[idx]), jobIdArray[idx]);
-}
-*/
-
 
 globalThis.SpeedPotName = ["なし", "スピードアップポーション", "ハイスピードポーション", "バーサークポーション"];
 document.calcForm.A_SpeedPOT.options[0] = new Option(globalThis.SpeedPotName[0], "0");
@@ -30447,27 +30447,25 @@ CMonsterMapAreaComponentManager.RebuildControls();
 globalThis.g_objMobConfInput = new CMobConfInputAreaComponentManager(g_dataManagerMobConfInput);
 g_objMobConfInput.BuildUpSelectArea(document.getElementById("OBJID_TD_MOB_CONF_INPUT_NEW"), false);
 
-globalThis.n_A_JOB = 0;
-document.calcForm.A_JOB.value = 0;
-//Equip.changeJobSettings("NOVICE"); //[WIP]
-Equip.changeJobSettings(0);
+// 初期ジョブ設定
+globalThis.n_A_JOB = "NOVICE";
+document.calcForm.A_JOB.value = "NOVICE";
+Equip.changeJobSettings("NOVICE");
 
-if (true) {
-    //--------------------------------
-    // ステートフルデータの初期化
-    //--------------------------------
-    Equip.UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_ARMS);
-    Equip.UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_ARMS_LEFT);
-    Equip.UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_HEAD_TOP);
-    Equip.UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_HEAD_MID);
-    Equip.UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_HEAD_UNDER);
-    Equip.UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_SHIELD);
-    Equip.UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_BODY);
-    Equip.UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_SHOULDER);
-    Equip.UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_SHOES);
-    Equip.UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_ACCESSARY_1);
-    Equip.UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_ACCESSARY_2);
-}
+//--------------------------------
+// ステートフルデータの初期化
+//--------------------------------
+Equip.UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_ARMS);
+Equip.UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_ARMS_LEFT);
+Equip.UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_HEAD_TOP);
+Equip.UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_HEAD_MID);
+Equip.UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_HEAD_UNDER);
+Equip.UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_SHIELD);
+Equip.UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_BODY);
+Equip.UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_SHOULDER);
+Equip.UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_SHOES);
+Equip.UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_ACCESSARY_1);
+Equip.UpdateStatefullDataOnChangeEquip(EQUIP_REGION_ID_ACCESSARY_2);
 
 function LoadSaveDataToCalculator() {
 
@@ -30527,7 +30525,7 @@ if (splittedArray.length == 2) {
 HmJob.CalcStatusPoint(true);
 Head.calc();
 
-export function Init() {
+export function Init(player_job_data) {
 
     globalThis.n_A_BaseLV = 1;
     globalThis.n_A_JobLV = 1;
@@ -30761,7 +30759,7 @@ export function Init() {
 
     OnClickQuickControlSW();
     Head.Click_PassSkillSW();
-    LearnedSkill.OnClickSkillSWLearned();
+    LearnedSkill.OnClickSkillSWLearned(player_job_data);
     Head.Click_Skill3SW();
     Head.Click_Skill4SW();
     CalcAutoSpell.OnClickExtractSettingAutoSpell();

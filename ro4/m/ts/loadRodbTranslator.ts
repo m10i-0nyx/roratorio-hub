@@ -1,5 +1,6 @@
 //@ts-ignore
 import * as pako from "pako";
+import { JobMap } from "./loadJobMap.js";
 
 // Base64デコード関数（URLセーフに対応）
 function base64ToUint8Array(base64: string): Uint8Array {
@@ -107,23 +108,28 @@ export async function loadRodbTranslator(fragment: string): Promise<void> {
         jsonObject.status.job_class = "inquisitor";
     }
     */
+    let job_id = jsonObject.status.job_class.toUpperCase()
+    let player_job_data = JobMap.getById(jsonObject.status.job_class.toUpperCase());
+    if (!player_job_data) {
+        return;
+    }
 
     // Set Job
-    const jobElement = document.getElementById("OBJID_SELECT_JOB") as HTMLSelectElement;
-    jobElement.value = String(jsonObject.status.ratorio_job_id_num);
-    const jobContainer = document.getElementById("select2-OBJID_SELECT_JOB-container");
-    if (jobContainer) {
-        jobContainer.textContent = jsonObject.status.job_class_localization;
+    const job_element = document.getElementById("OBJID_SELECT_JOB") as HTMLSelectElement;
+    job_element.value = String(jsonObject.status.ratorio_job_id_num);
+    const job_container = document.getElementById("select2-OBJID_SELECT_JOB-container");
+    if (job_container) {
+        job_container.textContent = jsonObject.status.job_class_localization;
     }
-    globalThis.Equip.changeJobSettings(jsonObject.status.ratorio_job_id_num);
+    globalThis.Equip.changeJobSettings(job_id);
 
     // Set Base Lv
-    const baseLvElement = document.getElementById("OBJID_SELECT_BASE_LEVEL") as HTMLSelectElement;
-    baseLvElement.value = String(jsonObject.status.base_lv);
+    const base_lv_element = document.getElementById("OBJID_SELECT_BASE_LEVEL") as HTMLSelectElement;
+    base_lv_element.value = String(jsonObject.status.base_lv);
 
     // Set Job Lv
-    const jobLvElement = document.getElementById("OBJID_SELECT_JOB_LEVEL") as HTMLSelectElement;
-    jobLvElement.value = String(jsonObject.status.job_lv);
+    const job_lv_element = document.getElementById("OBJID_SELECT_JOB_LEVEL") as HTMLSelectElement;
+    job_lv_element.value = String(jsonObject.status.job_lv);
 
     // Set status
     const keys: (keyof JobStatus)[] = [
@@ -138,37 +144,38 @@ export async function loadRodbTranslator(fragment: string): Promise<void> {
     }
 
     // Set Skill Lv
-    const skillColumnCheckbox: HTMLInputElement = document.getElementById("OBJID_SKILL_COLUMN_EXTRACT_CHECKBOX") as HTMLInputElement;
-    skillColumnCheckbox.checked = true;
-    globalThis.LearnedSkill.OnClickSkillSWLearned();
+    const skill_column_checkbox: HTMLInputElement = document.getElementById("OBJID_SKILL_COLUMN_EXTRACT_CHECKBOX") as HTMLInputElement;
+    skill_column_checkbox.checked = true;
+    globalThis.LearnedSkill.OnClickSkillSWLearned(player_job_data);
 
-    let seachUrls = [];
-    const urlPrefix = "https://rodb.aws.0nyx.net/translator/approximate_search/skill";
+    /*
+    let seach_urls = [];
+    const url_prefix = "https://rodb.aws.0nyx.net/translator/approximate_search/skill";
     let idx = 0;
     while (true) {
-        const skillNameElement: HTMLTableCellElement = document.getElementById("OBJID_TD_LEARNED_SKILL_NAME_" + idx) as HTMLTableCellElement;
-        if (!skillNameElement) {
+        const skill_name_element: HTMLTableCellElement = document.getElementById("OBJID_TD_LEARNED_SKILL_NAME_" + idx) as HTMLTableCellElement;
+        if (!skill_name_element) {
             break;
         }
 
-        const skillName = skillNameElement.textContent?.trim();
+        const skillName = skill_name_element.textContent?.trim();
         if (skillName) {
-            seachUrls.push(`${urlPrefix}?word=${encodeURIComponent(skillName)}&ratorio_skill_num=${idx}`);
+            seach_urls.push(`${url_prefix}?word=${encodeURIComponent(skillName)}&ratorio_skill_num=${idx}`);
         }
 
         idx++;
     }
     // スキルのSelectBoxにdata-skill-name属性を付与
-    await fetchSearchSkill(seachUrls);
+    await fetchSearchSkill(seach_urls);
+    */
 
-    Object.entries(jsonObject.skills).forEach(([skillName, skill]) => {
-        const skillLvElement: HTMLSelectElement = document.querySelector(`select[data-skill-name=${skillName}]`) as HTMLSelectElement;
-        console.debug(`${skillName}`);
-        if (skillLvElement) {
-            skillLvElement.value = String(skill.lv);
-            console.debug(`${skillName} : ${skillLvElement.value}`)
+    Object.entries(jsonObject.skills).forEach(([skill_id, skill]) => {
+        const skillLv_element: HTMLSelectElement = document.getElementById(`OBJID_TD_LEARNED_SKILL_LEVEL.${skill_id}]`) as HTMLSelectElement;
+        if (skillLv_element) {
+            skillLv_element.value = String(skill.lv);
+            console.log(`${skill_id} : ${skillLv_element.value}`);
             const event = new Event('change', { bubbles: true });
-            skillLvElement.dispatchEvent(event);
+            skillLv_element.dispatchEvent(event);
         }
     });
 
@@ -227,10 +234,10 @@ interface RodbTranslatorJsonFormat {
 declare global {
     var loadRodbTranslator: (fragments: string) => Promise<void>;
     var Equip: {
-        changeJobSettings: (jobId: number) => void;
+        changeJobSettings: (job_id: string) => void;
     };
     var LearnedSkill: {
-        OnClickSkillSWLearned: () => void;
+        OnClickSkillSWLearned: (player_job_data: any) => void;
     };
     var HmJob: {
         CalcStatusPoint: (flag: boolean) => void;

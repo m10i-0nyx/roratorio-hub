@@ -1,9 +1,19 @@
 "use strict";
 
+import { JobMap } from "../../../ro4/m/ts-js/loadJobMap.js";
+
 globalThis.g_pureStatus = [];
 globalThis.g_bonusStatus = [];
 
-export function RebuildStatusSelect(jobId) {
+export function RebuildStatusSelect(job_id) {
+    if (!job_id) {
+        job_id = document.calcForm.A_JOB.value;
+    }
+
+    let player_job_data = JobMap.getById(job_id);
+    if (!player_job_data) {
+        return;
+    }
 
     var objStr = null;
     var objAgi = null;
@@ -12,8 +22,6 @@ export function RebuildStatusSelect(jobId) {
     var objDex = null;
     var objLuk = null;
 
-    var stMax = 0;
-    var st = 0;
 
     objStr = document.getElementById("OBJID_SELECT_STATUS_STR");
     objAgi = document.getElementById("OBJID_SELECT_STATUS_AGI");
@@ -29,7 +37,8 @@ export function RebuildStatusSelect(jobId) {
     HtmlRemoveOptionAll(objDex);
     HtmlRemoveOptionAll(objLuk);
 
-    stMax = GetStatusMax(n_A_JOB, n_A_PassSkill8[13]);
+    // [WIP] ステータスの最大値を取得する(暫定)
+    var stMax = GetStatusMax(player_job_data._mig_id_num, n_A_PassSkill8[13]);
 
     for (st = 1; st <= stMax; st++) {
         HtmlCreateElementOption(st, st, objStr);
@@ -52,7 +61,6 @@ export function RebuildStatusSelect(jobId) {
 
 
     // 特性ステータス仮処理
-    var idxObj = 0;
     var objArray = null;
 
     objArray = [];
@@ -63,24 +71,21 @@ export function RebuildStatusSelect(jobId) {
     objArray.push(document.getElementById("OBJID_SELECT_STATUS_CON"));
     objArray.push(document.getElementById("OBJID_SELECT_STATUS_CRT"));
 
-    for (idxObj = 0; idxObj < objArray.length; idxObj++) {
+    for (var idxObj = 0; idxObj < objArray.length; idxObj++) {
         HtmlRemoveOptionAll(objArray[idxObj]);
     }
 
     stMax = 100;
 
-    for (st = 0; st <= stMax; st++) {
-        for (idxObj = 0; idxObj < objArray.length; idxObj++) {
+    for (var st = 0; st <= stMax; st++) {
+        for (var idxObj = 0; idxObj < objArray.length; idxObj++) {
             HtmlCreateElementOption(st, st, objArray[idxObj]);
         }
     }
 
-    // 四次職出ない場合は、特性ステータス欄は非表示
-    var dispStyle = "";
-    if (GetBaseLevelMin(jobId) < 200) {
-        dispStyle = "none";
-    }
-    else {
+    // 四次職でない場合は、特性ステータス欄は非表示
+    var dispStyle = "none";
+    if (player_job_data.base_lv_min >= 200) {
         dispStyle = "table";
     }
     document.getElementById("OBJID_TABLE_SPEC_STATUS").style.display = dispStyle;
@@ -98,8 +103,18 @@ export function CalcStatusPoint(bIgnoreAutoCalc) {
         bIgnoreAutoCalc = true;
     }
 
-    // 職業ＩＤを取得する
-    var jobId = eval(document.calcForm.A_JOB.value);
+    let job_id = document.calcForm.A_JOB.value;
+    if (!job_id) {
+        return;
+    }
+
+    let player_job_data = JobMap.getById(job_id);
+    if (!player_job_data) {
+        return;
+    }
+
+    // 職業ＩＤを取得する(暫定用)
+    var jobId = player_job_data._mig_id_num;
 
     // ベースレベルを取得する
     var blvSelected = eval(document.calcForm.A_BaseLV.value);
@@ -142,8 +157,8 @@ export function CalcStatusPoint(bIgnoreAutoCalc) {
     Foot.InitJobInfo();
 
     // ベースレベル情報の取得
-    var blvMin = GetBaseLevelMin(jobId);
-    var blvMax = GetBaseLevelMax(jobId);
+    var blvMin = player_job_data.base_lv_min;
+    var blvMax = player_job_data.base_lv_max;
 
     // 初期ステータスポイントの決定
     var stPointEarned = 48;

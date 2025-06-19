@@ -186,7 +186,7 @@ function CreateRndOptKind(objRoot, eqpRgnId, slotIndex) {
 
     objSelect = HtmlCreateElement("select", objTd);
     HtmlSetAttribute(objSelect, "id", objIdKind);
-    HtmlSetAttribute(objSelect, "onChange", "OnChangeRndOptKind(" + eqpRgnId + ", " + slotIndex + ") | AutoCalc()");
+    HtmlSetAttribute(objSelect, "onChange", "OnChangeRndOptKind(" + eqpRgnId + ", " + slotIndex + ") | Head.AutoCalc()");
 
     return objSelect;
 }
@@ -211,7 +211,7 @@ function CreateRndOptValue(objRoot, eqpRgnId, slotIndex) {
 
     objSelect = HtmlCreateElement("select", objTd);
     HtmlSetAttribute(objSelect, "id", objIdValue);
-    HtmlSetAttribute(objSelect, "onChange", "OnChangeRandomEnchant() | AutoCalc()");
+    HtmlSetAttribute(objSelect, "onChange", "Equip.OnChangeRandomEnchant() | Head.AutoCalc()");
 
     return objSelect;
 }
@@ -320,7 +320,7 @@ function OnChangeRndOptKind(eqpRgnId, slotIndex) {
     SetUpRndOptValue(objRndOptValue, rndOptId);
 
     // ランダムオプション変更処理
-    OnChangeRandomEnchant();
+    Equip.OnChangeRandomEnchant();
 }
 
 

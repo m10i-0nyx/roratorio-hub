@@ -16269,7 +16269,7 @@ export function Click_PassSkillSW() {
         var str;
         str = '<TABLE Border>';
         str += '<TR><TD ColSpan="4" id="A1TD" Bgcolor="#DDDDFF" class="title">';
-        str += '<input id="OBJID_CHECK_A1_SKILL_SW" type="checkbox" name="A1_SKILLSW" onClick="Click_PassSkillSW()">';
+        str += '<input id="OBJID_CHECK_A1_SKILL_SW" type="checkbox" name="A1_SKILLSW" onClick="Head.Click_PassSkillSW()">';
         str += `<label for="OBJID_CHECK_A1_SKILL_SW">${GetJobName(n_A_JOB)}固有自己支援・パッシブ持続系</label>`;
         str += '<span id="A1used"></span>';
         str += '</TD></TR>';
@@ -16755,7 +16755,7 @@ export function Click_PassSkillSW() {
         var str;
         str = '<TABLE Border>';
         str += '<TR><TD ColSpan="4" id="A1TD" Bgcolor="#DDDDFF" class="title">';
-        str += '<input id="OBJID_CHECK_A1_SKILL_SW" type="checkbox" name="A1_SKILLSW" onClick="Click_PassSkillSW()">';
+        str += '<input id="OBJID_CHECK_A1_SKILL_SW" type="checkbox" name="A1_SKILLSW" onClick="Head.Click_PassSkillSW()">';
         str += `<label for="OBJID_CHECK_A1_SKILL_SW">${GetJobName(n_A_JOB)}固有自己支援・パッシブ持続系</label>`;
         str += '<span id="A1used"></span>';
         str += '</TD></TR>';
@@ -17890,7 +17890,7 @@ export function Click_Skill8SW() {
         document.calcForm.A8_Skill21.options[1] = new Option("BaseExpで受け取る", 1);
         document.calcForm.A8_Skill21.options[2] = new Option("JobExpで受け取る", 2);
         myInnerHtml("EN807", '<input id="OBJID_CHECK_A8_Skill4" type="checkbox" name="A8_Skill4"onClick="Foot.StAllCalc() | Click_A8(1)"><label for="OBJID_CHECK_A8_Skill4">結婚スパノビステータスALL+1付与</label>', 0);
-        myInnerHtml("EN808", '<input id="OBJID_CHECK_A8_Skill13" type="checkbox" name="A8_Skill13"onClick="Foot.StAllCalc() | Click_A8(1)||RebuildStatusSelect()||CalcStatusPoint(true)"><label for="OBJID_CHECK_A8_Skill13">養子状態にする</label>', 0);
+        myInnerHtml("EN808", '<input id="OBJID_CHECK_A8_Skill13" type="checkbox" name="A8_Skill13"onClick="Foot.StAllCalc() | Click_A8(1)||HmJob.RebuildStatusSelect()||CalcStatusPoint(true)"><label for="OBJID_CHECK_A8_Skill13">養子状態にする</label>', 0);
         myInnerHtml("EN809", '<font size="2" color="red">（時限性補助効果の設定は、「アイテム時限効果」設定欄へ移動しました）</font><input type="button" value="設定欄を表示" onclick="CTimeItemAreaComponentManager.FocusArea(0, true)">', 0);
         myInnerHtml("EN810", '囲んでいる敵の数<select name="A8_Skill12" onChange="Foot.StAllCalc() | Click_A8(1)"></select>', 0);
         for (let i = 0; i <= 22; i++) document.calcForm.A8_Skill12.options[i] = new Option(i + "匹", i);

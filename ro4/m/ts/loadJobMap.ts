@@ -21,9 +21,9 @@ export interface JobData {
     passive_skills: number[], //パッシブスキル
     attack_skills: number[],  //攻撃スキル
     allow_equipment_weapons_type: number[], //装備可能武器タイプ
-    basic_min_lv: number, //基本最小レベル
-    basic_max_lv: number, //基本最大レベル
-    job_max_lv: number, //基本最大ジョブレベル
+    base_lv_min: number, //基本最小レベル
+    base_lv_max: number, //基本最大レベル
+    job_lv_max: number, //基本最大ジョブレベル
 }
 
 export class JobMap {
@@ -34,15 +34,33 @@ export class JobMap {
         return Object.entries(this.jobMap);
     }
 
+    /** id_name(string or number) から Job を取得 */
+    static getById(key: string | number): JobData | undefined {
+        if (typeof key === 'string') {
+            // 文字列の場合はID Nameを検索
+            if (key in this.jobMap) {
+                return this.jobMap[key];
+            }
+        } else if (typeof key === 'number') {
+            // 数値の場合は_mig_id_numを検索(暫定的対応)
+            for (const job of Object.values(this.jobMap)) {
+                if (job._mig_id_num === key) {
+                    return job;
+                }
+            }
+        }
+        return undefined;
+    }
+
     /** id_name から Job を取得 */
-    static getByIdName(idName: string): JobData | undefined {
-        return this.jobMap[idName];
+    static getByIdName(id_name: string): JobData | undefined {
+        return this.jobMap[id_name];
     }
 
     /** id_num から Job を取得 */
-    static getByIdNum(idNum: number): JobData | undefined {
+    static getByIdNum(id_num: number): JobData | undefined {
         for (const job of Object.values(this.jobMap)) {
-            if (job.id_num === idNum) {
+            if (job.id_num === id_num) {
                 return job;
             }
         }

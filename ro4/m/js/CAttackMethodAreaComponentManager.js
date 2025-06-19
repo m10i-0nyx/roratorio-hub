@@ -1070,7 +1070,7 @@ CAttackMethodAreaComponentManager.OnChangeAttackMethod = function () {
     CAttackMethodAreaComponentManager.RefreshControls();
 
     // 自動設定が有効の場合のみ、再計算する
-    AutoCalc("CAttackMethodAreaComponentManager.OnChangeAttackMethod");
+    Head.AutoCalc("CAttackMethodAreaComponentManager.OnChangeAttackMethod");
 };
 
 
@@ -1131,7 +1131,7 @@ CAttackMethodAreaComponentManager.OnChangeAttackMethodOption = function (objectI
     CAttackMethodAreaComponentManager.RefreshControls();
 
     // 自動設定が有効の場合のみ、再計算する
-    AutoCalc("CAttackMethodAreaComponentManager.OnChangeAttackMethodOption");
+    Head.AutoCalc("CAttackMethodAreaComponentManager.OnChangeAttackMethodOption");
 };
 
 
@@ -1148,7 +1148,7 @@ CAttackMethodAreaComponentManager.OnChangeAutoCalc = function () {
     CSaveController.setSettingProp(CSaveDataConst.propNameAttackAutoCalc, value);
 
     // 自動計算が有効の場合のみ、再計算する
-    AutoCalc("CAttackMethodAreaComponentManager.OnChangeAutoCalc");
+    Head.AutoCalc("CAttackMethodAreaComponentManager.OnChangeAutoCalc");
 };
 
 /**

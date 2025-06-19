@@ -1,26 +1,39 @@
 "use strict";
 
+import { JobMap } from "../../../ro4/m/ts-js/loadJobMap.js";
+
 /**
  * ステータスや装備などを初期化して職業変更する
- * @param {Number} jobId
+ * @param {String} job_id
  */
-export function changeJobSettings(jobId) {
+export function changeJobSettings(job_id) {
+    if (!job_id) {
+        return;
+    }
+
+    let player_job_data = JobMap.getById(job_id);
+    if (!player_job_data) {
+        return;
+    }
+
     // 職業情報の初期化
-    Foot.InitJobInfo();
-    //jobId = n_A_JOB;
+    Foot.InitJobInfo(player_job_data);
 
     // 計算機の初期化
-    Foot.Init();
+    Foot.Init(player_job_data);
+
     // 武器属性付与手段の名称の設定
-    if (jobId == "TAEKWON" && jobId == "STAR") {
+    if (job_id == "TAEKWON" && job_id == "STAR") {
         myInnerHtml("ID_A_HUYO_NAME", "暖かい風", 0);
     } else {
         myInnerHtml("ID_A_HUYO_NAME", "武器属性付与", 0);
     }
+
     // ベースレベル選択セレクトボックスの設定
     var lv = 0;
-    var lvMax = GetBaseLevelMax(jobId);
-    var lvMin = GetBaseLevelMin(jobId);
+    var lvMin = player_job_data.base_lv_min;
+    var lvMax = player_job_data.base_lv_max;
+
     var objSelect = document.getElementById("OBJID_SELECT_BASE_LEVEL");
     HtmlRemoveOptionAll(objSelect);
     for (lv = lvMin; lv <= lvMax; lv++) {
@@ -29,7 +42,7 @@ export function changeJobSettings(jobId) {
     objSelect.value = lvMin;
     // ジョブレベル選択セレクトボックスの設定
     var lv = 0;
-    var lvMax = GetJobLevelMax(jobId);
+    var lvMax = player_job_data.job_lv_max;
     var lvMin = 1;
     var objSelect = document.getElementById("OBJID_SELECT_JOB_LEVEL");
     HtmlRemoveOptionAll(objSelect);
@@ -37,8 +50,10 @@ export function changeJobSettings(jobId) {
         HtmlCreateElementOption(lv, lv, objSelect);
     }
     objSelect.value = lvMin;
+
     // ステータス選択セレクトボックスの設定
-    HmJob.RebuildStatusSelect(jobId);
+    HmJob.RebuildStatusSelect(job_id);
+
     // 速度ＰＯＴ選択セレクトボックスの設定
     // スピードアップポーション
     for (var i = 2; i <= 3; i++) {
@@ -68,13 +83,14 @@ export function changeJobSettings(jobId) {
         n_Nitou = false;
     }
     OnChangeArmsTypeLeft(ITEM_KIND_NONE);
-    // 武器種類選択セレクトボックスの設定
-    var jobData = g_constDataManager.GetDataObject(CONST_DATA_KIND_JOB, jobId);
+
+    // [WIP] 武器種類選択セレクトボックスの設定
+    var jobData = g_constDataManager.GetDataObject(CONST_DATA_KIND_JOB, player_job_data._mig_id_num); //[WIP] MIG値利用
     HtmlRemoveOptionAll(document.calcForm.A_WeaponType);
     var j = 0;
     for (var i = 0; i <= 21; i++) {
         // スパノビ系の両手斧は装備制限解除状態の時のみ可
-        if (GetHigherJobSeriesID(jobId) == JOB_SERIES_ID_SUPERNOVICE) {
+        if (GetHigherJobSeriesID(job_id) == JOB_SERIES_ID_SUPERNOVICE) {
             if (i == ITEM_KIND_AXE_2HAND) {
                 if (!g_bSuperNoviceFullWeapon) {
                     continue;
@@ -99,7 +115,8 @@ export function changeJobSettings(jobId) {
     for (var dmyidx = 0; dmyidx < LEARNED_SKILL_MAX_COUNT; dmyidx++) {
         n_A_LearnedSkill[dmyidx] = 0;
     }
-    LearnedSkill.OnClickSkillSWLearned();
+    LearnedSkill.OnClickSkillSWLearned(player_job_data);
+
     // 攻撃手段欄の初期化
     CAttackMethodAreaComponentManager.RebuildControls();
     // 拡張表示の選択値記憶のリセット
@@ -200,7 +217,7 @@ function OnChangeArmsTypeRight(itemKind) {
 
             objSelectArrow = document.createElement("select");
             objSelectArrow.setAttribute("id", "OBJID_SELECT_ARROW");
-            objSelectArrow.setAttribute("onChange", "Foot.StAllCalc() | AutoCalc()");
+            objSelectArrow.setAttribute("onChange", "Foot.StAllCalc() | Head.AutoCalc()");
             objRoot.appendChild(objSelectArrow);
         }
 
@@ -230,12 +247,12 @@ function OnChangeArmsTypeRight(itemKind) {
 
     if (GetHigherJobSeriesID(n_A_JOB) == 8 && itemKind != ITEM_KIND_KATAR) {
         if (!n_Nitou) {
-            myInnerHtml("A_SobWeaponName", "　左手：" + '<select id="OBJID_ARMS_TYPE_LEFT" name="A_Weapon2Type" onChange = "OnChangeArmsTypeLeft(this[this.selectedIndex].value) | Foot.StAllCalc() | AutoCalc()"> <option value="0">素手or盾<option value="1">短剣<option value="2">片手剣<option value="6">片手斧</select>', 0);
+            myInnerHtml("A_SobWeaponName", "　左手：" + '<select id="OBJID_ARMS_TYPE_LEFT" name="A_Weapon2Type" onChange = "OnChangeArmsTypeLeft(this[this.selectedIndex].value) | Foot.StAllCalc() | Head.AutoCalc()"> <option value="0">素手or盾<option value="1">短剣<option value="2">片手剣<option value="6">片手斧</select>', 0);
         }
     }
     else if ((IsSameJobClass(JOB_ID_KAGERO) || IsSameJobClass(JOB_ID_OBORO)) && (itemKind != ITEM_KIND_FUMA)) {
         if (!n_Nitou) {
-            myInnerHtml("A_SobWeaponName", "　左手：" + '<select id="OBJID_ARMS_TYPE_LEFT" name="A_Weapon2Type" onChange = "OnChangeArmsTypeLeft(this[this.selectedIndex].value) | Foot.StAllCalc() | AutoCalc()"> <option value=0>素手or盾<option value=1>短剣</select>', 0);
+            myInnerHtml("A_SobWeaponName", "　左手：" + '<select id="OBJID_ARMS_TYPE_LEFT" name="A_Weapon2Type" onChange = "OnChangeArmsTypeLeft(this[this.selectedIndex].value) | Foot.StAllCalc() | Head.AutoCalc()"> <option value=0>素手or盾<option value=1>短剣</select>', 0);
         }
     }
     else {
@@ -1263,7 +1280,7 @@ function OnChangeCostume(costumeId) {
 /**
  * ランダムエンチャント変更イベントハンドラ.
  */
-function OnChangeRandomEnchant() {
+export function OnChangeRandomEnchant() {
     SaveSlotStateRndEnchAll();
     Foot.StAllCalc();
 }
