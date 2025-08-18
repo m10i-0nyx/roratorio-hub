@@ -97,29 +97,6 @@ function encodeProcess(dataObject: RodbTranslatorDataFormat): string | null {
     return encodedData;
 }
 
-async function fetchSearchSkill(seachUrls: string[]): Promise<void> {
-    try {
-        // URLごとにリクエストを作成
-        const requests = seachUrls.map(url => fetch(url));
-        // すべてのリクエストが完了するまで待機
-        const responses = await Promise.all(requests);
-
-        // 各レスポンスごとに処理を実行
-        const data = await Promise.all(responses.map(async (response, idx) => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const jsonData = await response.json();
-
-            // URLごとに異なる処理を追加する場合はここに追加
-            //console.debug(`Data from URL ${idx}:`, jsonData);
-            const skillLvElement: HTMLSelectElement = document.getElementById("OBJID_SELECT_LEARNED_SKILL_LEVEL_" + jsonData.ratorio_skill_num) as HTMLSelectElement;
-            skillLvElement.setAttribute("data-skill-name", jsonData.skill_name);
-        }));
-    } catch (error) {
-        console.error('Error fetching data:', error);
-    }
-}
 
 export async function loadRodbTranslator(fragment: string): Promise<void> {
     const supportVersion = 2;
@@ -144,11 +121,15 @@ export async function loadRodbTranslator(fragment: string): Promise<void> {
         alert("URLからのデータロードに失敗しました");
         return;
     }
+    console.debug(yamlObject);
+
+    // ローディングインジケーターを表示
+    showLoadingIndicator();
 
     // Set Job
     const jobElement = document.getElementById("OBJID_SELECT_JOB") as HTMLSelectElement;
-    jobElement.value = yamlObject.status.job_class.toLocaleUpperCase();
-    changeJobSettings(yamlObject.status.job_class.toLocaleUpperCase());
+    jobElement.value = yamlObject.status.job_id;
+    changeJobSettings(yamlObject.status.job_id);
 
     // Set Base Lv
     const baseLvElement = document.getElementById("OBJID_SELECT_BASE_LEVEL") as HTMLInputElement;
@@ -175,31 +156,11 @@ export async function loadRodbTranslator(fragment: string): Promise<void> {
     skillColumnCheckbox.checked = true;
     OnClickSkillSWLearned();
 
-    let seachUrls = [];
-    const urlPrefix = "https://ro-database.info/translator/approximate_search/skill";
-    let idx = 0;
-    while (true) {
-        const skillNameElement: HTMLTableCellElement = document.getElementById("OBJID_TD_LEARNED_SKILL_NAME_" + idx) as HTMLTableCellElement;
-        if (!skillNameElement) {
-            break;
-        }
-
-        const skillName = skillNameElement.textContent?.trim();
-        if (skillName) {
-            seachUrls.push(`${urlPrefix}?word=${encodeURIComponent(skillName)}&ratorio_skill_num=${idx}`);
-        }
-
-        idx++;
-    }
-    // スキルのSelectBoxにdata-skill-name属性を付与
-    await fetchSearchSkill(seachUrls);
-
-    Object.entries(yamlObject.skills).forEach(([skillName, skill]) => {
-        const skillLvElement: HTMLSelectElement = document.querySelector(`select[data-skill-name=${skillName}]`) as HTMLSelectElement;
-        console.debug(`${skillName}`);
+    Object.entries(yamlObject.skills).forEach(([skillId, skill]) => {
+        const skillLvElement: HTMLSelectElement = document.querySelector(`select[data-skill-id=${skillId}]`) as HTMLSelectElement;
         if (skillLvElement) {
             skillLvElement.value = String(skill.lv);
-            console.debug(`${skillName} : ${skillLvElement.value}`)
+            console.debug(`${skillId} : ${skillLvElement.value}`)
             const event = new Event('change', { bubbles: true });
             skillLvElement.dispatchEvent(event);
         }
@@ -209,10 +170,13 @@ export async function loadRodbTranslator(fragment: string): Promise<void> {
     CalcStatusPoint(true);
     StAllCalc();
     AutoCalc();
+
+    // ローディングインジケーターを非表示
+    hideLoadingIndicator();
 }
 
 interface JobStatus {
-    job_class: string;
+    job_id: string;
     job_class_localization: string,
     ratorio_job_id_num: number;
     base_lv: number;
@@ -236,7 +200,7 @@ interface Skill {
 }
 
 interface Skills {
-    [skillName: string]: Skill;
+    [skillId: string]: Skill;
 }
 
 interface AdditionalInfo {

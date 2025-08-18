@@ -77,26 +77,23 @@ export class SkillMap {
     }
 
     /** _mig_id から Skill を取得 */
-    static getByMigId(midId: string): SkillData | undefined {
+    static getByMigId(migId: string): SkillData | undefined {
         for (const skill of Object.values(this.skillMap)) {
-            if (skill._mig_id === midId) {
+            if (skill._mig_id === migId) {
                 return new SkillData(skill);
             }
         }
         return undefined;
     }
 
-    /** _mig_id2 から skill.h.jsで定義していた数値を取得 */
-    static getMigIdNumByMigId2(migId2: string): number {
+    /** _mig_id_num から Skill を取得 */
+    static getByMigIdNum(migIdNum: number): SkillData | undefined {
         for (const skill of Object.values(this.skillMap)) {
-            if (skill._mig_id2 === migId2) {
-                if (skill._mig_id_num !== null) {
-                    return skill._mig_id_num;
-                }
-                break;
+            if (skill._mig_id_num === migIdNum) {
+                return new SkillData(skill);
             }
         }
-        return -1;
+        return undefined;
     }
 
     /** スキルデータをロード */

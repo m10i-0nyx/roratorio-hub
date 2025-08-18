@@ -7,7 +7,7 @@ import { loadRodbTranslator } from './rodbTranslator';
  * YAMLデータのロード完了まで待機する関数
  */
 async function waitForDataLoaded() {
-    const maxRetries = 300; // 100ms * 300 = 30 seconds
+    const maxRetries = 100; // 100ms * 100 = 10 seconds
     let retries = 0;
     while (retries < maxRetries) {
         const jobMapLoaded = await JobMap.isLoaded();
@@ -64,7 +64,15 @@ window.addEventListener('load', () => {
 
     waitForDataLoaded().then(() => {
         // RODB Translatorからのデータロード
-        loadRodbTranslator(window.location.hash);
+        const fragment = window.location.hash.substring(1);
+        if (fragment) {
+            //console.log(`🔗 Current URL fragment: ${fragment}`);
+            loadRodbTranslator(fragment);
+        } else {
+            const queryString = window.location.search.substring(1);
+            //console.log(`🔗 Current URL queryString: ${queryString}`);
+            loadRodbTranslator(queryString);
+        }
     });
 });
 
