@@ -30191,12 +30191,11 @@ document.addEventListener('DOMContentLoaded', () => {
 		 * どれも読み込めることを確認
 		 */
 		// URL引数のチェック
-		const query = window.location.search;
-		const param = query.replace("?", "");
+		const queryString = window.location.search.substring(1);
 		const patternRtx = /^rtx[0-9]+:/
-		if (param.length > 0 && !patternRtx.test(param)) {
+		if (queryString.length > 0 && !patternRtx.test(queryString)) {
 			// ラトリオ独自のロード処理
-			CSaveController.loadFromURL(param);
+			CSaveController.loadFromURL(queryString);
 			CItemInfoManager.OnClickExtractSwitch();
 		} else {
 			// URLロードがない場合は、ノービスを初期ジョブとして設定
