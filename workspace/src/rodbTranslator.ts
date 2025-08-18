@@ -127,53 +127,55 @@ export async function loadRodbTranslator(fragment: string): Promise<void> {
     // ローディングインジケーターを表示
     showLoadingIndicator();
 
-    // Set Job
-    const jobElement = document.getElementById("OBJID_SELECT_JOB") as HTMLSelectElement;
-    jobElement.value = yamlObject.status.job_id;
-    changeJobSettings(yamlObject.status.job_id);
+    setTimeout(() => {
+        // Set Job
+        const jobElement = document.getElementById("OBJID_SELECT_JOB") as HTMLSelectElement;
+        jobElement.value = yamlObject.status.job_id;
+        changeJobSettings(yamlObject.status.job_id);
 
-    // Set Base Lv
-    const baseLvElement = document.getElementById("OBJID_SELECT_BASE_LEVEL") as HTMLInputElement;
-    baseLvElement.value = String(yamlObject.status.base_lv);
+        // Set Base Lv
+        const baseLvElement = document.getElementById("OBJID_SELECT_BASE_LEVEL") as HTMLInputElement;
+        baseLvElement.value = String(yamlObject.status.base_lv);
 
-    // Set Job Lv
-    const jobLvElement = document.getElementById("OBJID_SELECT_JOB_LEVEL") as HTMLInputElement;
-    jobLvElement.value = String(yamlObject.status.job_lv);
+        // Set Job Lv
+        const jobLvElement = document.getElementById("OBJID_SELECT_JOB_LEVEL") as HTMLInputElement;
+        jobLvElement.value = String(yamlObject.status.job_lv);
 
-    // Set status
-    const keys: (keyof JobStatus)[] = [
-        "str", "agi", "vit", "int", "dex", "luk",
-        "pow", "sta", "wis", "spl", "con", "crt"
-    ];
+        // Set status
+        const keys: (keyof JobStatus)[] = [
+            "str", "agi", "vit", "int", "dex", "luk",
+            "pow", "sta", "wis", "spl", "con", "crt"
+        ];
 
-    for (const key of keys) {
-        const statusElement: HTMLInputElement = document.getElementById("OBJID_SELECT_STATUS_" + key.toUpperCase()) as HTMLInputElement;
-        let value = yamlObject.status[key];
-        statusElement.value = String(value);
-    }
-
-    // Set Skill Lv
-    const skillColumnCheckbox: HTMLInputElement = document.getElementById("OBJID_SKILL_COLUMN_EXTRACT_CHECKBOX") as HTMLInputElement;
-    skillColumnCheckbox.checked = true;
-    OnClickSkillSWLearned();
-
-    Object.entries(yamlObject.skills).forEach(([skillId, skill]) => {
-        const skillLvElement: HTMLSelectElement = document.querySelector(`select[data-skill-id=${skillId}]`) as HTMLSelectElement;
-        if (skillLvElement) {
-            skillLvElement.value = String(skill.lv);
-            //console.debug(`Skill ID: ${skillId}, 習得レベル: ${skillLvElement.value}`)
-            const event = new Event('change', { bubbles: true });
-            skillLvElement.dispatchEvent(event);
+        for (const key of keys) {
+            const statusElement: HTMLInputElement = document.getElementById("OBJID_SELECT_STATUS_" + key.toUpperCase()) as HTMLInputElement;
+            let value = yamlObject.status[key];
+            statusElement.value = String(value);
         }
-    });
 
-    // 計算
-    CalcStatusPoint(true);
-    StAllCalc();
-    AutoCalc();
+        // Set Skill Lv
+        const skillColumnCheckbox: HTMLInputElement = document.getElementById("OBJID_SKILL_COLUMN_EXTRACT_CHECKBOX") as HTMLInputElement;
+        skillColumnCheckbox.checked = true;
+        OnClickSkillSWLearned();
 
-    // ローディングインジケーターを非表示
-    hideLoadingIndicator();
+        const event = new Event('change', { bubbles: true });
+        Object.entries(yamlObject.skills).forEach(([skillId, skill]) => {
+            const skillLvElement: HTMLSelectElement = document.querySelector(`select[data-skill-id=${skillId}]`) as HTMLSelectElement;
+            if (skillLvElement) {
+                skillLvElement.value = String(skill.lv);
+                console.debug(`Skill ID: ${skillId}, 習得レベル: ${skillLvElement.value}`)
+                skillLvElement.dispatchEvent(event);
+            }
+        });
+
+        // 計算
+        CalcStatusPoint(true);
+        StAllCalc();
+        AutoCalc();
+
+        // ローディングインジケーターを非表示
+        hideLoadingIndicator();
+    }, 0);
 }
 
 interface JobStatus {
