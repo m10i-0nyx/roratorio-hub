@@ -44,7 +44,7 @@ function OnClickSkillSWLearned(){
 	let objText = null;
 	let objSpan = null;
 	let objLabel = null;
-	let skillId = 0;
+	let skillMigId = 0;
 	let skillName = "";
 	let objSelect = null;
 	let objOption = null;
@@ -157,21 +157,21 @@ function OnClickSkillSWLearned(){
 	// 設定欄内のスキルテーブルを構築
 	const learnSkillIdArray = g_constDataManager.GetDataObject(CONST_DATA_KIND_JOB, n_A_JOB).GetLearnSkillIdArray();
 	for (let idx = 0; idx < learnSkillIdArray.length; idx++) {
-		skillId = learnSkillIdArray[idx];
+		skillMigId = learnSkillIdArray[idx];
 		// １行あたり３個のスキル表示とする
 		if ((idx % 3) == 0) {
 			objTr = document.createElement("tr");
 			objTbody.appendChild(objTr);
 		}
 		// スキル名の表示
-		skillName = SkillObjNew[skillId][SKILL_DATA_INDEX_NAME];
+		skillName = SkillObjNew[skillMigId][SKILL_DATA_INDEX_NAME];
 		skillName = skillName.replace(/\([^)]*\)/g, "");
 		skillName = skillName.replace(/\<[^>]*\>/g, "");
 		objTd = document.createElement("td");
 		objTd.setAttribute("id", "OBJID_TD_LEARNED_SKILL_NAME_" + idx);
 		objTr.appendChild(objTd);
 		// 習得スキル設定対象でれあば、強調表示クラスに設定
-		if (IsLearnedSkillTarget(skillId)) {
+		if (IsLearnedSkillTarget(skillMigId)) {
 			objTd.setAttribute("class", "CSSCLS_LEARNED_SKILL_TARGET");
 		}
 		objText = document.createTextNode(skillName);
@@ -181,14 +181,19 @@ function OnClickSkillSWLearned(){
 		objTd.setAttribute("id", "OBJID_TD_LEARNED_SKILL_LEVEL_" + idx);
 		objTr.appendChild(objTd);
 		// 習得スキル設定対象でれあば、強調表示クラスに設定
-		if (IsLearnedSkillTarget(skillId)) {
+		if (IsLearnedSkillTarget(skillMigId)) {
 			objTd.setAttribute("class", "CSSCLS_LEARNED_SKILL_TARGET");
 		}
 		objSelect = document.createElement("select");
 		objSelect.setAttribute("id", "OBJID_SELECT_LEARNED_SKILL_LEVEL_" + idx);
+
+		const skillData = SkillMap.getByMigIdNum(skillMigId);
+		if (skillData) {
+			objSelect.setAttribute("data-skill-id", skillData.getId());
+		}
 		objSelect.setAttribute("onChange", "RefreshSkillColumnHeaderLearned(this, " + idx + ", this.value)");
 		objTd.appendChild(objSelect);
-		for (let lvIdx = 0; lvIdx <= SkillObjNew[skillId][SKILL_DATA_INDEX_MAXLV]; lvIdx++) {
+		for (let lvIdx = 0; lvIdx <= SkillObjNew[skillMigId][SKILL_DATA_INDEX_MAXLV]; lvIdx++) {
 			objOption = document.createElement("option");
 			objOption.setAttribute("value", lvIdx);
 			if (n_A_LearnedSkill[idx] == lvIdx) {
@@ -323,4 +328,3 @@ function RefreshSkillColumnHeaderLearned(objSelect, changedIdx, newValue) {
 	objText = document.createTextNode(sUsedText);
 	objUsedText.appendChild(objText);
 }
-
