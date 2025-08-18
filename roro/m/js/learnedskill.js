@@ -10,19 +10,21 @@ for (let dmyidx = 0; dmyidx < LEARNED_SKILL_MAX_COUNT; dmyidx++) {
 
 /**
  * 任意の習得スキルに設定されているスキルLvを取得する
- * @param {Number} skillId 取得したいスキルのID
+ * @param {Number|String} requestId 取得したいスキルID or MigIdNum
  * @returns {Number} スキルLv
  */
-function LearnedSkillSearch(skillId) {
-	// 設定可能な全ての習得スキルを取得する
-	const learnSkillIdArray = g_constDataManager.GetDataObject(CONST_DATA_KIND_JOB, n_A_JOB).GetLearnSkillIdArray();
-	for (let idx = 0; idx < learnSkillIdArray.length; idx++) {
-		if (learnSkillIdArray[idx] == skillId) {
-			// 指定されたスキルIDが見つかったとき
-			if (n_A_LearnedSkill[idx] !== undefined && !isNaN(n_A_LearnedSkill[idx])) {
-				// 該当のスキルLvがundefinedでもNaNでもなければ習得済みLvを返す
-				return n_A_LearnedSkill[idx];
-			}
+function LearnedSkillSearch(requestId) {
+	let skillId = null;
+	if (typeof requestId == "number") {
+		skillId = SkillMap.getIdByMigIdNum(requestId);
+	} else if (typeof requestId == "string" && SkillMap.existsById(requestId)) {
+		skillId = requestId;
+	}
+	if (skillId !== undefined && skillId !== null) {
+		// 指定されたスキルIDが見つかったとき
+		const skillLvElement = document.querySelector(`select[data-skill-id=${skillId}]`);
+		if (skillLvElement) {
+			return parseInt(skillLvElement.value);
 		}
 	}
 	// スキルIDが見つからなかったり想定外の値が設定されている場合は0を返す
@@ -44,9 +46,6 @@ function OnClickSkillSWLearned(){
 	let objText = null;
 	let objSpan = null;
 	let objLabel = null;
-	let skillMigId = 0;
-	let skillName = "";
-	let objSelect = null;
 	let objOption = null;
 
 	// チェックボックスのチェック状態を取得
@@ -132,90 +131,108 @@ function OnClickSkillSWLearned(){
 	});
 	$(document).off("click","#ID_SKILL_LEARNED_LOAD");
 	$(document).on("click","#ID_SKILL_LEARNED_LOAD", (e)=>{
-		let	url = location.href;
 		try{
-			url = new URL($("#ID_SKILL_LEARNED_URL").val()||location.href);
+			const url = new URL(document.getElementById("ID_SKILL_LEARNED_URL").value || location.href);
 			showLoadingIndicator();
 			// 自動再計算を ON にしていると項目変更のたびに計算されて待ち時間がかさむ事があります
 			// 待機中を示すスピナーもあるため深刻な問題ではないと認識していますが
 			// 問題が表面化した場合には自動再計算の例外処理などを検討してください
 			setTimeout(() => {
-				$("#ID_SKILL_LEARNED select").each(function(idx,elm) {
-					const id_skill_name = $(elm).attr("id").replace("SELECT","TD").replace("LEVEL","NAME");
-					const skill_name = $("#"+id_skill_name).text();
-					const skill = SkillObjNew.filter((d) => d[SKILL_DATA_INDEX_NAME].replace(/\([^)]*\)/g, "").replace(/\<[^>]*\>/g, "")==skill_name)[0];
-					var skill_level = 0
-					if (skill) {
-						skill_level = url.searchParams.get(skill[SKILL_DATA_INDEX_REFID])||0;
+				const event = new Event('change', { bubbles: true });
+				url.searchParams.forEach((skillLv, skillId) => {
+					const skillLvElement = document.querySelector(`select[data-skill-id=${skillId}]`);
+					if (skillLvElement) {
+						skillLvElement.value = skillLv.toString();
+						skillLvElement.dispatchEvent(event);
 					}
-					$(this).val(skill_level).change();
 				});
 				hideLoadingIndicator();
 			},0); // ローディングインジケータ表示のために 0 ms後の非同期処理に送る
 		} catch(e) {}
 	});
+
+	let jobId = null;
+	const selectJobElem = document.getElementById("OBJID_SELECT_JOB");
+	if (selectJobElem) {
+		jobId = selectJobElem.value;
+	}
+	// 職業IDが確定したら、ジョブデータを取得
+	let jobData = JobMap.getById(jobId);
+
 	// 設定欄内のスキルテーブルを構築
-	const learnSkillIdArray = g_constDataManager.GetDataObject(CONST_DATA_KIND_JOB, n_A_JOB).GetLearnSkillIdArray();
-	for (let idx = 0; idx < learnSkillIdArray.length; idx++) {
-		skillMigId = learnSkillIdArray[idx];
-		// １行あたり３個のスキル表示とする
+	const learnSkillIdList = jobData.getLearnSkillIdList();
+	Object.values(learnSkillIdList).forEach((skillId, idx) => {
+		// スキルIDからスキルデータを取得
+		const skillData = SkillMap.getById(skillId);
+		if (!skillData) { 
+			console.log(`Skill ID: ${skillId} not found`);
+			return;
+		}
+		// スキル名を取得
+		const skillName = skillData.getName();
+		// スキル最大レベルを取得
+		const skillMaxLv = skillData.getMaxLv();
+		// MigIdNumを取得
+		const skillMigId = skillData.getMidIdNum();
+
+		// スキル名とレベルを表示
+		//console.debug(`Idx: ${idx}, 習得スキル: ${skillName}, Maxレベル: ${skillMaxLv}, MigIdNum: ${skillMigId}`);
+
 		if ((idx % 3) == 0) {
 			objTr = document.createElement("tr");
 			objTbody.appendChild(objTr);
 		}
-		// スキル名の表示
-		skillName = SkillObjNew[skillMigId][SKILL_DATA_INDEX_NAME];
-		skillName = skillName.replace(/\([^)]*\)/g, "");
-		skillName = skillName.replace(/\<[^>]*\>/g, "");
-		objTd = document.createElement("td");
+
+		var objTd = document.createElement("td");
 		objTd.setAttribute("id", "OBJID_TD_LEARNED_SKILL_NAME_" + idx);
 		objTr.appendChild(objTd);
+
 		// 習得スキル設定対象でれあば、強調表示クラスに設定
 		if (IsLearnedSkillTarget(skillMigId)) {
 			objTd.setAttribute("class", "CSSCLS_LEARNED_SKILL_TARGET");
 		}
+
 		objText = document.createTextNode(skillName);
 		objTd.appendChild(objText);
+
 		// スキルレベル選択部品の構築
-		objTd = document.createElement("td");
+		var objTd = document.createElement("td");
 		objTd.setAttribute("id", "OBJID_TD_LEARNED_SKILL_LEVEL_" + idx);
 		objTr.appendChild(objTd);
+
 		// 習得スキル設定対象でれあば、強調表示クラスに設定
 		if (IsLearnedSkillTarget(skillMigId)) {
 			objTd.setAttribute("class", "CSSCLS_LEARNED_SKILL_TARGET");
 		}
-		objSelect = document.createElement("select");
-		objSelect.setAttribute("id", "OBJID_SELECT_LEARNED_SKILL_LEVEL_" + idx);
 
-		const skillData = SkillMap.getByMigIdNum(skillMigId);
-		if (skillData) {
-			objSelect.setAttribute("data-skill-id", skillData.getId());
-		}
+		var objSelect = document.createElement("select");
+		objSelect.setAttribute("id", "OBJID_SELECT_LEARNED_SKILL_LEVEL_" + idx);
+		objSelect.setAttribute("data-skill-id", skillId);
 		objSelect.setAttribute("onChange", "RefreshSkillColumnHeaderLearned(this, " + idx + ", this.value)");
 		objTd.appendChild(objSelect);
-		for (let lvIdx = 0; lvIdx <= SkillObjNew[skillMigId][SKILL_DATA_INDEX_MAXLV]; lvIdx++) {
+		for (let lv = 0; lv <= skillMaxLv; lv++) {
 			objOption = document.createElement("option");
-			objOption.setAttribute("value", lvIdx);
-			if (n_A_LearnedSkill[idx] == lvIdx) {
+			objOption.setAttribute("value", lv);
+			if (n_A_LearnedSkill[idx] == lv) {
 				objOption.setAttribute("selected", "selected");
 			}
 			objSelect.appendChild(objOption);
-			objText = document.createTextNode(lvIdx);
+			objText = document.createTextNode(lv);
 			objOption.appendChild(objText);
 		}
 		// レベルが 0 でなければ、背景色を設定
 		if (n_A_LearnedSkill[idx] != 0) {
 			objSelect.setAttribute("class", "CSSCLS_SELECTED_LEARNED_SKILL");
 		}
-	}
+	});
 }
 
 /**
  * 習得スキルをトリガーとするアイテムを装備しているか検査する
- * @param {Number} skillId  
+ * @param {Number} skillMigId
  * @returns {boolean} true:装備している / false:装備していない
  */
-function IsLearnedSkillTarget (skillId) {
+function IsLearnedSkillTarget (skillMigId) {
 	let idx = 0;
 	let itemId = 0;
 	let cardId = 0;
@@ -226,7 +243,7 @@ function IsLearnedSkillTarget (skillId) {
 		spidx = ITEM_DATA_INDEX_SPBEGIN;
 		while (ItemObjNew[itemId][spidx] != ITEM_SP_END) {
 			if (ItemObjNew[itemId][spidx] == ITEM_SP_LEARNED_SKILL_EFFECT) {
-				if (ItemObjNew[itemId][spidx + 1] == skillId) {
+				if (ItemObjNew[itemId][spidx + 1] == skillMigId) {
 					return true;
 				}
 			}
@@ -242,7 +259,7 @@ function IsLearnedSkillTarget (skillId) {
 
 		while (CardObjNew[cardId][spidx] != ITEM_SP_END) {
 			if (CardObjNew[cardId][spidx] == ITEM_SP_LEARNED_SKILL_EFFECT) {
-				if (CardObjNew[cardId][spidx + 1] == skillId) {
+				if (CardObjNew[cardId][spidx + 1] == skillMigId) {
 					return true;
 				}
 			}
@@ -256,43 +273,55 @@ function IsLearnedSkillTarget (skillId) {
 /**
  * トリガー条件になっている習得スキルを強調表示する
  * 判定関数として内部でIsLearnedSkillTargetを呼び出す
- * @returns 
+ * @returns
  */
 function UpdateLearnedSkillSettingColoring() {
-	let idx = 0;
-	let learnSkillIdArray = null;
-	let skillId = 0;
-	let objTd = null;
 	// 展開表示しない場合は、ここで処理終了
 	if (!n_SkillSWLearned) {
 		return;
 	}
+
+	let jobId = null;
+	const selectJobElem = document.getElementById("OBJID_SELECT_JOB");
+	if (selectJobElem) {
+		jobId = selectJobElem.value;
+	}
+	// 職業IDが確定したら、ジョブデータを取得
+	let jobData = JobMap.getById(jobId);
+
 	// 設定欄内のスキルテーブルを走査
-	learnSkillIdArray = g_constDataManager.GetDataObject(CONST_DATA_KIND_JOB, n_A_JOB).GetLearnSkillIdArray();
-	for (idx = 0; idx < learnSkillIdArray.length; idx++) {
-		skillId = learnSkillIdArray[idx];
+	const learnSkillIdList = jobData.getLearnSkillIdList();
+	Object.values(learnSkillIdList).forEach((skillId, idx) => {
+		// スキルIDからスキルデータを取得
+		const skillData = SkillMap.getById(skillId);
+		if (!skillData) {
+			return;
+		}
+		// MigIdNumを取得
+		const skillMigId = skillData.getMidIdNum();
+
 		// 名称欄
-		objTd = document.getElementById("OBJID_TD_LEARNED_SKILL_NAME_" + idx);
+		var objTd = document.getElementById("OBJID_TD_LEARNED_SKILL_NAME_" + idx);
 		objTd.removeAttribute("class");
 		// 習得スキル設定対象でれあば、強調表示クラスに設定
-		if (IsLearnedSkillTarget(skillId)) {
+		if (IsLearnedSkillTarget(skillMigId)) {
 			objTd.setAttribute("class", "CSSCLS_LEARNED_SKILL_TARGET");
 		}
 		// レベル欄
-		objTd = document.getElementById("OBJID_TD_LEARNED_SKILL_LEVEL_" + idx);
+		var objTd = document.getElementById("OBJID_TD_LEARNED_SKILL_LEVEL_" + idx);
 		objTd.removeAttribute("class");
 		// 習得スキル設定対象でれあば、強調表示クラスに設定
-		if (IsLearnedSkillTarget(skillId)) {
+		if (IsLearnedSkillTarget(skillMigId)) {
 			objTd.setAttribute("class", "CSSCLS_LEARNED_SKILL_TARGET");
 		}
-	}
+	});
 }
 
 /**
  * 習得スキルの変更を反映する
- * @param {*} objSelect 
- * @param {*} changedIdx 
- * @param {*} newValue 
+ * @param {*} objSelect
+ * @param {*} changedIdx
+ * @param {*} newValue
  */
 function RefreshSkillColumnHeaderLearned(objSelect, changedIdx, newValue) {
 	if (0 <= changedIdx) {
