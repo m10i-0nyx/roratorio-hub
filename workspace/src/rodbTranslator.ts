@@ -68,6 +68,7 @@ function decodeProcess(encodedData: string): RodbTranslatorDataFormat | null {
         const yamlData = zstdDecompress(compressedData);
 
         if (yamlData) {
+            //console.debug(yamlData);
             // YAML文字列 => JavaScriptオブジェクト
             dataObject = loadYAML(yamlData) as RodbTranslatorDataFormat;
         }
@@ -121,7 +122,7 @@ export async function loadRodbTranslator(fragment: string): Promise<void> {
         alert("URLからのデータロードに失敗しました");
         return;
     }
-    console.debug(yamlObject);
+    //console.debug(yamlObject);
 
     // ローディングインジケーターを表示
     showLoadingIndicator();
@@ -160,7 +161,7 @@ export async function loadRodbTranslator(fragment: string): Promise<void> {
         const skillLvElement: HTMLSelectElement = document.querySelector(`select[data-skill-id=${skillId}]`) as HTMLSelectElement;
         if (skillLvElement) {
             skillLvElement.value = String(skill.lv);
-            console.debug(`${skillId} : ${skillLvElement.value}`)
+            //console.debug(`Skill ID: ${skillId}, 習得レベル: ${skillLvElement.value}`)
             const event = new Event('change', { bubbles: true });
             skillLvElement.dispatchEvent(event);
         }
