@@ -1,5 +1,6 @@
 import { load as loadYAML, dump as dumpYAML } from "js-yaml"
 import { Zstd } from "@hpcc-js/wasm-zstd";
+import { JobMap } from "./loadJobMap";
 
 const zstd = await Zstd.load();
 
@@ -58,8 +59,8 @@ function zstdCompress(text: string): Uint8Array | null {
 }
 
 // Decode => 展開 => YAML load
-function decodeProcess(encodedData: string): RodbTranslatorDataFormat | null {
-    let dataObject: RodbTranslatorDataFormat | null = null;
+function decodeProcess(encodedData: string): RtxDataFormat | null {
+    let dataObject: RtxDataFormat | null = null;
     try {
         // デコード => 圧縮データ
         const compressedData = base64ToUint8Array(encodedData);
@@ -70,7 +71,7 @@ function decodeProcess(encodedData: string): RodbTranslatorDataFormat | null {
         if (yamlData) {
             //console.debug(yamlData);
             // YAML文字列 => JavaScriptオブジェクト
-            dataObject = loadYAML(yamlData) as RodbTranslatorDataFormat;
+            dataObject = loadYAML(yamlData) as RtxDataFormat;
         }
     } catch (error) {
         console.error("エラーが発生しました:", error);
@@ -79,7 +80,7 @@ function decodeProcess(encodedData: string): RodbTranslatorDataFormat | null {
 }
 
 // YAML dump => 圧縮 => Encode
-function encodeProcess(dataObject: RodbTranslatorDataFormat): string | null {
+function encodeProcess(dataObject: RtxDataFormat): string | null {
     let encodedData: string | null = null;
     try {
         // YAMLオブジェクト => YAML文字列
@@ -99,10 +100,10 @@ function encodeProcess(dataObject: RodbTranslatorDataFormat): string | null {
 }
 
 
-export async function loadRodbTranslator(fragment: string): Promise<void> {
+export async function loadRodbTranslator(importData: string): Promise<void> {
     const supportVersion = 2;
     const prefixCheck = /^rtx(\d+):(.+)$/;
-    const matches = prefixCheck.exec(fragment);
+    const matches = prefixCheck.exec(importData);
     if (!matches) {
         return;
     }
@@ -117,50 +118,54 @@ export async function loadRodbTranslator(fragment: string): Promise<void> {
     const decodedData = decodeURIComponent(matches[2]);
 
     // 中身のデコード、zstd展開を行う
-    const yamlObject: RodbTranslatorDataFormat | null = decodeProcess(decodedData)
-    if (!yamlObject) {
+    const dataObject: RtxDataFormat | null = decodeProcess(decodedData)
+    if (!dataObject) {
         alert("URLからのデータロードに失敗しました");
         return;
     }
-    //console.debug(yamlObject);
+    //console.debug(dataObject);
 
+    importRtxDataFormat(dataObject);
+}
+
+async function importRtxDataFormat(dataObject: RtxDataFormat): Promise<void> {
     // ローディングインジケーターを表示
     showLoadingIndicator();
 
     setTimeout(() => {
         // Set Job
         const jobElement = document.getElementById("OBJID_SELECT_JOB") as HTMLSelectElement;
-        jobElement.value = yamlObject.status.job_id;
-        changeJobSettings(yamlObject.status.job_id);
+        jobElement.value = dataObject.status.job_id;
+        changeJobSettings(dataObject.status.job_id);
 
         // Set Base Lv
         const baseLvElement = document.getElementById("OBJID_SELECT_BASE_LEVEL") as HTMLInputElement;
-        baseLvElement.value = String(yamlObject.status.base_lv);
+        baseLvElement.value = String(dataObject.status.base_lv);
 
         // Set Job Lv
         const jobLvElement = document.getElementById("OBJID_SELECT_JOB_LEVEL") as HTMLInputElement;
-        jobLvElement.value = String(yamlObject.status.job_lv);
+        jobLvElement.value = String(dataObject.status.job_lv);
 
         // Set status
-        const keys: (keyof JobStatus)[] = [
+        const keys: (keyof RtxJobStatus)[] = [
             "str", "agi", "vit", "int", "dex", "luk",
             "pow", "sta", "wis", "spl", "con", "crt"
         ];
 
         for (const key of keys) {
-            const statusElement: HTMLInputElement = document.getElementById("OBJID_SELECT_STATUS_" + key.toUpperCase()) as HTMLInputElement;
-            let value = yamlObject.status[key];
+            const statusElement = document.getElementById("OBJID_SELECT_STATUS_" + key.toUpperCase()) as HTMLInputElement;
+            let value = dataObject.status[key];
             statusElement.value = String(value);
         }
 
         // Set Skill Lv
-        const skillColumnCheckbox: HTMLInputElement = document.getElementById("OBJID_SKILL_COLUMN_EXTRACT_CHECKBOX") as HTMLInputElement;
+        const skillColumnCheckbox = document.getElementById("OBJID_SKILL_COLUMN_EXTRACT_CHECKBOX") as HTMLInputElement;
         skillColumnCheckbox.checked = true;
         OnClickSkillSWLearned();
 
         const event = new Event('change', { bubbles: true });
-        Object.entries(yamlObject.skills).forEach(([skillId, skill]) => {
-            const skillLvElement: HTMLSelectElement = document.querySelector(`select[data-skill-id=${skillId}]`) as HTMLSelectElement;
+        Object.entries(dataObject.skills).forEach(([skillId, skill]) => {
+            const skillLvElement = document.querySelector(`select[data-skill-id=${skillId}]`) as HTMLSelectElement;
             if (skillLvElement) {
                 skillLvElement.value = String(skill.lv);
                 console.debug(`Skill ID: ${skillId}, 習得レベル: ${skillLvElement.value}`)
@@ -178,10 +183,81 @@ export async function loadRodbTranslator(fragment: string): Promise<void> {
     }, 0);
 }
 
-interface JobStatus {
+export function exportRtxDataFormat(): RtxDataFormat {
+    let dataObject: RtxDataFormat = {
+        format_version: 2,
+        overwrite: false,
+        status: {} as RtxJobStatus,
+        skills: {} as RtxSkills,
+        equipments: {} as RtxEquipments,
+        support_items: {} as RtxSupportItems,
+        support_skills: {} as RtxSupportSkills,
+        additional_info: {} as RtxAdditionalInfo,
+        battle_info: {}
+    };
+
+    // Set Job
+    const jobElement = document.getElementById("OBJID_SELECT_JOB") as HTMLSelectElement;
+    dataObject.status.job_id = jobElement.value;
+    dataObject.status.job_class_localization = JobMap.getById(jobElement.value)?.getNameJa();
+
+    // Set Base Lv
+    const baseLvElement = document.getElementById("OBJID_SELECT_BASE_LEVEL") as HTMLInputElement;
+    dataObject.status.base_lv = Number(baseLvElement.value);
+
+    // Set Job Lv
+    const jobLvElement = document.getElementById("OBJID_SELECT_JOB_LEVEL") as HTMLInputElement;
+    dataObject.status.job_lv = Number(jobLvElement.value);
+
+    // Set status
+    const keys = [
+        "str", "agi", "vit", "int", "dex", "luk",
+        "pow", "sta", "wis", "spl", "con", "crt"
+    ] as const;
+
+    type StatusKey = typeof keys[number];
+    for (const key of keys as readonly StatusKey[]) {
+        const statusElement = document.getElementById("OBJID_SELECT_STATUS_" + key.toUpperCase()) as HTMLSelectElement;
+        dataObject.status[key] = Number(statusElement.value);
+    }
+
+    // Equipments
+    if (dataObject.equipments) {
+        // 右腕武器
+        const armsTypeRight = document.getElementById("OBJID_ARMS_TYPE_RIGHT") as HTMLSelectElement;
+        if (armsTypeRight) {
+            dataObject.equipments.arms_type_right = armsTypeRight.value;
+        }
+    }
+
+    // Support Items
+    if (dataObject.support_items) {
+        // スピードアップポーション
+        const speedUpPotionElement = document.getElementById("OBJID_SPEED_POT") as HTMLSelectElement;
+        if (speedUpPotionElement) {
+            dataObject.support_items.speed_up_potion = speedUpPotionElement.value;
+        }
+    }
+
+    return dataObject;
+}
+
+interface RtxDataFormat {
+    format_version: number;
+    overwrite: boolean;
+    status: RtxJobStatus;
+    skills: RtxSkills;
+    equipments?: RtxEquipments;
+    support_items?: RtxSupportItems;
+    support_skills?: RtxSupportSkills;
+    additional_info?: RtxAdditionalInfo;
+    battle_info?: object;
+}
+
+interface RtxJobStatus {
     job_id: string;
-    job_class_localization: string,
-    ratorio_job_id_num: number;
+    job_class_localization?: string,
+    ratorio_job_id_num?: number;
     base_lv: number;
     job_lv: number;
     str: number;
@@ -198,29 +274,141 @@ interface JobStatus {
     crt: number;
 }
 
-interface Skill {
+interface RtxSkill {
     lv: number;
 }
 
-interface Skills {
-    [skillId: string]: Skill;
+interface RtxSkills {
+    [skillId: string]: RtxSkill;
 }
 
-interface AdditionalInfo {
-    hp_base_point: number;
-    sp_base_point: number;
-    character_name: string;
-    world_name: string;
+interface RtxEquipments {
+    arms_type_right: string;
+    arms_right: {
+        refine: number,
+        transcendence: number,
+        name: string,
+        element: string,
+        slot: {
+            [slotId: number]: {
+                name: string
+            }
+        }
+    },
+    arms_left?: {
+        refine: number,
+        transcendence: number,
+        name: string,
+        element: string,
+        slot: {
+            [slotId: number]: {
+                name: string
+            }
+        }
+    },
+    head_top: {
+        refine: number,
+        transcendence: number,
+        name: string,
+        slot: {
+            [slotId: number]: {
+                name: string
+            }
+        }
+    },
+    head_midle: {
+        refine: number,
+        transcendence: number,
+        name: string,
+        slot: {
+            [slotId: number]: {
+                name: string
+            }
+        }
+    },
+    head_under: {
+        refine: number,
+        transcendence: number,
+        name: string,
+        slot: {
+            [slotId: number]: {
+                name: string
+            }
+        }
+    },
+    shield?: {
+        refine: number,
+        transcendence: number,
+        name: string,
+        slot: {
+            [slotId: number]: {
+                name: string
+            }
+        }
+    },
+    body: {
+        refine: number,
+        transcendence: number,
+        name: string,
+        slot: {
+            [slotId: number]: {
+                name: string
+            }
+        }
+    },
+    shoulder: {
+        refine: number,
+        transcendence: number,
+        name: string,
+        slot: {
+            [slotId: number]: {
+                name: string
+            }
+        }
+    },
+    shoes: {
+        refine: number,
+        transcendence: number,
+        name: string,
+        slot: {
+            [slotId: number]: {
+                name: string
+            }
+        }
+    },
+    accesorry1: {
+        refine?: number,
+        transcendence?: number,
+        name: string,
+        slot: {
+            [slotId: number]: {
+                name: string
+            }
+        }
+    },
+    accesorry2: {
+        refine?: number,
+        transcendence?: number,
+        name: string,
+        slot: {
+            [slotId: number]: {
+                name: string
+            }
+        }
+    }
 }
 
-interface RodbTranslatorDataFormat {
-    format_version: number;
-    overwrite: boolean;
-    status: JobStatus;
-    skills: Skills;
-    equipments: object;
-    items: object;
-    supports: object;
-    additional_info: AdditionalInfo;
-    battle_info: object;
+interface RtxSupportItems {
+    speed_up_potion: string;
+}
+
+interface RtxSupportSkills {
+}
+
+interface RtxAdditionalInfo {
+    hp_base_point?: number;
+    sp_base_point?: number;
+    character_name?: string;
+    world_name?: string;
+    comment?: string;
 }
