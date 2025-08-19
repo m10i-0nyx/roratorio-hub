@@ -50,8 +50,7 @@ class SkillData {
     getNeedSkillList(): { need_lv: number; skill_id: string; }[] | null {
         return this.parameter.need_skill_list;
     }
-
-    getMidIdNum(): number | null {
+    getMigIdNum(): number | null {
         return this.parameter._mig_id_num;
     }
 }

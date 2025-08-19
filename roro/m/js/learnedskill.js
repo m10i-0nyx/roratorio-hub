@@ -173,7 +173,7 @@ function OnClickSkillSWLearned(){
 		// スキル最大レベルを取得
 		const skillMaxLv = skillData.getMaxLv();
 		// MigIdNumを取得
-		const skillMigId = skillData.getMidIdNum();
+		const skillMigId = skillData.getMigIdNum();
 
 		// スキル名とレベルを表示
 		//console.debug(`Idx: ${idx}, 習得スキル: ${skillName}, Maxレベル: ${skillMaxLv}, MigIdNum: ${skillMigId}`);
@@ -298,7 +298,7 @@ function UpdateLearnedSkillSettingColoring() {
 			return;
 		}
 		// MigIdNumを取得
-		const skillMigId = skillData.getMidIdNum();
+		const skillMigId = skillData.getMigIdNum();
 
 		// 名称欄
 		var objTd = document.getElementById("OBJID_TD_LEARNED_SKILL_NAME_" + idx);
