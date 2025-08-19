@@ -1,6 +1,5 @@
-import { load as loadYAML, dump as dumpYAML, dump } from "js-yaml"
+import { load as loadYAML, dump as dumpYAML } from "js-yaml"
 import { Zstd } from "@hpcc-js/wasm-zstd";
-import { JobMap } from "./loadJobMap";
 
 const zstd = await Zstd.load();
 
@@ -90,7 +89,7 @@ function encodeProcess(dataObject: RtxDataFormat): string | null {
         const compressedData = zstdCompress(yamlData);
 
         if (compressedData) {
-            // 圧縮データ => Base64
+            // 圧縮データ => 文字列
             encodedData = uint8ArrayToBase64(compressedData);
         }
     } catch (error) {
@@ -113,7 +112,6 @@ export async function loadRodbTranslator(importData: string): Promise<void> {
         alert("RODB Translatorから出力された\nフォーマットバージョンが異なるため中止します\nVersion:" + matches[1]);
         return;
     }
-
     // フラグメントをデコード
     const decodedData = decodeURIComponent(matches[2]);
 
@@ -166,7 +164,7 @@ async function importRtxDataFormat(dataObject: RtxDataFormat): Promise<void> {
         OnClickSkillSWLearned();
 
         Object.entries(dataObject.learned_skills).forEach(([skillId, skill]) => {
-            const skillLvElement = document.querySelector(`select[data-skill-id=${skillId}]`) as HTMLSelectElement;
+            const skillLvElement = document.querySelector(`select[data-learned-skill-id=${skillId}]`) as HTMLSelectElement;
             if (skillLvElement) {
                 skillLvElement.value = String(skill.lv);
                 //console.debug(`Skill ID: ${skillId}, 習得レベル: ${skillLvElement.value}`)
@@ -188,7 +186,10 @@ async function outputConsoleRtxDataFormat(): Promise<void> {
     try {
         const dataObject = exportRtxDataFormat();
         console.log(dataObject);
-        console.log(dumpYAML(dataObject));
+        const yamlData = dumpYAML(dataObject);
+        console.log(yamlData);
+        const encodedData = encodeProcess(dataObject);
+        console.log("圧縮前:", yamlData.length, "->", "圧縮後:", encodedData?.length);
         alert("🐱‍💻データをコンソールに出力しました");
     } catch (ex) {
         console.error("Error occurred while outputting console Rtx data format:", ex);
@@ -235,12 +236,21 @@ export function exportRtxDataFormat(): RtxDataFormat {
         dataObject.status[key] = Number(statusElement.value);
     }
 
+    // Learned Skills
+    const learnedSkillElements = document.querySelectorAll(`select[data-learned-skill-id]`) as NodeListOf<HTMLSelectElement>;
+    learnedSkillElements.forEach((skillLvElement) => {
+        const skillId = skillLvElement.getAttribute("data-learned-skill-id");
+        if (skillId) {
+            dataObject.learned_skills[skillId] = { lv: Number(skillLvElement.value) };
+        }
+    });
+
     // Equipments
     if (dataObject.equipments) {
         // 右腕武器
         const armsTypeRight = document.getElementById("OBJID_ARMS_TYPE_RIGHT") as HTMLSelectElement;
         if (armsTypeRight) {
-            dataObject.equipments.arms_type_right = armsTypeRight.value;
+            dataObject.equipments.arms_type_right = parseInt(armsTypeRight.value);
         }
     }
 
@@ -249,7 +259,7 @@ export function exportRtxDataFormat(): RtxDataFormat {
         // スピードアップポーション
         const speedUpPotionElement = document.getElementById("OBJID_SPEED_POT") as HTMLSelectElement;
         if (speedUpPotionElement) {
-            dataObject.use_items.speed_up_potion = speedUpPotionElement.value;
+            dataObject.use_items.speed_up_potion = parseInt(speedUpPotionElement.value);
         }
     }
 
@@ -296,7 +306,7 @@ interface RtxSkills {
 }
 
 interface RtxEquipments {
-    arms_type_right: string;
+    arms_type_right: number;
     arms_right: {
         refine: number,
         transcendence: number,
@@ -412,7 +422,7 @@ interface RtxEquipments {
 }
 
 interface RtxUseItems {
-    speed_up_potion: string;
+    speed_up_potion: number;
 }
 
 
