@@ -207,7 +207,7 @@ function OnClickSkillSWLearned(){
 
 		var objSelect = document.createElement("select");
 		objSelect.setAttribute("id", "OBJID_SELECT_LEARNED_SKILL_LEVEL_" + idx);
-		objSelect.setAttribute("data-skill-id", skillId);
+		objSelect.setAttribute("data-learned-skill-id", skillId);
 		objSelect.setAttribute("onChange", "RefreshSkillColumnHeaderLearned(this, " + idx + ", this.value)");
 		objTd.appendChild(objSelect);
 		for (let lv = 0; lv <= skillMaxLv; lv++) {
