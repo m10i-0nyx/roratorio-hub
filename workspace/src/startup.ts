@@ -65,11 +65,11 @@ window.addEventListener('load', () => {
     waitForDataLoaded().then(() => {
         // RODB Translatorからのデータロード
         const fragment = window.location.hash.substring(1);
+        const queryString = window.location.search.substring(1);
         if (fragment) {
             //console.log(`🔗 Current URL fragment: ${fragment}`);
             loadRodbTranslator(fragment);
-        } else {
-            const queryString = window.location.search.substring(1);
+        } else if (queryString) {
             //console.log(`🔗 Current URL queryString: ${queryString}`);
             loadRodbTranslator(queryString);
         }
