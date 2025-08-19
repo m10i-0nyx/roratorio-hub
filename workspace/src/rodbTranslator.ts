@@ -1,4 +1,4 @@
-import { load as loadYAML, dump as dumpYAML } from "js-yaml"
+import { load as loadYAML, dump as dumpYAML, dump } from "js-yaml"
 import { Zstd } from "@hpcc-js/wasm-zstd";
 import { JobMap } from "./loadJobMap";
 
@@ -123,7 +123,7 @@ export async function loadRodbTranslator(importData: string): Promise<void> {
         alert("URLからのデータロードに失敗しました");
         return;
     }
-    //console.debug(dataObject);
+    console.debug(dataObject);
 
     importRtxDataFormat(dataObject);
 }
@@ -133,10 +133,12 @@ async function importRtxDataFormat(dataObject: RtxDataFormat): Promise<void> {
     showLoadingIndicator();
 
     setTimeout(() => {
+        const changeEvent = new Event('change', { bubbles: true });
+
         // Set Job
         const jobElement = document.getElementById("OBJID_SELECT_JOB") as HTMLSelectElement;
         jobElement.value = dataObject.status.job_id;
-        changeJobSettings(dataObject.status.job_id);
+        jobElement.dispatchEvent(changeEvent);
 
         // Set Base Lv
         const baseLvElement = document.getElementById("OBJID_SELECT_BASE_LEVEL") as HTMLInputElement;
@@ -163,13 +165,12 @@ async function importRtxDataFormat(dataObject: RtxDataFormat): Promise<void> {
         skillColumnCheckbox.checked = true;
         OnClickSkillSWLearned();
 
-        const event = new Event('change', { bubbles: true });
-        Object.entries(dataObject.skills).forEach(([skillId, skill]) => {
+        Object.entries(dataObject.learned_skills).forEach(([skillId, skill]) => {
             const skillLvElement = document.querySelector(`select[data-skill-id=${skillId}]`) as HTMLSelectElement;
             if (skillLvElement) {
                 skillLvElement.value = String(skill.lv);
-                console.debug(`Skill ID: ${skillId}, 習得レベル: ${skillLvElement.value}`)
-                skillLvElement.dispatchEvent(event);
+                //console.debug(`Skill ID: ${skillId}, 習得レベル: ${skillLvElement.value}`)
+                skillLvElement.dispatchEvent(changeEvent);
             }
         });
 
@@ -183,15 +184,28 @@ async function importRtxDataFormat(dataObject: RtxDataFormat): Promise<void> {
     }, 0);
 }
 
+async function outputConsoleRtxDataFormat(): Promise<void> {
+    try {
+        const dataObject = exportRtxDataFormat();
+        console.log(dataObject);
+        console.log(dumpYAML(dataObject));
+        alert("🐱‍💻データをコンソールに出力しました");
+    } catch (ex) {
+        console.error("Error occurred while outputting console Rtx data format:", ex);
+    }
+    //const encodedData = encodeProcess(dataObject);
+}
+
 export function exportRtxDataFormat(): RtxDataFormat {
     let dataObject: RtxDataFormat = {
         format_version: 2,
-        overwrite: false,
+        overwright: true,
         status: {} as RtxJobStatus,
-        skills: {} as RtxSkills,
+        learned_skills: {} as RtxSkills,
         equipments: {} as RtxEquipments,
-        support_items: {} as RtxSupportItems,
-        support_skills: {} as RtxSupportSkills,
+        use_items: {} as RtxUseItems,
+        buff: {} as RtxSkills,
+        debuff: {} as RtxSkills,
         additional_info: {} as RtxAdditionalInfo,
         battle_info: {}
     };
@@ -199,7 +213,7 @@ export function exportRtxDataFormat(): RtxDataFormat {
     // Set Job
     const jobElement = document.getElementById("OBJID_SELECT_JOB") as HTMLSelectElement;
     dataObject.status.job_id = jobElement.value;
-    dataObject.status.job_class_localization = JobMap.getById(jobElement.value)?.getNameJa();
+    //dataObject.status.job_class_localization = JobMap.getById(jobElement.value)?.getNameJa();
 
     // Set Base Lv
     const baseLvElement = document.getElementById("OBJID_SELECT_BASE_LEVEL") as HTMLInputElement;
@@ -230,12 +244,12 @@ export function exportRtxDataFormat(): RtxDataFormat {
         }
     }
 
-    // Support Items
-    if (dataObject.support_items) {
+    // Use Items
+    if (dataObject.use_items) {
         // スピードアップポーション
         const speedUpPotionElement = document.getElementById("OBJID_SPEED_POT") as HTMLSelectElement;
         if (speedUpPotionElement) {
-            dataObject.support_items.speed_up_potion = speedUpPotionElement.value;
+            dataObject.use_items.speed_up_potion = speedUpPotionElement.value;
         }
     }
 
@@ -244,20 +258,19 @@ export function exportRtxDataFormat(): RtxDataFormat {
 
 interface RtxDataFormat {
     format_version: number;
-    overwrite: boolean;
+    overwright: boolean;
     status: RtxJobStatus;
-    skills: RtxSkills;
+    learned_skills: RtxSkills;
     equipments?: RtxEquipments;
-    support_items?: RtxSupportItems;
-    support_skills?: RtxSupportSkills;
+    use_items?: RtxUseItems;
+    buff?: RtxSkills;
+    debuff?: RtxSkills;
     additional_info?: RtxAdditionalInfo;
     battle_info?: object;
 }
 
 interface RtxJobStatus {
     job_id: string;
-    job_class_localization?: string,
-    ratorio_job_id_num?: number;
     base_lv: number;
     job_lv: number;
     str: number;
@@ -398,12 +411,10 @@ interface RtxEquipments {
     }
 }
 
-interface RtxSupportItems {
+interface RtxUseItems {
     speed_up_potion: string;
 }
 
-interface RtxSupportSkills {
-}
 
 interface RtxAdditionalInfo {
     hp_base_point?: number;
@@ -412,3 +423,5 @@ interface RtxAdditionalInfo {
     world_name?: string;
     comment?: string;
 }
+
+(window as any).outputConsoleRtxDataFormat = outputConsoleRtxDataFormat; //グローバルに登録
