@@ -158,7 +158,7 @@ async function importRtxDataFormat(dataObject: RtxDataFormat): Promise<void> {
             statusElement.value = String(value);
         }
 
-        // Set Skill Lv
+        // Set Learned skills
         const skillColumnCheckbox = document.getElementById("OBJID_SKILL_COLUMN_EXTRACT_CHECKBOX") as HTMLInputElement;
         skillColumnCheckbox.checked = true;
         OnClickSkillSWLearned();
@@ -210,20 +210,20 @@ export function exportRtxDataFormat(): RtxDataFormat {
         battle_info: {}
     };
 
-    // Set Job
+    // Get Job
     const jobElement = document.getElementById("OBJID_SELECT_JOB") as HTMLSelectElement;
     dataObject.status.job_id = jobElement.value;
     //dataObject.status.job_class_localization = JobMap.getById(jobElement.value)?.getNameJa();
 
-    // Set Base Lv
+    // Get Base Lv
     const baseLvElement = document.getElementById("OBJID_SELECT_BASE_LEVEL") as HTMLInputElement;
     dataObject.status.base_lv = Number(baseLvElement.value);
 
-    // Set Job Lv
+    // Get Job Lv
     const jobLvElement = document.getElementById("OBJID_SELECT_JOB_LEVEL") as HTMLInputElement;
     dataObject.status.job_lv = Number(jobLvElement.value);
 
-    // Set status
+    // Get status
     const keys = [
         "str", "agi", "vit", "int", "dex", "luk",
         "pow", "sta", "wis", "spl", "con", "crt"
@@ -235,7 +235,14 @@ export function exportRtxDataFormat(): RtxDataFormat {
         dataObject.status[key] = Number(statusElement.value);
     }
 
-    // Learned Skills
+    // Get Learned skills
+    const skillColumnCheckbox = document.getElementById("OBJID_SKILL_COLUMN_EXTRACT_CHECKBOX") as HTMLInputElement;
+    if (!skillColumnCheckbox.checked) {
+        // スキルカラムがチェックされていない場合は、開く
+        // そうしないと、スキル学習状況が取得できない
+        skillColumnCheckbox.checked = true;
+        OnClickSkillSWLearned();
+    }
     const learnedSkillElements = document.querySelectorAll(`select[data-learned-skill-id]`) as NodeListOf<HTMLSelectElement>;
     learnedSkillElements.forEach((skillLvElement) => {
         const skillId = skillLvElement.getAttribute("data-learned-skill-id");
@@ -247,9 +254,21 @@ export function exportRtxDataFormat(): RtxDataFormat {
     // Equipments
     if (dataObject.equipments) {
         // 右腕武器
-        const armsTypeRight = document.getElementById("OBJID_ARMS_TYPE_RIGHT") as HTMLSelectElement;
-        if (armsTypeRight) {
-            dataObject.equipments.arms_type_right = parseInt(armsTypeRight.value);
+        var equipmentLocation = "arms_right" as const;
+        var objectIdPrefix = "DATA_OBJID_ARMS_RIGHT";
+        getItemValueById(objectIdPrefix);
+        dataObject.equipments[equipmentLocation] = {
+            refine: 0,
+            transcendence: 0,
+            name: "",
+            element: null,
+            slot: {}
+        };
+        for (let slotId = 1; slotId <= 4; slotId++) {
+            const slotName = `${objectIdPrefix}_CARD_${slotId}`;
+            dataObject.equipments[equipmentLocation].slot[slotId] = {
+                name: getItemValueById(slotName) || ""
+            };
         }
     }
 
@@ -263,6 +282,24 @@ export function exportRtxDataFormat(): RtxDataFormat {
     }
 
     return dataObject;
+}
+
+function getItemValueById(id: string): string | undefined {
+    const selectElement = document.getElementById(id) as HTMLSelectElement;
+    if (!selectElement || !selectElement.hasChildNodes()) {
+        return undefined;
+    }
+    const firstChild = selectElement.firstChild;
+    if (!firstChild || firstChild.nodeValue === null || firstChild.nodeValue.length === 0) {
+        return undefined;
+    }
+    const itemValue = firstChild.nodeValue;
+    console.log(id, itemValue);
+    if (itemValue !== null && itemValue !== "" && !isNaN(parseInt(itemValue, 10))) {
+        // MIG IDとして扱う処理
+        const itemMigId = parseInt(itemValue, 10);
+    }
+    return itemValue;
 }
 
 interface RtxDataFormat {
@@ -310,10 +347,10 @@ interface RtxEquipments {
         refine: number,
         transcendence: number,
         name: string,
-        element: string,
+        element: string | null, // 武器の属性
         slot: {
             [slotId: number]: {
-                name: string
+                name: string | null
             }
         }
     },
@@ -321,10 +358,10 @@ interface RtxEquipments {
         refine: number,
         transcendence: number,
         name: string,
-        element: string,
+        element: string, // 武器の属性
         slot: {
             [slotId: number]: {
-                name: string
+                name: string | null
             }
         }
     },
@@ -334,7 +371,7 @@ interface RtxEquipments {
         name: string,
         slot: {
             [slotId: number]: {
-                name: string
+                name: string | null
             }
         }
     },
@@ -344,7 +381,7 @@ interface RtxEquipments {
         name: string,
         slot: {
             [slotId: number]: {
-                name: string
+                name: string | null
             }
         }
     },
@@ -354,7 +391,7 @@ interface RtxEquipments {
         name: string,
         slot: {
             [slotId: number]: {
-                name: string
+                name: string | null
             }
         }
     },
@@ -364,7 +401,7 @@ interface RtxEquipments {
         name: string,
         slot: {
             [slotId: number]: {
-                name: string
+                name: string | null
             }
         }
     },
@@ -374,7 +411,7 @@ interface RtxEquipments {
         name: string,
         slot: {
             [slotId: number]: {
-                name: string
+                name: string | null
             }
         }
     },
@@ -384,7 +421,7 @@ interface RtxEquipments {
         name: string,
         slot: {
             [slotId: number]: {
-                name: string
+                name: string | null
             }
         }
     },
@@ -394,7 +431,7 @@ interface RtxEquipments {
         name: string,
         slot: {
             [slotId: number]: {
-                name: string
+                name: string | null
             }
         }
     },
@@ -404,7 +441,7 @@ interface RtxEquipments {
         name: string,
         slot: {
             [slotId: number]: {
-                name: string
+                name: string | null
             }
         }
     },
@@ -414,7 +451,7 @@ interface RtxEquipments {
         name: string,
         slot: {
             [slotId: number]: {
-                name: string
+                name: string | null
             }
         }
     }
