@@ -192,9 +192,8 @@ async function outputConsoleRtxDataFormat(): Promise<void> {
         console.log("圧縮前:", yamlData.length, "->", "圧縮後:", encodedData?.length);
         alert("🐱‍💻データをコンソールに出力しました");
     } catch (ex) {
-        console.error("Error occurred while outputting console Rtx data format:", ex);
+        console.error("Error occurred while outputting console RTX data format:", ex);
     }
-    //const encodedData = encodeProcess(dataObject);
 }
 
 export function exportRtxDataFormat(): RtxDataFormat {
