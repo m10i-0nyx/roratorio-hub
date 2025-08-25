@@ -30103,33 +30103,13 @@ function ROUNDUP(num){
 const SpeedPotName = ["なし","スピードアップポーション","ハイスピードポーション","バーサークポーション"];
 const EnName =["なし","水","地","火","風","毒","聖","闇","念","死"];
 
-/**
- * YAMLデータのロード完了まで待機する関数
- */
-async function waitForDataLoaded() {
-	const maxRetries = 100; // 100ms * 100 = 10 seconds
-	let retries = 0;
-	while (retries < maxRetries) {
-		const jobMapLoaded = await JobMap.isLoaded();
-		const skillMapLoaded = await SkillMap.isLoaded();
-		const itemMapLoaded = await ItemMap.isLoaded();
-
-		if (jobMapLoaded && skillMapLoaded && itemMapLoaded) {
-			return;
-		}
-
-		// まだロードされていなければ少し待つ（100ms）
-		await new Promise(resolve => setTimeout(resolve, 100));
-		retries++;
-	}
-	throw new Error('Timeout: Data failed to load within expected time.');
-}
-
 // 他の関数実行に先駆けて初期化される必要があるので load だとタイミングが遅い. DOMContentLoaded を指定する必要がある.
 document.addEventListener('DOMContentLoaded', () => {
 	console.log("DOM Content is loaded.");
 	// YAMLデータのロードが完了していたら発火
 	waitForDataLoaded().then(() => {
+		console.log("All data is loaded.");
+
 		// 計算機設定の読み込み
 		if (document.getElementById("OBJID_SAVE_BLOCK_MIG")) {
 			CSaveController.LoadSettingFromLocalStorageMIG();

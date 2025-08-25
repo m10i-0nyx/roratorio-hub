@@ -29,9 +29,10 @@ async function waitForDataLoaded() {
  * DOMContentLoadedイベントリスナー
  */
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('📦 Webpack is ready and DOM is fully loaded.');
-
+    console.log('DOMContentLoaded: 📦 Webpack is ready and DOM is fully loaded.');
     waitForDataLoaded().then(() => {
+        console.log('DOMContentLoaded: 🎉 All data is loaded.');
+
         // 職業選択セレクトボックスの構築
         const selectJobElem = document.getElementById("OBJID_SELECT_JOB") as HTMLSelectElement | null;
         if (selectJobElem) {
@@ -45,13 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 option.value = job.id_name;
                 selectJobElem.appendChild(option);
             });
-
-            // data-job-id属性に値があり、選択されている職業IDと異なる場合
-            // data-job-idの値を反映させる
-            let dataJobId = selectJobElem.getAttribute("data-job-id");
-            if (dataJobId && selectJobElem.value !== dataJobId) {
-                selectJobElem.value = dataJobId;
-            }
         }
     });
 });
@@ -60,9 +54,10 @@ document.addEventListener('DOMContentLoaded', () => {
  * ウィンドウのロードイベントリスナー
  */
 window.addEventListener('load', () => {
-    console.log('✅ Webpack is all resources finished loading.');
-
+    console.log('load: ✅ Webpack is all resources finished loading.');
     waitForDataLoaded().then(() => {
+        console.log('load: 🎉 All data is loaded.');
+
         // RODB Translatorからのデータロード
         const fragment = window.location.hash.substring(1);
         const queryString = window.location.search.substring(1);
@@ -88,3 +83,5 @@ Promise.all([
 }).catch((error) => {
     console.error('⚠️ Error loading maps:', error);
 });
+
+(window as any).waitForDataLoaded = waitForDataLoaded;
