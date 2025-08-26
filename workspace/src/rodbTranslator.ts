@@ -272,9 +272,9 @@ export function exportRtxDataFormat(): RtxDataFormat {
         // 靴
         dataObject = getRecursiveItemValueById(dataObject, "shoes" as const, "DATA_OBJID_SHOES");
         // アクセサリー1
-        dataObject = getRecursiveItemValueById(dataObject, "accesory1" as const, "DATA_OBJID_ACCESSORY_1");
+        dataObject = getRecursiveItemValueById(dataObject, "accessory1" as const, "DATA_OBJID_ACCESSARY_1"); // calcx.htmlでACCESS"A"RY のスペルミスがある
         // アクセサリー2
-        dataObject = getRecursiveItemValueById(dataObject, "accesory2" as const, "DATA_OBJID_ACCESSORY_2");
+        dataObject = getRecursiveItemValueById(dataObject, "accessory2" as const, "DATA_OBJID_ACCESSARY_2"); // calcx.htmlでACCESS"A"RY のスペルミスがある
     }
 
     // Use Items
@@ -331,7 +331,6 @@ function getItemValueById(id: string): string | null | undefined {
         return undefined;
     }
     const itemValue = firstChild.nodeValue;
-    console.log(id, itemValue);
     if (itemValue !== null && itemValue !== "" && !isNaN(parseInt(itemValue, 10))) {
         // MIG IDとして扱う処理
         const itemMigId = parseInt(itemValue, 10);
@@ -388,8 +387,8 @@ type RtxEquipmentLocation =
     | "body"
     | "shoulder"
     | "shoes"
-    | "accesory1"
-    | "accesory2";
+    | "accessory1"
+    | "accessory2";
 
 interface RtxEquipments {
     arms_type_right: number;
@@ -485,7 +484,7 @@ interface RtxEquipments {
             }
         }
     },
-    accesory1: {
+    accessory1: {
         refine?: number,
         transcendence?: number,
         name: string | null,
@@ -495,7 +494,7 @@ interface RtxEquipments {
             }
         }
     },
-    accesory2: {
+    accessory2: {
         refine?: number,
         transcendence?: number,
         name: string | null,
