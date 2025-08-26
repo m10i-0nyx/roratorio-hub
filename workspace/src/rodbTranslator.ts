@@ -254,22 +254,27 @@ export function exportRtxDataFormat(): RtxDataFormat {
     // Equipments
     if (dataObject.equipments) {
         // 右腕武器
-        var equipmentLocation = "arms_right" as const;
-        var objectIdPrefix = "DATA_OBJID_ARMS_RIGHT";
-        getItemValueById(objectIdPrefix);
-        dataObject.equipments[equipmentLocation] = {
-            refine: 0,
-            transcendence: 0,
-            name: "",
-            element: null,
-            slot: {}
-        };
-        for (let slotId = 1; slotId <= 4; slotId++) {
-            const slotName = `${objectIdPrefix}_CARD_${slotId}`;
-            dataObject.equipments[equipmentLocation].slot[slotId] = {
-                name: getItemValueById(slotName) || ""
-            };
-        }
+        dataObject = getRecursiveItemValueById(dataObject, "arms_right" as const, "DATA_OBJID_ARMS_RIGHT");
+        // 左腕武器
+        dataObject = getRecursiveItemValueById(dataObject, "arms_left" as const, "DATA_OBJID_ARMS_LEFT");
+        // 頭上段
+        dataObject = getRecursiveItemValueById(dataObject, "head_top" as const, "DATA_OBJID_HEAD_TOP");
+        // 頭中段
+        dataObject = getRecursiveItemValueById(dataObject, "head_middle" as const, "DATA_OBJID_HEAD_MID");
+        // 頭下段
+        dataObject = getRecursiveItemValueById(dataObject, "head_under" as const, "DATA_OBJID_HEAD_UNDER");
+        // 盾
+        dataObject = getRecursiveItemValueById(dataObject, "shield" as const, "DATA_OBJID_SHIELD");
+        // 鎧
+        dataObject = getRecursiveItemValueById(dataObject, "body" as const, "DATA_OBJID_BODY");
+        // 肩
+        dataObject = getRecursiveItemValueById(dataObject, "shoulder" as const, "DATA_OBJID_SHOULDER");
+        // 靴
+        dataObject = getRecursiveItemValueById(dataObject, "shoes" as const, "DATA_OBJID_SHOES");
+        // アクセサリー1
+        dataObject = getRecursiveItemValueById(dataObject, "accesory1" as const, "DATA_OBJID_ACCESSORY_1");
+        // アクセサリー2
+        dataObject = getRecursiveItemValueById(dataObject, "accesory2" as const, "DATA_OBJID_ACCESSORY_2");
     }
 
     // Use Items
@@ -284,7 +289,39 @@ export function exportRtxDataFormat(): RtxDataFormat {
     return dataObject;
 }
 
-function getItemValueById(id: string): string | undefined {
+function getRecursiveItemValueById(dataObject: RtxDataFormat, equipmentLocation: RtxEquipmentLocation, objectIdPrefix: string, objectIdSuffix: string = "_CARD_", slotMaxNum: number = 4): RtxDataFormat {
+    if (equipmentLocation === "arms_right" || equipmentLocation === "arms_left") {
+        //武器
+        dataObject.equipments[equipmentLocation] = {
+            refine: 0,
+            transcendence: 0,
+            name: getItemValueById(objectIdPrefix) || null,
+            slot: {},
+            element: null
+        };
+    } else {
+        //それ以外
+        dataObject.equipments[equipmentLocation] = {
+            refine: 0,
+            transcendence: 0,
+            name: getItemValueById(objectIdPrefix) || null,
+            slot: {}
+        };
+    }
+    for (let slotId = 1; slotId <= slotMaxNum; slotId++) {
+        const slotName = `${objectIdPrefix}${objectIdSuffix}${slotId}`;
+        const value = getItemValueById(slotName);
+        if (value === undefined) {
+            continue;
+        }
+        dataObject.equipments[equipmentLocation].slot[slotId] = {
+            name: value || null
+        };
+    }
+    return dataObject;
+}
+
+function getItemValueById(id: string): string | null | undefined {
     const selectElement = document.getElementById(id) as HTMLSelectElement;
     if (!selectElement || !selectElement.hasChildNodes()) {
         return undefined;
@@ -307,7 +344,7 @@ interface RtxDataFormat {
     overwright: boolean;
     status: RtxJobStatus;
     learned_skills: RtxSkills;
-    equipments?: RtxEquipments;
+    equipments: RtxEquipments;
     use_items?: RtxUseItems;
     buff?: RtxSkills;
     debuff?: RtxSkills;
@@ -341,12 +378,25 @@ interface RtxSkills {
     [skillId: string]: RtxSkill;
 }
 
+type RtxEquipmentLocation =
+    | "arms_right"
+    | "arms_left"
+    | "head_top"
+    | "head_middle"
+    | "head_under"
+    | "shield"
+    | "body"
+    | "shoulder"
+    | "shoes"
+    | "accesory1"
+    | "accesory2";
+
 interface RtxEquipments {
     arms_type_right: number;
     arms_right: {
         refine: number,
         transcendence: number,
-        name: string,
+        name: string | null,
         element: string | null, // 武器の属性
         slot: {
             [slotId: number]: {
@@ -357,8 +407,8 @@ interface RtxEquipments {
     arms_left?: {
         refine: number,
         transcendence: number,
-        name: string,
-        element: string, // 武器の属性
+        name: string | null,
+        element: string | null, // 武器の属性
         slot: {
             [slotId: number]: {
                 name: string | null
@@ -368,17 +418,17 @@ interface RtxEquipments {
     head_top: {
         refine: number,
         transcendence: number,
-        name: string,
+        name: string | null,
         slot: {
             [slotId: number]: {
                 name: string | null
             }
         }
     },
-    head_midle: {
+    head_middle: {
         refine: number,
         transcendence: number,
-        name: string,
+        name: string | null,
         slot: {
             [slotId: number]: {
                 name: string | null
@@ -388,7 +438,7 @@ interface RtxEquipments {
     head_under: {
         refine: number,
         transcendence: number,
-        name: string,
+        name: string | null,
         slot: {
             [slotId: number]: {
                 name: string | null
@@ -398,7 +448,7 @@ interface RtxEquipments {
     shield?: {
         refine: number,
         transcendence: number,
-        name: string,
+        name: string | null,
         slot: {
             [slotId: number]: {
                 name: string | null
@@ -408,7 +458,7 @@ interface RtxEquipments {
     body: {
         refine: number,
         transcendence: number,
-        name: string,
+        name: string | null,
         slot: {
             [slotId: number]: {
                 name: string | null
@@ -418,7 +468,7 @@ interface RtxEquipments {
     shoulder: {
         refine: number,
         transcendence: number,
-        name: string,
+        name: string | null,
         slot: {
             [slotId: number]: {
                 name: string | null
@@ -428,27 +478,27 @@ interface RtxEquipments {
     shoes: {
         refine: number,
         transcendence: number,
-        name: string,
+        name: string | null,
         slot: {
             [slotId: number]: {
                 name: string | null
             }
         }
     },
-    accesorry1: {
+    accesory1: {
         refine?: number,
         transcendence?: number,
-        name: string,
+        name: string | null,
         slot: {
             [slotId: number]: {
                 name: string | null
             }
         }
     },
-    accesorry2: {
+    accesory2: {
         refine?: number,
         transcendence?: number,
-        name: string,
+        name: string | null,
         slot: {
             [slotId: number]: {
                 name: string | null
